@@ -1,5 +1,4 @@
-<mat-card *ngFor="let list of this.serverFilteredWordlists">
-  <p>{{this.stringList(list)}}</p>
-  <p></p>
-
-</mat-card>
+<div *ngFor="let list of this.serverFilteredWordlists">
+  {{this.stringList(list)}}
+  <pre id="json"></pre>
+</div>

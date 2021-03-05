@@ -29,7 +29,7 @@ export class WordlistComponent implements OnInit {
     this.getContextPacksFromServer();
   }
   stringList(contextPack: ContextPack){
-    return JSON.stringify(contextPack);
+    document.getElementById('json').textContent = JSON.stringify(contextPack, undefined, 2);
   }
 
 }
