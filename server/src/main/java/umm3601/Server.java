@@ -12,6 +12,7 @@ import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
 
 import umm3601.user.UserController;
+import umm3601.wordlist.WordlistController;
 
 public class Server {
 
@@ -36,6 +37,7 @@ public class Server {
 
     // Initialize dependencies
     UserController userController = new UserController(database);
+    WordlistController wordlistCOntroller = new WordlistController(database);
 
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
@@ -59,6 +61,7 @@ public class Server {
 
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
+    server.get("/api/wordlists", wordlistController:getWordlists);
 
     // Get the specified user
     server.get("/api/users/:id", userController::getUser);
