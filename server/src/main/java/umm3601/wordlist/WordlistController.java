@@ -24,6 +24,7 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 
 public class WordlistController {
+  private static final String TOPIC_KEY = "topic";
 
   private final JacksonMongoCollection<Wordlist> wordlistCollection;
 
@@ -32,6 +33,16 @@ public class WordlistController {
     wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
 
   }
+
+  public void getWordlists(Context ctx){
+
+    List<Bson> filters = new ArrayList<>();
+
+    ctx.json(wordlistCollection.find(filters.isEmpty()? new Document() : and(filters))
+    .into(new ArrayList<>()));
+
+  }
+
 
 
 
