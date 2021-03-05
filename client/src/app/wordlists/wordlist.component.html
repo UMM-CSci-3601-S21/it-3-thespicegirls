@@ -1,1 +1,4 @@
-<p>wordlist works!</p>
+<mat-card *ngFor="let list of this.serverFilteredWordlists">
+  <p>{{list.name}}</p>
+
+</mat-card>
