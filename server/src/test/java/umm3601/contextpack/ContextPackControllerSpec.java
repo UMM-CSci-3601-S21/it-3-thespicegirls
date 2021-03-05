@@ -81,10 +81,12 @@ public class ContextPackControllerSpec {
       new Document()
         .append("name", "horses")
         .append("enabled", true)
-        .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))))
-        .append("nouns", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-        .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-        .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+        .append("k", new Document()
+          .append("enabled", true)
+          .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))))
+          .append("nouns", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+          .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+          .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse")))))
         ;
     contextPackDocuments.insertOne(testList);
     contextPackController = new ContextPackController(db);
@@ -97,19 +99,38 @@ public class ContextPackControllerSpec {
   }
 
   @Test
-  public void GetAllWordlists() throws IOException {
+  public void GetAllContextPacks() throws IOException {
 
     // Create our fake Javalin context
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
-    contextPackController.getWordlists(ctx);
+    contextPackController.getContextPacks(ctx);
 
 
     assertEquals(200, mockRes.getStatus());
 
     String result = ctx.resultString();
-    assertEquals(db.getCollection("contextpacks").countDocuments(), JavalinJson.fromJson(result, Wordlist[].class).length);
+    assertTrue(JavalinJson.fromJson(result, ContextPack[].class).length>=1);
+    assertEquals(db.getCollection("contextpacks").countDocuments(), JavalinJson.fromJson(result, ContextPack[].class).length);
+
   }
 
+  @Test
+  public void ContextPacksHaveAllFields(){
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
+    contextPackController.getContextPacks(ctx);
+
+    contextPackController.getContextPacks(ctx);
+    assertEquals(200, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    ContextPack[] resultPacks = JavalinJson.fromJson(result, ContextPack[].class);
+
+    for(ContextPack pack: resultPacks) {
+      assertEquals(true, pack.enabled);
+      assertEquals(true, pack.k.getEnabled());
+    }
+
+  }
 
 }
 

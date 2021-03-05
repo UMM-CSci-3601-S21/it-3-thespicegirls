@@ -1,4 +1,5 @@
 package umm3601.contextpack;
+
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableMap;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
 
@@ -34,14 +37,14 @@ public class ContextPackController {
 
   }
 
-  public void getWordlists(Context ctx){
+  public void getContextPacks(Context ctx){
 
     List<Bson> filters = new ArrayList<>();
 
     ctx.json(contextPackCollection.find(filters.isEmpty()? new Document() : and(filters))
     .into(new ArrayList<>()));
-
   }
+
 
 
 

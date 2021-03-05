@@ -15,7 +15,7 @@ import umm3601.user.UserController;
 
 public class Server {
 
-  static String appName = "CSCI 3601 Iteration Template";
+  static String appName = "Word River";
 
   public static void main(String[] args) {
 
@@ -60,7 +60,7 @@ public class Server {
 
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
-    server.get("/api/contextpacks", contextPackController::getWordlists);
+    server.get("/api/contextpacks", contextPackController::getContextPacks);
 
     // Get the specified user
     server.get("/api/users/:id", userController::getUser);
