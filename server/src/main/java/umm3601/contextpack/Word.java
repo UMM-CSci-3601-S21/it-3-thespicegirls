@@ -9,7 +9,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Word {
   String word;
-  List<String> forms;
+  ArrayList<String> forms;
 
+  public String getWord(){
+    return this.word;
+  }
 
+  public ArrayList<String> getForms(){
+    return this.forms;
+  }
 }
+
