@@ -15,7 +15,7 @@ export class WordlistService {
 
    }
 
-  getWordlists(filters?: { name?: string}): Observable<ContextPack[]>{
+  getContextPacks(filters?: { name?: string}): Observable<ContextPack[]>{
     let httpParams: HttpParams = new HttpParams();
 
     return this.httpClient.get<ContextPack[]>(this.packUrl, {

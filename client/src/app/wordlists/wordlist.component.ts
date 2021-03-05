@@ -15,8 +15,8 @@ export class WordlistComponent implements OnInit {
 
   constructor(private wordlistService: WordlistService) { }
 
-  getWordlistsFromServer(): void {
-    this.wordlistService.getWordlists({
+  getContextPacksFromServer(): void {
+    this.wordlistService.getContextPacks({
       name: this.packName
     }).subscribe(returnedLists =>{
       this.serverFilteredWordlists = returnedLists;
@@ -26,7 +26,7 @@ export class WordlistComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getWordlistsFromServer();
+    this.getContextPacksFromServer();
   }
   stringList(contextPack: ContextPack){
     return JSON.stringify(contextPack);
