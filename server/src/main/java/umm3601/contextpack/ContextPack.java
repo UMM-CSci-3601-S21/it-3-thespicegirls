@@ -1,4 +1,4 @@
-package umm3601.wordlist;
+package umm3601.contextpack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class Wordlist {
+public class ContextPack {
 
   public String name;
   public boolean enabled;
-  public List<Word> verbs;
-  public List<Word> nouns;
-  public List<Word> adjetives;
-  public List<Word> misc;
 
 }
 

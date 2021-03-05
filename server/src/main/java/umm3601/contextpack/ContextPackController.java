@@ -1,4 +1,4 @@
-package umm3601.wordlist;
+package umm3601.contextpack;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
@@ -23,14 +23,14 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 
-public class WordlistController {
-  private static final String TOPIC_KEY = "topic";
-
-  private final JacksonMongoCollection<Wordlist> wordlistCollection;
+public class ContextPackController {
 
 
-  public WordlistController(MongoDatabase database){
-    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
+  private final JacksonMongoCollection<ContextPack> contextPackCollection;
+
+
+  public ContextPackController(MongoDatabase database){
+    contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
 
   }
 
@@ -38,7 +38,7 @@ public class WordlistController {
 
     List<Bson> filters = new ArrayList<>();
 
-    ctx.json(wordlistCollection.find(filters.isEmpty()? new Document() : and(filters))
+    ctx.json(contextPackCollection.find(filters.isEmpty()? new Document() : and(filters))
     .into(new ArrayList<>()));
 
   }

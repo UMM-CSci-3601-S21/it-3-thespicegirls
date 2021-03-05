@@ -1,8 +1,8 @@
-package umm3601.wordlist;
+package umm3601.contextpack;
 
 
 
-  import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,13 +38,15 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
+import umm3601.contextpack.ContextPackControllerSpec;
 
-public class WordlistControllerSpec {
+
+public class ContextPackControllerSpec {
 
   MockHttpServletRequest mockReq = new MockHttpServletRequest();
   MockHttpServletResponse mockRes = new MockHttpServletResponse();
 
-  private WordlistController wordlistController;
+  private ContextPackController contextPackController;
 
   static MongoClient mongoClient;
   static MongoDatabase db;
@@ -73,8 +75,8 @@ public class WordlistControllerSpec {
     mockRes.resetAll();
 
     // Setup database
-    MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
-    wordlistDocuments.drop();
+    MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
+    contextPackDocuments.drop();
     Document testList =
       new Document()
         .append("name", "horses")
@@ -84,8 +86,8 @@ public class WordlistControllerSpec {
         .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
         .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
         ;
-    wordlistDocuments.insertOne(testList);
-    wordlistController = new WordlistController(db);
+    contextPackDocuments.insertOne(testList);
+    contextPackController = new ContextPackController(db);
   }
 
   @AfterAll
@@ -98,14 +100,14 @@ public class WordlistControllerSpec {
   public void GetAllWordlists() throws IOException {
 
     // Create our fake Javalin context
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-    wordlistController.getWordlists(ctx);
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
+    contextPackController.getWordlists(ctx);
 
 
     assertEquals(200, mockRes.getStatus());
 
     String result = ctx.resultString();
-    assertEquals(db.getCollection("wordlists").countDocuments(), JavalinJson.fromJson(result, Wordlist[].class).length);
+    assertEquals(db.getCollection("contextpacks").countDocuments(), JavalinJson.fromJson(result, Wordlist[].class).length);
   }
 
 
