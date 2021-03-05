@@ -16,7 +16,7 @@ public class ContextPack {
 
   public String name;
   public boolean enabled;
-  public Wordlist k;
+  public Wordlist wordlist;
 
 }
 

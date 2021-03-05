@@ -26,6 +26,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import org.apache.bcel.generic.CASTORE;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterAll;
@@ -79,14 +80,16 @@ public class ContextPackControllerSpec {
     contextPackDocuments.drop();
     Document testList =
       new Document()
-        .append("name", "horses")
+        .append("name", "animals")
         .append("enabled", true)
-        .append("k", new Document()
+        .append("wordlist", new Document()
+          .append("topic", "cats")
           .append("enabled", true)
           .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))))
           .append("nouns", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
           .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-          .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse")))))
+          .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+        )
         ;
     contextPackDocuments.insertOne(testList);
     contextPackController = new ContextPackController(db);
@@ -127,10 +130,13 @@ public class ContextPackControllerSpec {
 
     for(ContextPack pack: resultPacks) {
       assertEquals(true, pack.enabled);
-      assertEquals(true, pack.k.getEnabled());
+      assertEquals(true, pack.wordlist.getEnabled());
+      assertEquals("cats", pack.wordlist.topic);
     }
 
   }
+
+  @Test 
 
 }
 
