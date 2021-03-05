@@ -17,6 +17,10 @@ public class Wordlist {
   public String name;
   public boolean enabled;
   public List<Word> verbs;
+  public List<Word> nouns;
+  public List<Word> adjetives;
+  public List<Word> misc;
+
 }
 
 

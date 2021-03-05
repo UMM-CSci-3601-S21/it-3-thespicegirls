@@ -79,8 +79,11 @@ public class WordlistControllerSpec {
       new Document()
         .append("name", "horses")
         .append("enabled", true)
-        .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))
-        ));
+        .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))))
+        .append("nouns", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+        .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+        .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
+        ;
     wordlistDocuments.insertOne(testList);
     wordlistController = new WordlistController(db);
   }
