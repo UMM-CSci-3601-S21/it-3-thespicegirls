@@ -1,7 +1,5 @@
 package umm3601.contextpack;
 
-
-
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
@@ -29,6 +29,7 @@ import com.mongodb.client.MongoDatabase;
 import org.apache.bcel.generic.CASTORE;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,6 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
 import umm3601.contextpack.ContextPackControllerSpec;
-
 
 public class ContextPackControllerSpec {
 
@@ -58,15 +58,11 @@ public class ContextPackControllerSpec {
   public static void setupAll() {
     String mongoAddr = System.getenv().getOrDefault("MONGO_ADDR", "localhost");
 
-    mongoClient = MongoClients.create(
-    MongoClientSettings.builder()
-    .applyToClusterSettings(builder ->
-    builder.hosts(Arrays.asList(new ServerAddress(mongoAddr))))
-    .build());
+    mongoClient = MongoClients.create(MongoClientSettings.builder()
+        .applyToClusterSettings(builder -> builder.hosts(Arrays.asList(new ServerAddress(mongoAddr)))).build());
 
     db = mongoClient.getDatabase("test");
   }
-
 
   @BeforeEach
   public void setupEach() throws IOException {
@@ -78,19 +74,16 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
-    Document testList =
-      new Document()
-        .append("name", "animals")
-        .append("enabled", true)
-        .append("wordlist", new Document()
-          .append("topic", "cats")
-          .append("enabled", true)
-          .append("verbs", Arrays.asList(new Document("word","horse").append("forms", Arrays.asList("horsie", "horse"))))
-          .append("nouns", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-          .append("adjectives", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-          .append("misc", Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie","horse"))))
-        )
-        ;
+    Document testList = new Document().append("name", "animals").append("enabled", true).append("wordlist",
+        new Document().append("topic", "cats").append("enabled", true)
+            .append("verbs",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("nouns",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("adjectives",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("misc",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse")))));
     contextPackDocuments.insertOne(testList);
     contextPackController = new ContextPackController(db);
   }
@@ -108,17 +101,17 @@ public class ContextPackControllerSpec {
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
     contextPackController.getContextPacks(ctx);
 
-
     assertEquals(200, mockRes.getStatus());
 
     String result = ctx.resultString();
-    assertTrue(JavalinJson.fromJson(result, ContextPack[].class).length>=1);
-    assertEquals(db.getCollection("contextpacks").countDocuments(), JavalinJson.fromJson(result, ContextPack[].class).length);
+    assertTrue(JavalinJson.fromJson(result, ContextPack[].class).length >= 1);
+    assertEquals(db.getCollection("contextpacks").countDocuments(),
+        JavalinJson.fromJson(result, ContextPack[].class).length);
 
   }
 
   @Test
-  public void ContextPacksHaveAllFields(){
+  public void ContextPacksHaveAllFields() {
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
     contextPackController.getContextPacks(ctx);
 
@@ -128,7 +121,7 @@ public class ContextPackControllerSpec {
     String result = ctx.resultString();
     ContextPack[] resultPacks = JavalinJson.fromJson(result, ContextPack[].class);
 
-    for(ContextPack pack: resultPacks) {
+    for (ContextPack pack : resultPacks) {
       assertEquals(true, pack.enabled);
       assertEquals(true, pack.wordlist.getEnabled());
       assertEquals("cats", pack.wordlist.topic);
@@ -136,7 +129,50 @@ public class ContextPackControllerSpec {
 
   }
 
-  @Test 
+  @Test
+  public void AddNewWordlist() throws IOException {
+    String test = "{"
+    + "\"topic\": \"k\","
+    + "\"enabled\": true,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    contextPackController.addNewWordlist(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+    assertNotEquals("", id);
+    System.out.println(id);
+
+    assertEquals(1, db.getCollection("wordlist").countDocuments(eq("_id", new ObjectId(id))));
+
+
+    Document addedList = db.getCollection("wordlist").find(eq("_id", new ObjectId(id))).first();
+    assertNotNull(addedList);
+    assertEquals("k", addedList.getString("topic"));
+  }
 
 }
 
