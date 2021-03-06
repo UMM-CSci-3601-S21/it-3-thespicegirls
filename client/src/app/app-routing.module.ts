@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { UserListComponent } from './users/user-list.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-import { WordlistComponent } from './wordlists/wordlist.component';
+import { WordlistComponent } from './contextpacks/wordlist.component';
 
 
 const routes: Routes = [

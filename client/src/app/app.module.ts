@@ -32,7 +32,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-import { WordlistComponent } from './wordlists/wordlist.component';
+import { WordlistComponent } from './contextpacks/wordlist.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
