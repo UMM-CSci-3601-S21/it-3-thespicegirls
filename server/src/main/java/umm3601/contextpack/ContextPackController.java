@@ -27,14 +27,16 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 
 public class ContextPackController {
+  public String statusRegex = "^(?i)(true|false)$";
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
+  private final JacksonMongoCollection<Wordlist> wordlistCollection;
 
 
   public ContextPackController(MongoDatabase database){
     contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
-
+    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlist", Wordlist.class);
   }
 
   public void getContextPacks(Context ctx){
@@ -43,6 +45,18 @@ public class ContextPackController {
 
     ctx.json(contextPackCollection.find(filters.isEmpty()? new Document() : and(filters))
     .into(new ArrayList<>()));
+  }
+
+
+  public void addNewWordlist(Context ctx){
+    Wordlist newList = ctx.bodyValidator(Wordlist.class)
+      .check(list -> list.topic != null && list.topic.length() > 0) //Verify that the user has a name that is not blank
+      .check(list -> list.enabled == true || list.enabled == false) // Verify that the provided email is a valid email
+      .get();
+
+      wordlistCollection.insertOne(newList);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", newList._id));
   }
 
 

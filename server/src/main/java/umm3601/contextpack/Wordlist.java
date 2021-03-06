@@ -3,10 +3,17 @@ package umm3601.contextpack;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.mongojack.ObjectId;
 @JsonIgnoreProperties(ignoreUnknown=true)
 
 public class Wordlist {
+  @ObjectId @Id
+  public String _id;
+
   public String topic;
   public boolean enabled;
   ArrayList<Pos> nouns;
