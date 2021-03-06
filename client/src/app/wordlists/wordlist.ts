@@ -1,7 +1,12 @@
 import { Word } from './word';
 
 export interface Wordlist {
-  enabled: boolean;
-  verbs: Word[];
+  _id: string;
 
+  topic: string;
+  enabled: boolean;
+  nouns: string[];
+  verbs: string[];
+  adjectives: string[];
+  misc: string[];
 }
