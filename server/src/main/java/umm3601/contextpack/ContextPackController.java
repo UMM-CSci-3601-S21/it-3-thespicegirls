@@ -32,7 +32,7 @@ public class ContextPackController {
 
   public ContextPackController(MongoDatabase database){
     contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
-    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlist", Wordlist.class);
+    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
   }
 
   public void getWordlist(Context ctx) {

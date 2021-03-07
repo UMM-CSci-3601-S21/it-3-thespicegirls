@@ -75,7 +75,7 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
-    Document testPack = new Document().append("name", "animals").append("enabled", true).append("wordlist",
+    Document testPack = new Document().append("name", "animals").append("enabled", true).append("wordlists",
         new Document().append("topic", "cats").append("enabled", true)
             .append("verbs",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
