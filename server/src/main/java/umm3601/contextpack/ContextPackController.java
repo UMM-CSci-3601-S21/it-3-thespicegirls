@@ -39,6 +39,38 @@ public class ContextPackController {
     wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlist", Wordlist.class);
   }
 
+  public void getWordlist(Context ctx) {
+    String id = ctx.pathParam("id");
+    Wordlist wordlist;
+
+    try {
+      wordlist = wordlistCollection.find(eq("_id", new ObjectId(id))).first();
+    } catch(IllegalArgumentException e) {
+      throw new BadRequestResponse("The requested wordlist id wasn't a legal Mongo Object ID.");
+    }
+    if (wordlist == null) {
+      throw new NotFoundResponse("The requested wordlist was not found");
+    } else {
+      ctx.json(wordlist);
+    }
+  }
+
+  public void getContextPack(Context ctx) {
+    String id = ctx.pathParam("id");
+    ContextPack contextpack;
+
+    try {
+      contextpack = contextPackCollection.find(eq("_id", new ObjectId(id))).first();
+    } catch(IllegalArgumentException e) {
+      throw new BadRequestResponse("The requested contextpack id wasn't a legal Mongo Object ID.");
+    }
+    if (contextpack == null) {
+      throw new NotFoundResponse("The requested contextpack was not found");
+    } else {
+      ctx.json(contextpack);
+    }
+  }
+
   public void getContextPacks(Context ctx){
 
     List<Bson> filters = new ArrayList<>();
@@ -47,10 +79,18 @@ public class ContextPackController {
     .into(new ArrayList<>()));
   }
 
+  public void getWordlists(Context ctx){
+
+    List<Bson> filters = new ArrayList<>();
+
+    ctx.json(wordlistCollection.find(filters.isEmpty()? new Document() : and(filters))
+    .into(new ArrayList<>()));
+  }
+
 
   public void addNewWordlist(Context ctx){
     Wordlist newList = ctx.bodyValidator(Wordlist.class)
-      .check(list -> list.topic != null && list.topic.length() > 0) //Verify that the user has a name that is not blank
+      .check(list -> list.topic != null && list.topic.length() > 0) //Verify that the wordlist has a name that is not blank
       .check(list -> list.enabled == true || list.enabled == false) // Verify that the provided email is a valid email
       .get();
 

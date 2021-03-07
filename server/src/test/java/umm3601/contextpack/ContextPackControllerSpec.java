@@ -123,7 +123,7 @@ public class ContextPackControllerSpec {
 
     for (ContextPack pack : resultPacks) {
       assertEquals(true, pack.enabled);
-      assertEquals(true, pack.wordlist.getEnabled());
+      assertEquals(true, pack.wordlist.enabled);
       assertEquals("cats", pack.wordlist.topic);
     }
 
