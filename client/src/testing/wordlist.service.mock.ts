@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Wordlist } from '../app/wordlists/wordlist';
+import { Wordlist, Word } from '../app/wordlists/wordlist';
 import { WordlistService } from '../app/wordlists/wordlist.service';
 
 /**
@@ -9,33 +9,54 @@ import { WordlistService } from '../app/wordlists/wordlist.service';
  */
 @Injectable()
 export class MockWordlistService extends WordlistService {
+  static noun: Word = {
+    word: 'you',
+    forms: ['yoyo', 'yos']
+  };
+  static adjective: Word = {
+    word: 'green',
+    forms: ['greens', 'greener']
+  };
+  static verb: Word = {
+    word: 'ran',
+    forms: ['running']
+  };
+  static misc: Word = {
+    word: 'langerhans',
+    forms: ['langerhan']
+  };
+  static testNouns: Word[] = [MockWordlistService.noun];
+  static testVerbs: Word[] = [MockWordlistService.verb];
+  static testAdjectives: Word[] = [MockWordlistService.adjective];
+  static testMisc: Word[] = [MockWordlistService.misc];
+
   static testWordlists: Wordlist[] = [
     {
       _id: 'chris_id',
       enabled: true,
       topic: 'fun',
-      nouns: ['yo'],
-      verbs: ['yo'],
-      adjectives: ['yo'],
-      misc: ['yo']
+      nouns: MockWordlistService.testNouns,
+      verbs: MockWordlistService.testVerbs,
+      adjectives: MockWordlistService.testAdjectives,
+      misc: MockWordlistService.testMisc
     },
     {
       _id: 'pat_id',
       enabled: false,
-      topic: 'fun',
-      nouns: ['yo'],
-      verbs: ['yo'],
-      adjectives: ['yo'],
-      misc: ['yo']
+      topic: 'happy',
+      nouns: MockWordlistService.testNouns,
+      verbs: MockWordlistService.testVerbs,
+      adjectives: MockWordlistService.testAdjectives,
+      misc: MockWordlistService.testMisc
     },
     {
       _id: 'jamie_id',
       enabled: true,
-      topic: 'fun',
-      nouns: ['yo'],
-      verbs: ['yo'],
-      adjectives: ['yo'],
-      misc: ['yo']
+      topic: 'sun',
+      nouns: MockWordlistService.testNouns,
+      verbs: MockWordlistService.testVerbs,
+      adjectives: MockWordlistService.testAdjectives,
+      misc: MockWordlistService.testMisc
     }
   ];
 
@@ -43,7 +64,7 @@ export class MockWordlistService extends WordlistService {
     super(null);
   }
 
-  getWordlists(filters: { topic?: string }): Observable<Wordlist[]> {
+  getWordlists(): Observable<Wordlist[]> {
     // Just return the test users regardless of what filters are passed in
     return of(MockWordlistService.testWordlists);
   }

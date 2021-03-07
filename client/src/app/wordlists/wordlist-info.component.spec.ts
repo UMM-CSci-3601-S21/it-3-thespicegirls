@@ -6,12 +6,12 @@ import { ActivatedRouteStub } from '../../testing/activated-route-stub';
 import { MockWordlistService } from '../../testing/wordlist.service.mock';
 import { Wordlist } from './wordlist';
 import { WordlistCardComponent } from './wordlist-card.component';
-import { WordlistProfileComponent } from './wordlist-profile.component';
+import { WordlistInfoComponent } from './wordlist-info.component';
 import { WordlistService } from './wordlist.service';
 
-describe('WordlistProfileComponent', () => {
-  let component: WordlistProfileComponent;
-  let fixture: ComponentFixture<WordlistProfileComponent>;
+describe('WordlistInfoComponent', () => {
+  let component: WordlistInfoComponent;
+  let fixture: ComponentFixture<WordlistInfoComponent>;
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
 
   beforeEach(waitForAsync(() => {
@@ -20,7 +20,7 @@ describe('WordlistProfileComponent', () => {
         RouterTestingModule,
         MatCardModule
       ],
-      declarations: [WordlistProfileComponent, WordlistCardComponent],
+      declarations: [WordlistInfoComponent, WordlistCardComponent],
       providers: [
         { provide: WordlistService, useValue: new MockWordlistService() },
         { provide: ActivatedRoute, useValue: activatedRoute }
@@ -30,7 +30,7 @@ describe('WordlistProfileComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WordlistProfileComponent);
+    fixture = TestBed.createComponent(WordlistInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -39,10 +39,10 @@ describe('WordlistProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to a specific wordlist profile', () => {
+  it('should navigate to a specific wordlist info page', () => {
     const expectedWordlist: Wordlist = MockWordlistService.testWordlists[0];
     // Setting this should cause anyone subscribing to the paramMap
-    // to update. Our `WordlistProfileComponent` subscribes to that, so
+    // to update. Our `WordlistInfoComponent` subscribes to that, so
     // it should update right away.
     activatedRoute.setParamMap({ id: expectedWordlist._id });
 
@@ -53,13 +53,13 @@ describe('WordlistProfileComponent', () => {
   it('should navigate to correct wordlist when the id parameter changes', () => {
     let expectedWordlist: Wordlist = MockWordlistService.testWordlists[0];
     // Setting this should cause anyone subscribing to the paramMap
-    // to update. Our `WordlistProfileComponent` subscribes to that, so
+    // to update. Our `WordlistInfoComponent` subscribes to that, so
     // it should update right away.
     activatedRoute.setParamMap({ id: expectedWordlist._id });
 
     expect(component.id).toEqual(expectedWordlist._id);
 
-    // Changing the paramMap should update the displayed wordlist profile.
+    // Changing the paramMap should update the displayed wordlist's info.
     expectedWordlist = MockWordlistService.testWordlists[1];
     activatedRoute.setParamMap({ id: expectedWordlist._id });
 

@@ -14,11 +14,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
-import { MockUserService } from '../../testing/user.service.mock';
-import { User } from './user';
-import { UserCardComponent } from './wordlist-card.component';
-import { UserListComponent } from './wordlist-list.component';
-import { UserService } from './wordlist.service';
+import { MockWordlistService } from '../../testing/wordlist.service.mock';
+import { Wordlist } from './wordlist';
+import { WordlistCardComponent } from './wordlist-card.component';
+import { WordlistListComponent } from './wordlist-list.component';
+import { WordlistService } from './wordlist.service';
 import { MatIconModule } from '@angular/material/icon';
 
 const COMMON_IMPORTS: any[] = [
@@ -39,89 +39,84 @@ const COMMON_IMPORTS: any[] = [
   RouterTestingModule,
 ];
 
-describe('User list', () => {
+describe('Wordlist list', () => {
 
-  let userList: UserListComponent;
-  let fixture: ComponentFixture<UserListComponent>;
+  let wordlistList: WordlistListComponent;
+  let fixture: ComponentFixture<WordlistListComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
-      declarations: [UserListComponent, UserCardComponent],
-      // providers:    [ UserService ]  // NO! Don't provide the real service!
+      declarations: [WordlistListComponent, WordlistCardComponent],
+      // providers:    [ WordlistService ]  // NO! Don't provide the real service!
       // Provide a test-double instead
-      providers: [{ provide: UserService, useValue: new MockUserService() }]
+      providers: [{ provide: WordlistService, useValue: new MockWordlistService() }]
     });
   });
 
   beforeEach(waitForAsync(() => {
     TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(UserListComponent);
-      userList = fixture.componentInstance;
+      fixture = TestBed.createComponent(WordlistListComponent);
+      wordlistList = fixture.componentInstance;
       fixture.detectChanges();
     });
   }));
 
-  it('contains all the users', () => {
-    expect(userList.serverFilteredUsers.length).toBe(3);
+  it('contains all the wordlists', () => {
+    expect(wordlistList.serverFilteredWordlists.length).toBe(3);
   });
 
-  it('contains a user named \'Chris\'', () => {
-    expect(userList.serverFilteredUsers.some((user: User) => user.name === 'Chris')).toBe(true);
+  it('contains a wordlist named \'fun\'', () => {
+    expect(wordlistList.serverFilteredWordlists.some((wordlist: Wordlist) => wordlist.topic === 'fun')).toBe(true);
   });
 
-  it('contain a user named \'Jamie\'', () => {
-    expect(userList.serverFilteredUsers.some((user: User) => user.name === 'Jamie')).toBe(true);
+  it('contain a wordlist named \'happy\'', () => {
+    expect(wordlistList.serverFilteredWordlists.some((wordlist: Wordlist) => wordlist.topic === 'happy')).toBe(true);
   });
-
-  it('doesn\'t contain a user named \'Santa\'', () => {
-    expect(userList.serverFilteredUsers.some((user: User) => user.name === 'Santa')).toBe(false);
-  });
-
-  it('has two users that are 37 years old', () => {
-    expect(userList.serverFilteredUsers.filter((user: User) => user.age === 37).length).toBe(2);
+  it('contain a wordlist named \'sun\'', () => {
+    expect(wordlistList.serverFilteredWordlists.some((wordlist: Wordlist) => wordlist.topic === 'sun')).toBe(true);
   });
 });
 
-describe('Misbehaving User List', () => {
-  let userList: UserListComponent;
-  let fixture: ComponentFixture<UserListComponent>;
+describe('Misbehaving Wordlist List', () => {
+  let wordlistList: WordlistListComponent;
+  let fixture: ComponentFixture<WordlistListComponent>;
 
-  let userServiceStub: {
-    getUsers: () => Observable<User[]>;
-    getUsersFiltered: () => Observable<User[]>;
+  let wordlistServiceStub: {
+    getWordlists: () => Observable<Wordlist[]>;
+    getWordlistsFiltered: () => Observable<Wordlist[]>;
   };
 
   beforeEach(() => {
-    // stub UserService for test purposes
-    userServiceStub = {
-      getUsers: () => new Observable(observer => {
+    // stub WordlistService for test purposes
+    wordlistServiceStub = {
+      getWordlists: () => new Observable(observer => {
         observer.error('Error-prone observable');
       }),
-      getUsersFiltered: () => new Observable(observer => {
+      getWordlistsFiltered: () => new Observable(observer => {
         observer.error('Error-prone observable');
       })
     };
 
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
-      declarations: [UserListComponent],
-      // providers:    [ UserService ]  // NO! Don't provide the real service!
+      declarations: [WordlistListComponent],
+      // providers:    [ WordlistService ]  // NO! Don't provide the real service!
       // Provide a test-double instead
-      providers: [{ provide: UserService, useValue: userServiceStub }]
+      providers: [{ provide: WordlistService, useValue: wordlistServiceStub }]
     });
   });
 
   beforeEach(waitForAsync(() => {
     TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(UserListComponent);
-      userList = fixture.componentInstance;
+      fixture = TestBed.createComponent(WordlistListComponent);
+      wordlistList = fixture.componentInstance;
       fixture.detectChanges();
     });
   }));
 
-  it('generates an error if we don\'t set up a UserListService', () => {
-    // Since the observer throws an error, we don't expect users to be defined.
-    expect(userList.serverFilteredUsers).toBeUndefined();
+  it('generates an error if we don\'t set up a WordlistListService', () => {
+    // Since the observer throws an error, we don't expect wordlists to be defined.
+    expect(wordlistList.serverFilteredWordlists).toBeUndefined();
   });
 });
