@@ -8,19 +8,19 @@ describe('Wordlist service: ', () => {
   // A small collection of test wordlists
   const noun: Word = {
     word: 'you',
-    forms: ['yoyo', 'yos', 'yoted']
+    forms: ['you', 'yos', 'yoted']
   };
   const adjective: Word = {
     word: 'green',
-    forms: ['greens', 'greener']
+    forms: ['green', 'greener']
   };
   const verb: Word = {
     word: 'ran',
-    forms: ['running']
+    forms: ['ran', 'running']
   };
   const misc: Word = {
     word: 'langerhans',
-    forms: ['langerhan']
+    forms: ['langerhans']
   };
   const testNouns: Word[] = [noun];
   const testVerbs: Word[] = [verb];

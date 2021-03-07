@@ -11,19 +11,19 @@ import { WordlistService } from '../app/wordlists/wordlist.service';
 export class MockWordlistService extends WordlistService {
   static noun: Word = {
     word: 'you',
-    forms: ['yoyo', 'yos']
+    forms: ['you', 'yos']
   };
   static adjective: Word = {
     word: 'green',
-    forms: ['greens', 'greener']
+    forms: ['green', 'greener']
   };
   static verb: Word = {
     word: 'ran',
-    forms: ['running']
+    forms: ['ran', 'running']
   };
   static misc: Word = {
     word: 'langerhans',
-    forms: ['langerhan']
+    forms: ['langerhans']
   };
   static testNouns: Word[] = [MockWordlistService.noun];
   static testVerbs: Word[] = [MockWordlistService.verb];
