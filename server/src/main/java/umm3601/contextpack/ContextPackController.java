@@ -22,35 +22,6 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import static com.mongodb.client.model.Filters.eq;
 
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableMap;
-
-import com.mongodb.MongoClientSettings;
-import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-
-import io.javalin.http.BadRequestResponse;
-import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
-import io.javalin.http.util.ContextUtil;
-import io.javalin.plugin.json.JavalinJson;
-
-
-
 public class ContextPackController {
   String statusRegex = "^(?i)(true|false)$";
 
@@ -61,7 +32,7 @@ public class ContextPackController {
 
   public ContextPackController(MongoDatabase database){
     contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
-    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
+    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlist", Wordlist.class);
   }
 
   public void getWordlist(Context ctx) {
