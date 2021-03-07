@@ -8,28 +8,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.util.Arrays;
+
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableMap;
+
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
-import org.apache.bcel.generic.CASTORE;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.eclipse.jetty.util.ajax.JSON;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
+
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
 import umm3601.contextpack.ContextPackControllerSpec;
@@ -125,6 +124,8 @@ public class ContextPackControllerSpec {
       assertEquals(true, pack.enabled);
       assertEquals(true, pack.wordlist.getEnabled());
       assertEquals("cats", pack.wordlist.topic);
+      assertEquals("horse", pack.wordlist.nouns.get(0).getWord());
+      assertEquals(Arrays.asList("horsie", "horse"), pack.wordlist.nouns.get(0).getForms());
     }
 
   }
@@ -136,7 +137,7 @@ public class ContextPackControllerSpec {
     + "\"enabled\": true,"
     + "\"nouns\": ["
     + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
     + "],"
     + "\"adjectives\": ["
     + "{\"word\": \"he\", \"forms\": [\"he\"]},"
@@ -172,6 +173,78 @@ public class ContextPackControllerSpec {
     Document addedList = db.getCollection("wordlist").find(eq("_id", new ObjectId(id))).first();
     assertNotNull(addedList);
     assertEquals("k", addedList.getString("topic"));
+
+    addedList = db.getCollection("wordlist").find(eq("nouns.word", "he")).first();
+    assertNotNull(addedList);
+
+  }
+
+  @Test
+  public void AddInvalidWordlistNullTopic(){
+    String test = "{"
+    + "\"topic\": \"\","
+    + "\"enabled\": true,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewWordlist(ctx);
+    });
+
+  }
+
+  @Test
+  public void AddInvalidWordlistIllegalStatus(){
+    String test = "{"
+    + "\"topic\": \"cats\","
+    + "\"enabled\": hockey,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewWordlist(ctx);
+    });
+
   }
 
 }
