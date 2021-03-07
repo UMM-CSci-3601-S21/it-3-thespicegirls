@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import com.google.common.collect.ImmutableMap;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mongodb.MongoClientSettings;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-
+import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
 import umm3601.contextpack.ContextPackControllerSpec;
@@ -214,7 +214,7 @@ public class ContextPackControllerSpec {
     assertNotNull(addedList);
     assertEquals("k", addedList.getString("topic"));
 
-    addedList = db.getCollection("wordlist").find(eq("nouns.word", "he")).first();
+    addedList = db.getCollection("wordlists").find(eq("nouns.word", "he")).first();
     assertNotNull(addedList);
 
   }
