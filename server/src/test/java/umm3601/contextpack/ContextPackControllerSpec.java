@@ -49,6 +49,8 @@ public class ContextPackControllerSpec {
 
   private ContextPackController contextPackController;
 
+  private ObjectId testID;
+
   static MongoClient mongoClient;
   static MongoDatabase db;
 
@@ -85,6 +87,22 @@ public class ContextPackControllerSpec {
             .append("misc",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse")))));
     contextPackDocuments.insertOne(testPack);
+    testID = new ObjectId();
+    Document testPackID = new Document()
+    .append("_id", testID)
+    .append("name", "animals")
+    .append("enabled", true)
+    .append("wordlist",
+        new Document().append("topic", "dogs").append("enabled", true)
+            .append("verbs",
+                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("nouns",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("adjectives",
+                Arrays.asList(new Document("word", "blue").append("forms", Arrays.asList("horsie", "horse"))))
+            .append("misc",
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("horsie", "horse")))));
+    contextPackDocuments.insertOne(testPackID);
 
     MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
     Document testList = new Document().append("topic", "cats")
@@ -139,24 +157,6 @@ public class ContextPackControllerSpec {
 
   }
 
-  @Test
-  public void ContextPacksHaveAllFields() {
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
-    contextPackController.getContextPacks(ctx);
-
-    contextPackController.getContextPacks(ctx);
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    ContextPack[] resultPacks = JavalinJson.fromJson(result, ContextPack[].class);
-
-    for (ContextPack pack : resultPacks) {
-      assertEquals(true, pack.enabled);
-      assertEquals(true, pack.wordlist.enabled);
-      assertEquals("cats", pack.wordlist.topic);
-    }
-
-  }
 
   @Test
   public void AddNewWordlist() throws IOException {
@@ -269,6 +269,15 @@ public class ContextPackControllerSpec {
       contextPackController.addNewWordlist(ctx);
     });
 
+  }
+
+  @Test
+  public void GetContextPack(){
+    String testContextPackID = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", testContextPackID));
+    contextPackController.getContextPack(ctx);
+    assertEquals(200, mockRes.getStatus());
   }
 
 }
