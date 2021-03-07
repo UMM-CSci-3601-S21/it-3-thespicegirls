@@ -115,8 +115,21 @@ public class ContextPackControllerSpec {
                 Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
           .append("misc",
                 Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
-
     wordlistDocuments.insertOne(testList);
+
+    Document testListID = new Document()
+          .append("_id", testID)
+          .append("topic", "MountainDew")
+          .append("enabled", true)
+          .append("nouns",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+          .append("adjectives",
+                Arrays.asList(new Document("word", "Bob").append("forms", Arrays.asList("Bob"))))
+          .append("verbs",
+                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
+          .append("misc",
+                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
+    wordlistDocuments.insertOne(testListID);
     contextPackController = new ContextPackController(db);
   }
 
@@ -288,12 +301,54 @@ public class ContextPackControllerSpec {
 
   @Test
   public void getContextPackInvalidID(){
-    String testContextPackID = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", "chickens"));
+     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", "chickens"));
 
     assertThrows(BadRequestResponse.class, ()->{
       contextPackController.getContextPack(ctx);
+    });
+
+  }
+
+  @Test
+  public void getContextPackNOID(){
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", "58af3a600343927e48e87335"));
+
+    assertThrows(NotFoundResponse.class, ()->{
+      contextPackController.getContextPack(ctx);
+    });
+
+  }
+  @Test
+  public void GetWordlist(){
+    String testlistID = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", testlistID));
+    contextPackController.getWordlist(ctx);
+    assertEquals(200, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    Wordlist resultPack = JavalinJson.fromJson(result, Wordlist.class);
+
+    assertEquals(resultPack._id, testlistID);
+    assertEquals(resultPack.topic, "MountainDew");
+  }
+
+  @Test
+  public void getWordlistInvalidID(){
+     Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "chickens"));
+
+    assertThrows(BadRequestResponse.class, ()->{
+      contextPackController.getWordlist(ctx);
+    });
+
+  }
+
+  @Test
+  public void getWordlistNOID(){
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "58af3a600343927e48e87335"));
+
+    assertThrows(NotFoundResponse.class, ()->{
+      contextPackController.getWordlist(ctx);
     });
 
   }
