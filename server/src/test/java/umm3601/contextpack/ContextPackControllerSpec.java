@@ -90,7 +90,7 @@ public class ContextPackControllerSpec {
     testID = new ObjectId();
     Document testPackID = new Document()
     .append("_id", testID)
-    .append("name", "animals")
+    .append("name", "baskets")
     .append("enabled", true)
     .append("wordlist",
         new Document().append("topic", "dogs").append("enabled", true)
@@ -278,6 +278,24 @@ public class ContextPackControllerSpec {
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", testContextPackID));
     contextPackController.getContextPack(ctx);
     assertEquals(200, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testContextPackID);
+    assertEquals(resultPack.name, "baskets");
+  }
+
+  @Test
+  public void getContextPackInvalidID(){
+    String testContextPackID = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", "chickens"));
+
+    assertThrows(BadRequestResponse.class, ()->{
+      contextPackController.getContextPack(ctx);
+    });
+
   }
 
 }
