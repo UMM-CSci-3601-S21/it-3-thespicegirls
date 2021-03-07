@@ -1,15 +1,16 @@
-<mat-card class="user-card" *ngIf="this.user">
+<mat-card class="wordlist-card" *ngIf="this.wordlist">
   <mat-card-header>
-    <img mat-card-avatar [src]="this.user.avatar" class="user-avatar" *ngIf="this.user.avatar">
-    <mat-card-title class="user-card-name">{{ this.user.name }}</mat-card-title>
-    <mat-card-subtitle class="user-card-company">{{ this.user.company }}</mat-card-subtitle>
+    <mat-card-title class="wordlist-card-topic">{{ this.wordlist.topic }}</mat-card-title>
+    <mat-card-subtitle class="wordlist-card-enabled">{{ this.wordlist.enabled }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
-    <p>Role: <span class="user-card-role">{{ this.user.role }}</span></p>
-    <p>Age: <span class="user-card-age">{{ this.user.age }}</span></p>
-    <p>Email: <a href="mailto:{{this.user.email}}" class="user-card-email">{{this.user.email}}</a></p>
+    <p>Nouns: <span class="wordlist-card-nouns"><div style="width: 500px;white-space: pre-line">{{displayNouns(this.wordlist)}}</div>
+      </span></p>
+    <p>Verbs: <span class="wordlist-card-verbs"><div style="width: 500px;white-space: pre-line">{{displayVerbs(this.wordlist)}}</div></span></p>
+    <p>Adjectives: <span class="wordlist-card-adjectives"><div style="width: 500px;white-space: pre-line">{{displayAdjectives(this.wordlist)}}</div></span></p>
+    <p>Misc: <span class="wordlist-card-misc"><div style="width: 500px;white-space: pre-line">{{displayMisc(this.wordlist)}}</div></span></p>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button data-test="viewProfileButton" *ngIf="this.simple" [routerLink]="['/users', this.user._id]">View Profile</button>
+    <button mat-button data-test="viewInfoButton" *ngIf="this.simple" [routerLink]="['/wordlists', this.wordlist._id]">View Info</button>
   </mat-card-actions>
 </mat-card>

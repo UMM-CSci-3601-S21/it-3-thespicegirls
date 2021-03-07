@@ -16,10 +16,10 @@ export class WordlistListComponent implements OnInit, OnDestroy  {
   public filteredWordlists: Wordlist[];
 
   public wordlistTopic: string;
-  public wordlistNoun: number;
-  public wordlistAdjective: string;
-  public wordlistMisc: string;
+
   getWordlistsSub: Subscription;
+
+  public viewType: 'list' | 'card' = 'card';
 
 
   // Inject the WordlistService into this component.
@@ -34,9 +34,7 @@ export class WordlistListComponent implements OnInit, OnDestroy  {
 
   getWordlistsFromServer(): void {
     this.unsub();
-    this.getWordlistsSub = this.wordlistService.getWordlists({
-      topic: this.wordlistTopic
-    }).subscribe(returnedWordlists => {
+    this.getWordlistsSub = this.wordlistService.getWordlists().subscribe(returnedWordlists => {
       this.serverFilteredWordlists = returnedWordlists;
       this.updateFilter();
     }, err => {

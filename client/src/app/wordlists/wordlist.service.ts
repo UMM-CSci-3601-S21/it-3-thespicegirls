@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Word } from './word';
 import { Wordlist } from './wordlist';
 import { map } from 'rxjs/operators';
 
@@ -13,13 +12,8 @@ export class WordlistService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getWordlists(filters?: {  topic?: string }): Observable<Wordlist[]> {
-    let httpParams: HttpParams = new HttpParams();
-    if (filters) {
-      if (filters.topic) {
-        httpParams = httpParams.set('topic', filters.topic);
-      }
-    }
+  getWordlists(): Observable<Wordlist[]> {
+    const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<Wordlist[]>(this.wordlistUrl, {
       params: httpParams,
     });
@@ -41,10 +35,5 @@ export class WordlistService {
     }
 
     return filteredWordlists;
-  }
-
-  addWordlist(newWordlist: Wordlist): Observable<string> {
-    // Send post request to add a new wordlist with the wordlist data as the body.
-    return this.httpClient.post<{id: string}>(this.wordlistUrl, newWordlist).pipe(map(res => res.id));
   }
 }
