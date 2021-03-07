@@ -32,7 +32,10 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-import { WordlistComponent } from './contextpacks/wordlist.component';
+import { WordlistListComponent } from './wordlists/wordlist-list.component';
+import { WordlistService } from './wordlists/wordlist.service';
+import { WordlistCardComponent } from './wordlists/wordlist-card.component';
+import { WordlistInfoComponent } from './wordlists/wordlist-info.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -61,7 +64,9 @@ const MATERIAL_MODULES: any[] = [
     UserCardComponent,
     UserProfileComponent,
     AddUserComponent,
-    WordlistComponent,
+    WordlistListComponent,
+    WordlistCardComponent,
+    WordlistInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +80,8 @@ const MATERIAL_MODULES: any[] = [
     LayoutModule,
   ],
   providers: [
-    UserService
+    UserService,
+    WordlistService
   ],
   bootstrap: [AppComponent]
 })
