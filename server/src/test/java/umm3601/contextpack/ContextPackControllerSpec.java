@@ -74,7 +74,7 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
-    Document testList = new Document().append("name", "animals").append("enabled", true).append("wordlist",
+    Document testPack = new Document().append("name", "animals").append("enabled", true).append("wordlist",
         new Document().append("topic", "cats").append("enabled", true)
             .append("verbs",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
@@ -84,7 +84,21 @@ public class ContextPackControllerSpec {
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
             .append("misc",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse")))));
-    contextPackDocuments.insertOne(testList);
+    contextPackDocuments.insertOne(testPack);
+
+    MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
+    Document testList = new Document().append("topic", "cats")
+          .append("enabled", true)
+          .append("nouns",
+                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
+          .append("adjectives",
+                Arrays.asList(new Document("word", "Bob").append("forms", Arrays.asList("Bob"))))
+          .append("verbs",
+                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
+          .append("misc",
+                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
+
+    wordlistDocuments.insertOne(testList);
     contextPackController = new ContextPackController(db);
   }
 
@@ -107,6 +121,21 @@ public class ContextPackControllerSpec {
     assertTrue(JavalinJson.fromJson(result, ContextPack[].class).length >= 1);
     assertEquals(db.getCollection("contextpacks").countDocuments(),
         JavalinJson.fromJson(result, ContextPack[].class).length);
+
+  }
+  @ Test
+  public void GetAllWordlists(){
+
+    // Create our fake Javalin context
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+    contextPackController.getWordlists(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    assertTrue(JavalinJson.fromJson(result, Wordlist[].class).length >= 1);
+    assertEquals(db.getCollection("wordlists").countDocuments(),
+        JavalinJson.fromJson(result, Wordlist[].class).length);
 
   }
 
@@ -166,12 +195,80 @@ public class ContextPackControllerSpec {
     assertNotEquals("", id);
     System.out.println(id);
 
-    assertEquals(1, db.getCollection("wordlist").countDocuments(eq("_id", new ObjectId(id))));
+    assertEquals(1, db.getCollection("wordlists").countDocuments(eq("_id", new ObjectId(id))));
 
 
-    Document addedList = db.getCollection("wordlist").find(eq("_id", new ObjectId(id))).first();
+    Document addedList = db.getCollection("wordlists").find(eq("_id", new ObjectId(id))).first();
     assertNotNull(addedList);
     assertEquals("k", addedList.getString("topic"));
+  }
+
+  @Test
+  public void AddInvalidWordlistNullTopic(){
+    String test = "{"
+    + "\"topic\": \"\","
+    + "\"enabled\": true,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewWordlist(ctx);
+    });
+
+  }
+
+  @Test
+  public void AddInvalidWordlistIllegalStatus(){
+    String test = "{"
+    + "\"topic\": \"cats\","
+    + "\"enabled\": hockey,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewWordlist(ctx);
+    });
+
   }
 
 }

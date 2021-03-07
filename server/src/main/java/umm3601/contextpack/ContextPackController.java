@@ -36,7 +36,7 @@ public class ContextPackController {
 
   public ContextPackController(MongoDatabase database){
     contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
-    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlist", Wordlist.class);
+    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
   }
 
   public void getWordlist(Context ctx) {
@@ -90,8 +90,8 @@ public class ContextPackController {
 
   public void addNewWordlist(Context ctx){
     Wordlist newList = ctx.bodyValidator(Wordlist.class)
-      .check(list -> list.topic != null && list.topic.length() > 0) //Verify that the wordlist has a name that is not blank
-      .check(list -> list.enabled == true || list.enabled == false) // Verify that the provided email is a valid email
+      .check(list -> list.topic != null && list.topic.length() > 0)
+      .check(list -> list.enabled == true || list.enabled == false)
       .get();
 
       wordlistCollection.insertOne(newList);
