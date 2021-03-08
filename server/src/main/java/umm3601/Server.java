@@ -61,13 +61,10 @@ public class Server {
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
 
-    server.get("/api/wordlists", contextPackController::getWordlists);
-
     server.get("/api/contextpacks", contextPackController::getContextPacks);
 
     // Get the specified user
     server.get("/api/users/:id", userController::getUser);
-    server.get("/api/wordlists/:id", contextPackController::getWordlist);
     server.get("/api/contextpacks/:id", contextPackController::getContextPack);
 
 
@@ -78,7 +75,7 @@ public class Server {
     // of the HTTP request
     server.post("/api/users", userController::addNewUser);
     server.post("/api/contextpacks", contextPackController::addNewContextPack);
-    server.post("/api/wordlists", contextPackController::addNewWordlist);
+
 
     server.exception(Exception.class, (e, ctx) -> {
       ctx.status(500);

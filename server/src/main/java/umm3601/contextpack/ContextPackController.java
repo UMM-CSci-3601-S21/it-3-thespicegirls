@@ -35,21 +35,6 @@ public class ContextPackController {
     wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
   }
 
-  public void getWordlist(Context ctx) {
-    String id = ctx.pathParam("id");
-    Wordlist wordlist;
-
-    try {
-      wordlist = wordlistCollection.find(eq("_id", new ObjectId(id))).first();
-    } catch(IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested wordlist id wasn't a legal Mongo Object ID.");
-    }
-    if (wordlist == null) {
-      throw new NotFoundResponse("The requested wordlist was not found");
-    } else {
-      ctx.json(wordlist);
-    }
-  }
 
   public void getContextPack(Context ctx) {
     String id = ctx.pathParam("id");
@@ -75,25 +60,7 @@ public class ContextPackController {
     .into(new ArrayList<>()));
   }
 
-  public void getWordlists(Context ctx){
 
-    List<Bson> filters = new ArrayList<>();
-
-    ctx.json(wordlistCollection.find(filters.isEmpty()? new Document() : and(filters))
-    .into(new ArrayList<>()));
-  }
-
-
-  public void addNewWordlist(Context ctx){
-    Wordlist newList = ctx.bodyValidator(Wordlist.class)
-      .check(list -> list.name.matches("^[a-zA-Z]+$") && list.name != null)
-      .check(list -> String.valueOf(list.enabled).matches(statusRegex))
-      .get();
-
-      wordlistCollection.insertOne(newList);
-      ctx.status(201);
-      ctx.json(ImmutableMap.of("id", newList._id));
-  }
 
   public void addNewContextPack(Context ctx){
     ContextPack newPack = ctx.bodyValidator(ContextPack.class)

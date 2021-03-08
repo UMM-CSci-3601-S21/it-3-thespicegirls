@@ -148,106 +148,7 @@ public class ContextPackControllerSpec {
         JavalinJson.fromJson(result, ContextPack[].class).length);
 
   }
-  @ Test
-  public void GetAllWordlists(){
 
-    // Create our fake Javalin context
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-    contextPackController.getWordlists(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    assertTrue(JavalinJson.fromJson(result, Wordlist[].class).length >= 1);
-    assertEquals(db.getCollection("wordlists").countDocuments(),
-        JavalinJson.fromJson(result, Wordlist[].class).length);
-
-  }
-
-
-  @Test
-  public void AddNewWordlist() throws IOException {
-    String test = "{"
-    + "\"name\": \"k\","
-    + "\"enabled\": true,"
-    + "\"nouns\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"adjectives\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"verbs\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"misc\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "]"
-    + "}"
-    ;
-
-    mockReq.setBodyContent(test);
-    mockReq.setMethod("POST");
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-
-    contextPackController.addNewWordlist(ctx);
-    assertEquals(201, mockRes.getStatus());
-
-    String result = ctx.resultString();
-
-    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    assertNotEquals("", id);
-    System.out.println(id);
-
-    assertEquals(1, db.getCollection("wordlists").countDocuments(eq("_id", new ObjectId(id))));
-
-
-    Document addedList = db.getCollection("wordlists").find(eq("_id", new ObjectId(id))).first();
-    assertNotNull(addedList);
-    assertEquals("k", addedList.getString("name"));
-
-    addedList = db.getCollection("wordlists").find(eq("nouns.word", "he")).first();
-    assertNotNull(addedList);
-
-  }
-
-  @Test
-  public void AddInvalidWordlistNullTopic(){
-    String test = "{"
-    + "\"topic\": \"\","
-    + "\"enabled\": true,"
-    + "\"nouns\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"adjectives\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"verbs\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"misc\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "]"
-    + "}"
-    ;
-
-    mockReq.setBodyContent(test);
-    mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-
-    assertThrows(BadRequestResponse.class, () -> {
-      contextPackController.addNewWordlist(ctx);
-    });
-
-  }
 
   @Test
   public void AddInvalidContextPackNullTopic(){
@@ -283,39 +184,6 @@ public class ContextPackControllerSpec {
 
   }
 
-  @Test
-  public void AddInvalidWordlistIllegalStatus(){
-    String test = "{"
-    + "\"topic\": \"cats\","
-    + "\"enabled\": hockey,"
-    + "\"nouns\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"adjectives\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"verbs\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"misc\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "]"
-    + "}"
-    ;
-
-    mockReq.setBodyContent(test);
-    mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-
-    assertThrows(BadRequestResponse.class, () -> {
-      contextPackController.addNewWordlist(ctx);
-    });
-
-  }
 
   @Test
   public void AddInvalidContextPackIllegalStatus(){
@@ -439,40 +307,7 @@ public class ContextPackControllerSpec {
     });
 
   }
-  @Test
-  public void GetWordlist(){
-    String testlistID = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", testlistID));
-    contextPackController.getWordlist(ctx);
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    Wordlist resultPack = JavalinJson.fromJson(result, Wordlist.class);
-
-    assertEquals(resultPack._id, testlistID);
-    assertEquals(resultPack.name, "MountainDew");
-  }
-
-  @Test
-  public void getWordlistInvalidID(){
-     Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "chickens"));
-
-    assertThrows(BadRequestResponse.class, ()->{
-      contextPackController.getWordlist(ctx);
-    });
-
-  }
-
-  @Test
-  public void getWordlistNOID(){
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "58af3a600343927e48e87335"));
-
-    assertThrows(NotFoundResponse.class, ()->{
-      contextPackController.getWordlist(ctx);
-    });
-
-  }
 
 }
 
