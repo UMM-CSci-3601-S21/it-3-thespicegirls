@@ -12,3 +12,4 @@ export interface Wordlist {
   adjectives?: Word[];
   misc?: Word[];
 }
+

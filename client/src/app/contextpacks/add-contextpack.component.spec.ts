@@ -8,8 +8,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockWordlistService } from 'src/testing/wordlist.service.mock';
-import { AddWordlistComponent } from './add-wordlist.component';
-import { WordlistService } from './wordlist.service';
+import { AddWordlistComponent } from './add-contextpack.component';
+import { WordlistService } from './contextpack.service';
 
 describe('AddWordlistComponent', () => {
   let addWordlistComponent: AddWordlistComponent;

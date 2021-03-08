@@ -3,8 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray, FormGroupName } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Wordlist, Word } from './wordlist';
-import { WordlistService } from './wordlist.service';
+import { Wordlist, Word } from './contextpack';
+import { WordlistService } from './contextpack.service';
 
 @Component({
   selector: 'app-add-wordlist',

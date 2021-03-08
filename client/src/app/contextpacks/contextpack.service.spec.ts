@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Wordlist, Word } from './wordlist';
-import { WordlistService } from './wordlist.service';
+import { Wordlist, Word } from './contextpack';
+import { WordlistService } from './contextpack.service';
 
 describe('Wordlist service: ', () => {
   // A small collection of test wordlists

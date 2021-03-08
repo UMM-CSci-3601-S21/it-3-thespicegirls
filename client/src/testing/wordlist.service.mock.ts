@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Wordlist, Word } from '../app/wordlists/wordlist';
-import { WordlistService } from '../app/wordlists/wordlist.service';
+import { Wordlist, Word } from '../app/contextpacks/contextpack';
+import { WordlistService } from '../app/contextpacks/contextpack.service';
 
 /**
  * A "mock" version of the `WordlistService` that can be used to test components

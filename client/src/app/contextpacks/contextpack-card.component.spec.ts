@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { WordlistCardComponent } from './wordlist-card.component';
+import { WordlistCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
-import { Word } from './wordlist';
+import { Word } from './contextpack';
 
 describe('WordlistCardComponent', () => {
   let component: WordlistCardComponent;
