@@ -84,18 +84,24 @@ describe('Wordlist list', () => {
     });
   });
 
-  it('Should click view profile on a wordlist and go to the right URL', () => {
+  it('Should find a download button on wordlist info page', () => {
+    page.clickViewInfo(page.getWordlistCards().first());
+
+    cy.get('.wordlist-download-button').should('have.text', 'Download Json');
+  });
+
+  it('Should click view info on a wordlist and go to the right URL', () => {
     page.getWordlistCards().first().then((card) => {
       const firstWordlistTopic = card.find('.wordlist-card-topic').text();
       const firstWordlistEnabled = card.find('.wordlist-card-enabled').text();
 
-      // When the view profile button on the first wordlist card is clicked, the URL should have a valid mongo ID
+      // When the view info button on the first wordlist card is clicked, the URL should have a valid mongo ID
       page.clickViewInfo(page.getWordlistCards().first());
 
       // The URL should be '/wordlists/' followed by a mongo ID
       cy.url().should('match', /\/wordlists\/[0-9a-fA-F]{24}$/);
 
-      // On this profile page we were sent to, the topic and topic should be correct
+      // On this info page we were sent to, the topic and topic should be correct
       cy.get('.wordlist-card-topic').first().should('have.text', firstWordlistTopic);
       cy.get('.wordlist-card-enabled').first().should('have.text', firstWordlistEnabled);
       cy.get('.wordlist-card-nouns').first().should('contain.text', 'cake');

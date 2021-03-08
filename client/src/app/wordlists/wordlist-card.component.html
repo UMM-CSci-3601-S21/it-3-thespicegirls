@@ -10,7 +10,7 @@
     <p>Adjectives: <span class="wordlist-card-adjectives"><div style="width: 500px;white-space: pre-line">{{displayAdjectives(this.wordlist)}}</div></span></p>
     <p>Misc: <span class="wordlist-card-misc"><div style="width: 500px;white-space: pre-line">{{displayMisc(this.wordlist)}}</div></span></p>
 
-    <button (click)='downloadJson(wordlist, wordlist.topic)'>Download Json</button>
+    <button class="wordlist-download-button" (click)='downloadJson(wordlist, wordlist.topic)'>Download Json</button>
 
   </mat-card-content>
   <mat-card-actions>
