@@ -77,6 +77,8 @@ public class Server {
     // Add new user with the user info being in the JSON body
     // of the HTTP request
     server.post("/api/users", userController::addNewUser);
+    server.post("/api/contextpacks", contextPackController::addNewContextPack);
+    server.post("/api/wordlists", contextPackController::addNewWordlist);
 
     server.exception(Exception.class, (e, ctx) -> {
       ctx.status(500);
