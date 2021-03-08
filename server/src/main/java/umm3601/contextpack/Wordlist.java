@@ -9,7 +9,7 @@ public class Wordlist {
   @ObjectId @Id
   public String _id;
 
-  public String topic;
+  public String name;
   public boolean enabled;
   public ArrayList<Word> nouns;
   public ArrayList<Word> adjectives;

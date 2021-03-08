@@ -75,24 +75,15 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
-    Document testPack = new Document().append("name", "animals").append("enabled", true).append("wordlists",
-        new Document().append("topic", "cats").append("enabled", true)
-            .append("verbs",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("nouns",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("adjectives",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("misc",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse")))));
-    contextPackDocuments.insertOne(testPack);
     testID = new ObjectId();
     Document testPackID = new Document()
     .append("_id", testID)
     .append("name", "baskets")
+    .append("icon", "dog.png")
     .append("enabled", true)
-    .append("wordlist",
-        new Document().append("topic", "dogs").append("enabled", true)
+    .append("wordlists", Arrays.asList(
+      new Document("name", "dogs")
+            .append("enabled", true)
             .append("verbs",
                 Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("horsie", "horse"))))
             .append("nouns",
@@ -100,25 +91,29 @@ public class ContextPackControllerSpec {
             .append("adjectives",
                 Arrays.asList(new Document("word", "blue").append("forms", Arrays.asList("horsie", "horse"))))
             .append("misc",
-                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("horsie", "horse")))));
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("horsie", "horse")))),
+
+      new Document("name", "cats")
+            .append("enabled", true)
+            .append("verbs",
+                Arrays.asList(new Document("word", "walk").append("forms", Arrays.asList("pink", "pork"))))
+            .append("nouns",
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))))
+            .append("adjectives",
+                Arrays.asList(new Document("word", "red").append("forms", Arrays.asList("seven", "horse"))))
+            .append("misc",
+                Arrays.asList(new Document("word", "moo").append("forms", Arrays.asList("horse"))))
+
+                )
+
+    );
     contextPackDocuments.insertOne(testPackID);
 
     MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
-    Document testList = new Document().append("topic", "cats")
-          .append("enabled", true)
-          .append("nouns",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-          .append("adjectives",
-                Arrays.asList(new Document("word", "Bob").append("forms", Arrays.asList("Bob"))))
-          .append("verbs",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
-          .append("misc",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
-    wordlistDocuments.insertOne(testList);
 
     Document testListID = new Document()
           .append("_id", testID)
-          .append("topic", "MountainDew")
+          .append("name", "MountainDew")
           .append("enabled", true)
           .append("nouns",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
@@ -173,7 +168,7 @@ public class ContextPackControllerSpec {
   @Test
   public void AddNewWordlist() throws IOException {
     String test = "{"
-    + "\"topic\": \"k\","
+    + "\"name\": \"k\","
     + "\"enabled\": true,"
     + "\"nouns\": ["
     + "{\"word\": \"he\", \"forms\": [\"he\"]},"
@@ -213,7 +208,7 @@ public class ContextPackControllerSpec {
 
     Document addedList = db.getCollection("wordlists").find(eq("_id", new ObjectId(id))).first();
     assertNotNull(addedList);
-    assertEquals("k", addedList.getString("topic"));
+    assertEquals("k", addedList.getString("name"));
 
     addedList = db.getCollection("wordlists").find(eq("nouns.word", "he")).first();
     assertNotNull(addedList);
@@ -456,7 +451,7 @@ public class ContextPackControllerSpec {
     Wordlist resultPack = JavalinJson.fromJson(result, Wordlist.class);
 
     assertEquals(resultPack._id, testlistID);
-    assertEquals(resultPack.topic, "MountainDew");
+    assertEquals(resultPack.name, "MountainDew");
   }
 
   @Test

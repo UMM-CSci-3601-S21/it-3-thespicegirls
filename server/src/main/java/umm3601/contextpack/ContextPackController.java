@@ -86,7 +86,7 @@ public class ContextPackController {
 
   public void addNewWordlist(Context ctx){
     Wordlist newList = ctx.bodyValidator(Wordlist.class)
-      .check(list -> list.topic.matches("^[a-zA-Z]+$") && list.topic != null)
+      .check(list -> list.name.matches("^[a-zA-Z]+$") && list.name != null)
       .check(list -> String.valueOf(list.enabled).matches(statusRegex))
       .get();
 
@@ -104,7 +104,7 @@ public class ContextPackController {
       contextPackCollection.insertOne(newPack);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newPack._id));
-      
+
   }
 
 
