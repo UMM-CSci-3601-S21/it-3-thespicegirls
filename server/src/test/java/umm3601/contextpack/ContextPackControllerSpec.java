@@ -203,6 +203,7 @@ public class ContextPackControllerSpec {
     assertEquals(201, mockRes.getStatus());
 
     String result = ctx.resultString();
+
     String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
     assertNotEquals("", id);
     System.out.println(id);
@@ -288,6 +289,40 @@ public class ContextPackControllerSpec {
   }
 
   @Test
+  public void AddInvalidContextPackIllegalStatus(){
+    String test = "{"
+    + "\"topic\": \"cats\","
+    + "\"enabled\": hockey,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewWordlist(ctx);
+    });
+
+  }
+
+  @Test
   public void AddNewContextPack() throws IOException {
     String test = "{"
     + "\"name\": \"sight words\","
@@ -326,10 +361,10 @@ public class ContextPackControllerSpec {
 
     String result = ctx.resultString();
     String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    String name = jsonMapper.readValue(result, ObjectNode.class).get("name").asText();
+
     assertNotEquals("", id);
-    assertEquals("sight words", name);
     System.out.println(id);
+    System.out.println(result);
 
     assertEquals(1, db.getCollection("contextpacks").countDocuments(eq("_id", new ObjectId(id))));
 
