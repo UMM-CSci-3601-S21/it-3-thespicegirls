@@ -15,8 +15,6 @@ public class Wordlist {
   public ArrayList<Word> adjectives;
   public ArrayList<Word> verbs;
   public ArrayList<Word> misc;
-  // public ArrayList<Pos> adjectives;
-  // public ArrayList<Pos> verbs;
-  // public ArrayList<Pos> misc;
+
 }
 
