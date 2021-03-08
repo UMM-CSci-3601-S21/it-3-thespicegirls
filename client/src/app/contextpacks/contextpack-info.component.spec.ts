@@ -3,7 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteStub } from '../../testing/activated-route-stub';
-import { MockWordlistService } from '../../testing/wordlist.service.mock';
+import { MockWordlistService } from '../../testing/contextpack.service.mock';
 import { Wordlist } from './contextpack';
 import { WordlistCardComponent } from './contextpack-card.component';
 import { WordlistInfoComponent } from './contextpack-info.component';

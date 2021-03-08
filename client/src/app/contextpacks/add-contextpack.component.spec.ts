@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockWordlistService } from 'src/testing/wordlist.service.mock';
+import { MockWordlistService } from 'src/testing/contextpack.service.mock';
 import { AddWordlistComponent } from './add-contextpack.component';
 import { WordlistService } from './contextpack.service';
 

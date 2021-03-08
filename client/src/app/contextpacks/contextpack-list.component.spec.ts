@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
-import { MockWordlistService } from '../../testing/wordlist.service.mock';
+import { MockWordlistService } from '../../testing/contextpack.service.mock';
 import { Wordlist } from './contextpack';
 import { WordlistCardComponent } from './contextpack-card.component';
 import { WordlistListComponent } from './contextpack-list.component';
