@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { of } from 'rxjs';
 import { Wordlist } from './wordlist';
 
 @Component({
@@ -91,5 +92,16 @@ export class WordlistCardComponent implements OnInit {
       }
     return miscWords;
   }
+
+  downloadJson(myJson: Wordlist, topic: string){
+    const sJson = JSON.stringify(myJson, null, 1);
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+    element.setAttribute('download', topic + '.json');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click(); // simulate click
+    document.body.removeChild(element);
+}
 
 }
