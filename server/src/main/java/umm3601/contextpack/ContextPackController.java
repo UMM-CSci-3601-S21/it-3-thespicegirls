@@ -95,6 +95,20 @@ public class ContextPackController {
       ctx.json(ImmutableMap.of("id", newList._id));
   }
 
+  public void addNewContextPack(Context ctx){
+    ContextPack newPack = ctx.bodyValidator(ContextPack.class)
+      .check(pack -> pack.name != null )
+      .check(pack -> String.valueOf(pack.enabled).matches(statusRegex))
+      .get();
+
+      contextPackCollection.insertOne(newPack);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", newPack._id));
+      
+  }
+
+
+
 
 
 
