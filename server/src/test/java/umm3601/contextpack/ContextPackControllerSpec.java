@@ -255,6 +255,40 @@ public class ContextPackControllerSpec {
   }
 
   @Test
+  public void AddInvalidContextPackNullTopic(){
+    String test = "{"
+    + "\"topic\": \"\","
+    + "\"enabled\": true,"
+    + "\"nouns\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"adjectives\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"verbs\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "],"
+    + "\"misc\": ["
+    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+    + "]"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      contextPackController.addNewContextPack(ctx);
+    });
+
+  }
+
+  @Test
   public void AddInvalidWordlistIllegalStatus(){
     String test = "{"
     + "\"topic\": \"cats\","
@@ -314,10 +348,10 @@ public class ContextPackControllerSpec {
 
     mockReq.setBodyContent(test);
     mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
 
     assertThrows(BadRequestResponse.class, () -> {
-      contextPackController.addNewWordlist(ctx);
+      contextPackController.addNewContextPack(ctx);
     });
 
   }
