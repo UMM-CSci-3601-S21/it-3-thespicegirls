@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -284,6 +284,60 @@ public class ContextPackControllerSpec {
     assertThrows(BadRequestResponse.class, () -> {
       contextPackController.addNewWordlist(ctx);
     });
+
+  }
+
+  @Test
+  public void AddNewContextPack() throws IOException {
+    String test = "{"
+    + "\"name\": \"sight words\","
+    + "\"icon\": \"eye.png\","
+    + "\"enabled\": true,"
+    + "\"wordlist\":"
+      + "{"
+      + "\"topic\": \"goats\","
+      + "\"enabled\": true,"
+      + "\"nouns\": ["
+      + "{\"word\": \"boat\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"adjectives\": ["
+      + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"verbs\": ["
+      + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"misc\": ["
+      + "{\"word\": \"duck\", \"forms\": [\"ducky\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "]"
+      + "}}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
+
+    contextPackController.addNewContextPack(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+    String name = jsonMapper.readValue(result, ObjectNode.class).get("name").asText();
+    assertNotEquals("", id);
+    assertEquals("sight words", name);
+    System.out.println(id);
+
+    assertEquals(1, db.getCollection("contextpacks").countDocuments(eq("_id", new ObjectId(id))));
+
+
+    Document addedPack = db.getCollection("contextpacks").find(eq("_id", new ObjectId(id))).first();
+    assertNotNull(addedPack);
+    assertEquals("sight words", addedPack.getString("name"));
+    assertNotNull(addedPack);
 
   }
 
