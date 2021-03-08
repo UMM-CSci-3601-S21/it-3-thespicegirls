@@ -102,6 +102,7 @@ export class WordlistCardComponent implements OnInit {
     document.body.appendChild(element);
     element.click(); // simulate click
     document.body.removeChild(element);
+    return element;
 }
 
 }

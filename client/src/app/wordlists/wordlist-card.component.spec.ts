@@ -67,7 +67,7 @@ describe('WordlistCardComponent', () => {
     component1.wordlist = {
       _id: 'sam_id',
       enabled: false,
-      topic: 'happy',
+      topic: 'sad',
       verbs: testVerbs,
       adjectives: testAdjectives,
       misc: testMisc
@@ -75,7 +75,7 @@ describe('WordlistCardComponent', () => {
     component2.wordlist = {
       _id: 'mat_id',
       enabled: false,
-      topic: 'happy',
+      topic: 'mad',
       nouns: testNouns,
       adjectives: testAdjectives,
       misc: testMisc
@@ -83,7 +83,7 @@ describe('WordlistCardComponent', () => {
     component3.wordlist = {
       _id: 'jack_id',
       enabled: false,
-      topic: 'happy',
+      topic: 'crazy',
       nouns: testNouns,
     };
     fixture.detectChanges();
@@ -116,6 +116,10 @@ describe('WordlistCardComponent', () => {
   });
   it('should not list the adjectives words', () => {
     expect(component3.displayAdjectives(component3.wordlist)).toEqual(null);
+  });
+
+  it('should create a download element when given a json', () => {
+    expect(component.downloadJson(component.wordlist, component.wordlist.topic).toString()).toContain('happy');
   });
 
 });
