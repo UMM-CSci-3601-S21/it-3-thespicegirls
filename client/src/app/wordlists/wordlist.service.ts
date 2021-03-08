@@ -36,4 +36,9 @@ export class WordlistService {
 
     return filteredWordlists;
   }
+
+  addWordlist(newWordlist: Wordlist): Observable<string> {
+    // Send post request to add a new wordlist with the wordlist data as the body.
+    return this.httpClient.post<{id: string}>(this.wordlistUrl, newWordlist).pipe(map(res => res.id));
+  }
 }

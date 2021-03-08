@@ -120,5 +120,19 @@ describe('Wordlist service: ', () => {
     expect(wordlistService.filterWordlists(testWordlists, { topic: wordlistTopic }).length).toBe(2);
   });
 
+  it('addWordlist() posts to api/wordlists', () => {
+
+    wordlistService.addWordlist(testWordlists[1]).subscribe(
+      id => expect(id).toBe('testid')
+    );
+
+    const req = httpTestingController.expectOne(wordlistService.wordlistUrl);
+
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(testWordlists[1]);
+
+    req.flush({id: 'testid'});
+  });
+
 });
 

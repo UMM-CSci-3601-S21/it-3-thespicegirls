@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { UserListComponent } from './users/user-list.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
+import { AddWordlistComponent } from './wordlists/add-wordlist.component';
 import { WordlistListComponent } from './wordlists/wordlist-list.component';
 import { WordlistInfoComponent } from './wordlists/wordlist-info.component';
 
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'users/new', component: AddUserComponent},
   {path: 'users/:id', component: UserProfileComponent},
   {path: 'wordlists', component: WordlistListComponent},
+  {path: 'wordlists/new', component: AddWordlistComponent},
   {path: 'wordlists/:id', component: WordlistInfoComponent}
 ];
 
