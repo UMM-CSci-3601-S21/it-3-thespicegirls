@@ -86,7 +86,7 @@ public class ContextPackController {
 
   public void addNewWordlist(Context ctx){
     Wordlist newList = ctx.bodyValidator(Wordlist.class)
-      .check(list -> list.topic.matches("^[a-zA-Z]+$") && list.topic != null)
+      .check(list -> list.topic != null && list.topic.matches("^[a-zA-Z]+$") )
       .check(list -> String.valueOf(list.enabled).matches(statusRegex))
       .get();
 
