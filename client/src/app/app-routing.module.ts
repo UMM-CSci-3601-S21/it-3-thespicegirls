@@ -4,9 +4,10 @@ import { HomeComponent } from './home/home.component';
 import { UserListComponent } from './users/user-list.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-import { AddWordlistComponent } from '../wordlists/contextpack-list.component
-import { WordlistListComponent } from './contextpacks/wordlist-list.component';
-import { WordlistInfoComponent } from './contextpacks/contextpack-info.component';
+
+import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
+import { ContextPackCardComponent } from './contextpacks/contextpack-card.component';
+import { ContextPackListComponent } from './contextpacks/contextpack-list.component';
 
 
 
@@ -15,9 +16,8 @@ const routes: Routes = [
   {path: 'users', component: UserListComponent},
   {path: 'users/new', component: AddUserComponent},
   {path: 'users/:id', component: UserProfileComponent},
-  {path: 'wordlists', component: WordlistListComponent},
-  {path: 'wordlists/new', component: AddWordlistComponent},
-  {path: 'wordlists/:id', component: WordlistInfoComponent}
+  {path: 'contextpacks', component: ContextPackListComponent},
+  {path: 'contextpacks/:id', component: ContextPackInfoComponent}
 ];
 
 @NgModule({

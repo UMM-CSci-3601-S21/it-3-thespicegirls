@@ -2,16 +2,16 @@
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
 
     <mat-card class="search-card">
-      <mat-card-title class="wordlist-list-title">Wordlists</mat-card-title>
+      <mat-card-title class="contextpack-list-title">Context Packs</mat-card-title>
       <mat-card-content fxLayout="column" >
 
         <div fxLayout="row wrap" fxLayoutGap="10px">
           <!-- Examples of filtering in Angular -->
 
           <mat-form-field class="input-field">
-            <mat-label>Topic</mat-label>
-            <input matInput data-test="wordlistTopicInput" placeholder="Filter by topic"
-            [(ngModel)]="wordlistTopic" (input)="updateFilter()">
+            <mat-label>Name</mat-label>
+            <input matInput data-test="contextpackNameInput" placeholder="Filter by name"
+            [(ngModel)]="contextpackName" (input)="updateFilter()">
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
         </div>
@@ -30,23 +30,23 @@
 </div>
 
 <div fxLayout="row">
-  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredWordlists; else wordlistsError" >
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredContextpacks; else contextpackError" >
     <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
     <div [ngSwitch]="viewType">
 
       <!-- Card grid view -->
-      <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="wordlist-cards-container">
-        <app-wordlist-card simple="true" *ngFor="let wordlist of filteredWordlists" class="wordlist-card" [wordlist]="wordlist" fxFlex="1 1 280px"></app-wordlist-card>
+      <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="contextpack-cards-container">
+        <app-contextpack-card simple="true" *ngFor="let contextpack of filteredContextpacks" class="contextpack-card" [contextpack]="contextpack" fxFlex="1 1 280px"></app-contextpack-card>
       </div>
 
       <!-- List view -->
       <mat-card *ngSwitchCase="'list'">
         <mat-card-content>
-          <mat-nav-list class="wordlist-nav-list">
-            <h3 mat-subheader>Wordlists</h3>
-            <a mat-list-item *ngFor="let wordlist of this.filteredWordlists" [routerLink]="['/wordlists', wordlist._id]" class="wordlist-list-item">
-              <h3 matLine class="wordlist-list-topic"> {{this.wordlist.topic}} </h3>
-              <p matLine class="wordlist-list-enabled"> {{this.wordlist.enabled}} </p>
+          <mat-nav-list class="contextpack-nav-list">
+            <h3 mat-subheader>ContextPacks</h3>
+            <a mat-list-item *ngFor="let contextpack of this.filteredContextpacks" [routerLink]="['/wordlists', contextpack._id]" class="contextpack-list-item">
+              <h3 matLine class="contextpack-list-topic"> {{this.contextpack.name}} </h3>
+              <p matLine class="contextpack-list-enabled"> {{this.contextpack.enabled}} </p>
             </a>
           </mat-nav-list>
         </mat-card-content>
@@ -55,8 +55,8 @@
   </div>
 
   <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
-  <ng-template #wordlistsError>
-    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="wordlist-error">
+  <ng-template #contextpackError>
+    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="contextpack-error">
       <mat-error>
         There was a problem loading the wordlists. Possibly the server is down or perhaps there are network
         issues.
@@ -69,6 +69,6 @@
 
 </div>
 
-<button mat-fab class="add-wordlist-fab" matTooltip="Add Wordlist" matTooltipPosition="left" routerLink="/wordlists/new" data-test="addWordlistButton">
-    <mat-icon class="md-24" aria-label="Add Wordlist">add</mat-icon>
+<button mat-fab class="add-contextpack-fab" matTooltip="Add Contextpack" matTooltipPosition="left" routerLink="/contextpacks/new" data-test="addWordlistButton">
+    <mat-icon class="md-24" aria-label="Add Contextpack">add</mat-icon>
 </button>

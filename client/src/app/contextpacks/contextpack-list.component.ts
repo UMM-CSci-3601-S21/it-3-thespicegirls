@@ -1,23 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Wordlist } from './contextpack';
-import { WordlistService } from './contextpack.service';
+import { ContextPack } from './contextpack';
+import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-wordlist-list-component',
-  templateUrl: 'wordlist-list.component.html',
-  styleUrls: ['./wordlist-list.component.scss'],
+  selector: 'app-contextpack-list-component',
+  templateUrl: 'contextpack-list.component.html',
+  styleUrls: ['./contextpack-list.component.scss'],
   providers: []
 })
 
-export class WordlistListComponent implements OnInit, OnDestroy  {
+export class ContextPackListComponent implements OnInit, OnDestroy  {
   // These are public so that tests can reference them (.spec.ts)
-  public serverFilteredWordlists: Wordlist[];
-  public filteredWordlists: Wordlist[];
+  public serverFilteredContextpacks: ContextPack[];
+  public filteredContextpacks: ContextPack[];
 
-  public wordlistTopic: string;
+  public contextpackName: string;
 
-  getWordlistsSub: Subscription;
+  getContextpacksSub: Subscription;
 
   public viewType: 'list' | 'card' = 'card';
 
@@ -28,14 +28,14 @@ export class WordlistListComponent implements OnInit, OnDestroy  {
   // We can call upon the service for interacting
   // with the server.
 
-  constructor(private wordlistService: WordlistService) {
+  constructor(private contextpackService: ContextPackService) {
 
   }
 
-  getWordlistsFromServer(): void {
+  getContextpacksFromServer(): void {
     this.unsub();
-    this.getWordlistsSub = this.wordlistService.getWordlists().subscribe(returnedWordlists => {
-      this.serverFilteredWordlists = returnedWordlists;
+    this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
+      this.serverFilteredContextpacks = returnedContextpacks;
       this.updateFilter();
     }, err => {
       console.log(err);
@@ -43,16 +43,16 @@ export class WordlistListComponent implements OnInit, OnDestroy  {
   }
 
   public updateFilter(): void {
-    this.filteredWordlists = this.wordlistService.filterWordlists(
-      this.serverFilteredWordlists, { topic: this.wordlistTopic });
+    this.filteredContextpacks = this.contextpackService.filterContextPacks(
+      this.serverFilteredContextpacks, { name: this.contextpackName });
   }
 
   /**
-   * Starts an asynchronous operation to update the wordlists list
+   * Starts an asynchronous operation to update the contextpacks list
    *
    */
   ngOnInit(): void {
-    this.getWordlistsFromServer();
+    this.getContextpacksFromServer();
   }
 
   ngOnDestroy(): void {
@@ -60,8 +60,8 @@ export class WordlistListComponent implements OnInit, OnDestroy  {
   }
 
   unsub(): void {
-    if (this.getWordlistsSub) {
-      this.getWordlistsSub.unsubscribe();
+    if (this.getContextpacksSub) {
+      this.getContextpacksSub.unsubscribe();
     }
   }
 }

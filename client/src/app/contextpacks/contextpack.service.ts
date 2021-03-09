@@ -14,7 +14,7 @@ export class ContextPackService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getContextPack(): Observable<ContextPack[]> {
+  getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
       params: httpParams,
@@ -27,7 +27,7 @@ export class ContextPackService {
     return this.httpClient.get<ContextPack>(this.contextpackUrl + '/' + id);
   }
 
-  filterContextPack(contextpacks: ContextPack[], filters: { name?: string }): ContextPack[] {
+  filterContextPacks(contextpacks: ContextPack[], filters: { name?: string }): ContextPack[] {
 
     let filteredContextPack = contextpacks;
 

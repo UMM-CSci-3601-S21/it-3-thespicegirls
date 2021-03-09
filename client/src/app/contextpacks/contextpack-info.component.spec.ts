@@ -3,15 +3,15 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteStub } from '../../testing/activated-route-stub';
-import { MockWordlistService } from '../../testing/contextpack.service.mock';
-import { Wordlist } from './contextpack';
-import { WordlistCardComponent } from './contextpack-card.component';
-import { WordlistInfoComponent } from './contextpack-info.component';
-import { WordlistService } from './contextpack.service';
+import { MockContextpackService } from '../../testing/contextpack.service.mock';
+import { ContextPack } from './contextpack';
+import { ContextPackCardComponent } from './contextpack-card.component';
+import { ContextPackInfoComponent } from './contextpack-info.component';
+import { ContextPackService } from './contextpack.service';
 
-describe('WordlistInfoComponent', () => {
-  let component: WordlistInfoComponent;
-  let fixture: ComponentFixture<WordlistInfoComponent>;
+describe('ContextPackInfoComponent', () => {
+  let component: ContextPackInfoComponent;
+  let fixture: ComponentFixture<ContextPackInfoComponent>;
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
 
   beforeEach(waitForAsync(() => {
@@ -20,9 +20,9 @@ describe('WordlistInfoComponent', () => {
         RouterTestingModule,
         MatCardModule
       ],
-      declarations: [WordlistInfoComponent, WordlistCardComponent],
+      declarations: [ContextPackInfoComponent, ContextPackCardComponent],
       providers: [
-        { provide: WordlistService, useValue: new MockWordlistService() },
+        { provide: ContextPackService, useValue: new MockContextpackService() },
         { provide: ActivatedRoute, useValue: activatedRoute }
       ]
     })
@@ -30,7 +30,7 @@ describe('WordlistInfoComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WordlistInfoComponent);
+    fixture = TestBed.createComponent(ContextPackInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -39,40 +39,40 @@ describe('WordlistInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to a specific wordlist info page', () => {
-    const expectedWordlist: Wordlist = MockWordlistService.testWordlists[0];
+  it('should navigate to a specific contextpack info page', () => {
+    const expectedContextPack: ContextPack = MockContextpackService.testContextpacks[0];
     // Setting this should cause anyone subscribing to the paramMap
-    // to update. Our `WordlistInfoComponent` subscribes to that, so
+    // to update. Our `ContextPackInfoComponent` subscribes to that, so
     // it should update right away.
-    activatedRoute.setParamMap({ id: expectedWordlist._id });
+    activatedRoute.setParamMap({ id: expectedContextPack._id });
 
-    expect(component.id).toEqual(expectedWordlist._id);
-    expect(component.wordlist).toEqual(expectedWordlist);
+    expect(component.id).toEqual(expectedContextPack._id);
+    expect(component.contextpack).toEqual(expectedContextPack);
   });
 
-  it('should navigate to correct wordlist when the id parameter changes', () => {
-    let expectedWordlist: Wordlist = MockWordlistService.testWordlists[0];
+  it('should navigate to correct contextpack when the id parameter changes', () => {
+    let expectedContextPack: ContextPack = MockContextpackService.testContextpacks[0];
     // Setting this should cause anyone subscribing to the paramMap
-    // to update. Our `WordlistInfoComponent` subscribes to that, so
+    // to update. Our `ContextPackInfoComponent` subscribes to that, so
     // it should update right away.
-    activatedRoute.setParamMap({ id: expectedWordlist._id });
+    activatedRoute.setParamMap({ id: expectedContextPack._id });
 
-    expect(component.id).toEqual(expectedWordlist._id);
+    expect(component.id).toEqual(expectedContextPack._id);
 
-    // Changing the paramMap should update the displayed wordlist's info.
-    expectedWordlist = MockWordlistService.testWordlists[1];
-    activatedRoute.setParamMap({ id: expectedWordlist._id });
+    // Changing the paramMap should update the displayed contextpack's info.
+    expectedContextPack = MockContextpackService.testContextpacks[1];
+    activatedRoute.setParamMap({ id: expectedContextPack._id });
 
-    expect(component.id).toEqual(expectedWordlist._id);
+    expect(component.id).toEqual(expectedContextPack._id);
   });
 
-  it('should have `null` for the wordlist for a bad ID', () => {
+  it('should have `null` for the contextpack for a bad ID', () => {
     activatedRoute.setParamMap({ id: 'badID' });
 
-    // If the given ID doesn't map to a wordlist, we expect the service
-    // to return `null`, so we would expect the component's wordlist
+    // If the given ID doesn't map to a contextpack, we expect the service
+    // to return `null`, so we would expect the component's contextpack
     // to also be `null`.
     expect(component.id).toEqual('badID');
-    expect(component.wordlist).toBeNull();
+    expect(component.contextpack).toBeNull();
   });
 });

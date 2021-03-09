@@ -3,8 +3,7 @@ export interface Word{
   forms?: string[];
 }
 export interface Wordlist{
-  _id?: string;
-  topic?: string;
+  name?: string;
   enabled?: boolean;
   nouns?: Word[];
   adjectives?: Word[];
@@ -16,5 +15,5 @@ export interface ContextPack {
   _id: string;
   name: string;
   enabled: boolean;
-  wordlist: Wordlist[];
+  wordlists: Wordlist[];
 }
