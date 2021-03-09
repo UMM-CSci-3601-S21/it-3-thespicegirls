@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { of } from 'rxjs';
-import { Wordlist } from './wordlist';
+import { Wordlist } from './contextpack';
 
 @Component({
   selector: 'app-wordlist-card',

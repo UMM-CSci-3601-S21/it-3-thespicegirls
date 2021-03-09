@@ -14,11 +14,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
-import { MockWordlistService } from '../../testing/wordlist.service.mock';
-import { Wordlist } from './wordlist';
-import { WordlistCardComponent } from './wordlist-card.component';
-import { WordlistListComponent } from './wordlist-list.component';
-import { WordlistService } from './wordlist.service';
+import { MockWordlistService } from '../../testing/contextpack.service.mock';
+import { Wordlist } from './contextpack';
+import { WordlistCardComponent } from './contextpack-card.component';
+import { WordlistListComponent } from './contextpack-list.component';
+import { WordlistService } from './contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
 
 const COMMON_IMPORTS: any[] = [

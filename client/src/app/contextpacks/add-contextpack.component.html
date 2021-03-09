@@ -1,0 +1,117 @@
+<h1>Word Lists</h1>
+
+<form [formGroup]="addWordlistForm" (ngSubmit)="submitForm()">
+  <label>
+    Topic:
+    <input type="text" formControlName="topic" required>
+  </label>
+
+  <mat-form-field>
+    <mat-label>Enabled</mat-label>
+    <mat-select required formControlName="enabled">
+      <mat-option value="true">True</mat-option>
+      <mat-option value="false">False</mat-option>
+    </mat-select>
+    <mat-error *ngIf="addWordlistForm.get('enabled').hasError('required')">You must make a selection</mat-error>
+    <mat-error *ngIf="addWordlistForm.get('enabled').hasError('pattern') && !addWordlistForm.get('enabled').hasError('required')">
+      Your selection is invalid
+    </mat-error>
+  </mat-form-field>
+
+  <div formArrayName="nouns">
+
+    <div *ngFor="let noun of nouns().controls; let empIndex=index">
+
+      <div [formGroupName]="empIndex" style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
+        {{empIndex}}
+        Word :
+        <input type="text" formControlName="word">
+
+        <button type="button" (click)="removeNouns(empIndex)">Remove Noun</button>
+
+
+        <div formArrayName="forms">
+          <h3>Forms</h3>
+
+          <div *ngFor="let form of forms(empIndex).controls; let i=index">
+            <!-- The repeated alias template -->
+            <label>
+              Form:
+              <input type="text" [formControlName]="i">
+              <button type="button" (click)="removeForm(empIndex, i)">Remove</button>
+            </label>
+
+          </div>
+          <button type="button" (click)="addForm(empIndex)">Add Forms</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    <button type="button" (click)="addNoun()">Add Noun</button>
+  </p>
+  <p>
+    <button type="submit">Submit</button>
+  </p>
+
+  <pre>
+    {{ addWordlistForm.value | json }}
+  </pre>
+</form>
+
+
+
+<!-- <div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+    <form [formGroup]="addWordlistForm" (ngSubmit)="submitForm();">
+    <mat-card class="add-user-card">
+        <mat-card-header>
+          <mat-card-title class="add-user-title">New Wordlist</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column">
+          <mat-form-field>
+            <mat-label>Topic</mat-label>
+            <input matInput placeholder="Topic" formControlName="topic"
+                  required>
+            <mat-error *ngFor="let validation of addWordlistValidationMessages.topic">
+              <mat-error class="error-message" data-test="topicError"
+                        *ngIf="addWordlistForm.get('topic').hasError(validation.type) && (addWordlistForm.get('topic').dirty || addWordlistForm.get('topic').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Enabled</mat-label>
+            <mat-select required formControlName="enabled">
+              <mat-option value="true">True</mat-option>
+              <mat-option value="false">False</mat-option>
+            </mat-select>
+            <mat-error *ngIf="addWordlistForm.get('enabled').hasError('required')">You must make a selection</mat-error>
+            <mat-error *ngIf="addWordlistForm.get('enabled').hasError('pattern') && !addWordlistForm.get('enabled').hasError('required')">
+              Your selection is invalid
+            </mat-error>
+          </mat-form-field>
+
+
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button
+            mat-button
+            type="button"
+            color="primary"
+            [disabled]="!addWordlistForm.valid"
+            type="submit"
+            data-test="confirmAddWordlistButton"
+          >
+            ADD Word List
+          </button>
+        </mat-card-actions>
+    </mat-card>
+    <pre>
+      {{ addWordlistForm.value | json }}
+    </pre>
+  </form>
+  </div>
+</div> -->
