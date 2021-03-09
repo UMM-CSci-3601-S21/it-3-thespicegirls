@@ -10,7 +10,6 @@ import { map } from 'rxjs/operators';
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
 
-
   constructor(private httpClient: HttpClient) {
   }
 
