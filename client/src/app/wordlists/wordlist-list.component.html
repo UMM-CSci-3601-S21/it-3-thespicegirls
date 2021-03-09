@@ -1,0 +1,74 @@
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+
+    <mat-card class="search-card">
+      <mat-card-title class="wordlist-list-title">Wordlists</mat-card-title>
+      <mat-card-content fxLayout="column" >
+
+        <div fxLayout="row wrap" fxLayoutGap="10px">
+          <!-- Examples of filtering in Angular -->
+
+          <mat-form-field class="input-field">
+            <mat-label>Topic</mat-label>
+            <input matInput data-test="wordlistTopicInput" placeholder="Filter by topic"
+            [(ngModel)]="wordlistTopic" (input)="updateFilter()">
+            <mat-hint>Filtered on client</mat-hint>
+          </mat-form-field>
+        </div>
+        <br>
+        <div fxLayout="row wrap" fxLayoutGap="10px">
+          <label>View type: </label>
+          <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
+            <mat-radio-button value="card">Card</mat-radio-button>
+            <mat-radio-button value="list">List</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredWordlists; else wordlistsError" >
+    <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
+    <div [ngSwitch]="viewType">
+
+      <!-- Card grid view -->
+      <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="wordlist-cards-container">
+        <app-wordlist-card simple="true" *ngFor="let wordlist of filteredWordlists" class="wordlist-card" [wordlist]="wordlist" fxFlex="1 1 280px"></app-wordlist-card>
+      </div>
+
+      <!-- List view -->
+      <mat-card *ngSwitchCase="'list'">
+        <mat-card-content>
+          <mat-nav-list class="wordlist-nav-list">
+            <h3 mat-subheader>Wordlists</h3>
+            <a mat-list-item *ngFor="let wordlist of this.filteredWordlists" [routerLink]="['/wordlists', wordlist._id]" class="wordlist-list-item">
+              <h3 matLine class="wordlist-list-topic"> {{this.wordlist.topic}} </h3>
+              <p matLine class="wordlist-list-enabled"> {{this.wordlist.enabled}} </p>
+            </a>
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+  <ng-template #wordlistsError>
+    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="wordlist-error">
+      <mat-error>
+        There was a problem loading the wordlists. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+      <mat-error>
+        Please wait a bit and try again or start the server.
+      </mat-error>
+    </div>
+  </ng-template>
+
+</div>
+
+<button mat-fab class="add-wordlist-fab" matTooltip="Add Wordlist" matTooltipPosition="left" routerLink="/wordlists/new" data-test="addWordlistButton">
+    <mat-icon class="md-24" aria-label="Add Wordlist">add</mat-icon>
+</button>

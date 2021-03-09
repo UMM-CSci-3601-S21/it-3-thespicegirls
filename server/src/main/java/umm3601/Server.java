@@ -10,12 +10,12 @@ import com.mongodb.client.MongoDatabase;
 
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
-
+import umm3601.contextpack.ContextPackController;
 import umm3601.user.UserController;
 
 public class Server {
 
-  static String appName = "CSCI 3601 Iteration Template";
+  static String appName = "Word River";
 
   public static void main(String[] args) {
 
@@ -36,6 +36,7 @@ public class Server {
 
     // Initialize dependencies
     UserController userController = new UserController(database);
+    ContextPackController contextPackController = new ContextPackController(database);
 
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
@@ -60,8 +61,15 @@ public class Server {
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
 
+    server.get("/api/wordlists", contextPackController::getWordlists);
+
+    server.get("/api/contextpacks", contextPackController::getContextPacks);
+
     // Get the specified user
     server.get("/api/users/:id", userController::getUser);
+    server.get("/api/wordlists/:id", contextPackController::getWordlist);
+    server.get("/api/contextpacks/:id", contextPackController::getContextPack);
+
 
     // Delete the specified user
     server.delete("/api/users/:id", userController::deleteUser);
