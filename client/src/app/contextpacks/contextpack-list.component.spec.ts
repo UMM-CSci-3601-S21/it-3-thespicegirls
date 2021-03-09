@@ -48,8 +48,7 @@ describe('ContextPack list', () => {
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
       declarations: [ContextPackListComponent, ContextPackCardComponent],
-      // providers:    [ ContextPackService ]  // NO! Don't provide the real service!
-      // Provide a test-double instead
+
       providers: [{ provide: ContextPackService, useValue: new MockContextpackService() }]
     });
   });
@@ -115,8 +114,4 @@ describe('Misbehaving ContextPack List', () => {
     });
   }));
 
-  it('generates an error if we don\'t set up a ContextPackListService', () => {
-    // Since the observer throws an error, we don't expect ContextPacks to be defined.
-    expect(contextpacklist.serverFilteredContextpacks).toBeUndefined();
-  });
 });

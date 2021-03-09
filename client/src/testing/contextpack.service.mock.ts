@@ -44,9 +44,6 @@ export class MockContextpackService extends ContextPackService {
 
   ];
 
-
-
-
   static testContextpacks: ContextPack[] = [
     {
       _id: 'chris_id',

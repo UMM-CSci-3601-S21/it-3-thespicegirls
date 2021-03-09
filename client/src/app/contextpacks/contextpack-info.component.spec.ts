@@ -67,7 +67,7 @@ describe('ContextPackInfoComponent', () => {
   });
 
   it('should have `null` for the contextpack for a bad ID', () => {
-    activatedRoute.setParamMap({ id: 'badID' });
+    activatedRoute.setParamMap({ _id: 'badID' });
 
     // If the given ID doesn't map to a contextpack, we expect the service
     // to return `null`, so we would expect the component's contextpack
