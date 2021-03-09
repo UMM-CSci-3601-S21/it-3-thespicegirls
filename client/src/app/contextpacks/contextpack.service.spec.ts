@@ -26,8 +26,11 @@ describe('Context Pack service: ', () => {
   const testVerbs: Word[] = [verb];
   const testAdjectives: Word[] = [adjective];
   const testMisc: Word[] = [misc];
+
   const wordList: Wordlist[] = [
     {
+    enabled: true,
+    name: 'fun',
     nouns: testNouns,
     verbs: testVerbs,
     adjectives: testAdjectives,
@@ -41,19 +44,19 @@ describe('Context Pack service: ', () => {
       _id: 'chris_id',
       enabled: true,
       name: 'fun',
-      wordlist: wordList
+      wordlists: wordList
     },
     {
       _id: 'pat_id',
       enabled: false,
       name: 'happy',
-      wordlist: wordList
+      wordlists: wordList
     },
     {
       _id: 'jamie_id',
       enabled: true,
       name: 'sun',
-      wordlist: wordList
+      wordlists: wordList
     }
   ];
   let contextpackService: ContextPackService;
@@ -87,7 +90,7 @@ describe('Context Pack service: ', () => {
     // checked until the mocked HTTP request 'returns' a response.
     // This happens when we call req.flush(testWordlists) a few lines
     // down.
-    contextpackService.getContextPack().subscribe(
+    contextpackService.getContextPacks().subscribe(
       contextpack => expect(contextpack).toBe(testContextPacks)
     );
 
@@ -117,7 +120,7 @@ describe('Context Pack service: ', () => {
   it('filterContextPack() filters by name', () => {
     expect(testContextPacks.length).toBe(3);
     const contextpackTopic = 'u';
-    expect(contextpackService.filterContextPack(testContextPacks, { name: contextpackTopic }).length).toBe(2);
+    expect(contextpackService.filterContextPacks(testContextPacks, { name: contextpackTopic }).length).toBe(2);
   });
 });
 
