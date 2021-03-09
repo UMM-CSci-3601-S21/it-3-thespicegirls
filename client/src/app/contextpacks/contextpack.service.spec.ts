@@ -8,7 +8,7 @@ describe('Context Pack service: ', () => {
   // A small collection of test wordlists
   const noun: Word = {
     word: 'you',
-    forms: ['you', 'yos', 'yoted']
+    forms: ['you', 'yos']
   };
   const adjective: Word = {
     word: 'green',
@@ -22,39 +22,32 @@ describe('Context Pack service: ', () => {
     word: 'langerhans',
     forms: ['langerhans']
   };
+
   const testNouns: Word[] = [noun];
   const testVerbs: Word[] = [verb];
   const testAdjectives: Word[] = [adjective];
   const testMisc: Word[] = [misc];
-  const wordList: Wordlist[] = [
+  const testWordlist: Wordlist =
     {
-    nouns: testNouns,
-    verbs: testVerbs,
-    adjectives: testAdjectives,
-    misc: testMisc
-    }
-
-  ];
-
-  const testContextPacks: ContextPack[] = [
-    {
-      _id: 'chris_id',
-      enabled: true,
-      name: 'fun',
-      wordlist: wordList
-    },
-    {
-      _id: 'pat_id',
       enabled: false,
       name: 'happy',
-      wordlist: wordList
-    },
-    {
-      _id: 'jamie_id',
-      enabled: true,
-      name: 'sun',
-      wordlist: wordList
-    }
+      nouns: testNouns,
+      verbs: testVerbs,
+      adjectives: testAdjectives,
+      misc: testMisc
+    };
+
+
+
+  const testContextPacks: ContextPack[] =
+    [
+      {
+        _id: 'test',
+        name: 'fun',
+        enabled: false,
+        wordlists:[testWordlist]
+      }
+
   ];
   let contextpackService: ContextPackService;
   // These are used to mock the HTTP requests so that we (a) don't have to
@@ -87,7 +80,7 @@ describe('Context Pack service: ', () => {
     // checked until the mocked HTTP request 'returns' a response.
     // This happens when we call req.flush(testWordlists) a few lines
     // down.
-    contextpackService.getContextPack().subscribe(
+    contextpackService.getContextPacks().subscribe(
       contextpack => expect(contextpack).toBe(testContextPacks)
     );
 
@@ -102,7 +95,7 @@ describe('Context Pack service: ', () => {
   });
 
   it('getContextPacktById() calls api/contextpacks/id', () => {
-    const targetContextPack: ContextPack = testContextPacks[1];
+    const targetContextPack: ContextPack = testContextPacks[0];
     const targetId: string = targetContextPack._id;
     contextpackService.getContextPackById(targetId).subscribe(
       contextpack => expect(contextpack).toBe(targetContextPack)
@@ -115,9 +108,9 @@ describe('Context Pack service: ', () => {
   });
 
   it('filterContextPack() filters by name', () => {
-    expect(testContextPacks.length).toBe(3);
-    const contextpackTopic = 'u';
-    expect(contextpackService.filterContextPack(testContextPacks, { name: contextpackTopic }).length).toBe(2);
+    expect(testContextPacks.length).toBe(1);
+    const contextpackName = 'fun';
+    expect(contextpackService.filterContextPacks(testContextPacks, { name: contextpackName }).length).toBe(1);
   });
 });
 

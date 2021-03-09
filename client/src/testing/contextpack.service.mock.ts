@@ -57,13 +57,13 @@ export class MockContextpackService extends ContextPackService {
     {
       _id: 'chris_id',
       enabled: true,
-      name: 'fun',
+      name: 'sun',
       wordlists: MockContextpackService.testWordlists
     },
     {
       _id: 'chris_id',
       enabled: true,
-      name: 'fun',
+      name: 'happy',
       wordlists: MockContextpackService.testWordlists
     }
   ];
