@@ -3,42 +3,49 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Wordlist } from './contextpack';
+import { ContextPack } from './contextpack';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class WordlistService {
-  readonly wordlistUrl: string = environment.apiUrl + 'wordlists';
+export class ContextPackService {
+  readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
+
 
   constructor(private httpClient: HttpClient) {
   }
 
-  getWordlists(): Observable<Wordlist[]> {
+  getContextPack(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
-    return this.httpClient.get<Wordlist[]>(this.wordlistUrl, {
+    return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
       params: httpParams,
     });
   }
 
-  getWordlistById(id: string): Observable<Wordlist> {
-    return this.httpClient.get<Wordlist>(this.wordlistUrl + '/' + id);
+
+
+  getContextPackById(id: string): Observable<ContextPack> {
+    return this.httpClient.get<ContextPack>(this.contextpackUrl + '/' + id);
   }
 
-  filterWordlists(wordlists: Wordlist[], filters: { topic?: string }): Wordlist[] {
+  filterContextPack(contextpacks: ContextPack[], filters: { name?: string }): ContextPack[] {
 
-    let filteredWordlists = wordlists;
+    let filteredContextPack = contextpacks;
 
     // Filter by topic
-    if (filters.topic) {
-      filters.topic = filters.topic.toLowerCase();
+    if (filters.name) {
+      filters.name = filters.name.toLowerCase();
 
-      filteredWordlists = filteredWordlists.filter(wordlist => wordlist.topic.toLowerCase().indexOf(filters.topic) !== -1);
+      filteredContextPack = filteredContextPack.filter(contextpack => contextpack.
+        name.toLowerCase().indexOf(filters.name) !== -1);
     }
 
-    return filteredWordlists;
+    return filteredContextPack;
   }
 
-  addWordlist(newWordlist: Wordlist): Observable<string> {
+  addContextPack(newContextPack: ContextPack): Observable<string> {
     // Send post request to add a new wordlist with the wordlist data as the body.
-    return this.httpClient.post<{id: string}>(this.wordlistUrl, newWordlist).pipe(map(res => res.id));
+    return this.httpClient.post<{id: string}>(this.contextpackUrl, newContextPack).pipe(map(res => res.id));
   }
 }
+
+
