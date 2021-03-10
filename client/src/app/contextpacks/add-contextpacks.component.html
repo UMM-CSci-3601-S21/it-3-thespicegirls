@@ -39,7 +39,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addForms(ix, iy, 'nouns')">Add Form</button>
+                     <button type="button" (click)="addForms(ix, iy, 'nouns')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -66,7 +66,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addForms(ix, iy,'adjectives')">Add Form</button>
+                     <button type="button" (click)="addForms(ix, iy,'adjectives')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -93,7 +93,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addForms(ix, iy,'verbs')">Add Form</button>
+                     <button type="button" (click)="addForms(ix, iy,'verbs')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -120,7 +120,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addForms(ix, iy,'misc')">Add Form</button>
+                     <button type="button" (click)="addForms(ix, iy,'misc')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -140,7 +140,7 @@
 	</div>
 	<!-- X End -->
 	<form>
-      <button (click)="submitForm()"
+      <button type="submit" (click)="submitForm()"
         mat-button
         type="button"
         color="primary"
