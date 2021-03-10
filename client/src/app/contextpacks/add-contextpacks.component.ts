@@ -115,40 +115,15 @@ export class AddContextpacksComponent implements OnInit {
     const control = this.contextPackForm.controls.wordlists as FormArray;
     control.push(this.initwordlist());
   }
-
-  addNouns(ix) {
-    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns') as FormArray;
+  addPosArray(ix, pos){
+    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray;
     control.push(this.initNouns());
   }
-  addAdj(ix) {
-    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray;
-    control.push(this.initNouns());
-  }
-  addVerbs(ix) {
-    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('verbs') as FormArray;
-    control.push(this.initNouns());
-  }
-  addNounForms(ix, iy) {
-    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns') as FormArray)
+  addForms(ix, iy, pos) {
+    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray)
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
-  addAdjForms(ix, iy) {
-    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray)
-    .at(iy).get('forms') as FormArray;
-    control.push(this.fb.control(''));
-  }
-  addVerbForms(ix, iy) {
-    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('verbs') as FormArray)
-    .at(iy).get('forms') as FormArray;
-    control.push(this.fb.control(''));
-  }
-
-
-  // addForms(ix) {
-  //   const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns').get('forms') as FormArray;
-  //   control.push(this.fb.control(''));
-  // }
 
 
 

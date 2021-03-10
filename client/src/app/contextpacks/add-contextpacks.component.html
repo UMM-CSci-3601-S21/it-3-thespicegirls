@@ -35,7 +35,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addNounForms(ix, iy)">Add Form</button>
+                     <button (click)="addForms(ix, iy, 'nouns')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -43,7 +43,7 @@
 
               </div>
             </div>
-            <input type="button" (click)="addNouns(ix)" value="Add Noun">
+            <input type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">
           </div>
 
         </label>
@@ -62,7 +62,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addAdjForms(ix, iy)">Add Form</button>
+                     <button (click)="addForms(ix, iy,'adjectives')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -70,7 +70,7 @@
 
               </div>
             </div>
-            <input type="button" (click)="addAdj(ix)" value="Add Adjective">
+            <input type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">
           </div>
 
         </label>
@@ -89,7 +89,7 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addVerbForms(ix, iy)">Add Form</button>
+                     <button (click)="addForms(ix, iy,'verbs')">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
@@ -97,7 +97,7 @@
 
               </div>
             </div>
-            <input type="button" (click)="addVerbs(ix)" value="Add Adjective">
+            <input type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
           </div>
 
         </label>
