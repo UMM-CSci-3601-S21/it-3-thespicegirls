@@ -22,7 +22,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   public viewType: 'list' | 'card' = 'card';
 
 
-  // Inject the WordlistService into this component.
+  // Inject the ContextPackService into this component.
   // That's what happens in the following constructor.
   //
   // We can call upon the service for interacting

@@ -4,10 +4,8 @@ import { HomeComponent } from './home/home.component';
 import { UserListComponent } from './users/user-list.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-
-import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
 import { ContextPackListComponent } from './contextpacks/contextpack-list.component';
-
+import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
 
 
 const routes: Routes = [

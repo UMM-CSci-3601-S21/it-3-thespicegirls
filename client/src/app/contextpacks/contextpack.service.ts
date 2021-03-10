@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Wordlist } from './contextpack';
-import { ContextPack } from './contextpack';
+import { ContextPack, Wordlist, Word } from './contextpack';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -20,31 +19,24 @@ export class ContextPackService {
     });
   }
 
-
-
   getContextPackById(id: string): Observable<ContextPack> {
     return this.httpClient.get<ContextPack>(this.contextpackUrl + '/' + id);
   }
 
   filterContextPacks(contextpacks: ContextPack[], filters: { name?: string }): ContextPack[] {
 
-    let filteredContextPack = contextpacks;
+    let filteredContextPacks = contextpacks;
 
     // Filter by topic
     if (filters.name) {
       filters.name = filters.name.toLowerCase();
 
-      filteredContextPack = filteredContextPack.filter(contextpack => contextpack.
-        name.toLowerCase().indexOf(filters.name) !== -1);
+      filteredContextPacks = filteredContextPacks.filter(contextpack => contextpack.name.toLowerCase().indexOf(filters.name) !== -1);
     }
 
-    return filteredContextPack;
+    return filteredContextPacks;
   }
 
-  addContextPack(newContextPack: ContextPack): Observable<string> {
-    // Send post request to add a new wordlist with the wordlist data as the body.
-    return this.httpClient.post<{id: string}>(this.contextpackUrl, newContextPack).pipe(map(res => res.id));
-  }
 }
 
 

@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ContextPack, Word,Wordlist } from './contextpack';
+import { ContextPack, Word, Wordlist } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
 describe('Context Pack service: ', () => {
-  // A small collection of test wordlists
+  // A small collection of test contextpacks
   const noun: Word = {
     word: 'you',
     forms: ['you', 'yos']
@@ -27,27 +27,37 @@ describe('Context Pack service: ', () => {
   const testVerbs: Word[] = [verb];
   const testAdjectives: Word[] = [adjective];
   const testMisc: Word[] = [misc];
-  const testWordlist: Wordlist =
+  const testWordlist: Wordlist[] =[
     {
-      enabled: false,
       name: 'happy',
+      enabled: false,
       nouns: testNouns,
       verbs: testVerbs,
       adjectives: testAdjectives,
       misc: testMisc
-    };
-
-
+    }
+    ];
 
   const testContextPacks: ContextPack[] =
     [
       {
-        _id: 'test',
+        _id: 'chris_id',
         name: 'fun',
-        enabled: false,
-        wordlists:[testWordlist]
+        enabled: true,
+        wordpacks: testWordlist
+      },
+      {
+        _id: 'pat_id',
+        name: 'sun',
+        enabled: true,
+        wordpacks: testWordlist
+      },
+      {
+        _id: 'jamie_id',
+        name: 'happy',
+        enabled: true,
+        wordpacks: testWordlist
       }
-
   ];
   let contextpackService: ContextPackService;
   // These are used to mock the HTTP requests so that we (a) don't have to
@@ -74,14 +84,14 @@ describe('Context Pack service: ', () => {
   });
 
   it('getContextPack() calls api/contextpacks', () => {
-    // Assert that the wordlists we get from this call to getWordlists()
-    // should be our set of test wordlists. Because we're subscribing
-    // to the result of getWordlists(), this won't actually get
+    // Assert that the contextpacks we get from this call to getContextPacks()
+    // should be our set of test contextpacks. Because we're subscribing
+    // to the result of getContextPacks(), this won't actually get
     // checked until the mocked HTTP request 'returns' a response.
-    // This happens when we call req.flush(testWordlists) a few lines
+    // This happens when we call req.flush(testContextPacks) a few lines
     // down.
     contextpackService.getContextPacks().subscribe(
-      contextpack => expect(contextpack).toBe(testContextPacks)
+      contextpacks => expect(contextpacks).toBe(testContextPacks)
     );
 
     // Specify that (exactly) one request will be made to the specified URL.
@@ -94,7 +104,7 @@ describe('Context Pack service: ', () => {
     req.flush(testContextPacks);
   });
 
-  it('getContextPacktById() calls api/contextpacks/id', () => {
+  it('getContextPackById() calls api/contextpacks/id', () => {
     const targetContextPack: ContextPack = testContextPacks[0];
     const targetId: string = targetContextPack._id;
     contextpackService.getContextPackById(targetId).subscribe(
@@ -108,7 +118,7 @@ describe('Context Pack service: ', () => {
   });
 
   it('filterContextPack() filters by name', () => {
-    expect(testContextPacks.length).toBe(1);
+    expect(testContextPacks.length).toBe(3);
     const contextpackName = 'fun';
     expect(contextpackService.filterContextPacks(testContextPacks, { name: contextpackName }).length).toBe(1);
   });

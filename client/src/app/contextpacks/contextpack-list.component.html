@@ -44,7 +44,7 @@
         <mat-card-content>
           <mat-nav-list class="contextpack-nav-list">
             <h3 mat-subheader>ContextPacks</h3>
-            <a mat-list-item *ngFor="let contextpack of this.filteredContextpacks" [routerLink]="['/wordlists', contextpack._id]" class="contextpack-list-item">
+            <a mat-list-item *ngFor="let contextpack of this.filteredContextpacks" [routerLink]="['/contextpacks', contextpack._id]" class="contextpack-list-item">
               <h3 matLine class="contextpack-list-topic"> {{this.contextpack.name}} </h3>
               <p matLine class="contextpack-list-enabled"> {{this.contextpack.enabled}} </p>
             </a>
@@ -58,7 +58,7 @@
   <ng-template #contextpackError>
     <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="contextpack-error">
       <mat-error>
-        There was a problem loading the wordlists. Possibly the server is down or perhaps there are network
+        There was a problem loading the contextpacks. Possibly the server is down or perhaps there are network
         issues.
       </mat-error>
       <mat-error>
@@ -69,6 +69,3 @@
 
 </div>
 
-<button mat-fab class="add-contextpack-fab" matTooltip="Add Contextpack" matTooltipPosition="left" routerLink="/contextpacks/new" data-test="addWordlistButton">
-    <mat-icon class="md-24" aria-label="Add Contextpack">add</mat-icon>
-</button>

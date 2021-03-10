@@ -8,7 +8,7 @@ import { ContextPackService } from '../app/contextpacks/contextpack.service';
  * without having to create an actual service.
  */
 @Injectable()
-export class MockContextpackService extends ContextPackService {
+export class MockContextPackService extends ContextPackService {
   static noun: Word = {
     word: 'you',
     forms: ['you', 'yos']
@@ -26,42 +26,41 @@ export class MockContextpackService extends ContextPackService {
     forms: ['langerhans']
   };
 
-  static testNouns: Word[] = [MockContextpackService.noun];
-  static testVerbs: Word[] = [MockContextpackService.verb];
-  static testAdjectives: Word[] = [MockContextpackService.adjective];
-  static testMisc: Word[] = [MockContextpackService.misc];
+  static testNouns: Word[] = [MockContextPackService.noun];
+  static testVerbs: Word[] = [MockContextPackService.verb];
+  static testAdjectives: Word[] = [MockContextPackService.adjective];
+  static testMisc: Word[] = [MockContextPackService.misc];
 
   static testWordlists: Wordlist[] =
     [
       {
-        enabled: false,
         name: 'happy',
-        nouns: MockContextpackService.testNouns,
-        verbs: MockContextpackService.testVerbs,
-        adjectives: MockContextpackService.testAdjectives,
-        misc: MockContextpackService.testMisc
+        enabled: false,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
       }
-
   ];
 
-  static testContextpacks: ContextPack[] = [
+  static testContextPacks: ContextPack[] = [
     {
       _id: 'chris_id',
-      enabled: true,
       name: 'fun',
-      wordlists: MockContextpackService.testWordlists
+      enabled: true,
+      wordpacks: MockContextPackService.testWordlists
     },
     {
-      _id: 'chris_id',
-      enabled: true,
+      _id: 'pat_id',
       name: 'sun',
-      wordlists: MockContextpackService.testWordlists
+      enabled: true,
+      wordpacks: MockContextPackService.testWordlists
     },
     {
-      _id: 'chris_id',
-      enabled: true,
+      _id: 'jamie_id',
       name: 'happy',
-      wordlists: MockContextpackService.testWordlists
+      enabled: true,
+      wordpacks: MockContextPackService.testWordlists
     }
   ];
 
@@ -69,17 +68,17 @@ export class MockContextpackService extends ContextPackService {
     super(null);
   }
 
-  getContextpacks(): Observable<ContextPack[]> {
-    // Just return the test users regardless of what filters are passed in
-    return of(MockContextpackService.testContextpacks);
+  getContextPacks(): Observable<ContextPack[]> {
+    // Just return the test contextpacks regardless of what filters are passed in
+    return of(MockContextPackService.testContextPacks);
   }
 
-  getContextpackById(id: string): Observable<ContextPack> {
-    // If the specified ID is for the first test user,
-    // return that user, otherwise return `null` so
-    // we can test illegal user requests.
-    if (id === MockContextpackService.testContextpacks[0]._id) {
-      return of(MockContextpackService.testContextpacks[0]);
+  getContextPackById(id: string): Observable<ContextPack> {
+    // If the specified ID is for the first test contextpack,
+    // return that contextpack, otherwise return `null` so
+    // we can test illegal contextpack requests.
+    if (id === MockContextPackService.testContextPacks[0]._id) {
+      return of(MockContextPackService.testContextPacks[0]);
     } else {
       return of(null);
     }

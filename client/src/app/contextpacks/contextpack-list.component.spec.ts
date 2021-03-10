@@ -14,7 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
-import { MockContextpackService } from '../../testing/contextpack.service.mock';
+import { MockContextPackService } from '../../testing/contextpack.service.mock';
 import { ContextPack } from './contextpack';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { ContextPackListComponent } from './contextpack-list.component';
@@ -41,7 +41,7 @@ const COMMON_IMPORTS: any[] = [
 
 describe('ContextPack list', () => {
 
-  let contextpacklist: ContextPackListComponent;
+  let contextpackList: ContextPackListComponent;
   let fixture: ComponentFixture<ContextPackListComponent>;
 
   beforeEach(() => {
@@ -49,47 +49,50 @@ describe('ContextPack list', () => {
       imports: [COMMON_IMPORTS],
       declarations: [ContextPackListComponent, ContextPackCardComponent],
 
-      providers: [{ provide: ContextPackService, useValue: new MockContextpackService() }]
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
     });
   });
 
   beforeEach(waitForAsync(() => {
     TestBed.compileComponents().then(() => {
       fixture = TestBed.createComponent(ContextPackListComponent);
-      contextpacklist = fixture.componentInstance;
+      contextpackList = fixture.componentInstance;
       fixture.detectChanges();
     });
   }));
 
   it('contains all the ContextPacks', () => {
-    expect(contextpacklist.serverFilteredContextpacks.length).toBe(3);
+    expect(contextpackList.serverFilteredContextpacks.length).toBe(3);
   });
 
   it('contains a ContextPack named \'fun\'', () => {
-    expect(contextpacklist.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'fun')).toBe(true);
+    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'fun')).toBe(true);
   });
 
   it('contain a ContextPack named \'happy\'', () => {
-    expect(contextpacklist.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'happy')).toBe(true);
+    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'happy')).toBe(true);
   });
   it('contain a ContextPack named \'sun\'', () => {
-    expect(contextpacklist.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'sun')).toBe(true);
+    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'sun')).toBe(true);
+  });
+  it('doesn\'t contain a contextpack named \'Santa\'', () => {
+    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'Santa')).toBe(false);
   });
 });
 
 describe('Misbehaving ContextPack List', () => {
-  let contextpacklist: ContextPackListComponent;
+  let contextpackList: ContextPackListComponent;
   let fixture: ComponentFixture<ContextPackListComponent>;
 
   let getContextPacksSub: {
-    getContextPack: () => Observable<ContextPack[]>;
+    getContextPacks: () => Observable<ContextPack[]>;
     getContextPacksFiltered: () => Observable<ContextPack[]>;
   };
 
   beforeEach(() => {
     // stub ContextPackService for test purposes
     getContextPacksSub = {
-      getContextPack: () => new Observable(observer => {
+      getContextPacks: () => new Observable(observer => {
         observer.error('Error-prone observable');
       }),
       getContextPacksFiltered: () => new Observable(observer => {
@@ -109,9 +112,14 @@ describe('Misbehaving ContextPack List', () => {
   beforeEach(waitForAsync(() => {
     TestBed.compileComponents().then(() => {
       fixture = TestBed.createComponent(ContextPackListComponent);
-      contextpacklist = fixture.componentInstance;
+      contextpackList = fixture.componentInstance;
       fixture.detectChanges();
     });
   }));
+
+  it('generates an error if we don\'t set up a WordlistListService', () => {
+    // Since the observer throws an error, we don't expect contextpacks to be defined.
+    expect(contextpackList.serverFilteredContextpacks).toBeUndefined();
+  });
 
 });
