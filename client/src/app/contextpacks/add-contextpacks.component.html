@@ -101,7 +101,35 @@
           </div>
 
         </label>
-				<!-- Adjectives End -->
+				<!-- Verbs End -->
+        <!-- Misc -->
+        <label>
+          <div formArrayName="misc">
+           <h3>Verbs</h3>
+            <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="misc">
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word">
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                     <button (click)="addForms(ix, iy,'misc')">Add Form</button>
+                    <input type="text" [formControlName]="iz">
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <input type="button" (click)="addPosArray(ix,'misc')" value="Add Misc">
+          </div>
+
+        </label>
+				<!-- Misc End -->
+
 			</div>
 		</div>
 		<input type="button" (click)="addWordlist()" value="Add Wordlist">

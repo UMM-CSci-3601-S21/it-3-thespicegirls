@@ -52,6 +52,16 @@ export class AddContextpacksComponent implements OnInit {
           required: 'Y2 is required.',
           pattern: 'Y2 must be 3 characters long.'
         },
+      },
+      misc: {
+        word: {
+          required: 'Y1 is required.',
+          pattern: 'Y1 must be 3 characters long.'
+        },
+        forms: {
+          required: 'Y2 is required.',
+          pattern: 'Y2 must be 3 characters long.'
+        },
       }
     }
   };
@@ -85,6 +95,9 @@ export class AddContextpacksComponent implements OnInit {
       ]),
       verbs: this.fb.array([
         this.initNouns()
+      ]),
+      misc: this.fb.array([
+        this.initNouns()
       ])
 
     });
@@ -100,16 +113,6 @@ export class AddContextpacksComponent implements OnInit {
       ])
     });
   }
-
-  // initForms() {
-  //   return this.fb.group({
-  //     //  ---------------------forms fields on z level ------------------------
-  //     forms: this.fb.array([
-  //       this.fb.control('')
-  //     ]),
-  //     // ---------------------------------------------------------------------
-  //   });
-  // }
 
   addWordlist() {
     const control = this.contextPackForm.controls.wordlists as FormArray;
