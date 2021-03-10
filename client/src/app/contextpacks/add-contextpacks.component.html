@@ -75,6 +75,33 @@
 
         </label>
 				<!-- Adjectives End -->
+        <!-- Verbs -->
+        <label>
+          <div formArrayName="verbs">
+           <h3>Verbs</h3>
+            <div *ngFor="let nouns of wordlists['controls'].verbs['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="verbs">
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word">
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                     <button (click)="addVerbForms(ix, iy)">Add Form</button>
+                    <input type="text" [formControlName]="iz">
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <input type="button" (click)="addVerbs(ix)" value="Add Adjective">
+          </div>
+
+        </label>
+				<!-- Adjectives End -->
 			</div>
 		</div>
 		<input type="button" (click)="addWordlist()" value="Add Wordlist">

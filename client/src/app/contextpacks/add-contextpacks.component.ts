@@ -42,6 +42,16 @@ export class AddContextpacksComponent implements OnInit {
           required: 'Y2 is required.',
           pattern: 'Y2 must be 3 characters long.'
         },
+      },
+      verbs: {
+        word: {
+          required: 'Y1 is required.',
+          pattern: 'Y1 must be 3 characters long.'
+        },
+        forms: {
+          required: 'Y2 is required.',
+          pattern: 'Y2 must be 3 characters long.'
+        },
       }
     }
   };
@@ -49,23 +59,7 @@ export class AddContextpacksComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
 
-  // contextPackForm = this.fb.group({
-  //   name: ['', Validators.required],
-  //   enabled: ['', Validators.required],
-  //   wordlists: this.fb.array([
-  //     this.fb.group({
-  //       nouns: this.fb.array([
-  //         this.fb.group({
-  //           word: [''],
-  //           forms: this.fb.array([
-  //             this.fb.control('')
-  //           ])
-  //         })
-  //       ])
-  //     })
-  //   ])
 
-  // });
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({
@@ -87,6 +81,9 @@ export class AddContextpacksComponent implements OnInit {
         this.initNouns()
       ]),
       adjectives: this.fb.array([
+        this.initNouns()
+      ]),
+      verbs: this.fb.array([
         this.initNouns()
       ])
 
@@ -127,6 +124,10 @@ export class AddContextpacksComponent implements OnInit {
     const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray;
     control.push(this.initNouns());
   }
+  addVerbs(ix) {
+    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('verbs') as FormArray;
+    control.push(this.initNouns());
+  }
   addNounForms(ix, iy) {
     const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns') as FormArray)
     .at(iy).get('forms') as FormArray;
@@ -134,6 +135,11 @@ export class AddContextpacksComponent implements OnInit {
   }
   addAdjForms(ix, iy) {
     const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray)
+    .at(iy).get('forms') as FormArray;
+    control.push(this.fb.control(''));
+  }
+  addVerbForms(ix, iy) {
+    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('verbs') as FormArray)
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
@@ -259,38 +265,7 @@ export class AddContextpacksComponent implements OnInit {
 
 
 
-  // get forms() {
-  //   return this.contextPackForm.get('wordlists').get('nouns').get('forms') as FormArray;
-  // }
 
-  // get nouns(){
-  //   return this.contextPackForm.get('wordlists').get('nouns') as FormArray;
-  // }
-
-  // get word(){
-  //   return this.contextPackForm.get('wordlists').get('nouns').get('word');
-  // }
-
-
-
-
-
-  // updatewordlist() {
-  //   this.contextPackForm.patchValue({
-  //     name: 'Nancy',
-  //     enabled: 'true'
-  //   });
-  // }
-
-  // addForms() {
-  //   this.forms.push(this.fb.control(''));
-  // }
-  // addNoun() {
-  //   this.nouns.push(this.fb.control(''));
-  // }
-  // addWord(input: string){
-  //   this.word.setValue(input);
-  // }
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
