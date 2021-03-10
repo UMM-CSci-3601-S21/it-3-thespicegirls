@@ -45,7 +45,7 @@
           <mat-nav-list class="contextpack-nav-list">
             <h3 mat-subheader>ContextPacks</h3>
             <a mat-list-item *ngFor="let contextpack of this.filteredContextpacks" [routerLink]="['/contextpacks', contextpack._id]" class="contextpack-list-item">
-              <h3 matLine class="contextpack-list-topic"> {{this.contextpack.name}} </h3>
+              <h3 matLine class="contextpack-list-name"> {{this.contextpack.name}} </h3>
               <p matLine class="contextpack-list-enabled"> {{this.contextpack.enabled}} </p>
             </a>
           </mat-nav-list>

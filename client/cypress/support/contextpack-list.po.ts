@@ -4,7 +4,7 @@ export class ContextpackListPage {
   }
 
   getContextpackCards() {
-    return cy.get('.contextpack-cards-container app-contextpack-card');
+    return cy.get('.contextpack-card');
   }
 
   getContextpackListItems() {

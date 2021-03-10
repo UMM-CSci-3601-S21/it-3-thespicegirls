@@ -12,40 +12,39 @@ describe('Contextpack list', () => {
     page.navigateTo();
   });
 
-  it('Should show 4 contextpacks in both card and list view', () => {
-    page.getContextpackCards().should('have.length', 4);
+  it('Should show context packs in both card and list view', () => {
+    page.getContextpackCards().should('have.length.above', 1);
     page.changeView('list');
-    page.getContextpackListItems().should('have.length', 4);
+    page.getContextpackListItems().should('have.length.above', 1);
   });
 
-  it('Should type something in the topic filter and check that it returned correct elements', () => {
+  it('Should type something in the name filter and check that it returned correct elements', () => {
     // Filter for contextpack 'batman_villains'
-    cy.get('[data-test=contextpackTopicInput]').type('batman_villains');
+    cy.get('[data-test=contextpackNameInput]').type('farm');
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-topic').should('have.text', 'batman_villains');
+      cy.wrap(e).find('.contextpack-card-name').should('have.text', 'farm');
     });
 
     // (We check this two ways to show multiple ways to check this)
-    page.getContextpackCards().find('.contextpack-card-topic').each(el =>
-      expect(el.text()).to.equal('batman_villains')
+    page.getContextpackCards().find('.contextpack-card-name').each(el =>
+      expect(el.text()).to.equal('farm')
     );
   });
 
   it('Should type something partial in the topic filter and check that it returned correct elements', () => {
     // Filter for topics that contain 'd'
-    cy.get('[data-test=contextpackTopicInput]').type('d');
+    cy.get('[data-test=contextpackNameInput]').type('j');
 
     page.getContextpackCards().should('have.lengthOf.above', 0);
 
     // Go through each of the cards that are being shown and get the topics
-    page.getContextpackCards().find('.contextpack-card-topic')
+    page.getContextpackCards().find('.contextpack-card-name')
       // We should see these topics
-      .should('contain.text', 'default')
-      .should('contain.text', 'birthday')
+      .should('contain.text', 'Jojo Siwa')
       // We shouldn't see these topics
-      .should('not.contain.text', 'jojo')
+      .should('not.contain.text', 'farm')
       .should('not.contain.text', 'batman_villains');
   });
 
@@ -67,9 +66,9 @@ describe('Contextpack list', () => {
     page.getContextpackListItems().should('not.exist');
   });
 
-  it('Should type a topic, switch the view, and check that it returned correct elements', () => {
+  it('Should type a name, switch the view, and check that it returned correct elements', () => {
     // Filter for contextpack 'batman_villains'
-    cy.get('[data-test=contextpackTopicInput]').type('batman_villains');
+    cy.get('[data-test=contextpackNameInput]').type('jojo');
 
 
     // Choose the view type "List"
@@ -80,7 +79,7 @@ describe('Contextpack list', () => {
 
     // (We check this two ways to show multiple ways to check this)
     page.getContextpackListItems().each(el => {
-      cy.wrap(el).find('.contextpack-list-topic').should('contain', 'batman');
+      cy.wrap(el).find('.contextpack-list-name').should('contain', 'Jojo Siwa');
     });
   });
 
@@ -92,8 +91,9 @@ describe('Contextpack list', () => {
 
   it('Should click view info on a contextpack and go to the right URL', () => {
     page.getContextpackCards().first().then((card) => {
-      const firstContextpackTopic = card.find('.contextpack-card-topic').text();
+      const firstContextpackTopic = card.find('.contextpack-card-name').text();
       const firstContextpackEnabled = card.find('.contextpack-card-enabled').text();
+
 
       // When the view info button on the first contextpack card is clicked, the URL should have a valid mongo ID
       page.clickViewInfo(page.getContextpackCards().first());
@@ -102,9 +102,9 @@ describe('Contextpack list', () => {
       cy.url().should('match', /\/contextpacks\/[0-9a-fA-F]{24}$/);
 
       // On this info page we were sent to, the topic and topic should be correct
-      cy.get('.contextpack-card-topic').first().should('have.text', firstContextpackTopic);
+      cy.get('.contextpack-card-name').first().should('have.text', firstContextpackTopic);
       cy.get('.contextpack-card-enabled').first().should('have.text', firstContextpackEnabled);
-      cy.get('.contextpack-card-nouns').first().should('contain.text', 'cake');
+
     });
    });
 });
