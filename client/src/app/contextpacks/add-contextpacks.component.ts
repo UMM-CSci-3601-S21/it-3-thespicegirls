@@ -1,6 +1,6 @@
 /* eslint-disable guard-for-in */
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
@@ -21,48 +21,34 @@ export class AddContextpacksComponent implements OnInit {
   validationMessages = {
     wordlists: {
       name: {
-        required: 'X is required.',
-        pattern: 'X must be 3 characters long.'
+        required: 'Name is required.',
 
+      },
+      enabled: {
+        required: 'Must be true or false',
       },
       nouns: {
         word: {
-          required: 'Y1 is required.',
-          pattern: 'Y1 must be 3 characters long.'
         },
         forms: {
-          required: 'Y2 is required.',
-          pattern: 'Y2 must be 3 characters long.'
         },
       },
       adjectives: {
         word: {
-          required: 'Y1 is required.',
-          pattern: 'Y1 must be 3 characters long.'
         },
         forms: {
-          required: 'Y2 is required.',
-          pattern: 'Y2 must be 3 characters long.'
         },
       },
       verbs: {
         word: {
-          required: 'Y1 is required.',
-          pattern: 'Y1 must be 3 characters long.'
         },
         forms: {
-          required: 'Y2 is required.',
-          pattern: 'Y2 must be 3 characters long.'
         },
       },
       misc: {
         word: {
-          required: 'Y1 is required.',
-          pattern: 'Y1 must be 3 characters long.'
         },
         forms: {
-          required: 'Y2 is required.',
-          pattern: 'Y2 must be 3 characters long.'
         },
       }
     }
@@ -76,20 +62,31 @@ export class AddContextpacksComponent implements OnInit {
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({
-      name: [' ', [Validators.required]],
-      enabled: [' ', [Validators.required]],
+      name: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      enabled: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'),
+      ])),
       icon: '',
       wordlists: this.fb.array([
         this.initwordlist()
       ])
     });
+    this.contextPackForm.valueChanges.subscribe(data => this.validateForm());
   }
 
   initwordlist() {
     return this.fb.group({
       //  ---------------------forms fields on x level ------------------------
-      name: [' ', [Validators.required]],
-      enabled: [' ', [Validators.required]],
+      name: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      enabled: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^(true|false|True|)$'),
+      ])),
       // ---------------------------------------------------------------------
       nouns: this.fb.array([
         this.initNouns()
@@ -134,8 +131,8 @@ export class AddContextpacksComponent implements OnInit {
   wordlistsErrors() {
     return [{
       //  ---------------------forms errors on x level ------------------------
-      name: '',
-      enabled: '',
+      name: [' ', [Validators.required]],
+      enabled:[' ', [Validators.required]],
 
       // ---------------------------------------------------------------------
       nouns: this.nounsErrors()
@@ -160,14 +157,13 @@ export class AddContextpacksComponent implements OnInit {
   }
   validateWordlists() {
     const wordlistsA = this.contextPackForm.controls.wordlists as FormArray;
-    console.log('validateXs');
     // console.log(XsA.value);
     this.formErrors.wordlists = [];
     let x = 1;
     while (x <= wordlistsA.length) {
       this.formErrors.wordlists.push({
-        name: '',
-        enabled: '',
+        name: [' ', [Validators.required]],
+        enabled: [' ', [Validators.required]],
         nouns: [{
           word: '',
           forms: this.fb.array([
@@ -176,50 +172,19 @@ export class AddContextpacksComponent implements OnInit {
         }]
       });
       const wordlist = wordlistsA.at(x - 1 ) as FormGroup;
-      console.log('X--->');
-      console.log(wordlist.value);
       for (const field in wordlist.controls) {
         const input = wordlist.get(field);
-        console.log('field--->');
-        console.log(field);
         if (input.invalid && input.dirty) {
           for (const error in input.errors) {
             this.formErrors.wordlists[x - 1][field] = this.validationMessages.wordlists[field][error];
           }
         }
       }
-      this.validateYs(x);
       x++;
     }
 
   }
 
-  validateYs(wordlist) {
-    console.log('validateYs');
-    const nounsA = (this.contextPackForm.controls.wordlists as FormArray).at(wordlist - 1).get('nouns') as FormArray;
-    this.formErrors.wordlists[wordlist - 1].nouns = [];
-    let y = 1;
-    while (y <= nounsA.length) {
-      this.formErrors.wordlists[wordlist - 1].nouns.push({
-        word: '',
-        forms: this.fb.array([
-          this.fb.control('')
-        ]),
-      });
-      const nouns = nounsA.at(y - 1) as FormGroup;
-      for (const field in nouns.controls) {
-        const input = nouns.get(field);
-        if (input.invalid && input.dirty) {
-          for (const error in input.errors) {
-            this.formErrors.wordlists[wordlist - 1].nouns[y - 1][field] = this.validationMessages.wordlists.nouns[field][error];
-
-          }
-
-        }
-      }
-      y++;
-    }
-  }
   submitForm() {
     this.contextPackService.addContextPack(this.contextPackForm.value).subscribe(newID => {
       this.snackBar.open('Added Pack ' + this.contextPackForm.value.name, null, {
