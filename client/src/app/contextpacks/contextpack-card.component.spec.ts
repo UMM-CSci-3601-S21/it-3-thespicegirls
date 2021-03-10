@@ -60,7 +60,15 @@ describe('ContextPackCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /**
+   * Note this takes in 0 as a num input so the test doesn't actually download the json file
+   */
   it('should create a download element when given a json', () => {
-    expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
+    expect(component.downloadJson(component.contextpack, component.contextpack.name, 0).toString()).toContain('happy');
+  });
+  it('should convert a json into a correctly formatted json', () => {
+    expect(component.convertToBetterJson(component.contextpack).$schema).
+    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
+    expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
   });
 });
