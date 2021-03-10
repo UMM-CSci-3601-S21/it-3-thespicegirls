@@ -2,7 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -66,15 +68,17 @@ export class AddContextpacksComponent implements OnInit {
     }
   };
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
+    private snackBar: MatSnackBar, private router: Router) { }
 
 
 
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({
-      name: '',
-      enabled: '',
+      name: [' ', [Validators.required]],
+      enabled: [' ', [Validators.required]],
+      icon: '',
       wordlists: this.fb.array([
         this.initwordlist()
       ])
@@ -127,10 +131,6 @@ export class AddContextpacksComponent implements OnInit {
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
-
-
-
-
   wordlistsErrors() {
     return [{
       //  ---------------------forms errors on x level ------------------------
@@ -154,27 +154,8 @@ export class AddContextpacksComponent implements OnInit {
 
     }];
   }
-
-
-
-
-
-
-
-
-
   // form validation
   validateForm() {
-    // console.log('validateForm');
-    // for (let field in this.formErrors) {
-    //   this.formErrors[field] = '';
-    //   let input = this.register_readers.get(field);
-    //   if (input.invalid && input.dirty) {
-    //     for (let error in input.errors) {
-    //       this.formErrors[field] = this.validationMessages[field][error];
-    //     }
-    //   }
-    // }
     this.validateWordlists();
   }
   validateWordlists() {
@@ -239,16 +220,20 @@ export class AddContextpacksComponent implements OnInit {
       y++;
     }
   }
-
-
-
-
-
-
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.contextPackForm.value);
+  submitForm() {
+    this.contextPackService.addContextPack(this.contextPackForm.value).subscribe(newID => {
+      this.snackBar.open('Added Pack ' + this.contextPackForm.value.name, null, {
+        duration: 2000,
+      });
+      this.router.navigate(['/contextpacks/', newID]);
+    }, err => {
+      this.snackBar.open('Failed to add the pack', 'OK', {
+        duration: 5000,
+      });
+    });
   }
+
+
 
 
 

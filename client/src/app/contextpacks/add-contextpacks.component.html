@@ -1,4 +1,4 @@
-<form [formGroup]="contextPackForm">
+<form [formGroup]="contextPackForm" (ngSubmit)="submitForm()">
   <label>
     Pack Name:
     <input type="text" formControlName="name">
@@ -6,6 +6,10 @@
   <label>
     Enabled:
     <input type="text" formControlName="enabled">
+  </label>
+  <label>
+    Icon:
+    <input type="text" formControlName="icon">
   </label>
 	<!-- X -->
 	<div formArrayName="wordlists">
@@ -105,7 +109,7 @@
         <!-- Misc -->
         <label>
           <div formArrayName="misc">
-           <h3>Verbs</h3>
+           <h3>Misc</h3>
             <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="misc">
 
@@ -136,6 +140,16 @@
 	</div>
 	<!-- X End -->
 	<form>
+      <button (click)="submitForm()"
+        mat-button
+        type="button"
+        color="primary"
+        [disabled]="!contextPackForm.valid"
+        type="submit"
+        data-test="confirmAddPackButton"
+      >
+        ADD CONTEXT PACK
+      </button>
 
 		<h5>Field Values</h5>
 		<pre style="font-size:15px">{{ contextPackForm.value | json }}</pre>
