@@ -60,12 +60,11 @@ public class ContextPackController {
     .into(new ArrayList<>()));
   }
 
-
-
   public void addNewContextPack(Context ctx){
     ContextPack newPack = ctx.bodyValidator(ContextPack.class)
       .check(pack -> pack.name != null )
       .check(pack -> String.valueOf(pack.enabled).matches(statusRegex))
+
       .get();
 
       contextPackCollection.insertOne(newPack);
