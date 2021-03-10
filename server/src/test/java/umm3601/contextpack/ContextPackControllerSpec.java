@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -75,24 +75,15 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
-    Document testPack = new Document().append("name", "animals").append("enabled", true).append("wordlists",
-        new Document().append("topic", "cats").append("enabled", true)
-            .append("verbs",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("nouns",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("adjectives",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-            .append("misc",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse")))));
-    contextPackDocuments.insertOne(testPack);
     testID = new ObjectId();
     Document testPackID = new Document()
     .append("_id", testID)
     .append("name", "baskets")
+    .append("icon", "dog.png")
     .append("enabled", true)
-    .append("wordlist",
-        new Document().append("topic", "dogs").append("enabled", true)
+    .append("wordlists", Arrays.asList(
+      new Document("name", "dogs")
+            .append("enabled", true)
             .append("verbs",
                 Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("horsie", "horse"))))
             .append("nouns",
@@ -100,25 +91,29 @@ public class ContextPackControllerSpec {
             .append("adjectives",
                 Arrays.asList(new Document("word", "blue").append("forms", Arrays.asList("horsie", "horse"))))
             .append("misc",
-                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("horsie", "horse")))));
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("horsie", "horse")))),
+
+      new Document("name", "cats")
+            .append("enabled", true)
+            .append("verbs",
+                Arrays.asList(new Document("word", "walk").append("forms", Arrays.asList("pink", "pork"))))
+            .append("nouns",
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))))
+            .append("adjectives",
+                Arrays.asList(new Document("word", "red").append("forms", Arrays.asList("seven", "horse"))))
+            .append("misc",
+                Arrays.asList(new Document("word", "moo").append("forms", Arrays.asList("horse"))))
+
+                )
+
+    );
     contextPackDocuments.insertOne(testPackID);
 
     MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
-    Document testList = new Document().append("topic", "cats")
-          .append("enabled", true)
-          .append("nouns",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-          .append("adjectives",
-                Arrays.asList(new Document("word", "Bob").append("forms", Arrays.asList("Bob"))))
-          .append("verbs",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
-          .append("misc",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
-    wordlistDocuments.insertOne(testList);
 
     Document testListID = new Document()
           .append("_id", testID)
-          .append("topic", "MountainDew")
+          .append("name", "MountainDew")
           .append("enabled", true)
           .append("nouns",
                 Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
@@ -153,74 +148,10 @@ public class ContextPackControllerSpec {
         JavalinJson.fromJson(result, ContextPack[].class).length);
 
   }
-  @ Test
-  public void GetAllWordlists(){
-
-    // Create our fake Javalin context
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-    contextPackController.getWordlists(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    assertTrue(JavalinJson.fromJson(result, Wordlist[].class).length >= 1);
-    assertEquals(db.getCollection("wordlists").countDocuments(),
-        JavalinJson.fromJson(result, Wordlist[].class).length);
-
-  }
 
 
   @Test
-  public void AddNewWordlist() throws IOException {
-    String test = "{"
-    + "\"topic\": \"k\","
-    + "\"enabled\": true,"
-    + "\"nouns\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"she\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"adjectives\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"verbs\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "],"
-    + "\"misc\": ["
-    + "{\"word\": \"he\", \"forms\": [\"he\"]},"
-    + "{\"word\": \"he\", \"forms\": [\"he\"]}"
-    + "]"
-    + "}"
-    ;
-
-    mockReq.setBodyContent(test);
-    mockReq.setMethod("POST");
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
-
-    contextPackController.addNewWordlist(ctx);
-    assertEquals(201, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    assertNotEquals("", id);
-    System.out.println(id);
-
-    assertEquals(1, db.getCollection("wordlists").countDocuments(eq("_id", new ObjectId(id))));
-
-
-    Document addedList = db.getCollection("wordlists").find(eq("_id", new ObjectId(id))).first();
-    assertNotNull(addedList);
-    assertEquals("k", addedList.getString("topic"));
-
-    addedList = db.getCollection("wordlists").find(eq("nouns.word", "he")).first();
-    assertNotNull(addedList);
-
-  }
-
-  @Test
-  public void AddInvalidWordlistNullTopic(){
+  public void AddInvalidContextPackNullTopic(){
     String test = "{"
     + "\"topic\": \"\","
     + "\"enabled\": true,"
@@ -245,16 +176,17 @@ public class ContextPackControllerSpec {
 
     mockReq.setBodyContent(test);
     mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
 
     assertThrows(BadRequestResponse.class, () -> {
-      contextPackController.addNewWordlist(ctx);
+      contextPackController.addNewContextPack(ctx);
     });
 
   }
 
+
   @Test
-  public void AddInvalidWordlistIllegalStatus(){
+  public void AddInvalidContextPackIllegalStatus(){
     String test = "{"
     + "\"topic\": \"cats\","
     + "\"enabled\": hockey,"
@@ -279,11 +211,65 @@ public class ContextPackControllerSpec {
 
     mockReq.setBodyContent(test);
     mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
 
     assertThrows(BadRequestResponse.class, () -> {
-      contextPackController.addNewWordlist(ctx);
+      contextPackController.addNewContextPack(ctx);
     });
+
+  }
+
+  @Test
+  public void AddNewContextPack() throws IOException {
+    String test = "{"
+    + "\"name\": \"sight words\","
+    + "\"icon\": \"eye.png\","
+    + "\"enabled\": true,"
+    + "\"wordlist\":"
+      + "{"
+      + "\"topic\": \"goats\","
+      + "\"enabled\": true,"
+      + "\"nouns\": ["
+      + "{\"word\": \"boat\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"she\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"adjectives\": ["
+      + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"verbs\": ["
+      + "{\"word\": \"he\", \"forms\": [\"he\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "],"
+      + "\"misc\": ["
+      + "{\"word\": \"duck\", \"forms\": [\"ducky\"]},"
+      + "{\"word\": \"he\", \"forms\": [\"he\"]}"
+      + "]"
+      + "}}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
+
+    contextPackController.addNewContextPack(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+
+    assertNotEquals("", id);
+    System.out.println(id);
+    System.out.println(result);
+
+    assertEquals(1, db.getCollection("contextpacks").countDocuments(eq("_id", new ObjectId(id))));
+
+
+    Document addedPack = db.getCollection("contextpacks").find(eq("_id", new ObjectId(id))).first();
+    assertNotNull(addedPack);
+    assertEquals("sight words", addedPack.getString("name"));
+    assertNotNull(addedPack);
 
   }
 
@@ -321,40 +307,7 @@ public class ContextPackControllerSpec {
     });
 
   }
-  @Test
-  public void GetWordlist(){
-    String testlistID = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", testlistID));
-    contextPackController.getWordlist(ctx);
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    Wordlist resultPack = JavalinJson.fromJson(result, Wordlist.class);
-
-    assertEquals(resultPack._id, testlistID);
-    assertEquals(resultPack.topic, "MountainDew");
-  }
-
-  @Test
-  public void getWordlistInvalidID(){
-     Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "chickens"));
-
-    assertThrows(BadRequestResponse.class, ()->{
-      contextPackController.getWordlist(ctx);
-    });
-
-  }
-
-  @Test
-  public void getWordlistNOID(){
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/wordlists/:id" , ImmutableMap.of("id", "58af3a600343927e48e87335"));
-
-    assertThrows(NotFoundResponse.class, ()->{
-      contextPackController.getWordlist(ctx);
-    });
-
-  }
 
 }
 

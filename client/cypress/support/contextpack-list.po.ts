@@ -1,28 +1,28 @@
-export class WordlistListPage {
+export class ContextpackListPage {
   navigateTo() {
-    return cy.visit('/wordlists');
+    return cy.visit('/contextpacks');
   }
 
-  getWordlistCards() {
-    return cy.get('.wordlist-cards-container app-wordlist-card');
+  getContextpackCards() {
+    return cy.get('.contextpack-card');
   }
 
-  getWordlistListItems() {
-    return cy.get('.wordlist-nav-list .wordlist-list-item');
+  getContextpackListItems() {
+    return cy.get('.contextpack-nav-list .contextpack-list-item');
   }
 
   /**
-   * Clicks the "view info" button for the given wordlist card.
+   * Clicks the "view info" button for the given contextpack card.
    * Requires being in the "card" view.
    *
-   * @param card The wordlist card
+   * @param card The contextpack card
    */
   clickViewInfo(card: Cypress.Chainable<JQuery<HTMLElement>>) {
     return card.find<HTMLButtonElement>('[data-test=viewInfoButton]').click();
   }
 
   /**
-   * Change the view of wordlists.
+   * Change the view of contextpacks.
    *
    * @param viewType Which view type to change to: "card" or "list".
    */
