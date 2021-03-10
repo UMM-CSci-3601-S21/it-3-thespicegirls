@@ -120,5 +120,30 @@ describe('AddContextpacksComponent', () => {
       expect(control.nouns.length).toBeGreaterThan(2);
     });
   });
+  describe('Add verbs', () =>{
+    it('should add an array of verbs when prompted', () =>{
+
+      component.addWordlist();
+      component.addPosArray(0, 'verbs');
+      let control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      expect(control.verbs.length).toBeGreaterThan(1);
+      // Add 2 noun arrays, we expect two to be present
+      component.addPosArray(0, 'verbs');
+      control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      expect(control.verbs.length).toBeGreaterThan(2);
+    });
+  });
+
+  describe('Add forms', () =>{
+    it('should add a form to the forms array when prompted', () =>{
+
+      component.addWordlist();
+      component.addPosArray(0, 'verbs');
+      component.addForms(0, 0, 'verbs');
+      const control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      console.log(control.verbs[0].forms);
+      expect(control.verbs[0].forms.length).toBeGreaterThan(1);
+    });
+  });
 
 });
