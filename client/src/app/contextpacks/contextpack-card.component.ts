@@ -18,7 +18,7 @@ export class ContextPackCardComponent implements OnInit {
 
 
   downloadJson(myJson: ContextPack, topic: string){
-    const sJson = JSON.stringify(myJson, null, 1);
+    const sJson = JSON.stringify(myJson, null, 2);
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
     element.setAttribute('download', topic + '.json');
