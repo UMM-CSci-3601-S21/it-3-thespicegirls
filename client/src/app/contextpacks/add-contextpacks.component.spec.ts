@@ -55,4 +55,34 @@ describe('AddContextpacksComponent', () => {
     expect(addPackForm.valid).toBeFalsy();
   });
 
+  describe('the pack name field', () => {
+    let nameControl: AbstractControl;
+
+    beforeEach(() => {
+      nameControl = component.contextPackForm.controls.name;
+    });
+
+    it('should not allow empty names', () => {
+      nameControl.setValue('');
+      expect(nameControl.valid).toBeFalsy();
+    });
+
+    it('should be fine with "Jojo Siwa"', () => {
+      nameControl.setValue('Jojo Siwa');
+      expect(nameControl.valid).toBeTruthy();
+    });
+
+    it('should allow digits in the name', () => {
+      nameControl.setValue('559546sd');
+      expect(nameControl.valid).toBeTruthy();
+    });
+
+  });
+
+  describe('The enabled field', () =>{
+    it('should only allow boolean values', () => {
+
+    });
+  });
+
 });
