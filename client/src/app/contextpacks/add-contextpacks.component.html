@@ -21,7 +21,7 @@
         </label>
 
 
-				<!-- Y -->
+				<!-- Nouns -->
         <label>
           <div formArrayName="nouns">
            <h3>Nouns</h3>
@@ -35,12 +35,11 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
-                     <button (click)="addForms(ix, iy)">Add Form</button>
+                     <button (click)="addNounForms(ix, iy)">Add Form</button>
                     <input type="text" [formControlName]="iz">
 
                   </div>
                 </div>
-                <!-- wordlist End -->
 
               </div>
             </div>
@@ -48,8 +47,34 @@
           </div>
 
         </label>
+				<!-- Nouns End -->
+        <!-- Adjectives -->
+        <label>
+          <div formArrayName="adjectives">
+           <h3>Adjectives</h3>
+            <div *ngFor="let nouns of wordlists['controls'].adjectives['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="adjectives">
 
-				<!-- Y End-->
+                <label>
+                  Word:
+                  <input type="text" formControlName="word">
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                     <button (click)="addAdjForms(ix, iy)">Add Form</button>
+                    <input type="text" [formControlName]="iz">
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <input type="button" (click)="addAdj(ix)" value="Add Adjective">
+          </div>
+
+        </label>
+				<!-- Adjectives End -->
 			</div>
 		</div>
 		<input type="button" (click)="addWordlist()" value="Add Wordlist">

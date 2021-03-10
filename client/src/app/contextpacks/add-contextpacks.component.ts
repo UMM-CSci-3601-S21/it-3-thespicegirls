@@ -32,6 +32,16 @@ export class AddContextpacksComponent implements OnInit {
           required: 'Y2 is required.',
           pattern: 'Y2 must be 3 characters long.'
         },
+      },
+      adjectives: {
+        word: {
+          required: 'Y1 is required.',
+          pattern: 'Y1 must be 3 characters long.'
+        },
+        forms: {
+          required: 'Y2 is required.',
+          pattern: 'Y2 must be 3 characters long.'
+        },
       }
     }
   };
@@ -75,7 +85,11 @@ export class AddContextpacksComponent implements OnInit {
       // ---------------------------------------------------------------------
       nouns: this.fb.array([
         this.initNouns()
+      ]),
+      adjectives: this.fb.array([
+        this.initNouns()
       ])
+
     });
   }
 
@@ -109,8 +123,17 @@ export class AddContextpacksComponent implements OnInit {
     const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns') as FormArray;
     control.push(this.initNouns());
   }
-  addForms(ix, iy) {
+  addAdj(ix) {
+    const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray;
+    control.push(this.initNouns());
+  }
+  addNounForms(ix, iy) {
     const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('nouns') as FormArray)
+    .at(iy).get('forms') as FormArray;
+    control.push(this.fb.control(''));
+  }
+  addAdjForms(ix, iy) {
+    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get('adjectives') as FormArray)
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
