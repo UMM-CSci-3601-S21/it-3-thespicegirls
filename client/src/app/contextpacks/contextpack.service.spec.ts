@@ -44,19 +44,19 @@ describe('Context Pack service: ', () => {
         _id: 'chris_id',
         name: 'fun',
         enabled: true,
-        wordpacks: testWordlist
+        wordlists: testWordlist
       },
       {
         _id: 'pat_id',
         name: 'sun',
         enabled: true,
-        wordpacks: testWordlist
+        wordlists: testWordlist
       },
       {
         _id: 'jamie_id',
         name: 'happy',
         enabled: true,
-        wordpacks: testWordlist
+        wordlists: testWordlist
       }
   ];
   let contextpackService: ContextPackService;

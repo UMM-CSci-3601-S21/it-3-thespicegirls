@@ -7,9 +7,14 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-contextpack-info',
   templateUrl: './contextpack-info.component.html',
-  styleUrls: ['./contextpack-info.component.scss']
+  styleUrls: ['./contextpack-info.component.scss'],
+  providers:[]
 })
 export class ContextPackInfoComponent implements OnInit, OnDestroy {
+
+
+
+  public contextpackName: string;
 
   contextpack: ContextPack;
   id: string;

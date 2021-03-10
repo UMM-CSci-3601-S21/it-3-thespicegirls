@@ -46,21 +46,21 @@ export class MockContextPackService extends ContextPackService {
   static testContextPacks: ContextPack[] = [
     {
       _id: 'chris_id',
+      enabled: true,
       name: 'fun',
-      enabled: true,
-      wordpacks: MockContextPackService.testWordlists
+      wordlists: MockContextPackService.testWordlists
     },
     {
-      _id: 'pat_id',
+      _id: 'bob_id',
+      enabled: true,
       name: 'sun',
-      enabled: true,
-      wordpacks: MockContextPackService.testWordlists
+      wordlists: MockContextPackService.testWordlists
     },
     {
-      _id: 'jamie_id',
-      name: 'happy',
+      _id: 'mary_id',
       enabled: true,
-      wordpacks: MockContextPackService.testWordlists
+      name: 'happy',
+      wordlists: MockContextPackService.testWordlists
     }
   ];
 

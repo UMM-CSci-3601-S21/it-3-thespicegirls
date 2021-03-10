@@ -15,5 +15,5 @@ export interface ContextPack {
   _id: string;
   name: string;
   enabled: boolean;
-  wordpacks?: Wordlist[];
+  wordlists?: Wordlist[];
 }

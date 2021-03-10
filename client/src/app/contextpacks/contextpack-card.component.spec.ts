@@ -50,7 +50,7 @@ describe('ContextPackCardComponent', () => {
       _id: 'pat_id',
       enabled: false,
       name: 'happy',
-      wordpacks: null
+      wordlists: null
     };
 
     fixture.detectChanges();
