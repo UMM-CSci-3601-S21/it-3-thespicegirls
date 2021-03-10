@@ -89,6 +89,7 @@ describe('Contextpack list', () => {
     cy.get('.contextpack-download-button').should('have.text', 'Download Json');
   });
 
+
   it('Should click view info on a contextpack and go to the right URL', () => {
     page.getContextpackCards().first().then((card) => {
       const firstContextpackTopic = card.find('.contextpack-card-name').text();
