@@ -25,7 +25,7 @@ export class AddContextpacksComponent implements OnInit {
 
       },
       enabled: {
-        required: 'Must be true or false',
+        required: 'Must be true or false (check capitalization)',
       },
       nouns: {
         word: {
@@ -67,7 +67,7 @@ export class AddContextpacksComponent implements OnInit {
       ])),
       enabled: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])$'),
+        Validators.pattern('^(true|false)'),
       ])),
       icon: '',
       wordlists: this.fb.array([
@@ -85,7 +85,7 @@ export class AddContextpacksComponent implements OnInit {
       ])),
       enabled: new FormControl('', Validators.compose([
         Validators.required,
-        Validators.pattern('^(true|false|True|)$'),
+        Validators.pattern('^(true|false)$'),
       ])),
       // ---------------------------------------------------------------------
       nouns: this.fb.array([
