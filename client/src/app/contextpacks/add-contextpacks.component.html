@@ -1,1 +1,62 @@
-<p>add-contextpacks works!</p>
+<form [formGroup]="contextPackForm">
+  <label>
+    Pack Name:
+    <input type="text" formControlName="name">
+  </label>
+  <label>
+    Enabled:
+    <input type="text" formControlName="enabled">
+  </label>
+	<!-- X -->
+	<div formArrayName="wordlists">
+		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
+			<div formGroupName="{{ix}}" class="wordlists">
+        <label>
+          Wordlist Name:
+          <input type="text" formControlName="name">
+        </label>
+        <label>
+          Enabled:
+          <input type="text" formControlName="enabled">
+        </label>
+
+
+				<!-- Y -->
+        <label>
+          <div formArrayName="nouns">
+           <h3>Nouns</h3>
+            <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="nouns">
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word">
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                     <button (click)="addForms(ix, iy)">Add Form</button>
+                    <input type="text" [formControlName]="iz">
+
+                  </div>
+                </div>
+                <!-- wordlist End -->
+
+              </div>
+            </div>
+            <input type="button" (click)="addNouns(ix)" value="Add Noun">
+          </div>
+
+        </label>
+
+				<!-- Y End-->
+			</div>
+		</div>
+		<input type="button" (click)="addWordlist()" value="Add Wordlist">
+	</div>
+	<!-- X End -->
+	<form>
+
+		<h5>Field Values</h5>
+		<pre style="font-size:15px">{{ contextPackForm.value | json }}</pre>
+
