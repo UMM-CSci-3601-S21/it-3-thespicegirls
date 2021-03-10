@@ -1,25 +1,58 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule, FormGroup, AbstractControl } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 
 import { AddContextpacksComponent } from './add-contextpacks.component';
+import { ContextPackService } from './contextpack.service';
 
 describe('AddContextpacksComponent', () => {
   let component: AddContextpacksComponent;
+  let addPackForm: FormGroup;
   let fixture: ComponentFixture<AddContextpacksComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AddContextpacksComponent ]
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        RouterTestingModule
+      ],
+      declarations: [ AddContextpacksComponent ],
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
     })
-    .compileComponents();
-  });
+    .compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddContextpacksComponent);
     component = fixture.componentInstance;
+    component.ngOnInit();
     fixture.detectChanges();
+    addPackForm = component.contextPackForm;
+    expect(addPackForm).toBeDefined();
+    expect(addPackForm.controls).toBeDefined();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(addPackForm).toBeTruthy();
   });
+  it('form should be invalid when empty', () => {
+    expect(addPackForm.valid).toBeFalsy();
+  });
+
 });
