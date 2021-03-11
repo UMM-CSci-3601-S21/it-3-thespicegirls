@@ -15,9 +15,9 @@ export class AddPackPage {
 
   selectMatSelectValue(select: Cypress.Chainable, value: string) {
     // Find and click the drop down
-    return select.click()
+    return select.click({ multiple: true, force:true })
       // Select and click the desired value from the resulting menu
-      .get(`mat-option[value="${value}"]`).click();
+      .get(`mat-option[value="${value}"]`).click({ multiple: true, force:true });
   }
 
   getFormField(fieldName: string) {
@@ -47,6 +47,6 @@ export class AddPackPage {
       this.getFormField('wordlists').get('nouns')[0].get('word').type(newPack.wordlists[0].nouns[0].word);
     }
     this.selectMatSelectValue(this.getFormField('enabled'), newPack.enabled.toString());
-    return this.addPackButton().click();
+    return this.addPackButton().click({ multiple: true, force:true });
   }
 }
