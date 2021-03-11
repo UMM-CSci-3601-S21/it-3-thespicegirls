@@ -152,5 +152,6 @@
       </button>
 
 		<h5>Field Values</h5>
+    <button class="contextpack-download-button" (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name, 1)'>Download Json</button>
 		<pre style="font-size:15px">{{ contextPackForm.value | json }}</pre>
 

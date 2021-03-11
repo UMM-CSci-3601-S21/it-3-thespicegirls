@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
+import { ContextPackCardComponent } from './contextpack-card.component';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
+  contextpackcard = new ContextPackCardComponent();
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -182,8 +184,8 @@ export class AddContextpacksComponent implements OnInit {
       }
       x++;
     }
-
   }
+
 
   submitForm() {
     this.contextPackService.addContextPack(this.contextPackForm.value).subscribe(newID => {

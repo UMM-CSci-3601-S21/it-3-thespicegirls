@@ -145,5 +145,4 @@ describe('AddContextpacksComponent', () => {
       expect(control.verbs[0].forms.length).toBeGreaterThan(1);
     });
   });
-
 });
