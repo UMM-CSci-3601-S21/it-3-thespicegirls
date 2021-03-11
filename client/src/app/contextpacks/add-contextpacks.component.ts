@@ -22,10 +22,9 @@ export class AddContextpacksComponent implements OnInit {
 
   validationMessages = {
     wordlists: {
-      name: {
-        required: 'Name is required.',
-
-      },
+      name: [
+        {type: 'required', message: 'Name is required'},
+      ],
       enabled: {
         required: 'Must be true or false (check capitalization)',
       },
@@ -72,9 +71,7 @@ export class AddContextpacksComponent implements OnInit {
         Validators.pattern('^(true|false)'),
       ])),
       icon: '',
-      wordlists: this.fb.array([
-        this.initwordlist()
-      ])
+      wordlists: this.fb.array([])
     });
     this.contextPackForm.valueChanges.subscribe(data => this.validateForm());
   }
@@ -90,18 +87,10 @@ export class AddContextpacksComponent implements OnInit {
         Validators.pattern('^(true|false)$'),
       ])),
       // ---------------------------------------------------------------------
-      nouns: this.fb.array([
-        this.initNouns()
-      ]),
-      adjectives: this.fb.array([
-        this.initNouns()
-      ]),
-      verbs: this.fb.array([
-        this.initNouns()
-      ]),
-      misc: this.fb.array([
-        this.initNouns()
-      ])
+      nouns: this.fb.array([]),
+      adjectives: this.fb.array([]),
+      verbs: this.fb.array([]),
+      misc: this.fb.array([])
 
     });
   }
@@ -121,15 +110,29 @@ export class AddContextpacksComponent implements OnInit {
     const control = this.contextPackForm.controls.wordlists as FormArray;
     control.push(this.initwordlist());
   }
-  addPosArray(ix, pos){
+  addPosArray(ix: number, pos: string){
     const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray;
     control.push(this.initNouns());
   }
-  addForms(ix, iy, pos) {
+  addForms(ix: number, iy: number, pos: string) {
     const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray)
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
+
+  removeWordlists(empIndex: number){
+    (this.contextPackForm.controls.wordlists as FormArray).removeAt(empIndex);
+  }
+
+  removeWord(ix: number, iy: number, pos: string){
+    ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray).removeAt(iy);
+  }
+
+  removeForm(ix: number, iy: number, iz: number,  pos: string){
+    (((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray)
+    .at(iy).get('forms') as FormArray).removeAt(iz);
+  }
+
   wordlistsErrors() {
     return [{
       //  ---------------------forms errors on x level ------------------------
