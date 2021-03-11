@@ -49,12 +49,14 @@
 
 
 				<!-- Nouns -->
-        <label>
+
           <div formArrayName="nouns" >
            <h3>Nouns</h3>
             <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
-              <div formGroupName="{{iy}}" class="nouns" style="border: 1px solid rgb(51, 255, 0); padding: 10px; width: 400px; margin: 5px;">
+              <div formGroupName="{{iy}}" class="nouns">
+                <div>
                 <button type="button" (click)="removeWord(ix, iy, 'nouns')">Remove Noun</button>
+                </div>
                 <label>
                   Word:
                   <input type="text" formControlName="word">
@@ -62,8 +64,10 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
+                    <label>
                     Form:
                     <input type="text" [formControlName]="iz">
+                  </label>
                     <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
 
                   </div>
@@ -75,10 +79,9 @@
             <button type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
           </div>
 
-        </label>
 				<!-- Nouns End -->
         <!-- Adjectives -->
-        <label>
+
           <div formArrayName="adjectives" >
            <h3>Adjectives</h3>
             <div *ngFor="let nouns of wordlists['controls'].adjectives['controls']; let iy=index">
@@ -92,8 +95,10 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
+                    <label>
                     Form:
                     <input type="text" [formControlName]="iz">
+                  </label>
                     <button type="button" (click)="removeForm(ix, iy, iz, 'adjectives')">Remove Form</button>
 
                   </div>
@@ -105,10 +110,10 @@
             <button type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">Add Adjective</button>
           </div>
 
-        </label>
+
 				<!-- Adjectives End -->
         <!-- Verbs -->
-        <label>
+
           <div formArrayName="verbs">
            <h3>Verbs</h3>
             <div *ngFor="let nouns of wordlists['controls'].verbs['controls']; let iy=index">
@@ -122,8 +127,10 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
+                    <label>
                     Form:
                     <input type="text" [formControlName]="iz">
+                  </label>
                     <button type="button" (click)="removeForm(ix, iy, iz, 'verbs')">Remove Form</button>
 
                   </div>
@@ -135,10 +142,9 @@
             <button type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">Add Verb</button>
           </div>
 
-        </label>
+
 				<!-- Verbs End -->
         <!-- Misc -->
-        <label>
           <div formArrayName="misc">
            <h3>Misc</h3>
             <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
@@ -152,8 +158,10 @@
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
+                    <label>
                     Forms:
                     <input type="text" [formControlName]="iz">
+                  </label>
                     <button type="button" (click)="removeForm(ix, iy, iz, 'misc')">Remove Form</button>
 
                   </div>
@@ -165,7 +173,6 @@
             <button type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add A Misc Word</button>
           </div>
 
-        </label>
 				<!-- Misc End -->
 
 			</div>
