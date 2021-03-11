@@ -1,13 +1,30 @@
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
   <mat-card-header>
     <mat-card-title class="contextpack-card-name">{{ this.contextpack.name }}</mat-card-title>
-    <mat-card-subtitle class="contextpack-card-enabled">{{ this.contextpack.enabled }}</mat-card-subtitle>
+    <mat-card-subtitle class="contextpack-card-enabled">Enabled: {{ this.contextpack.enabled }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
 
+    <mat-form-field>
+      <mat-label>View Type</mat-label>
+      <mat-select [(value)]="selected" data-test="contextpackWordSelect">
+        <mat-option value="true">View Wordlists</mat-option>
+        <mat-option value="false">View Words</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
         <span class="contextpack-card-wordlists"><div style="width: 500px;white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
       </div>
+    </div>
+
+    <ng-template #templateWords>
+        <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">{{displayAllNouns(this.contextpack)}}</div></span>
+        <span class="contextpack-card-verbs"><div style="width: 500px;white-space: pre-line">{{displayAllVerbs(this.contextpack)}}</div></span>
+        <span class="contextpack-card-adjectives"><div style="width: 500px;white-space: pre-line">{{displayAllAdjectives(this.contextpack)}}</div></span>
+        <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">{{displayAllMisc(this.contextpack)}}</div></span>
+  </ng-template>
 
     <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name, 1)'>Download Json</button>
 

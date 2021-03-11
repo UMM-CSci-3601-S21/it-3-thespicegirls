@@ -93,10 +93,23 @@ describe('Contextpack list', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
     cy.get('.contextpack-card-name').should('have.text', 'farm');
-    cy.get('.contextpack-card-enabled').should('have.text', 'true');
+    cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
     cy.get('.contextpack-card-wordlists').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
     + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
     cy.get('.contextpack-card-wordlists').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
+    + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
+    + 'meowed, bark, barks, barked, barking');
+  });
+
+  it('Should click view info, select a view words, and see all the words', () => {
+    page.clickViewInfo(page.getContextpackCards().first());
+    page.selectView('false');
+
+    cy.get('.contextpack-card-name').should('have.text', 'farm');
+    cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
+    cy.get('.contextpack-card-nouns').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
+    + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
+    cy.get('.contextpack-card-verbs').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
     + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
     + 'meowed, bark, barks, barked, barking');
   });

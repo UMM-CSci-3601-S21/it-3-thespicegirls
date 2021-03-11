@@ -89,6 +89,19 @@ describe('ContextPackCardComponent', () => {
     expect(component.displayWordlists(component.contextpack.wordlists[0])).not.toContain('barbie');
   });
 
+  it('should return the nouns displayAllNouns() is called', () => {
+    expect(component.displayAllNouns(component.contextpack)).toContain('you, yoyo, yos, yoted');
+  });
+  it('should return the verbs when displayAllVerbs() is called', () => {
+    expect(component.displayAllVerbs(component.contextpack)).toContain('green, greener');
+  });
+  it('should return the adjectives when displayAllAdjectives() is called', () => {
+    expect(component.displayAllAdjectives(component.contextpack)).toContain('ran, running');
+  });
+  it('should return the misc words when displayAllMisc() is called', () => {
+    expect(component.displayAllMisc(component.contextpack)).toContain('langerhans, langerhan');
+  });
+
 
   it('should have displayNouns,ver,adjective,misc return null if undefined', () => {
     expect(component.displayNouns(wordlist)).toBeNull();

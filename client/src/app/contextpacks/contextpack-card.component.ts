@@ -10,6 +10,7 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
+  selected = 'true';
 
   constructor() { }
 
@@ -152,6 +153,23 @@ export class ContextPackCardComponent implements OnInit {
       wordlists: jsonBetter
       };
       return obj;
+  }
+
+  displayAllNouns(contextpack: ContextPack){
+
+
+  }
+  displayAllVerbs(contextpack: ContextPack){
+
+
+  }
+  displayAllAdjectives(contextpack: ContextPack){
+
+
+  }
+  displayAllMisc(contextpack: ContextPack){
+
+
   }
 
 }
