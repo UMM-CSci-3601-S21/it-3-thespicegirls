@@ -100,10 +100,10 @@ describe('AddContextpacksComponent', () => {
     it('should add a wordlist when prompted', () =>{
       component.addWordlist();
       let formValue = component.contextPackForm.value;
-      expect(formValue.wordlists.length).toBeGreaterThan(1);
+      expect(formValue.wordlists.length).toEqual(1);
       component.addWordlist();
       formValue = component.contextPackForm.value;
-      expect(formValue.wordlists.length).toBeGreaterThan(2);
+      expect(formValue.wordlists.length).toEqual(2);
     });
   });
   describe('Add nouns', () =>{
@@ -113,11 +113,11 @@ describe('AddContextpacksComponent', () => {
       component.addPosArray(0, 'nouns');
       let control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
       console.log(control.nouns);
-      expect(control.nouns.length).toBeGreaterThan(1);
+      expect(control.nouns.length).toEqual(1);
       // Add 2 noun arrays, we expect two to be present
       component.addPosArray(0, 'nouns');
       control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
-      expect(control.nouns.length).toBeGreaterThan(2);
+      expect(control.nouns.length).toEqual(2);
     });
   });
   describe('Add verbs', () =>{
@@ -126,11 +126,11 @@ describe('AddContextpacksComponent', () => {
       component.addWordlist();
       component.addPosArray(0, 'verbs');
       let control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
-      expect(control.verbs.length).toBeGreaterThan(1);
+      expect(control.verbs.length).toEqual(1);
       // Add 2 noun arrays, we expect two to be present
       component.addPosArray(0, 'verbs');
       control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
-      expect(control.verbs.length).toBeGreaterThan(2);
+      expect(control.verbs.length).toEqual(2);
     });
   });
 
@@ -142,7 +142,7 @@ describe('AddContextpacksComponent', () => {
       component.addForms(0, 0, 'verbs');
       const control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
       console.log(control.verbs[0].forms);
-      expect(control.verbs[0].forms.length).toBeGreaterThan(1);
+      expect(control.verbs[0].forms.length).toEqual(2);
     });
   });
 });

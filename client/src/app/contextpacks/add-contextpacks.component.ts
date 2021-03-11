@@ -66,7 +66,7 @@ export class AddContextpacksComponent implements OnInit {
       name: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      enabled: new FormControl('', Validators.compose([
+      enabled: new FormControl('true', Validators.compose([
         Validators.required,
         Validators.pattern('^(true|false)'),
       ])),
