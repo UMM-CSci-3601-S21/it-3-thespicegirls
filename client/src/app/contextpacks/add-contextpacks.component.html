@@ -2,6 +2,7 @@
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
 <form [formGroup]="contextPackForm" (ngSubmit)="submitForm()">
   <mat-card class="add-contextpack-card">
+    <mat-card-title class="add-pack-title">Create A New Context Pack</mat-card-title>
     <mat-card-content fxLayout="column">
 
     <mat-form-field>
@@ -34,17 +35,40 @@
   </mat-form-field>
 
 	<!-- X -->
+
 	<div formArrayName="wordlists">
 		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
 			<div formGroupName="{{ix}}" class="wordlists" style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
         <button type="button" (click)="removeWordlists(ix)">Remove This Wordlist</button><br>
+        <h1>Wordlist {{ix+1}}:</h1>
         <label>
           Wordlist Name:
-          <input type="text" formControlName="name">
+          <mat-form-field>
+            <mat-label>Wordlist Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name"
+                  required>
+            <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+              <mat-error class="error-message" data-test="nameError"
+                        *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
         </label>
         <label>
           Enabled:
-          <input type="text" formControlName="enabled">
+          <mat-form-field>
+            <mat-label>Enabled</mat-label>
+            <mat-select required formControlName="enabled">
+              <mat-option value="true">True</mat-option>
+              <mat-option value="false">False</mat-option>
+            </mat-select>
+            <mat-error *ngIf="contextPackForm.get('enabled').hasError('required')">You must make a selection</mat-error>
+            <mat-error *ngIf="contextPackForm.get('enabled').hasError('pattern') && !contextPackForm.get('enabled').hasError('required')">
+              Your selection is invalid
+            </mat-error>
+          </mat-form-field>
+
         </label>
 
 
