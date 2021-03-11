@@ -119,6 +119,17 @@ export class AddContextpacksComponent implements OnInit {
     .at(iy).get('forms') as FormArray;
     control.push(this.fb.control(''));
   }
+  setWord(ix: number, iy: number, pos: string){
+    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray)
+    .at(iy).get('forms') as FormArray;
+
+    const formAdd = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray).at(iy).get('word');
+    console.log('didnt go through');
+    if(control.getRawValue()[0] !== formAdd.value  ){
+      control.insert(0,formAdd);
+    }
+  }
+
 
   removeWordlists(empIndex: number){
     (this.contextPackForm.controls.wordlists as FormArray).removeAt(empIndex);
