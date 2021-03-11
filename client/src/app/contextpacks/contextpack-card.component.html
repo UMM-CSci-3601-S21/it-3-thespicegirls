@@ -4,14 +4,10 @@
     <mat-card-subtitle class="contextpack-card-enabled">{{ this.contextpack.enabled }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
-    <p>Nouns: <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">{{displayNouns(this.contextpack)}}</div>
-    </span></p>
-    <p>Adjectives: <span class="contextpack-card-adjectives"><div style="width: 500px;white-space: pre-line">{{displayAdjectives(this.contextpack)}}</div>
-    </span></p>
-    <p>Verbs: <span class="contextpack-card-verbs"><div style="width: 500px;white-space: pre-line">{{displayVerbs(this.contextpack)}}</div>
-    </span></p>
-    <p>Misc: <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">{{displayMisc(this.contextpack)}}</div>
-    </span></p>
+   <p> Word Lists: <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">{{displayWordlists(this.contextpack)}}</div>
+
+    </span>
+  </p>
     <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name, 1)'>Download Json</button>
 
   </mat-card-content>
