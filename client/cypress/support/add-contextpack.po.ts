@@ -1,4 +1,4 @@
-
+import {ContextPack} from 'src/app/contextpacks/contextpack';
 
 export class AddPackPage {
   navigateTo() {
@@ -24,16 +24,29 @@ export class AddPackPage {
     return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
   }
 
-  addUser(newUser: User) {
-    this.getFormField('name').type(newUser.name);
-    this.getFormField('age').type(newUser.age.toString());
-    if (newUser.company) {
-      this.getFormField('company').type(newUser.company);
+  addWordlist(){
+    return cy.get('.add-wordlist-button').click();
+  }
+  addPosArray(pos: string){
+    return cy.get(`.add-${pos}-button`).click();
+  }
+  contextPackForm(){
+    return cy.get('.form-value');
+  }
+
+
+
+
+  addPack(newPack: ContextPack) {
+    this.getFormField('name').type(newPack.name);
+    this.getFormField('enabled').click();
+    if (newPack.wordlists) {
+      this.getFormField('wordlists').get('name').type(newPack.wordlists[0].name);
     }
-    if (newUser.email) {
-      this.getFormField('email').type(newUser.email);
+    if (newPack.wordlists[0].nouns) {
+      this.getFormField('wordlists').get('nouns')[0].get('word').type(newPack.wordlists[0].nouns[0].word);
     }
-    this.selectMatSelectValue(this.getFormField('role'), newUser.role);
+    this.selectMatSelectValue(this.getFormField('enabled'), newPack.enabled.toString());
     return this.addPackButton().click();
   }
 }

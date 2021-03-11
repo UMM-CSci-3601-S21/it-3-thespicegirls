@@ -81,16 +81,16 @@
                 <div>
                 <button type="button" (click)="removeWord(ix, iy, 'nouns')">Remove Noun</button>
                 </div>
-                <label>
-                  Word:
-                  <input type="text" formControlName="word">
-                </label>
+                <mat-form-field>
+                  <mat-label>Word (optional)</mat-label>
+                  <input matInput placeholder="Word" formControlName="word">
+                </mat-form-field>
                 <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                     <!-- The repeated form template -->
                     <label>
                     Form:
-                    <input type="text" [formControlName]="iz">
+                    <input type="text" [formControlName]="iz" class="formInput">
                   </label>
                     <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
 
@@ -100,8 +100,9 @@
 
               </div>
             </div>
-            <button type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
+            <button class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
           </div>
+
 
 				<!-- Nouns End -->
         <!-- Adjectives -->
@@ -131,7 +132,7 @@
 
               </div>
             </div>
-            <button type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">Add Adjective</button>
+            <button class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">Add Adjective</button>
           </div>
 
 
@@ -163,7 +164,7 @@
 
               </div>
             </div>
-            <button type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">Add Verb</button>
+            <button class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">Add Verb</button>
           </div>
 
 
@@ -194,14 +195,14 @@
 
               </div>
             </div>
-            <button type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add A Misc Word</button>
+            <button class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add A Misc Word</button>
           </div>
 
 				<!-- Misc End -->
 
 			</div>
 		</div>
-		<button type="button" (click)="addWordlist()" value="Add Wordlist">Add Wordlist</button>
+		<button class="add-wordlist-button" type="button" (click)="addWordlist()" value="Add Wordlist">Add Wordlist</button>
 	</div>
 </mat-card-content>
 </mat-card>
@@ -220,5 +221,5 @@
 
 		<h5>Field Values</h5>
     <button class="contextpack-download-button" (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name, 1)'>Download Json</button>
-		<pre style="font-size:15px">{{ contextPackForm.value | json }}</pre>
+		<pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>
 
