@@ -3,8 +3,8 @@ export interface Word{
   forms?: string[];
 }
 export interface Wordlist{
-  name: string;
-  enabled: boolean;
+  name?: string;
+  enabled?: boolean;
   nouns?: Word[];
   adjectives?: Word[];
   verbs?: Word[];

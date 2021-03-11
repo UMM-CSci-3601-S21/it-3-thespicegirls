@@ -18,10 +18,6 @@ export class ContextPackCardComponent implements OnInit {
 
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;
-    if(contextpack === undefined){
-      wordlists = null;
-    }
-    else{
       wordlists = '';
         wordlists += 'Word List ' + 'Name: ' + contextpack.name + '\n';
         wordlists += 'Enabled: ' + contextpack.enabled + '\n';
@@ -29,7 +25,6 @@ export class ContextPackCardComponent implements OnInit {
         wordlists += 'Verbs: \n' + this.displayVerbs(contextpack);
         wordlists += 'Adjectives: \n' + this.displayAdjectives(contextpack);
         wordlists += 'Misc: \n' + this.displayMisc(contextpack);
-    }
     return wordlists;
   }
 
