@@ -16,22 +16,19 @@ export class ContextPackCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  displayWordlists(contextpack: ContextPack){
+  displayWordlists(contextpack: Wordlist){
     let  wordlists: string;
-    if(contextpack.wordlists === undefined){
+    if(contextpack === undefined){
       wordlists = null;
     }
     else{
       wordlists = '';
-      let i: number;
-      for(i = 0; i < contextpack.wordlists.length; i++){
-        wordlists += 'Word List ' + (i+1)+ ' Name: ' + contextpack.wordlists[i].name + '\n';
-        wordlists += 'Enabled: ' + contextpack.wordlists[i].enabled + '\n';
-        wordlists += 'Nouns: \n' + this.displayNouns(contextpack.wordlists[i]);
-        wordlists += 'Verbs: \n' + this.displayVerbs(contextpack.wordlists[i]);
-        wordlists += 'Adjectives: \n' + this.displayAdjectives(contextpack.wordlists[i]);
-        wordlists += 'Misc: \n' + this.displayMisc(contextpack.wordlists[i]);
-      }
+        wordlists += 'Word List ' + 'Name: ' + contextpack.name + '\n';
+        wordlists += 'Enabled: ' + contextpack.enabled + '\n';
+        wordlists += 'Nouns: \n' + this.displayNouns(contextpack);
+        wordlists += 'Verbs: \n' + this.displayVerbs(contextpack);
+        wordlists += 'Adjectives: \n' + this.displayAdjectives(contextpack);
+        wordlists += 'Misc: \n' + this.displayMisc(contextpack);
     }
     return wordlists;
   }
@@ -157,7 +154,7 @@ export class ContextPackCardComponent implements OnInit {
       $schema: 'https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json',
       name: jsonBetter.name,
       enabled: jsonBetter.enabled,
-      wordlists: jsonBetter.wordlists
+      wordlists: jsonBetter
       };
       return obj;
   }
