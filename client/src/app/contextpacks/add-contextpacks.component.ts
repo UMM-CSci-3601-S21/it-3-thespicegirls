@@ -127,6 +127,7 @@ export class AddContextpacksComponent implements OnInit {
     console.log('didnt go through');
     if(control.getRawValue()[0] !== formAdd.value  ){
       control.insert(0,formAdd);
+      console.log(ix,iy);
     }
   }
 

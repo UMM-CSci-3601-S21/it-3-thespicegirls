@@ -173,10 +173,30 @@ describe('AddContextpacksComponent', () => {
       component.removeWordlists(1);
       controls = ((component.contextPackForm.value.wordlists as Array<any>));
       expect(controls.length).toEqual(1);
-
-
-
     });
 
+  });
+
+  describe('Set word feature', ()=>{
+    it('should set the first form to the same word', ()=>{
+      component.addWordlist();
+      component.addPosArray(0, 'verbs');
+      ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray).at(0).get('word').setValue('cow');
+      component.setWord(0,0,'verbs');
+      // expect cow to be the first form
+      expect(((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray)
+      .at(0).get('forms').value[0]).toEqual('cow');
+    });
+  });
+  describe('form submission', ()=>{
+    it('form should validate based on input', ()=>{
+      component.addWordlist();
+      expect(component.contextPackForm.valid).toBeFalsy();
+      ((component.contextPackForm).get(`name`).setValue('cow'));
+      ((component.contextPackForm).get(`enabled`).setValue('true'));
+      ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`name`).setValue('cow'));
+      ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`enabled`).setValue('true'));
+      expect(component.contextPackForm.valid).toBeTruthy();
+    });
   });
 });
