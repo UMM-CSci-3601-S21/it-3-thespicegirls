@@ -156,19 +156,139 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   displayAllNouns(contextpack: ContextPack){
+      let nounsWords: string;
+      let m: number;
+      for (m =0; m< contextpack.wordlists.length; m++){
+        if (contextpack.wordlists[m].nouns.length === 0){
+          nounsWords = null;
+        }
+        else{
+          nounsWords = '';
+          let i: number;
+          let j: number;
+          let p: number;
+          for (j =0; j< contextpack.wordlists.length; j++){
+            for (i = 0; i < contextpack.wordlists[j].nouns.length; i++) {
+              for(p = 0; p < contextpack.wordlists[j].nouns[i].forms.length; p++){
+
+
+                nounsWords += contextpack.wordlists[j].nouns[i].forms[p] + ', ';
+              }
+              if(i !== contextpack.wordlists[j].nouns.length-1 ){
+              nounsWords += ' ';
+              }
+            }
+          }
+
+
+        }
+        nounsWords = '\n'+ nounsWords;
+        nounsWords=nounsWords.slice(0,nounsWords.length-2);
+        return nounsWords;
+      }
 
 
   }
   displayAllVerbs(contextpack: ContextPack){
+    let verbWords: string;
+    let m: number;
 
+    for (m =0; m< contextpack.wordlists.length; m++){
+      if (contextpack.wordlists[m].verbs.length === 0){
+        verbWords = null;
+      }
+      else{
+        verbWords = '';
+        let i: number;
+        let j: number;
+        let p: number;
+        for (j =0; j< contextpack.wordlists.length; j++){
+          for (i = 0; i < contextpack.wordlists[j].verbs.length; i++) {
+            for(p = 0; p < contextpack.wordlists[j].verbs[i].forms.length; p++){
+
+
+              verbWords += contextpack.wordlists[j].verbs[i].forms[p] + ', ';
+            }
+            if(i !== contextpack.wordlists[j].verbs.length-1 ){
+              verbWords += ' ';
+            }
+          }
+        }
+
+
+      }
+      verbWords = '\n'+ verbWords;
+      verbWords=verbWords.slice(0,verbWords.length-2);
+      return verbWords;
+    }
 
   }
   displayAllAdjectives(contextpack: ContextPack){
+    let adjectivesWords: string;
+    let m: number;
+    for (m =0; m< contextpack.wordlists.length; m++){
+      if (contextpack.wordlists[m].adjectives.length === 0){
+        adjectivesWords = '';
+      }
+      else{
+        adjectivesWords = '';
+        let i: number;
+        let j: number;
+        let p: number;
+        for (j =0; j< contextpack.wordlists.length; j++){
 
+          for (i = 0; i < contextpack.wordlists[j].adjectives.length; i++) {
+            for(p = 0; p < contextpack.wordlists[j].adjectives[i].forms.length; p++){
+
+
+              adjectivesWords += contextpack.wordlists[j].adjectives[i].forms[p] + ', ';
+            }
+            if(i !== contextpack.wordlists[j].adjectives.length-1 ){
+              adjectivesWords += ' ';
+            }
+          }
+        }
+
+
+      }
+      adjectivesWords = '\n'+ adjectivesWords;
+      adjectivesWords=adjectivesWords.slice(0,adjectivesWords.length-2);
+      return adjectivesWords;
+    }
 
   }
   displayAllMisc(contextpack: ContextPack){
+    let miscWords: string;
+    let m: number;
 
+    for (m =0; m< contextpack.wordlists.length; m++){
+      if (contextpack.wordlists[m].misc.length === 0){
+        miscWords = '';
+      }
+      else{
+        miscWords = '';
+        let i: number;
+        let j: number;
+        let p: number;
+        for (j =0; j< contextpack.wordlists.length; j++){
+          for (i = 0; i < contextpack.wordlists[j].misc.length; i++) {
+            for(p = 0; p < contextpack.wordlists[j].misc[i].forms.length; p++){
+
+
+              miscWords += contextpack.wordlists[j].misc[i].forms[p] + ', ';
+            }
+            if(i !== contextpack.wordlists[j].misc.length-1 ){
+              miscWords += ' ';
+            }
+          }
+        }
+
+
+      }
+      miscWords = '\n'+ miscWords;
+      miscWords=miscWords.slice(miscWords.length,miscWords.length-2);
+      return miscWords;
+    }
 
   }
 

@@ -20,10 +20,10 @@
     </div>
 
     <ng-template #templateWords>
-        <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">{{displayAllNouns(this.contextpack)}}</div></span>
-        <span class="contextpack-card-verbs"><div style="width: 500px;white-space: pre-line">{{displayAllVerbs(this.contextpack)}}</div></span>
-        <span class="contextpack-card-adjectives"><div style="width: 500px;white-space: pre-line">{{displayAllAdjectives(this.contextpack)}}</div></span>
-        <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">{{displayAllMisc(this.contextpack)}}</div></span>
+        <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">Nouns: {{displayAllNouns(this.contextpack)}}</div></span>
+        <span class="contextpack-card-verbs"><div style="width: 500px;white-space: pre-line">Verbs: {{displayAllVerbs(this.contextpack)}}</div></span>
+        <span class="contextpack-card-adjectives"><div style="width: 500px;white-space: pre-line">Adjectives: {{displayAllAdjectives(this.contextpack)}}</div></span>
+        <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">Misc: {{displayAllMisc(this.contextpack)}}</div></span>
   </ng-template>
 
     <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name, 1)'>Download Json</button>

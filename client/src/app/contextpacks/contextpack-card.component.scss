@@ -5,5 +5,49 @@ span.contextpack-card-wordlists{
   padding: 10px;
   width: 600px;
   margin: 5px;
+}
+
+
+span.contextpack-card-nouns{
+  display: inline-block;
+  border: 5px solid rgb(132, 0, 255);
+  padding: 10px;
+  margin: 5px;
+  width: 600px;
+  word-wrap: break-word;
+  display: flex;
+}
+
+
+span.contextpack-card-misc{
+  display: inline-block;
+  border: 5px solid rgb(255, 0, 200);
+  padding: 10px;
+  margin: 5px;
+  width: 600px;
+  word-wrap: break-word;
+  display: flex;
 
 }
+
+span.contextpack-card-adjectives{
+  display: inline-block;
+  border: 5px solid rgb(9, 255, 0);
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: flex;
+
+}
+
+span.contextpack-card-verbs{
+  display: inline-block;
+  border: 5px solid rgb(255, 174, 0);
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: flex;
+}
+
