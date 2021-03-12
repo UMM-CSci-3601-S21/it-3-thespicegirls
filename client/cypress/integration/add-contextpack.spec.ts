@@ -165,5 +165,9 @@ describe('Add a Context pack', () => {
     cy.get('.mat-simple-snackbar').should('contain', `Added Pack ${pack.name}`);
 
   });
+  describe('removing parts of a contextpack during creation', () =>{
+
+  });
+
 
   });

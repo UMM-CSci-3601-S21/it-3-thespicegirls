@@ -28,7 +28,8 @@ describe('AddContextpacksComponent', () => {
         MatSelectModule,
         MatInputModule,
         BrowserAnimationsModule,
-        RouterTestingModule
+        RouterTestingModule,
+        MatCardModule
       ],
       declarations: [ AddContextpacksComponent ],
       providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
@@ -141,8 +142,41 @@ describe('AddContextpacksComponent', () => {
       component.addPosArray(0, 'verbs');
       component.addForms(0, 0, 'verbs');
       const control = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
-      console.log(control.verbs[0].forms);
       expect(control.verbs[0].forms.length).toEqual(2);
     });
+  });
+
+  describe('Removing components of a context pack during creation', ()=>{
+    it('should remove a form to the forms array when prompted', () =>{
+      // Add components so they can be removes
+      component.addWordlist();
+      component.addPosArray(0, 'verbs');
+      component.addPosArray(0, 'verbs');
+      component.addForms(0, 0, 'verbs');
+      // make sure components were added
+      let controls = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      expect(controls.verbs[0].forms.length).toEqual(2);
+      // remove a form
+      component.removeForm(0, 0, 0,'verbs');
+      controls = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      expect(controls.verbs[0].forms.length).toEqual(1);
+      //remove verb word group
+      expect(controls.verbs.length).toEqual(2);
+      component.removeWord(0, 0, 'verbs');
+      controls = ((component.contextPackForm.value.wordlists as Array<any>)[0]);
+      console.log(controls.verbs[0]);
+      expect(controls.verbs.length).toEqual(1);
+      // remove wordlist
+      component.addWordlist();
+      controls = ((component.contextPackForm.value.wordlists as Array<any>));
+      expect(controls.length).toEqual(2);
+      component.removeWordlists(1);
+      controls = ((component.contextPackForm.value.wordlists as Array<any>));
+      expect(controls.length).toEqual(1);
+
+
+
+    });
+
   });
 });
