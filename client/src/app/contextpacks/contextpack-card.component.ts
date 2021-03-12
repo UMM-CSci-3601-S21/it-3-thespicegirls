@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ContextPack, Wordlist } from './contextpack';
 
+
 @Component({
   selector: 'app-contextpack-card',
   templateUrl: './contextpack-card.component.html',
@@ -158,11 +159,11 @@ export class ContextPackCardComponent implements OnInit {
   displayAllNouns(contextpack: ContextPack){
       let nounsWords: string;
       let m: number;
-      for (m =0; m< contextpack.wordlists.length; m++){
-        if (contextpack.wordlists[m].nouns.length === 0){
-          nounsWords = null;
-        }
-        else{
+      if (contextpack.wordlists === undefined || contextpack.wordlists[0].nouns === undefined){
+        nounsWords = null;
+      }
+      else{
+      for (m =0; m < contextpack.wordlists.length; m++){
           nounsWords = '';
           let i: number;
           let j: number;
@@ -174,18 +175,14 @@ export class ContextPackCardComponent implements OnInit {
 
                 nounsWords += contextpack.wordlists[j].nouns[i].forms[p] + ', ';
               }
-              if(i !== contextpack.wordlists[j].nouns.length-1 ){
-              nounsWords += ' ';
-              }
+
             }
           }
-
-
+          nounsWords = '\n'+ nounsWords;
+          nounsWords=nounsWords.slice(0,nounsWords.length-2);
         }
-        nounsWords = '\n'+ nounsWords;
-        nounsWords=nounsWords.slice(0,nounsWords.length-2);
-        return nounsWords;
       }
+      return nounsWords;
 
 
   }
@@ -193,11 +190,11 @@ export class ContextPackCardComponent implements OnInit {
     let verbWords: string;
     let m: number;
 
-    for (m =0; m< contextpack.wordlists.length; m++){
-      if (contextpack.wordlists[m].verbs.length === 0){
-        verbWords = null;
-      }
+    if (contextpack.wordlists === undefined || contextpack.wordlists[0].verbs === undefined){
+      verbWords = null;
+    }
       else{
+        for (m =0; m< contextpack.wordlists.length; m++){
         verbWords = '';
         let i: number;
         let j: number;
@@ -209,28 +206,24 @@ export class ContextPackCardComponent implements OnInit {
 
               verbWords += contextpack.wordlists[j].verbs[i].forms[p] + ', ';
             }
-            if(i !== contextpack.wordlists[j].verbs.length-1 ){
-              verbWords += ' ';
-            }
           }
         }
-
+        verbWords = '\n'+ verbWords;
+        verbWords=verbWords.slice(0,verbWords.length-2);
 
       }
-      verbWords = '\n'+ verbWords;
-      verbWords=verbWords.slice(0,verbWords.length-2);
-      return verbWords;
     }
+    return verbWords;
 
   }
   displayAllAdjectives(contextpack: ContextPack){
     let adjectivesWords: string;
     let m: number;
-    for (m =0; m< contextpack.wordlists.length; m++){
-      if (contextpack.wordlists[m].adjectives.length === 0){
-        adjectivesWords = '';
-      }
+    if (contextpack.wordlists === undefined || contextpack.wordlists[0].adjectives === undefined){
+      adjectivesWords = null;
+    }
       else{
+        for (m =0; m< contextpack.wordlists.length; m++){
         adjectivesWords = '';
         let i: number;
         let j: number;
@@ -243,29 +236,23 @@ export class ContextPackCardComponent implements OnInit {
 
               adjectivesWords += contextpack.wordlists[j].adjectives[i].forms[p] + ', ';
             }
-            if(i !== contextpack.wordlists[j].adjectives.length-1 ){
-              adjectivesWords += ' ';
-            }
           }
         }
-
-
+        adjectivesWords = '\n'+ adjectivesWords;
+        adjectivesWords=adjectivesWords.slice(0,adjectivesWords.length-2);
       }
-      adjectivesWords = '\n'+ adjectivesWords;
-      adjectivesWords=adjectivesWords.slice(0,adjectivesWords.length-2);
-      return adjectivesWords;
     }
-
+    return adjectivesWords;
   }
   displayAllMisc(contextpack: ContextPack){
     let miscWords: string;
     let m: number;
 
-    for (m =0; m< contextpack.wordlists.length; m++){
-      if (contextpack.wordlists[m].misc.length === 0){
-        miscWords = '';
-      }
+    if ( contextpack.wordlists === undefined || contextpack.wordlists[0].misc === undefined){
+      miscWords = null;
+    }
       else{
+        for (m =0; m< contextpack.wordlists.length; m++){
         miscWords = '';
         let i: number;
         let j: number;
@@ -277,18 +264,13 @@ export class ContextPackCardComponent implements OnInit {
 
               miscWords += contextpack.wordlists[j].misc[i].forms[p] + ', ';
             }
-            if(i !== contextpack.wordlists[j].misc.length-1 ){
-              miscWords += ' ';
-            }
           }
         }
-
-
+        miscWords = '\n'+ miscWords;
+        miscWords=miscWords.slice(0,miscWords.length-2);
       }
-      miscWords = '\n'+ miscWords;
-      miscWords=miscWords.slice(miscWords.length,miscWords.length-2);
-      return miscWords;
     }
+    return miscWords;
 
   }
 

@@ -11,8 +11,6 @@ describe('ContextPackCardComponent', () => {
   let fixture: ComponentFixture<ContextPackCardComponent>;
   let component2: ContextPackCardComponent;
   let fixture2: ComponentFixture<ContextPackCardComponent>;
-  let component3: ContextPackCardComponent;
-  let fixture3: ComponentFixture<ContextPackCardComponent>;
   let wordlist: Wordlist;
 
   beforeEach(waitForAsync(() => {
@@ -29,12 +27,10 @@ describe('ContextPackCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
-    fixture3 = TestBed.createComponent(ContextPackCardComponent);
 
 
     component = fixture.componentInstance;
     component2 = fixture2.componentInstance;
-    component3 = fixture3.componentInstance;
 
     const noun: Word = {
       word: 'you',
@@ -94,12 +90,6 @@ describe('ContextPackCardComponent', () => {
       _id: 'mat_id',
       enabled: true,
       name: 'Joy',
-    };
-    component3.contextpack = {
-      _id: 'kat_id',
-      enabled: true,
-      name: 'Franz',
-      wordlists: testWordListBig
     };
 
     fixture.detectChanges();
