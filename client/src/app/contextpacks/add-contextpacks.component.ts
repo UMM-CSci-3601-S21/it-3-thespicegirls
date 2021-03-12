@@ -1,7 +1,6 @@
 /* eslint-disable guard-for-in */
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
