@@ -1,4 +1,4 @@
-# CSCI 3601 Iteration Template <!-- omit in toc -->
+# Word River <!-- omit in toc -->
 
 [![Server Build Status](../../actions/workflows/server.yml/badge.svg)](../../actions/workflows/server.yml)
 [![Client Build Status](../../actions/workflows/client.yaml/badge.svg)](../../actions/workflows/client.yaml)
