@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
+import { map } from 'rxjs/operators';
+
+
 
 @Injectable()
 export class ContextPackService {
@@ -35,6 +38,12 @@ export class ContextPackService {
 
     return filteredContextPacks;
   }
+
+  addContextPack(newPack: ContextPack): Observable<string> {
+    // Send post request to add a new user with the user data as the body.
+    return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
+  }
+
 
 }
 

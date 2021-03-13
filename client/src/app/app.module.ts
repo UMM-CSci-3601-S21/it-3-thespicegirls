@@ -36,6 +36,7 @@ import { ContextPackListComponent } from './contextpacks/contextpack-list.compon
 import { ContextPackService } from './contextpacks/contextpack.service';
 import { ContextPackCardComponent } from './contextpacks/contextpack-card.component';
 import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
+import { AddContextpacksComponent } from './contextpacks/add-contextpacks.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -66,7 +67,8 @@ const MATERIAL_MODULES: any[] = [
     AddUserComponent,
     ContextPackCardComponent,
     ContextPackListComponent,
-    ContextPackInfoComponent
+    ContextPackInfoComponent,
+    AddContextpacksComponent
   ],
   imports: [
     BrowserModule,

@@ -122,5 +122,18 @@ describe('Context Pack service: ', () => {
     const contextpackName = 'fun';
     expect(contextpackService.filterContextPacks(testContextPacks, { name: contextpackName }).length).toBe(1);
   });
+  it('add contextpack posts to api/users', () => {
+
+    contextpackService.addContextPack(testContextPacks[1]).subscribe(
+      id => expect(id).toBe('testid')
+    );
+
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl);
+
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(testContextPacks[1]);
+
+    req.flush({id: 'testid'});
+  });
 });
 
