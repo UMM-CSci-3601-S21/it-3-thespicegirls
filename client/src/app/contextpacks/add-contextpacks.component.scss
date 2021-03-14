@@ -28,6 +28,16 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+.delete-button{
+  margin: 5px;
+  border:none;
+  display: inline-block;
+}
+.add-button {
+  border:none;
+  display: inline-block;
+
+}
 
 button:hover {
   background-color: #3baada;

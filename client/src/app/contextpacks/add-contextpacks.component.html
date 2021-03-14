@@ -100,13 +100,24 @@
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
                     <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'nouns')">
-
                     </mat-form-field>
-                    <div class="form-buttons">
-                      <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
-                      </div>
+                    <!--delete button--->
+                    <div class="delete-button">
+                      <button class="delete-button"(click)="removeForm(ix, iy, iz, 'nouns')"  >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                    <!-- end delete button--->
+
                 </div>
-                <button type="button" (click)="addForms(ix, iy, 'nouns')">Add Form</button>
+                <!--add button-->
+                <div class="add-button">
+                  <button class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+                 <!--end add button-->
+
               </div>
             </div>
             <button class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
@@ -133,13 +144,21 @@
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
                     <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'adjectives')">
+                  </mat-form-field>
 
-                    </mat-form-field>
-                    <div class="form-buttons">
-                      <button type="button" (click)="removeForm(ix, iy, iz, 'adjectives')">Remove Form</button>
-                      </div>
+                  <div class="delete-button">
+                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'adjectives')"  >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+
                 </div>
-                <button type="button" (click)="addForms(ix, iy, 'adjectives')">Add Form</button>
+
+                <div class="add-button">
+                  <button class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
 
               </div>
             </div>
@@ -161,7 +180,7 @@
 
                 <mat-form-field>
                   <mat-label>Word (optional)</mat-label>
-                  <input matInput placeholder="Word" formControlName="word" >
+                  <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
                 <!---Forms -->
                 <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
@@ -170,11 +189,22 @@
                     <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'verbs')">
 
                     </mat-form-field>
-                    <div class="form-buttons">
-                      <button type="button" (click)="removeForm(ix, iy, iz, 'verbs')">Remove Form</button>
-                      </div>
+                    <!--delete button--->
+                    <div class="delete-button">
+                      <button class="delete-button"(click)="removeForm(ix, iy, iz, 'verbs')"  >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                    <!-- end delete button--->
                 </div>
-                <button type="button" (click)="addForms(ix, iy, 'verbs')">Add Form</button>
+                <!--add button-->
+                <div class="add-button">
+                  <button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+                 <!--end add button-->
+
 
               </div>
             </div>
@@ -204,11 +234,22 @@
                   <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'misc')">
 
                   </mat-form-field>
-                  <div class="form-buttons">
-                    <button type="button" (click)="removeForm(ix, iy, iz, 'misc')">Remove Form</button>
+                    <!--delete button--->
+                    <div class="delete-button">
+                      <button class="delete-button"(click)="removeForm(ix, iy, iz, 'misc')"  >
+                        <mat-icon>delete</mat-icon>
+                      </button>
                     </div>
+                    <!-- end delete button--->
               </div>
-                <button type="button" (click)="addForms(ix, iy,'misc')">Add Form</button>
+              <!--add button-->
+              <div class="add-button">
+                <button class="add-button" type="button" (click)="addForms(ix, iy, 'misc')">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+               <!--end add button-->
+
 
               </div>
             </div>
