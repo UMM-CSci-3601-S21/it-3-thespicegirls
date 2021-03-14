@@ -153,6 +153,7 @@ export class ContextPackCardComponent implements OnInit {
       return obj;
   }
 
+
   displayAllNouns(contextpack: ContextPack){
       let nounsWords: string;
       let m: number;
