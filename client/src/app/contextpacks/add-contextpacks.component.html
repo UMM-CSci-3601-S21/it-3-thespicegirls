@@ -75,7 +75,7 @@
 				<!-- Nouns -->
 
           <div formArrayName="nouns" >
-           <h3>Nouns</h3>
+           <h3>Nouns:</h3>
             <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="nouns">
                 <div>
@@ -128,7 +128,7 @@
         <!-- Adjectives -->
 
           <div formArrayName="adjectives" >
-           <h3>Adjectives</h3>
+           <h3>Adjectives:</h3>
             <div *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="adjectives" style="border: 1px solid rgb(132, 0, 255); padding: 10px; width: 400px; margin: 5px;">
                 <div>
@@ -170,7 +170,7 @@
         <!-- Verbs -->
 
           <div formArrayName="verbs">
-           <h3>Verbs</h3>
+           <h3>Verbs:</h3>
             <div *ngFor="let nouns of wordlists['controls'].verbs['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="verbs" style="border: 1px solid rgb(255, 0, 0); padding: 10px; width: 400px; margin: 5px;">
                 <div>
@@ -215,7 +215,7 @@
 				<!-- Verbs End -->
         <!-- Misc -->
           <div formArrayName="misc">
-           <h3>Misc</h3>
+           <h3>Misc:</h3>
             <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="misc" style="border: 1px solid rgb(0, 247, 255); padding: 10px; width: 400px; margin: 5px;">
                 <div>
