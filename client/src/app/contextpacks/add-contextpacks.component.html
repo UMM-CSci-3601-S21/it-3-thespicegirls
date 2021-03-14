@@ -1,0 +1,226 @@
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+<form [formGroup]="contextPackForm" (ngSubmit)="submitForm()">
+  <mat-card class="add-contextpack-card">
+    <mat-card-title class="add-pack-title">Create A New Context Pack</mat-card-title>
+    <mat-card-content fxLayout="column">
+
+    <mat-form-field>
+      <mat-label>Pack Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name"
+            required>
+      <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+        <mat-error class="error-message" data-test="nameError"
+                  *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
+          {{validation.message}}
+        </mat-error>
+      </mat-error>
+    </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Enabled</mat-label>
+    <mat-select required formControlName="enabled">
+      <mat-option value="true">True</mat-option>
+      <mat-option value="false">False</mat-option>
+    </mat-select>
+    <mat-error *ngIf="contextPackForm.get('enabled').hasError('required')">You must make a selection</mat-error>
+    <mat-error *ngIf="contextPackForm.get('enabled').hasError('pattern') && !contextPackForm.get('enabled').hasError('required')">
+      Your selection is invalid
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Icon (optional)</mat-label>
+    <input matInput placeholder="Icon" formControlName="icon">
+  </mat-form-field>
+
+	<!-- X -->
+
+	<div formArrayName="wordlists">
+		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
+			<div formGroupName="{{ix}}" class="wordlists" style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
+        <button type="button" (click)="removeWordlists(ix)">Remove This Wordlist</button><br>
+        <h1>Wordlist {{ix+1}}:</h1>
+        <label>
+          Wordlist Name:
+          <mat-form-field>
+            <mat-label>Wordlist Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name"
+                  required>
+            <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+              <mat-error class="error-message" data-test="nameError"
+                        *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+        </label>
+        <label>
+          Enabled:
+          <mat-form-field>
+            <mat-label>Enabled</mat-label>
+            <mat-select required formControlName="enabled">
+              <mat-option value="true">True</mat-option>
+              <mat-option value="false">False</mat-option>
+            </mat-select>
+            <mat-error *ngIf="contextPackForm.get('enabled').hasError('required')">You must make a selection</mat-error>
+            <mat-error *ngIf="contextPackForm.get('enabled').hasError('pattern') && !contextPackForm.get('enabled').hasError('required')">
+              Your selection is invalid
+            </mat-error>
+          </mat-form-field>
+
+        </label>
+
+
+				<!-- Nouns -->
+
+          <div formArrayName="nouns" >
+           <h3>Nouns</h3>
+            <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="nouns">
+                <div>
+                <button type="button" (click)="removeWord(ix, iy, 'nouns')">Remove Noun</button>
+                </div>
+                <mat-form-field>
+                  <mat-label>Word (optional)</mat-label>
+                  <input matInput placeholder="Word" formControlName="word" >
+                </mat-form-field>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                    <label>
+                    Form:
+                    <input type="text" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'nouns')">
+                  </label>
+                    <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
+
+                  </div>
+                </div>
+                <button type="button" (click)="addForms(ix, iy, 'nouns')">Add Form</button>
+
+              </div>
+            </div>
+            <button class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
+          </div>
+
+
+				<!-- Nouns End -->
+        <!-- Adjectives -->
+
+          <div formArrayName="adjectives" >
+           <h3>Adjectives</h3>
+            <div *ngFor="let nouns of wordlists['controls'].adjectives['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="adjectives" style="border: 1px solid rgb(132, 0, 255); padding: 10px; width: 400px; margin: 5px;">
+                <button type="button" (click)="removeWord(ix, iy, 'adjectives')">Remove Adjective</button>
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word" >
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                    <label>
+                    Form:
+                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'adjectives')">
+                  </label>
+                    <button type="button" (click)="removeForm(ix, iy, iz, 'adjectives')">Remove Form</button>
+
+                  </div>
+                </div>
+                <button type="button" (click)="addForms(ix, iy, 'adjectives')">Add Form</button>
+
+              </div>
+            </div>
+            <button class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">Add Adjective</button>
+          </div>
+
+
+				<!-- Adjectives End -->
+        <!-- Verbs -->
+
+          <div formArrayName="verbs">
+           <h3>Verbs</h3>
+            <div *ngFor="let nouns of wordlists['controls'].verbs['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="verbs" style="border: 1px solid rgb(255, 0, 0); padding: 10px; width: 400px; margin: 5px;">
+                <button type="button" (click)="removeWord(ix, iy, 'verbs')">Remove Verb</button>
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word"  >
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                    <label>
+                    Form:
+                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'verbs')">
+                  </label>
+                    <button type="button" (click)="removeForm(ix, iy, iz, 'verbs')">Remove Form</button>
+
+                  </div>
+                </div>
+                <button type="button" (click)="addForms(ix, iy, 'verbs')">Add Form</button>
+
+              </div>
+            </div>
+            <button class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">Add Verb</button>
+          </div>
+
+
+				<!-- Verbs End -->
+        <!-- Misc -->
+          <div formArrayName="misc">
+           <h3>Misc</h3>
+            <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
+              <div formGroupName="{{iy}}" class="misc" style="border: 1px solid rgb(0, 247, 255); padding: 10px; width: 400px; margin: 5px;">
+                <button type="button" (click)="removeWord(ix, iy, 'misc')">Remove Misc</button>
+
+                <label>
+                  Word:
+                  <input type="text" formControlName="word" >
+                </label>
+                <div formArrayName="forms">
+                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                    <!-- The repeated form template -->
+                    <label>
+                    Forms:
+                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'misc')">
+                  </label>
+                    <button type="button" (click)="removeForm(ix, iy, iz, 'misc')">Remove Form</button>
+
+                  </div>
+                </div>
+                <button type="button" (click)="addForms(ix, iy,'misc')">Add Form</button>
+
+              </div>
+            </div>
+            <button class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add A Misc Word</button>
+          </div>
+
+				<!-- Misc End -->
+
+			</div>
+		</div>
+		<button class="add-wordlist-button" type="button" (click)="addWordlist()" value="Add Wordlist">Add Wordlist</button>
+	</div>
+
+</mat-card-content>
+</mat-card>
+	<!-- X End -->
+	<form>
+      <button type="submit" (click)="submitForm()"
+        mat-button
+        type="button"
+        color="primary"
+        [disabled]="!contextPackForm.valid"
+        type="submit"
+        data-test="confirmAddPackButton"
+      >
+        ADD CONTEXT PACK
+      </button>
+
+		<h5>Field Values</h5>
+    <button class="contextpack-download-button" (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name, 1)'>Download Json</button>
+		<pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>
+

@@ -6,6 +6,7 @@ import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
 import { ContextPackListComponent } from './contextpacks/contextpack-list.component';
 import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
+import { AddContextpacksComponent } from './contextpacks/add-contextpacks.component';
 
 
 const routes: Routes = [
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path: 'users/new', component: AddUserComponent},
   {path: 'users/:id', component: UserProfileComponent},
   {path: 'contextpacks', component: ContextPackListComponent},
-  {path: 'contextpacks/:id', component: ContextPackInfoComponent}
+  {path: 'contextpacks/:id', component: ContextPackInfoComponent},
+  {path: 'edit', component: AddContextpacksComponent}
 ];
 
 @NgModule({
