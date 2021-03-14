@@ -168,11 +168,8 @@ export class ContextPackCardComponent implements OnInit {
           for (j =0; j< contextpack.wordlists.length; j++){
             for (i = 0; i < contextpack.wordlists[j].nouns.length; i++) {
               for(p = 0; p < contextpack.wordlists[j].nouns[i].forms.length; p++){
-
-
                 nounsWords += contextpack.wordlists[j].nouns[i].forms[p] + ', ';
               }
-
             }
           }
           nounsWords = '\n'+ nounsWords;
@@ -180,13 +177,10 @@ export class ContextPackCardComponent implements OnInit {
         }
       }
       return nounsWords;
-
-
   }
   displayAllVerbs(contextpack: ContextPack){
     let verbWords: string;
     let m: number;
-
     if (contextpack.wordlists === undefined || contextpack.wordlists[0].verbs === undefined){
       verbWords = null;
     }
@@ -199,15 +193,12 @@ export class ContextPackCardComponent implements OnInit {
         for (j =0; j< contextpack.wordlists.length; j++){
           for (i = 0; i < contextpack.wordlists[j].verbs.length; i++) {
             for(p = 0; p < contextpack.wordlists[j].verbs[i].forms.length; p++){
-
-
               verbWords += contextpack.wordlists[j].verbs[i].forms[p] + ', ';
             }
           }
         }
         verbWords = '\n'+ verbWords;
         verbWords=verbWords.slice(0,verbWords.length-2);
-
       }
     }
     return verbWords;
@@ -226,11 +217,8 @@ export class ContextPackCardComponent implements OnInit {
         let j: number;
         let p: number;
         for (j =0; j< contextpack.wordlists.length; j++){
-
           for (i = 0; i < contextpack.wordlists[j].adjectives.length; i++) {
             for(p = 0; p < contextpack.wordlists[j].adjectives[i].forms.length; p++){
-
-
               adjectivesWords += contextpack.wordlists[j].adjectives[i].forms[p] + ', ';
             }
           }
@@ -244,7 +232,6 @@ export class ContextPackCardComponent implements OnInit {
   displayAllMisc(contextpack: ContextPack){
     let miscWords: string;
     let m: number;
-
     if ( contextpack.wordlists === undefined || contextpack.wordlists[0].misc === undefined){
       miscWords = null;
     }
@@ -257,8 +244,6 @@ export class ContextPackCardComponent implements OnInit {
         for (j =0; j< contextpack.wordlists.length; j++){
           for (i = 0; i < contextpack.wordlists[j].misc.length; i++) {
             for(p = 0; p < contextpack.wordlists[j].misc[i].forms.length; p++){
-
-
               miscWords += contextpack.wordlists[j].misc[i].forms[p] + ', ';
             }
           }
@@ -268,7 +253,5 @@ export class ContextPackCardComponent implements OnInit {
       }
     }
     return miscWords;
-
   }
-
 }
