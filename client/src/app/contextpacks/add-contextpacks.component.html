@@ -83,11 +83,11 @@
                 </div>
                 <mat-form-field>
                   <mat-label>Word (optional)</mat-label>
-                  <input matInput placeholder="Word" formControlName="word" >
+                  <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
-                <div formArrayName="forms">
+                <!-- <div formArrayName="forms">
                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
-                    <!-- The repeated form template -->
+
                     <label>
                     Form:
                     <input type="text" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'nouns')">
@@ -95,9 +95,18 @@
                     <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
 
                   </div>
+                </div> -->
+                <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                  <mat-form-field formArrayName="forms">
+                    <mat-label>Forms:(optional) </mat-label>
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'nouns')">
+
+                    </mat-form-field>
+                    <div class="form-buttons">
+                      <button type="button" (click)="removeForm(ix, iy, iz, 'nouns')">Remove Form</button>
+                      </div>
                 </div>
                 <button type="button" (click)="addForms(ix, iy, 'nouns')">Add Form</button>
-
               </div>
             </div>
             <button class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
@@ -109,7 +118,7 @@
 
           <div formArrayName="adjectives" >
            <h3>Adjectives</h3>
-            <div *ngFor="let nouns of wordlists['controls'].adjectives['controls']; let iy=index">
+            <div *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="adjectives" style="border: 1px solid rgb(132, 0, 255); padding: 10px; width: 400px; margin: 5px;">
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'adjectives')">Remove Adjective</button>
@@ -117,18 +126,18 @@
 
                 <mat-form-field>
                   <mat-label>Word (optional)</mat-label>
-                  <input matInput placeholder="Word" formControlName="word" >
+                  <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
-                <div formArrayName="forms">
-                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
-                    <!-- The repeated form template -->
-                    <label>
-                    Form:
-                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'adjectives')">
-                  </label>
-                    <button type="button" (click)="removeForm(ix, iy, iz, 'adjectives')">Remove Form</button>
+                <!---Forms -->
+                <div *ngFor="let forms of adj['controls'].forms['controls']; let iz=index">
+                  <mat-form-field formArrayName="forms">
+                    <mat-label>Forms:(optional) </mat-label>
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'adjectives')">
 
-                  </div>
+                    </mat-form-field>
+                    <div class="form-buttons">
+                      <button type="button" (click)="removeForm(ix, iy, iz, 'adjectives')">Remove Form</button>
+                      </div>
                 </div>
                 <button type="button" (click)="addForms(ix, iy, 'adjectives')">Add Form</button>
 
@@ -154,16 +163,16 @@
                   <mat-label>Word (optional)</mat-label>
                   <input matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
-                <div formArrayName="forms">
-                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
-                    <!-- The repeated form template -->
-                    <label>
-                    Form:
-                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'verbs')">
-                  </label>
-                    <button type="button" (click)="removeForm(ix, iy, iz, 'verbs')">Remove Form</button>
+                <!---Forms -->
+                <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                  <mat-form-field formArrayName="forms">
+                    <mat-label>Forms:(optional) </mat-label>
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'verbs')">
 
-                  </div>
+                    </mat-form-field>
+                    <div class="form-buttons">
+                      <button type="button" (click)="removeForm(ix, iy, iz, 'verbs')">Remove Form</button>
+                      </div>
                 </div>
                 <button type="button" (click)="addForms(ix, iy, 'verbs')">Add Form</button>
 
@@ -179,31 +188,31 @@
            <h3>Misc</h3>
             <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="misc" style="border: 1px solid rgb(0, 247, 255); padding: 10px; width: 400px; margin: 5px;">
-               <div>
-
-               </div>
+                <div>
+                  <button type="button" (click)="removeWord(ix, iy, 'misc')">Remove Misc</button>
+                </div>
 
 
                 <mat-form-field>
                   <mat-label>Word (optional)</mat-label>
-                  <input matInput placeholder="Word" formControlName="word" >
+                  <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
-                <div formArrayName="forms">
-                  <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
-                    <!-- The repeated form template -->
-                    <label>
-                    Forms:
-                    <input type="text" [formControlName]="iz" (click)="setWord(ix, iy,  'misc')">
-                  </label>
-                    <button type="button" (click)="removeForm(ix, iy, iz, 'misc')">Remove Form</button>
+               <!---Forms -->
+               <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                <mat-form-field formArrayName="forms">
+                  <mat-label>Forms:(optional) </mat-label>
+                  <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'misc')">
 
-                  </div>
-                </div>
+                  </mat-form-field>
+                  <div class="form-buttons">
+                    <button type="button" (click)="removeForm(ix, iy, iz, 'misc')">Remove Form</button>
+                    </div>
+              </div>
                 <button type="button" (click)="addForms(ix, iy,'misc')">Add Form</button>
 
               </div>
             </div>
-            <button class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add A Misc Word</button>
+            <button class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add Misc</button>
           </div>
 
 				<!-- Misc End -->
