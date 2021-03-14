@@ -135,11 +135,8 @@ describe('ContextPackCardComponent', () => {
     expect(component2.displayAllMisc(component2.contextpack)).toBeNull();
   });
 
-  /**
-   * Note this takes in 0 as a num input so the test doesn't actually download the json file only checks the element
-   */
   it('should create a download element when given a json', () => {
-    expect(component.downloadJson(component.contextpack, component.contextpack.name, 0).toString()).toContain('happy');
+    expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
   });
   it('should convert a json into a correctly formatted json', () => {
     expect(component.convertToBetterJson(component.contextpack).$schema).

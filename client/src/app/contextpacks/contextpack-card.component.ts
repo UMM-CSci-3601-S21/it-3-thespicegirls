@@ -130,7 +130,7 @@ export class ContextPackCardComponent implements OnInit {
   }
 
 
-  downloadJson(myJson: ContextPack, topic: string, num: number){
+  downloadJson(myJson: ContextPack, topic: string){
       myJson = this.convertToBetterJson(myJson);
       const sJson = JSON.stringify(myJson, null, 2);
       const element = document.createElement('a');
@@ -138,9 +138,6 @@ export class ContextPackCardComponent implements OnInit {
       element.setAttribute('download', topic + '.json');
       element.style.display = 'none';
       document.body.appendChild(element);
-      if (num === 1){
-        element.click(); // simulate click
-      }
       document.body.removeChild(element);
       return element;
 }
