@@ -38,7 +38,7 @@
 
 	<div formArrayName="wordlists">
 		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
-			<div formGroupName="{{ix}}" class="wordlists" style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
+			<div formGroupName="{{ix}}" class="wordlists">
         <button type="button" (click)="removeWordlists(ix)">Remove This Wordlist</button><br>
         <h1>Wordlist {{ix+1}}:</h1>
         <label>
