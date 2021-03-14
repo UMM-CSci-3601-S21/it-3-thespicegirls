@@ -137,7 +137,7 @@ describe('ContextPackCardComponent', () => {
 
   it('should create a download element when given a json', () => {
     expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
-  
+
   });
   it('should convert a json into a correctly formatted json', () => {
     expect(component.convertToBetterJson(component.contextpack).$schema).
