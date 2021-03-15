@@ -32,19 +32,19 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   displayWords(wordlist: Wordlist, pos: WordRole){
-    let nounWords: string[];
+    let words: string[];
     let str: string;
     if (wordlist[`${pos}`] === undefined){
-      nounWords = null;
+      words = null;
       str = null;
     }
     else{
       let i: number;
-      nounWords = [];
+      words = [];
         for (i = 0; i < wordlist[`${pos}`].length; i++) {
-          nounWords = nounWords.concat(wordlist[`${pos}`][i].forms) ;
+          words = words.concat(wordlist[`${pos}`][i].forms) ;
         }
-        str = nounWords.join(', ');
+        str = words.join(', ');
         str += '\n';
     }
 
@@ -75,26 +75,29 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   displayAllWords(contextpack: ContextPack, pos: WordRole){
-      let nounsWords: Wordlist[];
+      let words: Wordlist[];
       let m: number;
       let str: string;
-      if (contextpack.wordlists === undefined || contextpack.wordlists[0][`${pos}`] === undefined){
-        nounsWords = null;
+      if(contextpack.wordlists === undefined || contextpack.wordlists[0][`${pos}`][0] === undefined){
+        words = null;
         str = null;
       }
       else{
-        nounsWords = [];
+        words = [];
       for (m = 0; m < contextpack.wordlists.length; m++){
-          nounsWords = nounsWords.concat(contextpack.wordlists[m]);
+          words = words.concat(contextpack.wordlists[m]);
         }
 
       let z: number;
       str = '\n';
-      for(z = 0; z < nounsWords.length; z++){
-        str += this.displayWords(nounsWords[z], pos);
+      for (z = 0; z < words.length; z++){
+        str += this.displayWords(words[z], pos);
         str = str.slice(0, -1);
-            }
+        if (z < words.length-1){
+          str += ', ';
           }
+        }
+      }
       return str;
   }
 }
