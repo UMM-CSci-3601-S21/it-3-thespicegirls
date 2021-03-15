@@ -161,7 +161,7 @@
 
           <div formArrayName="verbs">
            <h3>Verbs:</h3>
-            <div *ngFor="let nouns of wordlists['controls'].verbs['controls']; let iy=index">
+            <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="pos" >
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'verbs')">Remove Verb</button>
@@ -173,7 +173,7 @@
                   <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
                 <!---Forms -->
-                <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
                     <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'verbs')">
@@ -206,7 +206,7 @@
         <!-- Misc -->
           <div formArrayName="misc">
            <h3>Misc:</h3>
-            <div *ngFor="let nouns of wordlists['controls'].misc['controls']; let iy=index">
+            <div *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
               <div formGroupName="{{iy}}" class="pos" >
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'misc')">Remove Misc</button>
@@ -218,7 +218,7 @@
                   <input autocomplete="off" matInput placeholder="Word" formControlName="word" >
                 </mat-form-field>
                <!---Forms -->
-               <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+               <div *ngFor="let forms of misc['controls'].forms['controls']; let iz=index">
                 <mat-form-field formArrayName="forms">
                   <mat-label>Forms:(optional) </mat-label>
                   <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" class="formInput" (click)="setWord(ix, iy,  'misc')">
