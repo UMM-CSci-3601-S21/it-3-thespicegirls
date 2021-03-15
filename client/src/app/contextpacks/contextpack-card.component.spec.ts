@@ -108,31 +108,31 @@ describe('ContextPackCardComponent', () => {
   });
 
   it('should return the nouns displayAllNouns() is called', () => {
-    expect(component.displayAllNouns(component.contextpack)).toContain('you, yoyo, yos, yoted');
+    expect(component.displayAllWords(component.contextpack, 'nouns')).toContain('you, yoyo, yos, yoted');
   });
   it('should return the verbs when displayAllVerbs() is called', () => {
-    expect(component.displayAllVerbs(component.contextpack)).toContain('ran, running');
+    expect(component.displayAllWords(component.contextpack, 'verbs')).toContain('ran, running');
   });
   it('should return the adjectives when displayAllAdjectives() is called', () => {
-    expect(component.displayAllAdjectives(component.contextpack)).toContain('green, greener');
+    expect(component.displayAllWords(component.contextpack, 'adjectives')).toContain('green, greener');
   });
   it('should return the misc words when displayAllMisc() is called', () => {
-    expect(component.displayAllMisc(component.contextpack)).toContain('langerhans, langerhan');
+    expect(component.displayAllWords(component.contextpack, 'misc')).toContain('langerhans, langerhan');
   });
 
 
   it('should have displayNouns,ver,adjective,misc return null if undefined', () => {
-    expect(component.displayNouns(wordlist)).toBeNull();
-    expect(component.displayVerbs(wordlist)).toBeNull();
-    expect(component.displayAdjectives(wordlist)).toBeNull();
-    expect(component.displayMisc(wordlist)).toBeNull();
+    expect(component.displayWords(wordlist, 'nouns')).toBeNull();
+    expect(component.displayWords(wordlist, 'verbs')).toBeNull();
+    expect(component.displayWords(wordlist, 'adjectives')).toBeNull();
+    expect(component.displayWords(wordlist, 'misc')).toBeNull();
   });
 
   it('should have displayNouns,ver,adjective,misc return null if undefined', () => {
-    expect(component2.displayAllNouns(component2.contextpack)).toBeNull();
-    expect(component2.displayAllVerbs(component2.contextpack)).toBeNull();
-    expect(component2.displayAllAdjectives(component2.contextpack)).toBeNull();
-    expect(component2.displayAllMisc(component2.contextpack)).toBeNull();
+    expect(component2.displayAllWords(component2.contextpack, 'nouns')).toBeNull();
+    expect(component2.displayAllWords(component2.contextpack, 'verbs')).toBeNull();
+    expect(component2.displayAllWords(component2.contextpack, 'adjectives')).toBeNull();
+    expect(component2.displayAllWords(component2.contextpack, 'misc')).toBeNull();
   });
 
   it('should create a download element when given a json', () => {
