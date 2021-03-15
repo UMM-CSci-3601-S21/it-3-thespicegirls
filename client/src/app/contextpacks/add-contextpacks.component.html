@@ -77,7 +77,7 @@
           <div formArrayName="nouns" >
            <h3>Nouns:</h3>
             <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
-              <div formGroupName="{{iy}}" class="pos">
+              <div formGroupName="{{iy}}" class="nouns">
                 <div>
                 <button type="button" (click)="removeWord(ix, iy, 'nouns')">Remove Noun</button>
                 </div>
@@ -120,7 +120,7 @@
           <div formArrayName="adjectives" >
            <h3>Adjectives:</h3>
             <div *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
-              <div formGroupName="{{iy}}" class="pos" >
+              <div formGroupName="{{iy}}" class="adjectives" >
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'adjectives')">Remove Adjective</button>
                 </div>
@@ -162,7 +162,7 @@
           <div formArrayName="verbs">
            <h3>Verbs:</h3>
             <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
-              <div formGroupName="{{iy}}" class="pos" >
+              <div formGroupName="{{iy}}" class="verbs" >
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'verbs')">Remove Verb</button>
                 </div>
@@ -207,7 +207,7 @@
           <div formArrayName="misc">
            <h3>Misc:</h3>
             <div *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
-              <div formGroupName="{{iy}}" class="pos" >
+              <div formGroupName="{{iy}}" class="misc" >
                 <div>
                   <button type="button" (click)="removeWord(ix, iy, 'misc')">Remove Misc</button>
                 </div>

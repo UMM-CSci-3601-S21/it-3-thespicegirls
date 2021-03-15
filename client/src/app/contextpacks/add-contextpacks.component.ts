@@ -189,14 +189,6 @@ export class AddContextpacksComponent implements OnInit {
         }]
       });
       const wordlist = wordlistsA.at(x - 1 ) as FormGroup;
-      for (const field in wordlist.controls) {
-        const input = wordlist.get(field);
-        if (input.invalid && input.dirty) {
-          for (const error in input.errors) {
-            this.formErrors.wordlists[x - 1][field] = this.validationMessages.wordlists[field][error];
-          }
-        }
-      }
       x++;
     }
   }

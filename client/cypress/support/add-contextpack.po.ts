@@ -53,9 +53,6 @@ export class AddPackPage {
         [...els].forEach(el => cy.wrap(el).type('horsies', {force:true}));
       });
     }
-    if (newPack.wordlists[0].nouns) {
-      this.getFormField('word').type(newPack.wordlists[0].nouns[0].word, {force:true});
-    }
     this.selectMatSelectValue(this.getFormField('enabled'), newPack.enabled.toString());
     return this.addPackButton().click({ multiple: true, force:true });
   }
