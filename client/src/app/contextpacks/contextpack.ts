@@ -18,3 +18,5 @@ export interface ContextPack {
   wordlists?: Wordlist[];
 
 }
+
+export type WordRole = 'nouns' | 'verbs' | 'adjectives' | 'misc';

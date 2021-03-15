@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ContextPack, Wordlist } from './contextpack';
+import { ContextPack, Wordlist, WordRole } from './contextpack';
 
 
 @Component({
@@ -18,117 +18,38 @@ export class ContextPackCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;
       wordlists = '';
         wordlists += 'Word List ' + 'Name: ' + contextpack.name + '\n';
         wordlists += 'Enabled: ' + contextpack.enabled + '\n';
-        wordlists += 'Nouns: \n' + this.displayNouns(contextpack);
-        wordlists += 'Verbs: \n' + this.displayVerbs(contextpack);
-        wordlists += 'Adjectives: \n' + this.displayAdjectives(contextpack);
-        wordlists += 'Misc: \n' + this.displayMisc(contextpack);
+        wordlists += 'Nouns: \n' + this.displayWords(contextpack, 'nouns');
+        wordlists += 'Verbs: \n' + this.displayWords(contextpack, 'verbs');
+        wordlists += 'Adjectives: \n' + this.displayWords(contextpack, 'adjectives');
+        wordlists += 'Misc: \n' + this.displayWords(contextpack, 'misc');
     return wordlists;
   }
 
-  displayNouns(wordlist: Wordlist){
-    let nounWords: string;
-    if (wordlist.nouns === undefined){
+  displayWords(wordlist: Wordlist, pos: WordRole){
+    let nounWords: string[];
+    let str: string;
+    if (wordlist[`${pos}`] === undefined){
       nounWords = null;
+      str = null;
     }
     else{
-      nounWords = '';
       let i: number;
-      let j: number;
-        for (i = 0; i < wordlist.nouns.length; i++) {
-          for(j = 0; j < wordlist.nouns[i].forms.length; j++){
-            if(i === wordlist.nouns.length-1 && j === wordlist.nouns[i].forms.length-1){
-              nounWords += wordlist.nouns[i].forms[j] + ' ';
-            }
-            else{
-            nounWords += wordlist.nouns[i].forms[j] + ', ';
-            }
-          }
+      nounWords = [];
+        for (i = 0; i < wordlist[`${pos}`].length; i++) {
+          nounWords = nounWords.concat(wordlist[`${pos}`][i].forms) ;
         }
-        nounWords += '\n';
+        str = nounWords.join(', ');
+        str += '\n';
     }
-    return nounWords;
+
+    return str;
   }
-
-  displayAdjectives(wordlist: Wordlist){
-    let adjectiveWords: string;
-    if (wordlist.adjectives === undefined){
-      adjectiveWords = null;
-    }
-    else{
-      adjectiveWords = '';
-      let i: number;
-      let j: number;
-        for (i = 0; i < wordlist.adjectives.length; i++) {
-          for(j = 0; j < wordlist.adjectives[i].forms.length; j++){
-            if(i === wordlist.adjectives.length-1 && j === wordlist.adjectives[i].forms.length-1){
-              adjectiveWords += wordlist.adjectives[i].forms[j] + ' ';
-            }
-            else{
-            adjectiveWords += wordlist.adjectives[i].forms[j] + ', ';
-            }
-          }
-
-        }
-        adjectiveWords += '\n';
-    }
-    return adjectiveWords;
-  }
-
-  displayVerbs(wordlist: Wordlist){
-    let verbWords: string;
-    if (wordlist.verbs === undefined){
-      verbWords = null;
-    }
-    else{
-      verbWords = '';
-      let i: number;
-      let j: number;
-        for (i = 0; i < wordlist.verbs.length; i++) {
-          for(j = 0; j < wordlist.verbs[i].forms.length; j++){
-            if(i === wordlist.verbs.length-1 && j === wordlist.verbs[i].forms.length-1){
-              verbWords += wordlist.verbs[i].forms[j] + ' ';
-            }
-            else{
-            verbWords += wordlist.verbs[i].forms[j] + ', ';
-            }
-          }
-
-        }
-        verbWords += '\n';
-    }
-    return verbWords;
-  }
-
-  displayMisc(wordlist: Wordlist){
-    let miscWords: string;
-    if (wordlist.misc === undefined){
-      miscWords = null;
-    }
-    else{
-      miscWords = '';
-      let i: number;
-      let j: number;
-        for (i = 0; i < wordlist.misc.length; i++) {
-          for(j = 0; j < wordlist.misc[i].forms.length; j++){
-            if(i === wordlist.misc.length-1 && j === wordlist.misc[i].forms.length-1){
-              miscWords += wordlist.misc[i].forms[j] + ' ';
-            }
-            else{
-            miscWords += wordlist.misc[i].forms[j] + ', ';
-            }
-          }
-
-        }
-        miscWords += '\n';
-      }
-    return miscWords;
-  }
-
 
   downloadJson(myJson: ContextPack, topic: string){
       myJson = this.convertToBetterJson(myJson);
@@ -153,106 +74,27 @@ export class ContextPackCardComponent implements OnInit {
       return obj;
   }
 
-
-  displayAllNouns(contextpack: ContextPack){
-      let nounsWords: string;
+  displayAllWords(contextpack: ContextPack, pos: WordRole){
+      let nounsWords: Wordlist[];
       let m: number;
-      if (contextpack.wordlists === undefined || contextpack.wordlists[0].nouns === undefined){
+      let str: string;
+      if (contextpack.wordlists === undefined || contextpack.wordlists[0][`${pos}`] === undefined){
         nounsWords = null;
+        str = null;
       }
       else{
-      for (m =0; m < contextpack.wordlists.length; m++){
-          nounsWords = '';
-          let i: number;
-          let j: number;
-          let p: number;
-          for (j =0; j< contextpack.wordlists.length; j++){
-            for (i = 0; i < contextpack.wordlists[j].nouns.length; i++) {
-              for(p = 0; p < contextpack.wordlists[j].nouns[i].forms.length; p++){
-                nounsWords += contextpack.wordlists[j].nouns[i].forms[p] + ', ';
-              }
-            }
-          }
-          nounsWords = '\n'+ nounsWords;
-          nounsWords=nounsWords.slice(0,nounsWords.length-2);
+        nounsWords = [];
+      for (m = 0; m < contextpack.wordlists.length; m++){
+          nounsWords = nounsWords.concat(contextpack.wordlists[m]);
         }
-      }
-      return nounsWords;
-  }
-  displayAllVerbs(contextpack: ContextPack){
-    let verbWords: string;
-    let m: number;
-    if (contextpack.wordlists === undefined || contextpack.wordlists[0].verbs === undefined){
-      verbWords = null;
-    }
-      else{
-        for (m =0; m< contextpack.wordlists.length; m++){
-        verbWords = '';
-        let i: number;
-        let j: number;
-        let p: number;
-        for (j =0; j< contextpack.wordlists.length; j++){
-          for (i = 0; i < contextpack.wordlists[j].verbs.length; i++) {
-            for(p = 0; p < contextpack.wordlists[j].verbs[i].forms.length; p++){
-              verbWords += contextpack.wordlists[j].verbs[i].forms[p] + ', ';
-            }
-          }
-        }
-        verbWords = '\n'+ verbWords;
-        verbWords=verbWords.slice(0,verbWords.length-2);
-      }
-    }
-    return verbWords;
 
-  }
-  displayAllAdjectives(contextpack: ContextPack){
-    let adjectivesWords: string;
-    let m: number;
-    if (contextpack.wordlists === undefined || contextpack.wordlists[0].adjectives === undefined){
-      adjectivesWords = null;
-    }
-      else{
-        for (m =0; m< contextpack.wordlists.length; m++){
-        adjectivesWords = '';
-        let i: number;
-        let j: number;
-        let p: number;
-        for (j =0; j< contextpack.wordlists.length; j++){
-          for (i = 0; i < contextpack.wordlists[j].adjectives.length; i++) {
-            for(p = 0; p < contextpack.wordlists[j].adjectives[i].forms.length; p++){
-              adjectivesWords += contextpack.wordlists[j].adjectives[i].forms[p] + ', ';
+      let z: number;
+      str = '\n';
+      for(z = 0; z < nounsWords.length; z++){
+        str += this.displayWords(nounsWords[z], pos);
+        str = str.slice(0, -1);
             }
           }
-        }
-        adjectivesWords = '\n'+ adjectivesWords;
-        adjectivesWords=adjectivesWords.slice(0,adjectivesWords.length-2);
-      }
-    }
-    return adjectivesWords;
-  }
-  displayAllMisc(contextpack: ContextPack){
-    let miscWords: string;
-    let m: number;
-    if ( contextpack.wordlists === undefined || contextpack.wordlists[0].misc === undefined){
-      miscWords = null;
-    }
-      else{
-        for (m =0; m< contextpack.wordlists.length; m++){
-        miscWords = '';
-        let i: number;
-        let j: number;
-        let p: number;
-        for (j =0; j< contextpack.wordlists.length; j++){
-          for (i = 0; i < contextpack.wordlists[j].misc.length; i++) {
-            for(p = 0; p < contextpack.wordlists[j].misc[i].forms.length; p++){
-              miscWords += contextpack.wordlists[j].misc[i].forms[p] + ', ';
-            }
-          }
-        }
-        miscWords = '\n'+ miscWords;
-        miscWords=miscWords.slice(0,miscWords.length-2);
-      }
-    }
-    return miscWords;
+      return str;
   }
 }
