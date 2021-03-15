@@ -13,11 +13,12 @@ describe('Add a Context pack', () => {
     page.getTitle().should('have.text', 'Create A New Context Pack');
   });
 
-  it('Should add parts of speech when buttons are pushed', () => {
+  it('Should add parts of speech when buttons are pushed and show a json file preview with button push', () => {
     // ADD USER button should be disabled until all the necessary fields
     // are filled. Once the last (`#emailField`) is filled, then the button should
     // become enabled.
     page.addWordlist();
+    page.showJson();
     page.contextPackForm().should('contain', 'nouns');
     page.addPosArray(`noun`);
     page.contextPackForm().should('contain', 'nouns');
@@ -26,6 +27,7 @@ describe('Add a Context pack', () => {
     page.addPackButton().should('be.disabled');
     page.addWordlist();
     page.addPosArray('noun');
+    page.showJson();
     page.getFormField('word').type('test');
     page.addPackButton().should('be.disabled');
     page.getFormField('name').then(els => {
@@ -38,6 +40,7 @@ describe('Add a Context pack', () => {
     // Before doing anything there shouldn't be an error
     cy.get('[data-test=nameError]').should('not.exist');
     // Just clicking the name field without entering anything should cause an error message
+    page.showJson();
     page.getFormField('name').click().blur();
     cy.get('[data-test=nameError]').should('exist').and('be.visible');
     // Entering a valid name should remove the error.
@@ -59,6 +62,7 @@ describe('Add a Context pack', () => {
   });
 
   it('should add a new pack', () =>{
+    page.showJson();
 
     const pack: ContextPack = {
       _id: null,

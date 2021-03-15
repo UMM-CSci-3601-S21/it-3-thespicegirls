@@ -30,6 +30,9 @@ export class AddPackPage {
   addPosArray(pos: string){
     return cy.get(`.add-${pos}-button`).click({force: true});
   }
+  showJson(){
+    return cy.get('[data-test="showJsonButton"]').click({force: true});
+  }
   contextPackForm(){
     return cy.get('.form-value');
   }

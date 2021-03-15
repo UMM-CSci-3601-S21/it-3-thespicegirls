@@ -199,4 +199,9 @@ describe('AddContextpacksComponent', () => {
       expect(component.contextPackForm.valid).toBeTruthy();
     });
   });
+  describe('Toggle Button', ()=>{
+    it('should toggle the boolean status', ()=>{
+      expect(component.toggleShow()).toBeTruthy();
+    });
+  });
 });
