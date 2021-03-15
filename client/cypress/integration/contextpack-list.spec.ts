@@ -20,6 +20,7 @@ describe('Contextpack list', () => {
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
     // Filter for contextpack 'batman_villains'
+    cy.get('[data-test=contextpackNameInput]').clear();
     cy.get('[data-test=contextpackNameInput]').type('farm');
 
     // All of the contextpack cards should have the topic we are filtering by
