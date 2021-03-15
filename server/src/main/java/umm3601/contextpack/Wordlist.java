@@ -2,9 +2,6 @@ package umm3601.contextpack;
 
 import java.util.ArrayList;
 
-import org.mongojack.Id;
-import org.mongojack.ObjectId;
-
 public class Wordlist {
   public String name;
   public boolean enabled;

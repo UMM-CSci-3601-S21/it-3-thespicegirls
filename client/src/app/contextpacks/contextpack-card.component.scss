@@ -1,0 +1,59 @@
+span.contextpack-card-wordlists{
+  display: inline-block;
+  background-color: rgba(0, 225, 255, 0.089);
+  border: 5px solid rgb(89, 0, 255);
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+}
+.mat-card{
+  background-color: rgba(136, 138, 248, 0.144);
+}
+
+span.contextpack-card-nouns{
+  background-color: rgba(255, 0, 234, 0.116);
+  display: inline-block;
+  border: 5px solid rgb(132, 0, 255);
+  padding: 10px;
+  margin: 5px;
+  width: 600px;
+  word-wrap: break-word;
+  display: flex;
+}
+
+
+span.contextpack-card-misc{
+  display: inline-block;
+  background-color: rgba(255, 192, 203, 0.438);
+  border: 5px solid rgb(255, 0, 200);
+  padding: 10px;
+  margin: 5px;
+  width: 600px;
+  word-wrap: break-word;
+  display: flex;
+
+}
+
+span.contextpack-card-adjectives{
+  display: inline-block;
+  background-color: rgba(0, 255, 0, 0.11);
+  border: 5px solid rgb(9, 255, 0);
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: flex;
+
+}
+
+span.contextpack-card-verbs{
+  display: inline-block;
+  background-color: rgba(255, 166, 0, 0.274);
+  border: 5px solid rgb(255, 123, 0);
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: flex;
+}
+

@@ -21,6 +21,13 @@ export class ContextpackListPage {
     return card.find<HTMLButtonElement>('[data-test=viewInfoButton]').click();
   }
 
+  selectView(value: string) {
+    // Find and click the drop down
+    return cy.get('[data-test=contextpackWordSelect]').click()
+      // Select and click the desired value from the resulting menu
+      .get(`mat-option[value="${value}"]`).click();
+  }
+
   /**
    * Change the view of contextpacks.
    *
@@ -29,5 +36,7 @@ export class ContextpackListPage {
   changeView(viewType: 'card' | 'list') {
     return cy.get(`[data-test=viewTypeRadio] .mat-radio-button[value="${viewType}"]`).click();
   }
+
+
 
 }

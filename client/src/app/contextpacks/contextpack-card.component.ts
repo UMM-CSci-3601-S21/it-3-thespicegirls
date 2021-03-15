@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ContextPack } from './contextpack';
+import { ContextPack, Wordlist, WordRole } from './contextpack';
+
 
 @Component({
   selector: 'app-contextpack-card',
@@ -10,6 +11,7 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
+  selected = 'true';
 
   constructor() { }
 
@@ -17,7 +19,39 @@ export class ContextPackCardComponent implements OnInit {
   }
 
 
-  downloadJson(myJson: ContextPack, topic: string, num: number){
+  displayWordlists(contextpack: Wordlist){
+    let  wordlists: string;
+      wordlists = '';
+        wordlists += 'Word List ' + 'Name: ' + contextpack.name + '\n';
+        wordlists += 'Enabled: ' + contextpack.enabled + '\n';
+        wordlists += 'Nouns: \n' + this.displayWords(contextpack, 'nouns');
+        wordlists += 'Verbs: \n' + this.displayWords(contextpack, 'verbs');
+        wordlists += 'Adjectives: \n' + this.displayWords(contextpack, 'adjectives');
+        wordlists += 'Misc: \n' + this.displayWords(contextpack, 'misc');
+    return wordlists;
+  }
+
+  displayWords(wordlist: Wordlist, pos: WordRole){
+    let words: string[];
+    let str: string;
+    if (wordlist[`${pos}`] === undefined){
+      words = null;
+      str = null;
+    }
+    else{
+      let i: number;
+      words = [];
+        for (i = 0; i < wordlist[`${pos}`].length; i++) {
+          words = words.concat(wordlist[`${pos}`][i].forms) ;
+        }
+        str = words.join(', ');
+        str += '\n';
+    }
+
+    return str;
+  }
+
+  downloadJson(myJson: ContextPack, topic: string){
       myJson = this.convertToBetterJson(myJson);
       const sJson = JSON.stringify(myJson, null, 2);
       const element = document.createElement('a');
@@ -25,9 +59,6 @@ export class ContextPackCardComponent implements OnInit {
       element.setAttribute('download', topic + '.json');
       element.style.display = 'none';
       document.body.appendChild(element);
-      if (num === 1){
-        element.click(); // simulate click
-      }
       document.body.removeChild(element);
       return element;
 }
@@ -38,10 +69,35 @@ export class ContextPackCardComponent implements OnInit {
       $schema: 'https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json',
       name: jsonBetter.name,
       enabled: jsonBetter.enabled,
-      wordlists: jsonBetter.wordlists
+      wordlists: jsonBetter
       };
       return obj;
   }
 
+  displayAllWords(contextpack: ContextPack, pos: WordRole){
+      let words: Wordlist[];
+      let m: number;
+      let str: string;
+      if(contextpack.wordlists === undefined || contextpack.wordlists[0][`${pos}`][0] === undefined){
+        words = null;
+        str = null;
+      }
+      else{
+        words = [];
+      for (m = 0; m < contextpack.wordlists.length; m++){
+          words = words.concat(contextpack.wordlists[m]);
+        }
 
+      let z: number;
+      str = '\n';
+      for (z = 0; z < words.length; z++){
+        str += this.displayWords(words[z], pos);
+        str = str.slice(0, -1);
+        if (z < words.length-1){
+          str += ', ';
+          }
+        }
+      }
+      return str;
+  }
 }
