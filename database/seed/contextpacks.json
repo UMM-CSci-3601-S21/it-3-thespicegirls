@@ -105,7 +105,7 @@
   "name": "Jojo Siwa",
   "icon": "jojo.png",
   "enabled": true,
-  "wordpacks": [
+  "wordlists": [
     {
       "name": "jojo",
       "enabled": true,

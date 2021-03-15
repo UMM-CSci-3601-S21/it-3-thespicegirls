@@ -269,10 +269,12 @@
       </button>
 
 		<h5>Field Values</h5>
+
     <button class="contextpack-download-button" (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name, 1)'>Download Json</button>
 
     <br><button (click)="toggleShow()" type="checkbox" data-test="showJsonButton">Preview Json File</button>
     <div *ngIf='isShown===true'>
+
 		<pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>
   </div>
 

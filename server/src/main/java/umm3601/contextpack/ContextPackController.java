@@ -27,12 +27,10 @@ public class ContextPackController {
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
-  private final JacksonMongoCollection<Wordlist> wordlistCollection;
 
 
   public ContextPackController(MongoDatabase database){
     contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
-    wordlistCollection = JacksonMongoCollection.builder().build(database, "wordlists", Wordlist.class);
   }
 
 
