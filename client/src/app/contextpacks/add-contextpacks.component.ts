@@ -14,6 +14,7 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   contextpackcard = new ContextPackCardComponent();
+  isShown = false;
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -200,6 +201,11 @@ export class AddContextpacksComponent implements OnInit {
     }
   }
 
+
+toggleShow() {
+this.isShown = ! this.isShown;
+return this.isShown;
+}
 
   submitForm() {
     this.contextPackService.addContextPack(this.contextPackForm.value).subscribe(newID => {
