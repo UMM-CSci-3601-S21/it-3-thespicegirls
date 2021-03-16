@@ -8,12 +8,14 @@ span.contextpack-card-wordlists{
   margin: 5px;
 }
 .mat-card{
-  background-color: rgba(136, 138, 248, 0.144);
+  background-color:white;
+
 }
 .contextpack-card-name{
   color:#01596e;
 
 }
+
 
 span.contextpack-card-nouns{
   display: inline-block;
@@ -65,6 +67,7 @@ span.contextpack-card-verbs{
   word-wrap: break-word;
   display: flex;
 }
+
 
 .contextpack-download-button {
   border:none;
