@@ -258,6 +258,7 @@
 	<!-- X End -->
 </form>
     <div class="buttons-div">
+
       <button type="submit" (click)="submitForm()"
         mat-button
         type="button"
@@ -271,6 +272,7 @@
 
 		<h5>Field Values</h5>
 
+
     <button class="contextpack-download-button"
     type="button"
     color='primary'
@@ -279,7 +281,7 @@
 
     >Download Json</button>
 
-    <br><button (click)="toggleShow()" type="checkbox" data-test="showJsonButton">Preview Json File</button>
+    <br><button matTooltip="View current Json" (click)="toggleShow()" type="checkbox" data-test="showJsonButton">Preview Json File</button>
     <div *ngIf='isShown===true'>
 
 		<pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>

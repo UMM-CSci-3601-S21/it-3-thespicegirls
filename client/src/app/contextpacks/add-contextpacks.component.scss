@@ -11,7 +11,6 @@ label {
   width: 50em;
   margin: .5em 0;
   color:#01596e;
-  font-style: italic;
 }
 input {
   height: 2em;
@@ -52,7 +51,7 @@ button:hover {
 
 button:disabled {
   background-color: rgba(255, 255, 255, 0);
-  color: rgb(0, 0, 0);
+  color:rgba(128, 128, 128, 0.734);
   cursor: auto;
 }
 
