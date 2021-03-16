@@ -1,9 +1,13 @@
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
   <mat-card-header>
-    <mat-card-title class="contextpack-card-name">{{ this.contextpack.name }}</mat-card-title>
+    <mat-card-title class="contextpack-card-name">{{ this.contextpack.name.charAt(0).toUpperCase() + this.contextpack.name.slice(1) }}</mat-card-title>
     <mat-card-subtitle class="contextpack-card-enabled">Enabled: {{ this.contextpack.enabled }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
+
+    <button mat-icon-button color="accent" class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>
+      <mat-icon>download</mat-icon>
+    </button>
 
     <mat-form-field>
       <mat-label>View Type</mat-label>
@@ -26,7 +30,9 @@
         <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">Misc: {{displayAllWords(this.contextpack, 'misc')}}</div></span>
   </ng-template>
 
-    <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>Download Json</button>
+
+
+    <!-- <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>Download Json</button> -->
 
   </mat-card-content>
   <mat-card-actions>
