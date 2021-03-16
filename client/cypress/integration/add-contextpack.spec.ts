@@ -1,5 +1,4 @@
 import { ContextPack } from 'src/app/contextpacks/contextpack';
-import { User } from 'src/app/users/user';
 import { AddPackPage } from '../support/add-contextpack.po';
 
 describe('Add a Context pack', () => {

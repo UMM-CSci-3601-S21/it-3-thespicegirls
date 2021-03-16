@@ -11,7 +11,7 @@ describe('ContextPackCardComponent', () => {
   let fixture: ComponentFixture<ContextPackCardComponent>;
   let component2: ContextPackCardComponent;
   let fixture2: ComponentFixture<ContextPackCardComponent>;
-  let wordlist: Wordlist;
+  let emptyWordlist: Wordlist;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -52,14 +52,10 @@ describe('ContextPackCardComponent', () => {
     const testVerbs: Word[] = [verb];
     const testAdjectives: Word[] = [adjective];
     const testMisc: Word[] = [misc];
-    const testWordList: Wordlist[] = [{
-      name: 'howdy',
-      enabled: true,
-      nouns: testNouns,
-      verbs: testVerbs,
-      adjectives: testAdjectives,
-      misc: testMisc
-    }];
+    emptyWordlist ={
+
+    };
+
     const testWordListBig: Wordlist[] = [{
       name: 'howdy',
       enabled: true,
@@ -76,15 +72,12 @@ describe('ContextPackCardComponent', () => {
       adjectives: testAdjectives,
       misc: testMisc
   }];
-    wordlist = {
-
-    };
 
     component.contextpack = {
       _id: 'pat_id',
       enabled: true,
       name: 'happy',
-      wordlists: testWordList
+      wordlists: testWordListBig
     };
     component2.contextpack = {
       _id: 'mat_id',
@@ -108,27 +101,27 @@ describe('ContextPackCardComponent', () => {
   });
 
   it('should return the nouns displayAllNouns() is called', () => {
-    expect(component.displayAllWords(component.contextpack, 'nouns')).toContain('you, yoyo, yos, yoted');
+    expect(component.displayAllWords(component.contextpack, 'nouns')).toContain('you, yoyo, yos, yoted, you, yoyo, yos, yoted');
   });
   it('should return the verbs when displayAllVerbs() is called', () => {
-    expect(component.displayAllWords(component.contextpack, 'verbs')).toContain('ran, running');
+    expect(component.displayAllWords(component.contextpack, 'verbs')).toContain('ran, running, ran, running');
   });
   it('should return the adjectives when displayAllAdjectives() is called', () => {
-    expect(component.displayAllWords(component.contextpack, 'adjectives')).toContain('green, greener');
+    expect(component.displayAllWords(component.contextpack, 'adjectives')).toContain('green, greener, green, greener');
   });
   it('should return the misc words when displayAllMisc() is called', () => {
-    expect(component.displayAllWords(component.contextpack, 'misc')).toContain('langerhans, langerhan');
+    expect(component.displayAllWords(component.contextpack, 'misc')).toContain('langerhans, langerhan, langerhans, langerhan');
   });
 
 
-  it('should have displayNouns,ver,adjective,misc return null if undefined', () => {
-    expect(component.displayWords(wordlist, 'nouns')).toBeNull();
-    expect(component.displayWords(wordlist, 'verbs')).toBeNull();
-    expect(component.displayWords(wordlist, 'adjectives')).toBeNull();
-    expect(component.displayWords(wordlist, 'misc')).toBeNull();
+  it('should have displayNouns,verbs,adjective,misc return null if undefined', () => {
+    expect(component.displayWords(emptyWordlist, 'nouns')).toBeNull();
+    expect(component.displayWords(emptyWordlist, 'verbs')).toBeNull();
+    expect(component.displayWords(emptyWordlist, 'adjectives')).toBeNull();
+    expect(component.displayWords(emptyWordlist, 'misc')).toBeNull();
   });
 
-  it('should have displayNouns,ver,adjective,misc return null if undefined', () => {
+  it('should have displayNouns,verbs,adjective,misc return null if undefined', () => {
     expect(component2.displayAllWords(component2.contextpack, 'nouns')).toBeNull();
     expect(component2.displayAllWords(component2.contextpack, 'verbs')).toBeNull();
     expect(component2.displayAllWords(component2.contextpack, 'adjectives')).toBeNull();
