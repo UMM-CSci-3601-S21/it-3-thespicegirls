@@ -15,15 +15,15 @@
 
     <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-        <span class="contextpack-card-wordlists"><div style="width: 500px;white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
+        <span class="contextpack-card-wordlists"><div style="white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
       </div>
     </div>
 
     <ng-template #templateWords>
-        <span class="contextpack-card-nouns"><div style="width: 500px;white-space: pre-line">Nouns: {{displayAllWords(this.contextpack, 'nouns')}}</div></span>
-        <span class="contextpack-card-verbs"><div style="width: 500px;white-space: pre-line">Verbs: {{displayAllWords(this.contextpack, 'verbs')}}</div></span>
-        <span class="contextpack-card-adjectives"><div style="width: 500px;white-space: pre-line">Adjectives: {{displayAllWords(this.contextpack, 'adjectives')}}</div></span>
-        <span class="contextpack-card-misc"><div style="width: 500px;white-space: pre-line">Misc: {{displayAllWords(this.contextpack, 'misc')}}</div></span>
+        <span class="contextpack-card-nouns"><div style="white-space: pre-line">Nouns: {{displayAllWords(this.contextpack, 'nouns')}}</div></span>
+        <span class="contextpack-card-verbs"><div style="white-space: pre-line">Verbs: {{displayAllWords(this.contextpack, 'verbs')}}</div></span>
+        <span class="contextpack-card-adjectives"><div style="white-space: pre-line">Adjectives: {{displayAllWords(this.contextpack, 'adjectives')}}</div></span>
+        <span class="contextpack-card-misc"><div style="white-space: pre-line">Misc: {{displayAllWords(this.contextpack, 'misc')}}</div></span>
   </ng-template>
 
     <button class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>Download Json</button>
