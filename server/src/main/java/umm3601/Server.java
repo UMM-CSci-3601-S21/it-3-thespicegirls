@@ -11,7 +11,6 @@ import com.mongodb.client.MongoDatabase;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
 import umm3601.contextpack.ContextPackController;
-import umm3601.user.UserController;
 
 public class Server {
 
@@ -34,8 +33,7 @@ public class Server {
     // Get the database
     MongoDatabase database = mongoClient.getDatabase(databaseName);
 
-    // Initialize dependencies
-    UserController userController = new UserController(database);
+
     ContextPackController contextPackController = new ContextPackController(database);
 
     Javalin server = Javalin.create(config -> {
@@ -58,22 +56,13 @@ public class Server {
 
     server.start(4567);
 
-    // List users, filtered using query parameters
-    server.get("/api/users", userController::getUsers);
 
     server.get("/api/contextpacks", contextPackController::getContextPacks);
 
-    // Get the specified user
-    server.get("/api/users/:id", userController::getUser);
+
     server.get("/api/contextpacks/:id", contextPackController::getContextPack);
 
 
-    // Delete the specified user
-    server.delete("/api/users/:id", userController::deleteUser);
-
-    // Add new user with the user info being in the JSON body
-    // of the HTTP request
-    server.post("/api/users", userController::addNewUser);
     server.post("/api/contextpacks", contextPackController::addNewContextPack);
 
 
