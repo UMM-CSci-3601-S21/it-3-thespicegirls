@@ -1,4 +1,199 @@
-[
+[{
+  "_id": {
+    "$oid": "588935f55b432bb2ff322169"
+  },
+  "name": "Birthday Pack",
+  "icon": "birthday.png",
+  "enabled": true,
+
+  "wordlists": [
+    {
+      "name": "birthday",
+      "enabled": true,
+
+      "nouns": [
+        { "word": "cake", "forms": ["cake", "cakes"] },
+        { "word": "candle", "forms": ["candle", "candles"] },
+        { "word": "present", "forms": ["present", "presents"] },
+        { "word": "food", "forms": ["food", "foods"] },
+        { "word": "piñata", "forms": ["piñata", "piñatas"] },
+        { "word": "game", "forms": ["game", "games"] },
+        { "word": "birthday", "forms": ["birthday"] },
+        { "word": "hat", "forms": ["hat", "hats"] },
+        { "word": "party", "forms": ["party", "parties"] },
+        { "word": "friend", "forms": ["friend", "friends"] },
+        { "word": "music", "forms": ["music"] },
+        { "word": "balloon", "forms": ["balloon", "balloons"] },
+        { "word": "card", "forms": ["card", "cards"] },
+        { "word": "cupcake", "forms": ["cupcake", "cupcakes"] },
+        { "word": "confetti", "forms": ["confetti"] },
+        { "word": "candy", "forms": ["candy", "candies"] },
+        { "word": "food", "forms": ["food", "foods"] },
+        { "word": "ice cream", "forms": ["ice cream"] },
+        { "word": "invitation", "forms": ["invitation", "invitations"] },
+        { "word": "pizza", "forms": ["pizza", "pizzas"] },
+        { "word": "ribbon", "forms": ["ribbon", "ribbons"] },
+        { "word": "year", "forms": ["year", "years"] },
+        { "word": "decoration", "forms": ["decoration", "decorations"] },
+        { "word": "laughter", "forms": ["laughter"] },
+        { "word": "parent", "forms": ["parent", "parents"] }
+      ],
+
+      "verbs": [
+        {
+          "word": "blow",
+          "forms": ["blow", "blows", "blew", "blown", "blowing"]
+        },
+        { "word": "out", "forms": ["out"] },
+        {
+          "word": "celebrate",
+          "forms": ["celebrate", "celebrates", "celebrated", "celebrating"]
+        },
+        {
+          "word": "give",
+          "forms": ["give", "gives", "gave", "given", "giving"]
+        },
+        {
+          "word": "invite",
+          "forms": ["invite", "invites", "invited", "inviting"]
+        },
+        { "word": "play", "forms": ["play", "plays", "played", "playing"] },
+        {
+          "word": "receive",
+          "forms": ["receive", "receives", "received", "receiving"]
+        },
+        {
+          "word": "thank",
+          "forms": ["thank", "thanks", "thanked", "thanking"]
+        },
+        { "word": "wish", "forms": ["wish", "wishes", "wished", "wishing"] },
+        { "word": "laugh", "forms": ["laugh", "laughs", "laughed", "laughing"] }
+      ],
+
+      "adjectives": [
+        { "word": "fun", "forms": ["fun"] },
+        { "word": "exciting", "forms": ["exciting"] },
+        { "word": "happy", "forms": ["happy"] },
+        { "word": "thankful", "forms": ["thankful"] },
+        { "word": "colorful", "forms": ["colorful"] },
+        { "word": "dazzling", "forms": ["dazzling"] },
+        { "word": "delightful", "forms": ["delightful"] },
+        { "word": "joyful", "forms": ["joyful"] },
+        { "word": "important", "forms": ["important"] },
+        { "word": "impressive", "forms": ["impressive"] }
+      ],
+
+      "misc": []
+    }
+  ]
+}
+
+  ,{
+  "_id": {
+    "$oid": "588935f55b432bb2ff322165"
+  },
+
+  "name": "Extra Cool Pack That Makes The Text Tiny",
+  "icon": "c:/path",
+  "enabled": true,
+
+  "wordlists": [
+    {
+      "name": "default",
+      "enabled": true,
+      "nouns": [
+        { "word": "Mora", "forms": ["Maura"] },
+        { "word": "Bella", "forms": ["Bella"] },
+        { "word": "Sven", "forms": ["Sven"] }
+      ],
+
+      "verbs": [
+        { "word": "explode", "forms": ["explode", "exploded", "exploding"] },
+        { "word": "jump", "forms": ["jump", "jumps", "jumped", "jumping"] },
+        { "word": "run", "forms": ["run", "runs", "ran", "running"] },
+        { "word": "play", "forms": ["play", "plays", "played", "playing"] },
+        { "word": "throw", "forms": ["throw", "throws", "threw", "throwing"] },
+        {
+          "word": "catch",
+          "forms": ["catch", "catches", "caught", "catching"]
+        },
+        { "word": "walk", "forms": ["walk", "walks", "walked", "walking"] },
+        {
+          "word": "explore",
+          "forms": ["explore", "explores", "explored", "exploring"]
+        },
+        {
+          "word": "export",
+          "forms": ["export", "exports", "exported", "exporting"]
+        },
+        {
+          "word": "explain",
+          "forms": ["explain", "explains", "explained", "explaining"]
+        },
+        { "word": "plant", "forms": ["plant", "plants", "planted", "planting"] }
+      ],
+
+      "adjectives": [{ "word": "hypnotic", "forms": ["hypnotic"] }],
+
+      "misc": []
+    }
+  ]
+}
+
+
+
+  ,
+  {
+  "_id": {
+    "$oid": "588935f55b432bb2ff322160"
+  },"name": "Batman",
+  "icon": "bat_signal.jpg",
+  "enabled": true,
+
+  "wordlists": [
+    {
+      "name": "batman_villains",
+      "enabled": true,
+      "nouns": [
+        { "word": "Joker", "forms": ["Joker"] },
+        { "word": "villain", "forms": ["villain, villains"] }
+      ],
+
+      "verbs": [
+        { "word": "fly", "forms": ["fly", "flown", "flew"] },
+        { "word": "dance", "forms": ["dance", "danced"] },
+        { "word": "steal", "forms": ["steal", "stole"] },
+        { "word": "laugh", "forms": ["laugh", "laughed", "laughing"] },
+        { "word": "hide", "forms": ["hide", "hid", "hiding"] }
+      ],
+
+      "adjectives": [
+        { "word": "evil", "forms": ["evil"] },
+        { "word": "sad", "forms": ["sad"] }
+      ],
+
+      "misc": [{ "word": "the", "forms": ["the"] }]
+    },
+
+    {
+      "name": "batman_basics",
+      "enabled": true,
+      "nouns": [
+				{ "word": "Batman", "forms": ["Batman"] },
+				{ "word": "Robin", "forms": ["Robin"] }
+			],
+
+      "verbs": [
+        { "word": "fly", "forms": ["fly", "flown", "flew"] },
+        { "word": "dance", "forms": ["dance", "danced"] }
+      ],
+
+      "adjectives": [{ "word": "brave", "forms": ["brave"] }],
+      "misc": []
+    }
+  ]
+
+},
   {
   "_id": {
     "$oid": "588935f57546a2daea44de7c"
@@ -98,6 +293,143 @@
   }
 ]
 },
+{
+  "_id": {
+    "$oid": "588935f51c55b55c75a84848"
+  },
+  "name": "sight words",
+  "icon": "eye.png",
+  "enabled": true,
+  "wordlists": [
+    {
+      "name": "pre-k",
+      "enabled": true,
+
+      "nouns": [
+        { "word": "here", "forms": ["here"] },
+        { "word": "I", "forms": ["I"] },
+        { "word": "it", "forms": ["it"] },
+        { "word": "me", "forms": ["me"] },
+        { "word": "we", "forms": ["we"] },
+        { "word": "you", "forms": ["you"] }
+      ],
+
+      "verbs": [
+        { "word": "can", "forms": ["can"] },
+        { "word": "come", "forms": ["come", "comes", "coming"] },
+        { "word": "find", "forms": ["find", "finds", "found", "finding"] },
+        { "word": "go", "forms": ["go", "goes", "went", "going"] },
+        { "word": "help", "forms": ["help", "helps", "helped", "helping"] },
+        { "word": "is", "forms": ["is"] },
+        { "word": "jump", "forms": ["jump", "jumps", "jumped", "jumping"] },
+        { "word": "look", "forms": ["look", "looks", "looked", "looking"] },
+        { "word": "make", "forms": ["make", "makes", "made", "making"] },
+        { "word": "play", "forms": ["play", "plays", "played", "playing"] },
+        { "word": "run", "forms": ["run", "runs", "ran", "running"] },
+        { "word": "said", "forms": ["said"] },
+        { "word": "see", "forms": ["see", "sees", "saw", "seeing"] }
+      ],
+
+      "adjectives": [
+        { "word": "big", "forms": ["big"] },
+        { "word": "blue", "forms": ["blue"] },
+        { "word": "funny", "forms": ["funny"] },
+        { "word": "little", "forms": ["little", "littler", "littlest"] },
+        { "word": "my", "forms": ["my"] },
+        { "word": "one", "forms": ["one"] },
+        { "word": "red", "forms": ["red"] },
+        { "word": "two", "forms": ["two"] },
+        { "word": "three", "forms": ["three"] },
+        { "word": "yellow", "forms": ["yellow"] }
+      ],
+
+      "misc": [
+        { "word": "a", "forms": ["a"] },
+        { "word": "and", "forms": ["and"] },
+        { "word": "away", "forms": ["away"] },
+        { "word": "down", "forms": ["down"] },
+        { "word": "for", "forms": ["for"] },
+        { "word": "in", "forms": ["in"] },
+        { "word": "not", "forms": ["not"] },
+        { "word": "the", "forms": ["the"] },
+        { "word": "to", "forms": ["to"] },
+        { "word": "up", "forms": ["up"] },
+        { "word": "where", "forms": ["where"] },
+        { "word": "?", "forms": ["?"] }
+      ]
+    },
+    {
+      "name": "k",
+      "enabled": true,
+
+      "nouns": [
+        { "word": "he", "forms": ["he"] },
+        { "word": "she", "forms": ["she"] },
+        { "word": "that", "forms": ["that"] },
+        { "word": "there", "forms": ["there"] },
+        { "word": "they", "forms": ["they"] },
+        { "word": "this", "forms": ["this"] }
+      ],
+
+      "verbs": [
+        { "word": "am", "forms": ["am"] },
+        { "word": "are", "forms": ["are"] },
+        { "word": "ate", "forms": ["ate"] },
+        { "word": "be", "forms": ["be"] },
+        { "word": "came", "forms": ["came"] },
+        { "word": "did", "forms": ["did"] },
+        { "word": "do", "forms": ["do"] },
+        { "word": "eat", "forms": ["eat", "eats", "eating"] },
+        { "word": "get", "forms": ["get"] },
+        { "word": "like", "forms": ["like", "likes", "liked", "liking"] },
+        { "word": "must", "forms": ["must"] },
+        { "word": "ran", "forms": ["ran"] },
+        { "word": "ride", "forms": ["ride", "rides", "rode", "riding"] },
+        { "word": "saw", "forms": ["saw"] },
+        { "word": "say", "forms": ["say", "says", "saying"] },
+        { "word": "want", "forms": ["want", "wants", "wanted", "wanting"] },
+        { "word": "was", "forms": ["was"] },
+        { "word": "went", "forms": ["went"] },
+        { "word": "will", "forms": ["will"] }
+      ],
+
+      "adjectives": [
+        { "word": "black", "forms": ["black"] },
+        { "word": "brown", "forms": ["brown"] },
+        { "word": "four", "forms": ["four"] },
+        { "word": "good", "forms": ["good", "better", "best"] },
+        { "word": "have", "forms": ["have"] },
+        { "word": "new", "forms": ["new", "newer", "newest"] },
+        { "word": "our", "forms": ["our"] },
+        { "word": "pretty", "forms": ["pretty", "prettier", "prettiest"] },
+        { "word": "white", "forms": ["white"] }
+      ],
+
+      "misc": [
+        { "word": "all", "forms": ["all"] },
+        { "word": "at", "forms": ["at"] },
+        { "word": "but", "forms": ["but"] },
+        { "word": "into", "forms": ["into"] },
+        { "word": "no", "forms": ["no"] },
+        { "word": "now", "forms": ["now"] },
+        { "word": "on", "forms": ["on"] },
+        { "word": "out", "forms": ["out"] },
+        { "word": "please", "forms": ["please"] },
+        { "word": "so", "forms": ["so"] },
+        { "word": "soon", "forms": ["soon", "sooner", "soonest"] },
+        { "word": "too", "forms": ["too"] },
+        { "word": "under", "forms": ["under"] },
+        { "word": "well", "forms": ["well"] },
+        { "word": "what", "forms": ["what"] },
+        { "word": "who", "forms": ["who"] },
+        { "word": "with", "forms": ["with"] },
+        { "word": "yes", "forms": ["yes"] }
+      ]
+    }
+  ]},
+
+
+
 {
   "_id": {
     "$oid": "588935f52787254123f71fed"
