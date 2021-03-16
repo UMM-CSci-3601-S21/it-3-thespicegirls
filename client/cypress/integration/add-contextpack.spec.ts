@@ -65,7 +65,7 @@ describe('Add a Context pack', () => {
 
     const pack: ContextPack = {
       _id: null,
-      name: 'farm',
+      name: 'barn',
       enabled: true,
       wordlists: [
 
