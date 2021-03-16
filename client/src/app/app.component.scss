@@ -2,6 +2,9 @@
   height: 100%;
 
 }
+.mat-sidenav-content{
+  background-color: #f8f8f6;
+}
 
 .sidenav {
   background-color:#f8f8f6;
@@ -33,10 +36,4 @@
   @media (max-width: 599px) {
     margin: 16px;
   }
-}
-.mat-sidenav-content{
-  background-color:  #f8f8f6;
-  background-image: url('assets/img/logo.jpg');
-  background-repeat:no-repeat;
-  background-position: center top;
 }
