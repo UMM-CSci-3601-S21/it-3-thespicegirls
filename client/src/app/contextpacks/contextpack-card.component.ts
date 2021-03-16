@@ -70,7 +70,7 @@ export class ContextPackCardComponent implements OnInit {
       name: jsonBetter.name,
       icon: jsonBetter.icon,
       enabled: jsonBetter.enabled,
-      wordlists: jsonBetter
+      wordlists: jsonBetter.wordlists
       };
       return obj;
   }
