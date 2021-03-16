@@ -1,6 +1,6 @@
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-<form [formGroup]="contextPackForm" (ngSubmit)="submitForm()">
+<form [formGroup]="contextPackForm" (ngSubmit)="submitForm()" class="form">
   <mat-card class="add-contextpack-card">
     <mat-card-title class="add-pack-title">Create A New Context Pack</mat-card-title>
     <mat-card-content fxLayout="column">
@@ -256,7 +256,9 @@
 </mat-card-content>
 </mat-card>
 	<!-- X End -->
-	<form>
+</form>
+    <div class="buttons-div">
+
       <button type="submit" (click)="submitForm()"
         mat-button
         type="button"
@@ -270,6 +272,7 @@
 
 		<h5>Field Values</h5>
 
+
     <button class="contextpack-download-button"
     type="button"
     color='primary'
@@ -278,7 +281,7 @@
 
     >Download Json</button>
 
-    <br><button (click)="toggleShow()" type="checkbox" data-test="showJsonButton">Preview Json File</button>
+    <br><button matTooltip="View current Json" (click)="toggleShow()" type="checkbox" data-test="showJsonButton">Preview Json File</button>
     <div *ngIf='isShown===true'>
 
 		<pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>
