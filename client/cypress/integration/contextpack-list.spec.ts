@@ -25,12 +25,12 @@ describe('Contextpack list', () => {
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-name').should('have.text', 'farm');
+      cy.wrap(e).find('.contextpack-card-name').should('have.text', 'Farm');
     });
 
     // (We check this two ways to show multiple ways to check this)
     page.getContextpackCards().find('.contextpack-card-name').each(el =>
-      expect(el.text()).to.equal('farm')
+      expect(el.text()).to.equal('Farm')
     );
   });
 
@@ -87,13 +87,13 @@ describe('Contextpack list', () => {
   it('Should find a download button on contextpack info page', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-download-button').should('have.text', 'Download Json');
+    cy.get('.contextpack-download-button').should('have.text', 'download');
   });
 
   it('Should click view info and see all the nouns and verbs', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-card-name').should('have.text', 'farm');
+    cy.get('.contextpack-card-name').should('have.text', 'Farm');
     cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
     cy.get('.contextpack-card-wordlists').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
     + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
@@ -106,7 +106,7 @@ describe('Contextpack list', () => {
     page.clickViewInfo(page.getContextpackCards().first());
     page.selectView('false');
 
-    cy.get('.contextpack-card-name').should('have.text', 'farm');
+    cy.get('.contextpack-card-name').should('have.text', 'Farm');
     cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
     cy.get('.contextpack-card-nouns').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
     + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
