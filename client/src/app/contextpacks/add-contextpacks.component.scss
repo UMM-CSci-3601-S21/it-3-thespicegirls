@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   padding-top: 24px;
+  background-color: #f8f8f6;
 }
 
 label {
@@ -22,11 +23,22 @@ button {
   display: inline-table;
   z-index: 1;
   font-family: Arial, sans-serif;
-  background-color: rgb(178, 162, 223);
+  background-color:#02c3eb;
   border: 2px solid black;
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
+}
+.delete-button{
+  margin: 5px;
+  border:none;
+  display: inline-block;
+}
+.add-button {
+  border:none;
+  display: inline-block;
+
+
 }
 
 button:hover {
@@ -35,12 +47,31 @@ button:hover {
 
 button:disabled {
   background-color: rgba(255, 255, 255, 0);
-  color: rgba(204, 204, 204, 0);
+  color: rgb(0, 0, 0);
   cursor: auto;
 }
-.nouns{
-  border: 1px solid rgb(51, 255, 0);
+
+.misc, .verbs, .nouns, .adjectives {
+  border: 3px solid#01596e;
+  border-radius: 5px;
   padding: 10px;
   width: 400px;
   margin: 5px;
+}
+.wordlists{
+  border: 4px solid #3baada;
+  border-radius: 5px;
+  padding: 10px;
+  width: 600px;
+  margin: 5px;
+
+}
+
+h3{
+  font-style:oblique;
+  color:#01596e;
+}
+
+.sidenav-list a{
+  background-color:red;
 }

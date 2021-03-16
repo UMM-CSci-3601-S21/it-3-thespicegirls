@@ -14,6 +14,7 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   contextpackcard = new ContextPackCardComponent();
+  isShown = false;
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -188,18 +189,15 @@ export class AddContextpacksComponent implements OnInit {
         }]
       });
       const wordlist = wordlistsA.at(x - 1 ) as FormGroup;
-      for (const field in wordlist.controls) {
-        const input = wordlist.get(field);
-        if (input.invalid && input.dirty) {
-          for (const error in input.errors) {
-            this.formErrors.wordlists[x - 1][field] = this.validationMessages.wordlists[field][error];
-          }
-        }
-      }
       x++;
     }
   }
 
+
+toggleShow() {
+this.isShown = ! this.isShown;
+return this.isShown;
+}
 
   submitForm() {
     this.contextPackService.addContextPack(this.contextPackForm.value).subscribe(newID => {

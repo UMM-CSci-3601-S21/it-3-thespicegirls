@@ -30,6 +30,9 @@ export class AddPackPage {
   addPosArray(pos: string){
     return cy.get(`.add-${pos}-button`).click({force: true});
   }
+  showJson(){
+    return cy.get('[data-test="showJsonButton"]').click({force: true});
+  }
   contextPackForm(){
     return cy.get('.form-value');
   }
@@ -49,9 +52,6 @@ export class AddPackPage {
       this.getFormField('name').then(els => {
         [...els].forEach(el => cy.wrap(el).type('horsies', {force:true}));
       });
-    }
-    if (newPack.wordlists[0].nouns) {
-      this.getFormField('word').type(newPack.wordlists[0].nouns[0].word, {force:true});
     }
     this.selectMatSelectValue(this.getFormField('enabled'), newPack.enabled.toString());
     return this.addPackButton().click({ multiple: true, force:true });

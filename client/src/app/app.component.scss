@@ -1,8 +1,11 @@
 .sidenav-container {
   height: 100%;
+
 }
 
 .sidenav {
+  background-color:#f8f8f6;
+  font:#01596e;
   width: 256px;
 }
 
@@ -11,6 +14,8 @@
 }
 
 .mat-toolbar.mat-primary {
+  background-color:  #02c3eb;
+  color:#01596e;
   position: sticky;
   top: 0;
   z-index: 1;
@@ -21,9 +26,17 @@
 }
 
 
+
 .main-content {
+  color:#01596e;
   margin: 24px;
   @media (max-width: 599px) {
     margin: 16px;
   }
+}
+.mat-sidenav-content{
+  background-color:  #f8f8f6;
+  background-image: url('assets/img/logo.jpg');
+  background-repeat:no-repeat;
+  background-position: center top;
 }

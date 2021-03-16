@@ -1,4 +1,4 @@
-import { compileComponentFromMetadata } from '@angular/compiler';
+import { compileComponentFromMetadata, componentFactoryName } from '@angular/compiler';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, FormGroup, AbstractControl, FormArray } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -197,6 +197,11 @@ describe('AddContextpacksComponent', () => {
       ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`name`).setValue('cow'));
       ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`enabled`).setValue('true'));
       expect(component.contextPackForm.valid).toBeTruthy();
+    });
+  });
+  describe('Toggle Button', ()=>{
+    it('should toggle the boolean status', ()=>{
+      expect(component.toggleShow()).toBeTruthy();
     });
   });
 });
