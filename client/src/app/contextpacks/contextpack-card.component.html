@@ -19,7 +19,7 @@
 
     <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-        <span class="contextpack-card-wordlists"><div style="width: 500px;white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
+        <span class="contextpack-card-wordlists"><div style="width: 90%;white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
       </div>
     </div>
 

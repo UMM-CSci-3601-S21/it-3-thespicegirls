@@ -10,8 +10,8 @@ label {
   display: block;
   width: 50em;
   margin: .5em 0;
-  color: #607D8B;
-  font-weight: bold;
+  color:#01596e;
+  font-style: italic;
 }
 input {
   height: 2em;
@@ -71,6 +71,10 @@ button:disabled {
   margin: 5px;
 
 }
+.mat-card-title{
+  color:#01596e;
+}
+
 
 h3{
   font-style:oblique;
