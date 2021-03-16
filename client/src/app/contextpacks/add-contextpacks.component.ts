@@ -188,7 +188,6 @@ export class AddContextpacksComponent implements OnInit {
           ]),
         }]
       });
-      const wordlist = wordlistsA.at(x - 1 ) as FormGroup;
       x++;
     }
   }
