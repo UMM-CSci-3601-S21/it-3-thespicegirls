@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
-import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -16,7 +15,6 @@ export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   contextpackcard = new ContextPackCardComponent();
   isShown = false;
-  happy = 'fdfdf';
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -130,8 +128,6 @@ export class AddContextpacksComponent implements OnInit {
     console.log('didnt go through');
       control.setValue(formAdd);
       console.log(ix,iy);
-      this.happy = 'nonce';
-
   }
 
 
