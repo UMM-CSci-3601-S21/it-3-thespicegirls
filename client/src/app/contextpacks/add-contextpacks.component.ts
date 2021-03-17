@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -15,6 +16,7 @@ export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   contextpackcard = new ContextPackCardComponent();
   isShown = false;
+  happy = 'fdfdf';
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -101,7 +103,7 @@ export class AddContextpacksComponent implements OnInit {
       word: [''],
       // ---------------------------------------------------------------------
       forms: this.fb.array([
-         this.fb.control('')
+        this.fb.control('')
       ])
     });
   }
@@ -120,15 +122,16 @@ export class AddContextpacksComponent implements OnInit {
     control.push(this.fb.control(''));
   }
   setWord(ix: number, iy: number, pos: string){
-    const control = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray)
-    .at(iy).get('forms') as FormArray;
+    const control = (((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray).at(iy)
+    .get('word'));
 
-    const formAdd = ((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray).at(iy).get('word');
+    const formAdd = (((this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray).at(iy)
+    .get('forms') as FormArray).at(0).value.toString();
     console.log('didnt go through');
-    if(control.getRawValue()[0] !== formAdd.value  ){
-      control.insert(0,formAdd);
+      control.setValue(formAdd);
       console.log(ix,iy);
-    }
+      this.happy = 'nonce';
+
   }
 
 
