@@ -181,11 +181,15 @@ describe('AddContextpacksComponent', () => {
     it('should set the first form to the same word', ()=>{
       component.addWordlist();
       component.addPosArray(0, 'verbs');
-      ((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray).at(0).get('word').setValue('cow');
+      component.addForms(0 ,0 , 'verbs');
+
+      (((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray).at(0)
+    .get('forms') as FormArray).at(0).setValue('cow');
+
       component.setWord(0,0,'verbs');
       // expect cow to be the first form
-      expect(((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray)
-      .at(0).get('forms').value[0]).toEqual('cow');
+      expect(((component.contextPackForm.controls.wordlists as FormArray).at(0).get(`verbs`) as FormArray).at(0)
+      .get('word').value).toEqual('cow');
     });
   });
   describe('form submission', ()=>{
