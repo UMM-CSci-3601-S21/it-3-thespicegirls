@@ -1,5 +1,4 @@
 import { ContextPack } from 'src/app/contextpacks/contextpack';
-import { User } from 'src/app/users/user';
 import { AddPackPage } from '../support/add-contextpack.po';
 
 describe('Add a Context pack', () => {
@@ -28,7 +27,6 @@ describe('Add a Context pack', () => {
     page.addWordlist();
     page.addPosArray('noun');
     page.showJson();
-    page.getFormField('word').type('test');
     page.addPackButton().should('be.disabled');
     page.getFormField('name').then(els => {
       [...els].forEach(el => cy.wrap(el).type('Hello World'));
@@ -66,7 +64,7 @@ describe('Add a Context pack', () => {
 
     const pack: ContextPack = {
       _id: null,
-      name: 'farm',
+      name: 'barn',
       enabled: true,
       wordlists: [
 

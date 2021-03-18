@@ -68,8 +68,9 @@ export class ContextPackCardComponent implements OnInit {
       {
       $schema: 'https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json',
       name: jsonBetter.name,
+      icon: jsonBetter.icon,
       enabled: jsonBetter.enabled,
-      wordlists: jsonBetter
+      wordlists: jsonBetter.wordlists
       };
       return obj;
   }
@@ -93,7 +94,7 @@ export class ContextPackCardComponent implements OnInit {
       for (z = 0; z < words.length; z++){
         str += this.displayWords(words[z], pos);
         str = str.slice(0, -1);
-        if (z < words.length-1){
+        if (z < words.length-1 && !(words[z+1][`${pos}`][0]===undefined)){
           str += ', ';
           }
         }
