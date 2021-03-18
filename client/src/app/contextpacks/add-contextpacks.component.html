@@ -83,9 +83,16 @@
                 </div>
 
                 <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
+                  <div *ngIf="iz === 0; else templateForms">
+                    <mat-form-field formArrayName="forms">
+                      <mat-label>Word: </mat-label>
+                      <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'nouns')">
+                      </mat-form-field>
+                  </div>
+                  <ng-template #templateForms>
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
-                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" (keyup)="setWord(ix, iy, 'nouns')">
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
                     </mat-form-field>
                     <!--delete button--->
                     <div class="delete-button">
@@ -93,6 +100,7 @@
                         <mat-icon>delete</mat-icon>
                       </button>
                     </div>
+                  </ng-template>
                     <!-- end delete button--->
 
                 </div>
@@ -123,16 +131,26 @@
 
                 <!---Forms -->
                 <div *ngFor="let forms of adj['controls'].forms['controls']; let iz=index">
+                  <div *ngIf="iz === 0; else templateForms">
+                    <mat-form-field formArrayName="forms">
+                      <mat-label>Word: </mat-label>
+                      <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
+                      </mat-form-field>
+                  </div>
+                  <ng-template #templateForms>
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
-                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
-                  </mat-form-field>
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
+                    </mat-form-field>
+                    <!--delete button--->
+                    <div class="delete-button">
+                      <button class="delete-button"(click)="removeForm(ix, iy, iz, 'adjectives')"  >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </ng-template>
+                    <!-- end delete button--->
 
-                  <div class="delete-button">
-                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'adjectives')"  >
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </div>
 
                 </div>
 
@@ -161,10 +179,16 @@
 
                 <!---Forms -->
                 <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
+                  <div *ngIf="iz === 0; else templateForms">
+                    <mat-form-field formArrayName="forms">
+                      <mat-label>Word: </mat-label>
+                      <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
+                      </mat-form-field>
+                  </div>
+                  <ng-template #templateForms>
                   <mat-form-field formArrayName="forms">
                     <mat-label>Forms:(optional) </mat-label>
-                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
-
+                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
                     </mat-form-field>
                     <!--delete button--->
                     <div class="delete-button">
@@ -172,7 +196,9 @@
                         <mat-icon>delete</mat-icon>
                       </button>
                     </div>
+                  </ng-template>
                     <!-- end delete button--->
+
                 </div>
                 <!--add button-->
                 <div class="add-button">
@@ -201,18 +227,26 @@
 
                <!---Forms -->
                <div *ngFor="let forms of misc['controls'].forms['controls']; let iz=index">
+                <div *ngIf="iz === 0; else templateForms">
+                  <mat-form-field formArrayName="forms">
+                    <mat-label>Word: </mat-label>
+                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
+                    </mat-form-field>
+                </div>
+                <ng-template #templateForms>
                 <mat-form-field formArrayName="forms">
                   <mat-label>Forms:(optional) </mat-label>
-                  <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
-
+                  <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
                   </mat-form-field>
-                    <!--delete button--->
-                    <div class="delete-button">
-                      <button class="delete-button"(click)="removeForm(ix, iy, iz, 'misc')"  >
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                    </div>
-                    <!-- end delete button--->
+                  <!--delete button--->
+                  <div class="delete-button">
+                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'misc')"  >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </ng-template>
+                  <!-- end delete button--->
+
               </div>
               <!--add button-->
               <div class="add-button">

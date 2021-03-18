@@ -27,7 +27,6 @@ describe('Add a Context pack', () => {
     page.addWordlist();
     page.addPosArray('noun');
     page.showJson();
-    page.getFormField('word').type('test');
     page.addPackButton().should('be.disabled');
     page.getFormField('name').then(els => {
       [...els].forEach(el => cy.wrap(el).type('Hello World'));
