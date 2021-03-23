@@ -5,8 +5,7 @@ import static com.mongodb.client.model.Filters.and;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
+import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoClient;
@@ -28,6 +27,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 public class ContextPackController {
   String statusRegex = "^(?i)(true|false)$";
+  private static final String NAME_KEY = "name";
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
@@ -77,15 +77,17 @@ public class ContextPackController {
 
   }
 
-  public void editContextPackName(String id, String name, Context ctx){
-    JsonWriterSettings prettyPrint = JsonWriterSettings.builder().indent(true).build();
+  public void editContextPackName(Context ctx){
+    String id = ctx.pathParam("id");
     Bson filter = eq("_id", id);
-    Bson updateOperation = Updates.set("name", name);
-    UpdateResult updateResult = contextPackCollection.updateOne(filter, updateOperation);
-    System.out.println("=> Updating the doc with {\"id\":" + id + "}. Adding name.");
-    System.out.println(updateResult);
-    System.out.println(contextPackCollection.find(filter).first().name);
+    List<Bson> updateOperations = new ArrayList<>();
 
+    if (ctx.queryParamMap().containsKey(NAME_KEY)) {
+     updateOperations.add(Updates.set("name",  ctx.queryParam(NAME_KEY)));
+    }
+    UpdateResult updateResult = contextPackCollection.updateOne(filter, updateOperations);
+    ContextPack pack = contextPackCollection.find(filter).first();
+    ctx.json(pack);
 
   }
 

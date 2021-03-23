@@ -65,6 +65,8 @@ public class Server {
 
     server.post("/api/contextpacks", contextPackController::addNewContextPack);
 
+    server.post("/api/contextpacks/:id/edit", contextPackController::editContextPackName);
+
 
     server.exception(Exception.class, (e, ctx) -> {
       ctx.status(500);

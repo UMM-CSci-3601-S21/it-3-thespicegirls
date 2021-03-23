@@ -308,33 +308,20 @@ public class ContextPackControllerSpec {
   }
 
   @Test
-  public void editContextPackName(){
-    // Test to make sure name is "baskets" before change
-    String testContextPackID = testID.toHexString();
+  public void GetUsersByRole() throws IOException {
+    String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", testContextPackID));
-    contextPackController.getContextPack(ctx);
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/edit", ImmutableMap.of("id", id));
+
+    mockReq.setQueryString("name=frank");
+    contextPackController.editContextPackName(ctx);
+
     assertEquals(200, mockRes.getStatus());
-
     String result = ctx.resultString();
     ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
 
-    assertEquals(resultPack._id, testContextPackID);
-    assertEquals(resultPack.name, "baskets");
-
-    //update pack name
-    contextPackController.editContextPackName(resultPack._id, "bob", ctx );
-
-    // Test to make sure name is now "Bob"
-    ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id" , ImmutableMap.of("id", testContextPackID));
-    contextPackController.getContextPack(ctx);
-    assertEquals(200, mockRes.getStatus());
-
-    result = ctx.resultString();
-    resultPack = JavalinJson.fromJson(result, ContextPack.class);
-    System.out.println(resultPack.name);
-    assertEquals(resultPack.name, "bob");
-
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.name, "frank");
 
 
   }
