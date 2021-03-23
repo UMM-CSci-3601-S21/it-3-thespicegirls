@@ -7,13 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 import com.google.common.collect.ImmutableMap;
-
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.json.JsonWriterSettings;
 import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 
@@ -27,6 +31,8 @@ public class ContextPackController {
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
+  static MongoClient mongoClient;
+  static MongoDatabase db;
 
 
   public ContextPackController(MongoDatabase database){
@@ -68,6 +74,18 @@ public class ContextPackController {
       contextPackCollection.insertOne(newPack);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newPack._id));
+
+  }
+
+  public void editContextPackName(String id, String name, Context ctx){
+    JsonWriterSettings prettyPrint = JsonWriterSettings.builder().indent(true).build();
+    Bson filter = eq("_id", id);
+    Bson updateOperation = Updates.set("name", name);
+    UpdateResult updateResult = contextPackCollection.updateOne(filter, updateOperation);
+    System.out.println("=> Updating the doc with {\"id\":" + id + "}. Adding name.");
+    System.out.println(updateResult);
+    System.out.println(contextPackCollection.find(filter).first().name);
+
 
   }
 
