@@ -308,7 +308,7 @@ public class ContextPackControllerSpec {
   }
 
   @Test
-  public void GetUsersByRole() throws IOException {
+  public void editPackName() throws IOException {
     String id = testID.toHexString();
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/edit", ImmutableMap.of("id", id));
