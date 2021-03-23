@@ -313,7 +313,7 @@ public class ContextPackControllerSpec {
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/edit", ImmutableMap.of("id", id));
 
-    mockReq.setQueryString("name=frank");
+    mockReq.setQueryString("name=frank&enabled=false");
     contextPackController.editContextPackName(ctx);
 
     assertEquals(200, mockRes.getStatus());
@@ -321,7 +321,10 @@ public class ContextPackControllerSpec {
     ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
 
     assertEquals(resultPack._id, testID.toHexString());
-    assertEquals(resultPack.name, "frank");
+    assertEquals(resultPack.enabled, false);
+    assertEquals("frank", resultPack.name);
+
+
 
 
   }

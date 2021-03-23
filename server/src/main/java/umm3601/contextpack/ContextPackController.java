@@ -28,6 +28,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class ContextPackController {
   String statusRegex = "^(?i)(true|false)$";
   private static final String NAME_KEY = "name";
+  private static final String ENABLED_KEY = "enabled";
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
@@ -85,7 +86,13 @@ public class ContextPackController {
     if (ctx.queryParamMap().containsKey(NAME_KEY)) {
      updateOperations.add(Updates.set("name",  ctx.queryParam(NAME_KEY)));
     }
-    UpdateResult updateResult = contextPackCollection.updateOne(filter, updateOperations);
+    if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
+      updateOperations.add(Updates.set("enabled",  ctx.queryParam(ENABLED_KEY)));
+    }
+
+    System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
+
+    contextPackCollection.updateOne(filter, updateOperations);
     ContextPack pack = contextPackCollection.find(filter).first();
     ctx.json(pack);
 
