@@ -97,7 +97,9 @@ public class ContextPackControllerSpec {
             .append("verbs",
                 Arrays.asList(new Document("word", "walk").append("forms", Arrays.asList("pink", "pork"))))
             .append("nouns",
-                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))))
+                Arrays.asList(new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))
+                ,new Document("word", "cow").append("forms", Arrays.asList("cow", "cows")) ))
+
             .append("adjectives",
                 Arrays.asList(new Document("word", "red").append("forms", Arrays.asList("seven", "horse"))))
             .append("misc",
@@ -329,8 +331,47 @@ public class ContextPackControllerSpec {
 
   }
 
+  @Test
+  public void editListName() throws IOException {
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
+    mockReq.setQueryString("listname=dogs&enabled=false&name=donkeys");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(0).enabled, false);
+    assertEquals(resultPack.wordlists.get(1).enabled, true);
+    assertEquals(resultPack.wordlists.get(0).name, "donkeys");
+    assertEquals(resultPack.wordlists.get(1).name, "cats");
+
+  }
+  @Test
+  public void deleteNoun(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("delnoun=goat&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).nouns.get(0).word, "cow");
+
+  }
+
 
 }
+
+
+
 
 
 
