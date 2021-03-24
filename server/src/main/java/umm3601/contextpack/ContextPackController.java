@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableMap;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -97,6 +98,44 @@ public class ContextPackController {
     ctx.json(pack);
 
   }
+
+  public void editWordlist(Context ctx){
+    String listname = ctx.queryParam("listname");
+    String id = ctx.pathParam("id");
+    boolean match = false;
+
+    Bson filter = and(eq("_id", id));
+    int index=0;
+    ContextPack pack = contextPackCollection.find(filter).first();
+    for(int i=0; i<pack.wordlists.size(); i++){
+      if(pack.wordlists.get(i).name.equals(listname)){
+        index =i;
+        match=true;
+        break;
+      }
+    }
+    if(match == false){throw new NotFoundResponse("The requested contextpack was not found");}
+    Wordlist list = pack.wordlists.get(index);
+
+    if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
+      boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
+      list.setEnabled(enabled);
+    }
+    if(ctx.queryParamMap().containsKey(NAME_KEY)){
+      list.setName(ctx.queryParam(NAME_KEY));
+
+    }
+    if(ctx.queryParamMap().containsKey("delnoun")){
+      list.deleteNoun(ctx.queryParam("delnoun"));
+    }
+
+    contextPackCollection.replaceOne(eq("_id", id), pack);
+    pack = contextPackCollection.find(filter).first();
+    ctx.json(pack);
+
+  }
+
+
 
 
 
