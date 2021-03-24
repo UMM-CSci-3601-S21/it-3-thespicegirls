@@ -10,5 +10,26 @@ public class Wordlist {
   public ArrayList<Word> verbs;
   public ArrayList<Word> misc;
 
+
+  public void setEnabled(boolean enabled){
+    this.enabled=enabled;
+  }
+  public void setName(String name){
+    this.name = name;
+  }
+
+  public void getWordIndex(){
+
+  }
+
+  public void deleteNoun(String word){
+    this.nouns.removeIf(noun -> (noun.word.equals(word)));
+  }
+
+
+
+
+
+
 }
 
