@@ -386,6 +386,20 @@ public class ContextPackControllerSpec {
     assertNotEquals(resultPack.wordlists.get(1).verbs.get(0).word, "run");
 
   }
+  @Test
+  public void editWordlistNonExistentWordlistName(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("delverb=run&listname=hamburger");
+    
+
+    assertThrows(NotFoundResponse.class, ()->{
+      contextPackController.editWordlist(ctx);
+    });
+
+
+  }
 
 
 }

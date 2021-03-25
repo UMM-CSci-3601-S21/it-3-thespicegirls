@@ -63,9 +63,7 @@ public class ContextPackController {
 
   public void getContextPacks(Context ctx){
 
-    List<Bson> filters = new ArrayList<>();
-
-    ctx.json(contextPackCollection.find(filters.isEmpty()? new Document() : and(filters))
+    ctx.json(contextPackCollection.find()
     .into(new ArrayList<>()));
   }
 
@@ -117,7 +115,7 @@ public class ContextPackController {
         break;
       }
     }
-    if(match == false){throw new NotFoundResponse("The requested contextpack was not found");}
+    if(match == false){throw new NotFoundResponse("The requested wordlist was not found");}
     Wordlist list = pack.wordlists.get(index);
 
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
