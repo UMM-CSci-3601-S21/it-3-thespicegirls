@@ -40,8 +40,13 @@ export class ContextPackService {
   }
 
   addContextPack(newPack: ContextPack): Observable<string> {
-    // Send post request to add a new user with the user data as the body.
+    // Send post request to add a new context pack with the new data as the body.
     return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
+  }
+
+  updateContextPack(updatedPack: ContextPack): Observable<ContextPack> {
+    // Send put request to update fields at existing context pack path.
+    return this.httpClient.put<ContextPack>(this.contextpackUrl + '/' + updatedPack._id, updatedPack );
   }
 
 

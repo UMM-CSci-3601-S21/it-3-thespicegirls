@@ -13,8 +13,8 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 })
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
-  contextpackcard = new ContextPackCardComponent();
   isShown = false;
+  contextpackcard = new ContextPackCardComponent(this.contextPackService);
 
   formErrors = {
     wordlists: this.wordlistsErrors()

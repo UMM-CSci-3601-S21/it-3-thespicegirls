@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContextPack, Wordlist, WordRole } from './contextpack';
+import { ContextPackService } from './contextpack.service';
 
 
 @Component({
@@ -11,13 +13,13 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
-  @Input() edit ? = false;
+
   selected = 'true';
+  contextPackForm: FormGroup;
 
-  constructor() { }
+  constructor(private contextPackService: ContextPackService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 
   displayWordlists(contextpack: Wordlist){
@@ -101,5 +103,10 @@ export class ContextPackCardComponent implements OnInit {
         }
       }
       return str;
+  }
+
+  save(contextPack: ContextPack, newValue: string) {
+    contextPack.name = newValue;
+    this.contextPackService.updateContextPack(contextPack);
   }
 }
