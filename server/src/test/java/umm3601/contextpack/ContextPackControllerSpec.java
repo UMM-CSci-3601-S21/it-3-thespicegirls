@@ -351,6 +351,17 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(0).name, "donkeys");
     assertEquals(resultPack.wordlists.get(1).name, "cats");
 
+    mockReq.setQueryString("listname=donkeys&enabled=true");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(0).enabled, true);
+    assertEquals(resultPack.wordlists.get(1).enabled, true);
+
   }
   @Test
   public void deleteNoun(){
@@ -392,7 +403,7 @@ public class ContextPackControllerSpec {
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delverb=run&listname=hamburger");
-    
+
 
     assertThrows(NotFoundResponse.class, ()->{
       contextPackController.editWordlist(ctx);
