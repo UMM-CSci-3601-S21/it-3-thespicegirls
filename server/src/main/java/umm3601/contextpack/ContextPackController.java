@@ -4,6 +4,7 @@ import static com.mongodb.client.model.Filters.and;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 
@@ -35,6 +38,7 @@ public class ContextPackController {
   private static final String VERB_DEL_KEY ="delverb";
   private static final String MISC_DEL_KEY ="delmisc";
   private static final String ADJ_DEL_KEY ="deladj";
+  private static final String NOUN_FORM_KEY ="nounforms";
 
 
 
@@ -105,19 +109,11 @@ public class ContextPackController {
   public void editWordlist(Context ctx){
     String listname = ctx.queryParam("listname");
     String id = ctx.pathParam("id");
-    boolean match = false;
-
     Bson filter = and(eq("_id", id));
-    int index=0;
     ContextPack pack = contextPackCollection.find(filter).first();
-    for(int i=0; i<pack.wordlists.size(); i++){
-      if(pack.wordlists.get(i).name.equals(listname)){
-        index =i;
-        match=true;
-        break;
-      }
-    }
-    if(match == false){throw new NotFoundResponse("The requested wordlist was not found");}
+    int index = getListIndex(pack,listname);
+
+
     Wordlist list = pack.wordlists.get(index);
 
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
@@ -139,12 +135,70 @@ public class ContextPackController {
     if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
       list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
     }
+    if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
+      String forms[] = ctx.queryParam(NOUN_FORM_KEY).split(",");
+      String wordString = forms[0];
+      int wordIndex = getWordIndex(list, wordString);
+      Word word = list.nouns.get(wordIndex);
+      for(int i=1; i<forms.length; i++){
+        word.addForm(forms[i]);
+      }
+
+    }
 
     contextPackCollection.replaceOne(eq("_id", id), pack);
+
     pack = contextPackCollection.find(filter).first();
     ctx.json(pack);
 
   }
+
+  public int getListIndex(ContextPack pack, String listname){
+    int index=0;
+    boolean match = false;
+    for(int i=0; i<pack.wordlists.size(); i++){
+      if(pack.wordlists.get(i).name.equals(listname)){
+        index =i;
+        match=true;
+        break;
+      }
+    }
+    if(match == false){throw new NotFoundResponse("The requested wordlist was not found");}
+    return index;
+  }
+
+  public int getWordIndex(Wordlist list, String word){
+    int index=0;
+    boolean match = false;
+    for(int i=0; i<list.nouns.size(); i++){
+      if(list.nouns.get(i).word.equals(word)){
+        index =i;
+        match=true;
+        break;
+      }
+    }
+    if(match == false){throw new NotFoundResponse("The requested word was not found");}
+    return index;
+  }
+
+  public void addToWordlist(Context ctx){
+    String id = ctx.pathParam("id");
+    Bson filter = eq("_id", id);
+    List<Bson> updateOperations = new ArrayList<>();
+
+    if (ctx.queryParamMap().containsKey(NAME_KEY)) {
+     updateOperations.add(Updates.set("name",  ctx.queryParam(NAME_KEY)));
+    }
+
+    System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
+
+    contextPackCollection.updateOne(filter, updateOperations);
+    ContextPack pack = contextPackCollection.find(filter).first();
+    ctx.json(pack);
+
+  }
+
+
 
 
 
