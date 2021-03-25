@@ -317,6 +317,7 @@ public class ContextPackControllerSpec {
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/edit", ImmutableMap.of("id", id));
 
+    // Test editing name and enabled together
     mockReq.setQueryString("name=frank&enabled=false");
     contextPackController.editContextPackName(ctx);
 
@@ -328,9 +329,28 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.enabled, false);
     assertEquals("frank", resultPack.name);
 
+    // Test editing name
+    mockReq.setQueryString("name=coconuts");
+    contextPackController.editContextPackName(ctx);
 
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
 
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.enabled, false);
+    assertEquals("coconuts", resultPack.name);
 
+    //Test editing enabled
+    mockReq.setQueryString("enabled=true");
+    contextPackController.editContextPackName(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.enabled, true);
   }
 
   @Test
