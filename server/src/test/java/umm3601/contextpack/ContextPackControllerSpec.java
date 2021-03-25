@@ -319,7 +319,7 @@ public class ContextPackControllerSpec {
 
     // Test editing name and enabled together
     mockReq.setQueryString("name=frank&enabled=false");
-    contextPackController.editContextPackName(ctx);
+    contextPackController.editContextPack(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
@@ -331,7 +331,7 @@ public class ContextPackControllerSpec {
 
     // Test editing name
     mockReq.setQueryString("name=coconuts");
-    contextPackController.editContextPackName(ctx);
+    contextPackController.editContextPack(ctx);
 
     assertEquals(200, mockRes.getStatus());
     result = ctx.resultString();
@@ -343,7 +343,7 @@ public class ContextPackControllerSpec {
 
     //Test editing enabled
     mockReq.setQueryString("enabled=true");
-    contextPackController.editContextPackName(ctx);
+    contextPackController.editContextPack(ctx);
 
     assertEquals(200, mockRes.getStatus());
     result = ctx.resultString();

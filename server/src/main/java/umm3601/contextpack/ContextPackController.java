@@ -80,7 +80,7 @@ public class ContextPackController {
 
   }
 
-  public void editContextPackName(Context ctx){
+  public void editContextPack(Context ctx){
     String id = ctx.pathParam("id");
     Bson filter = eq("_id", id);
     List<Bson> updateOperations = new ArrayList<>();
