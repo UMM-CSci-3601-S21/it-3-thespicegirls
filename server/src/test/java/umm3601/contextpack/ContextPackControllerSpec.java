@@ -452,7 +452,22 @@ public class ContextPackControllerSpec {
     assertThrows(NotFoundResponse.class, ()->{
       contextPackController.editWordlist(ctx);
     });
+  }
 
+  @Test
+  public void addNounForms(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("nounforms=goat,goaty&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).nouns.get(0).forms, Arrays.asList("goat","goats","goaty"));
 
   }
 

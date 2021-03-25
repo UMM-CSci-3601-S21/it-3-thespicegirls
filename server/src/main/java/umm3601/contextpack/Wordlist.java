@@ -35,6 +35,12 @@ public class Wordlist {
     this.adjectives.removeIf(misc -> (misc.word.equals(word)));
   }
 
+  public void addForm(String newForm, Word word){
+    word.addForm(newForm);
+  }
+
+
+
 
 
 
