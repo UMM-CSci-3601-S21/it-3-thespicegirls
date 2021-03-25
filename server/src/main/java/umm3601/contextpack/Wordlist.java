@@ -18,12 +18,13 @@ public class Wordlist {
     this.name = name;
   }
 
-  public void getWordIndex(){
-
-  }
 
   public void deleteNoun(String word){
     this.nouns.removeIf(noun -> (noun.word.equals(word)));
+  }
+
+  public void deleteVerb(String word){
+    this.verbs.removeIf(verb -> (verb.word.equals(word)));
   }
 
 
