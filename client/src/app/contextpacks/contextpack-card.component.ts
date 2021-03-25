@@ -11,6 +11,7 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
+  @Input() edit ? = false;
   selected = 'true';
 
   constructor() { }

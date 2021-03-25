@@ -1,1 +1,14 @@
-<p>edit-contextpack works!</p>
+<mat-card class="contextpack-card" *ngIf="this.contextpack">
+    <mat-card-header>
+                <input matInput="Name" [(ngModel)]="this.contextpack.name" formControlName="name"
+                      required>
+                <!-- <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+                  <mat-error class="error-message" data-test="nameError"
+                            *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
+                    {{validation.message}}
+                  </mat-error>
+                </mat-error> -->
+      <!-- <mat-card-title class="contextpack-card-name">{{ this.contextpack.name.charAt(0).toUpperCase() + this.contextpack.name.slice(1) }}</mat-card-title> -->
+      <mat-card-subtitle class="contextpack-card-enabled">Enabled: {{ this.contextpack.enabled }}</mat-card-subtitle>
+      <mat-card-subtitle class="contextpack-card-icon">Icon: {{ this.contextpack.icon }}</mat-card-subtitle>
+    </mat-card-header>

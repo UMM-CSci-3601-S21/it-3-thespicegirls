@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ContextPack } from './contextpack';
 
 @Component({
   selector: 'app-edit-contextpack',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./edit-contextpack.component.scss']
 })
 export class EditContextpackComponent implements OnInit {
+
+  @Input() contextpack: ContextPack;
 
   constructor() { }
 

@@ -19,8 +19,6 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
 
   getContextpacksSub: Subscription;
 
-  public viewType: 'list' | 'card' = 'card';
-
 
   // Inject the ContextPackService into this component.
   // That's what happens in the following constructor.
