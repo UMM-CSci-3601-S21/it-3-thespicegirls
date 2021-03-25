@@ -32,7 +32,7 @@ import { ContextPackService } from './contextpacks/contextpack.service';
 import { ContextPackCardComponent } from './contextpacks/contextpack-card.component';
 import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
 import { AddContextpacksComponent } from './contextpacks/add-contextpacks.component';
-import { EditContextpackComponent } from './edit-contextpack/edit-contextpack.component';
+import { EditContextpackComponent } from './contextpacks/edit-contextpack.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
