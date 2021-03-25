@@ -30,6 +30,9 @@ public class ContextPackController {
   String statusRegex = "^(?i)(true|false)$";
   private static final String NAME_KEY = "name";
   private static final String ENABLED_KEY = "enabled";
+  private static final String NOUN_DEL_KEY = "delnoun";
+  private static final String VERB_DEL_KEY ="delverb";
+
 
 
   private final JacksonMongoCollection<ContextPack> contextPackCollection;
@@ -125,8 +128,11 @@ public class ContextPackController {
       list.setName(ctx.queryParam(NAME_KEY));
 
     }
-    if(ctx.queryParamMap().containsKey("delnoun")){
-      list.deleteNoun(ctx.queryParam("delnoun"));
+    if(ctx.queryParamMap().containsKey(NOUN_DEL_KEY)){
+      list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));
+    }
+    if(ctx.queryParamMap().containsKey(VERB_DEL_KEY)){
+      list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));
     }
 
     contextPackCollection.replaceOne(eq("_id", id), pack);
