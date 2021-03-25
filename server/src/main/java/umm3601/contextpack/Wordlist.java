@@ -27,6 +27,14 @@ public class Wordlist {
     this.verbs.removeIf(verb -> (verb.word.equals(word)));
   }
 
+  public void deleteAdj(String word){
+    this.adjectives.removeIf(adj -> (adj.word.equals(word)));
+  }
+
+  public void deleteMisc(String word){
+    this.adjectives.removeIf(misc -> (misc.word.equals(word)));
+  }
+
 
 
 

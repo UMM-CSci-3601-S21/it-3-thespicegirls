@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -32,6 +33,8 @@ public class ContextPackController {
   private static final String ENABLED_KEY = "enabled";
   private static final String NOUN_DEL_KEY = "delnoun";
   private static final String VERB_DEL_KEY ="delverb";
+  private static final String MISC_DEL_KEY ="delmisc";
+  private static final String ADJ_DEL_KEY ="deladj";
 
 
 
@@ -91,7 +94,6 @@ public class ContextPackController {
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
       updateOperations.add(Updates.set("enabled",  ctx.queryParam(ENABLED_KEY)));
     }
-
     System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
 
     contextPackCollection.updateOne(filter, updateOperations);
@@ -124,13 +126,18 @@ public class ContextPackController {
     }
     if(ctx.queryParamMap().containsKey(NAME_KEY)){
       list.setName(ctx.queryParam(NAME_KEY));
-
     }
     if(ctx.queryParamMap().containsKey(NOUN_DEL_KEY)){
       list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));
     }
     if(ctx.queryParamMap().containsKey(VERB_DEL_KEY)){
       list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));
+    }
+    if(ctx.queryParamMap().containsKey(ADJ_DEL_KEY)){
+      list.deleteAdj(ctx.queryParam(ADJ_DEL_KEY));
+    }
+    if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
+      list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
     }
 
     contextPackCollection.replaceOne(eq("_id", id), pack);
