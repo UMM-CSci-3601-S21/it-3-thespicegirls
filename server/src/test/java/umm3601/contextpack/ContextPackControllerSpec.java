@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -540,6 +541,133 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(1).verbs.get(0).forms, Arrays.asList("run","running", "runs"));
     assertEquals(resultPack.wordlists.get(1).verbs.get(1).forms, Arrays.asList("walk","walking"));
   }
+
+  @Test
+  public void addInvalidForms(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    // yogurt is not an existing word in the contextpack
+    mockReq.setQueryString("verbforms=yogurt,runs&listname=cats");
+
+
+    assertThrows(NotFoundResponse.class, ()->{
+      contextPackController.editWordlist(ctx);
+    });
+  }
+
+  @Test
+  public void addVerb(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addverb=fall,falls&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).verbs.get(0).forms, Arrays.asList("run","running"));
+    assertEquals(resultPack.wordlists.get(1).verbs.get(1).forms, Arrays.asList("walk","walking"));
+    assertEquals(resultPack.wordlists.get(1).verbs.get(2).forms, Arrays.asList("fall", "falls"));
+  }
+  @Test
+  public void addMisc(){
+    String id = testID.toHexString();
+
+    // adding word with forms
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addmisc=test,tests,testing&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).misc.get(0).forms, Arrays.asList("moo"));
+    assertEquals(resultPack.wordlists.get(1).misc.get(1).forms, Arrays.asList("bark", "barks", "barky"));
+    assertEquals(resultPack.wordlists.get(1).misc.get(2).forms, Arrays.asList("test","tests", "testing"));
+    assertEquals(resultPack.wordlists.get(1).misc.get(2).word, "test");
+
+
+    // adding word with no extra forms
+    ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addmisc=test&listname=dogs");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(0).misc.get(0).forms, Arrays.asList("horsie", "horse"));
+    assertEquals(resultPack.wordlists.get(0).misc.get(1).forms, Arrays.asList("trains"));
+    assertEquals(resultPack.wordlists.get(0).misc.get(2).forms, Arrays.asList("test"));
+
+  }
+
+  @Test
+  public void addAdj(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addadj=purple,purples&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(0).forms, Arrays.asList("red","reds"));
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(1).forms, Arrays.asList("blue","blues"));
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(2).forms, Arrays.asList("purple", "purples"));
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(2).word, "purple");
+  }
+
+  @Test
+  public void addNoun(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addnoun=jeep,jeeps,jeeper,jeepy&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).nouns.get(0).forms, Arrays.asList("goat","goats"));
+    assertEquals(resultPack.wordlists.get(1).nouns.get(1).forms, Arrays.asList("cow","cows"));
+    assertEquals(resultPack.wordlists.get(1).nouns.get(2).forms, Arrays.asList("jeep", "jeeps", "jeeper", "jeepy"));
+    assertEquals(resultPack.wordlists.get(1).nouns.get(2).word, "jeep");
+  }
+
+  @Test
+  public void GetWordIndexInvalidPos(){
+    Wordlist list = new Wordlist();
+    assertThrows(NotFoundResponse.class, ()->{
+      contextPackController.getWordIndex( list,  "ball", "banana");
+    });
+   }
+
+   @Test
+   public void AddWordPos(){
+     Wordlist list = new Wordlist();
+     ArrayList<String> posArray = new ArrayList<>(Arrays.asList("cow", "cows"));
+
+     assertThrows(NotFoundResponse.class, ()->{
+       list.addWord( posArray, "banana");
+     });
+
+
+
+    }
+
 
 
 
