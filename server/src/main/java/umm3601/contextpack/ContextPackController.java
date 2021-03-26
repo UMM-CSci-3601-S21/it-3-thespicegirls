@@ -44,6 +44,10 @@ public class ContextPackController {
   private static final String ADJ_FORM_KEY ="adjforms";
   private static final String MISC_FORM_KEY ="miscforms";
   private static final String VERB_FORM_KEY ="verbforms";
+  private static final String ADD_VERB_KEY = "addverb";
+  private static final String ADD_MISC_KEY = "addmisc";
+  private static final String ADD_ADJ_KEY = "addadj";
+  private static final String ADD_NOUN_KEY = "addnoun";
 
 
 
@@ -141,6 +145,22 @@ public class ContextPackController {
     if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
       list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
     }
+    if(ctx.queryParamMap().containsKey(ADD_ADJ_KEY)){
+      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_ADJ_KEY).split(","))));
+      list.addWord(posArray, "adj");
+    }
+    if(ctx.queryParamMap().containsKey(ADD_NOUN_KEY)){
+      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_NOUN_KEY).split(","))));
+      list.addWord(posArray, "noun");
+    }
+    if(ctx.queryParamMap().containsKey(ADD_VERB_KEY)){
+      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_VERB_KEY).split(","))));
+      list.addWord(posArray, "verb");
+    }
+    if(ctx.queryParamMap().containsKey(ADD_MISC_KEY)){
+      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
+      list.addWord(posArray, "misc");
+    }
     if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
       String forms[] = ctx.queryParam(NOUN_FORM_KEY).split(",");
       String wordString = forms[0];
@@ -221,6 +241,8 @@ public class ContextPackController {
         posArray = list.verbs;
         size = list.verbs.size();
         break;
+      default:
+      throw new NotFoundResponse("The requested part of speech was not found");
     }
     for(int i=0; i<size; i++){
       if(posArray.get(i).word.equals(word)){
