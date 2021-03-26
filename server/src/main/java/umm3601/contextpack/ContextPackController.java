@@ -41,6 +41,7 @@ public class ContextPackController {
   private static final String NOUN_FORM_KEY ="nounforms";
   private static final String ADJ_FORM_KEY ="adjforms";
   private static final String MISC_FORM_KEY ="miscforms";
+  private static final String VERB_FORM_KEY ="verbforms";
 
 
 
@@ -165,6 +166,15 @@ public class ContextPackController {
         word.addForm(forms[i]);
       }
     }
+    if(ctx.queryParamMap().containsKey(VERB_FORM_KEY)){
+      String forms[] = ctx.queryParam(VERB_FORM_KEY).split(",");
+      String wordString = forms[0];
+      int wordIndex = getWordIndex(list, wordString, "verb");
+      Word word = list.verbs.get(wordIndex);
+      for(int i=1; i<forms.length; i++){
+        word.addForm(forms[i]);
+      }
+    }
 
     contextPackCollection.replaceOne(eq("_id", id), pack);
 
@@ -221,22 +231,7 @@ public class ContextPackController {
     return index;
   }
 
-  public void addToWordlist(Context ctx){
-    String id = ctx.pathParam("id");
-    Bson filter = eq("_id", id);
-    List<Bson> updateOperations = new ArrayList<>();
 
-    if (ctx.queryParamMap().containsKey(NAME_KEY)) {
-     updateOperations.add(Updates.set("name",  ctx.queryParam(NAME_KEY)));
-    }
-
-    System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
-
-    contextPackCollection.updateOne(filter, updateOperations);
-    ContextPack pack = contextPackCollection.find(filter).first();
-    ctx.json(pack);
-
-  }
 
 
 

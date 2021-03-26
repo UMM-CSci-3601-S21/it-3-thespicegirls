@@ -99,8 +99,8 @@ public class ContextPackControllerSpec {
             .append("enabled", false)
             .append("verbs",
                 Arrays.asList(
-                new Document("word", "run").append("forms", Arrays.asList("running", "runs")),
-                new Document("word", "walk").append("forms", Arrays.asList("pink", "pork"))))
+                new Document("word", "run").append("forms", Arrays.asList("run", "running")),
+                new Document("word", "walk").append("forms", Arrays.asList("walk", "walking"))))
             .append("nouns",
                 Arrays.asList(
                 new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))
@@ -506,6 +506,24 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(1).misc.get(0).forms, Arrays.asList("moo","moos"));
     assertEquals(resultPack.wordlists.get(1).misc.get(1).forms, Arrays.asList("bark","barks", "barky"));
   }
+
+  @Test
+  public void addVerbForms(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("verbforms=run,runs&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).verbs.get(0).forms, Arrays.asList("run","running", "runs"));
+    assertEquals(resultPack.wordlists.get(1).verbs.get(1).forms, Arrays.asList("walk","walking"));
+  }
+
 
 
 
