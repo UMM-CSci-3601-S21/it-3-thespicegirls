@@ -32,7 +32,7 @@
 
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span class="app-title">{{title}}</span>
+      <span class="app-title">{{returnTitle()}}</span>
 
       <span id="space"> </span>
 
@@ -40,13 +40,12 @@
 
 
         <div *ngIf="isSignedin === undefined || isSignedin === false || isSignedin === null" class="mt-4">
-          <button type="button" id="googleBtn" (click)="googleSignin()" class="btn btn-block btn-primary">Signin with Google</button>
-          <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+          <button mat-raised-button type="button" id="googleBtn" (click)="googleSignin()" class="btn btn-block btn-primary"><img src="/assets/img/btn_google_signin_light_normal_web.png"/></button>
         </div>
 
         <div *ngIf="isSignedin === true" class="mt-4">
-           Hello {{user.firstName}}
-          <button id="googleBtn" type="button" (click)="logout()" class="btn btn-primary">Log Out</button>
+           Hello, {{user.firstName}}
+          <button mat-raised-button id="googleSignOutBtn" type="button" (click)="logout()" class="btn btn-primary">Log Out</button>
         </div>
 
       </div>
@@ -59,5 +58,4 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
-
 

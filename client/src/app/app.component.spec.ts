@@ -8,6 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
+import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
@@ -19,10 +20,28 @@ describe('AppComponent', () => {
         MatIconModule,
         MatSidenavModule,
         MatCardModule,
-        MatListModule
+        MatListModule,
+        SocialLoginModule
       ],
       declarations: [
         AppComponent
+      ],
+      providers: [
+        {
+          provide: 'SocialAuthServiceConfig',
+          useValue: {
+            autoLogin: false,
+            providers: [
+              {
+                id: GoogleLoginProvider.PROVIDER_ID,
+                provider: new GoogleLoginProvider(
+                  '239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com'
+                )
+              }
+            ]
+          } as SocialAuthServiceConfig,
+        }
+
       ],
     }).compileComponents();
   }));
@@ -36,6 +55,6 @@ describe('AppComponent', () => {
   it(`should have as title 'Word River'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Word River');
+    expect(app.returnTitle()).toEqual('Word River');
   });
 });
