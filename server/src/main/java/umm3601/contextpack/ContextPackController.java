@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.management.InvalidAttributeValueException;
+
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
@@ -197,7 +199,7 @@ public class ContextPackController {
     return index;
   }
 
-  public int getWordIndex(Wordlist list, String word, String pos){
+  public int getWordIndex(Wordlist list, String word, String pos) {
     int index=0;
     boolean match = false;
     ArrayList<Word>posArray = new ArrayList<Word>();

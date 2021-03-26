@@ -428,6 +428,23 @@ public class ContextPackControllerSpec {
 
   }
   @Test
+  public void deleteAdj(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("deladj=red&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(0).word, "blue");
+    assertNotEquals(resultPack.wordlists.get(1).adjectives.get(0).word, "red");
+
+  }
+  @Test
   public void deleteMisc(){
     String id = testID.toHexString();
 
