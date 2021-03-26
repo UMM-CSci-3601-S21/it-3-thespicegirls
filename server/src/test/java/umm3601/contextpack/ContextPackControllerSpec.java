@@ -106,11 +106,14 @@ public class ContextPackControllerSpec {
                 new Document("word", "goat").append("forms", Arrays.asList("goat", "goats"))
                 ,new Document("word", "cow").append("forms", Arrays.asList("cow", "cows")) ))
             .append("adjectives",
-                Arrays.asList(new Document("word", "red").append("forms", Arrays.asList("seven", "horse"))))
+                Arrays.asList(
+                new Document("word", "red").append("forms", Arrays.asList("red", "reds")),
+                new Document("word", "blue").append("forms", Arrays.asList("blue", "blues"))
+                ))
             .append("misc",
                 Arrays.asList(
-                new Document("word", "moo").append("forms", Arrays.asList("horse")),
-                new Document("word", "bark").append("forms", Arrays.asList("barky", "barks"))
+                new Document("word", "moo").append("forms", Arrays.asList("moo")),
+                new Document("word", "bark").append("forms", Arrays.asList("bark", "barks", "barky"))
                 ))
 
                 )
@@ -468,8 +471,42 @@ public class ContextPackControllerSpec {
 
     assertEquals(resultPack._id, testID.toHexString());
     assertEquals(resultPack.wordlists.get(1).nouns.get(0).forms, Arrays.asList("goat","goats","goaty"));
-
   }
+
+  @Test
+  public void addAdjForms(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("adjforms=blue,bluer&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(1).forms, Arrays.asList("blue","blues","bluer"));
+    assertEquals(resultPack.wordlists.get(1).adjectives.get(0).forms, Arrays.asList("red","reds"));
+  }
+
+  @Test
+  public void addMiscForms(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("miscforms=moo,moos&listname=cats");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(1).misc.get(0).forms, Arrays.asList("moo","moos"));
+    assertEquals(resultPack.wordlists.get(1).misc.get(1).forms, Arrays.asList("bark","barks", "barky"));
+  }
+
 
 
 }

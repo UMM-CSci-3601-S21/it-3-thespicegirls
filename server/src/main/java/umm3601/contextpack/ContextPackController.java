@@ -39,6 +39,9 @@ public class ContextPackController {
   private static final String MISC_DEL_KEY ="delmisc";
   private static final String ADJ_DEL_KEY ="deladj";
   private static final String NOUN_FORM_KEY ="nounforms";
+  private static final String ADJ_FORM_KEY ="adjforms";
+  private static final String MISC_FORM_KEY ="miscforms";
+
 
 
 
@@ -138,12 +141,29 @@ public class ContextPackController {
     if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
       String forms[] = ctx.queryParam(NOUN_FORM_KEY).split(",");
       String wordString = forms[0];
-      int wordIndex = getWordIndex(list, wordString);
+      int wordIndex = getWordIndex(list, wordString, "noun");
       Word word = list.nouns.get(wordIndex);
       for(int i=1; i<forms.length; i++){
         word.addForm(forms[i]);
       }
-
+    }
+    if(ctx.queryParamMap().containsKey(ADJ_FORM_KEY)){
+      String forms[] = ctx.queryParam(ADJ_FORM_KEY).split(",");
+      String wordString = forms[0];
+      int wordIndex = getWordIndex(list, wordString, "adj");
+      Word word = list.adjectives.get(wordIndex);
+      for(int i=1; i<forms.length; i++){
+        word.addForm(forms[i]);
+      }
+    }
+    if(ctx.queryParamMap().containsKey(MISC_FORM_KEY)){
+      String forms[] = ctx.queryParam(MISC_FORM_KEY).split(",");
+      String wordString = forms[0];
+      int wordIndex = getWordIndex(list, wordString, "misc");
+      Word word = list.misc.get(wordIndex);
+      for(int i=1; i<forms.length; i++){
+        word.addForm(forms[i]);
+      }
     }
 
     contextPackCollection.replaceOne(eq("_id", id), pack);
@@ -167,11 +187,31 @@ public class ContextPackController {
     return index;
   }
 
-  public int getWordIndex(Wordlist list, String word){
+  public int getWordIndex(Wordlist list, String word, String pos){
     int index=0;
     boolean match = false;
-    for(int i=0; i<list.nouns.size(); i++){
-      if(list.nouns.get(i).word.equals(word)){
+    ArrayList<Word>posArray = new ArrayList<Word>();
+    int size = 0;
+    switch(pos){
+      case "noun":
+        posArray = list.nouns;
+        size = list.nouns.size();
+        break;
+      case "adj":
+        posArray = list.adjectives;
+        size = list.adjectives.size();
+        break;
+      case "misc":
+        posArray = list.misc;
+        size = list.misc.size();
+        break;
+      case "verb":
+        posArray = list.verbs;
+        size = list.verbs.size();
+        break;
+    }
+    for(int i=0; i<size; i++){
+      if(posArray.get(i).word.equals(word)){
         index =i;
         match=true;
         break;
