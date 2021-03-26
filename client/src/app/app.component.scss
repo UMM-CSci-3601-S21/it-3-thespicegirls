@@ -28,7 +28,14 @@
   padding-left: 16px;
 }
 
+#space{
+  flex: 1 1 auto;
+}
 
+#signout{
+  position: right;
+  float: right;
+}
 
 .main-content {
   color:#01596e;

@@ -1,55 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <meta charset="utf-8">
   <title>Word River</title>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <meta name="google-signin-client_id" content="239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com">
-
-  <a href="#" onclick="signOut();">Sign out</a>
-<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>
 
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-      <div id="my-signin2"></div>
-      <script>
-        function onSuccess(googleUser) {
-          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-          console.log('ID: ' + googleUser.getBasicProfile().getId());
-          console.log('Image URL: ' + googleUser.getBasicProfile().getImageUrl());
-          console.log('Email: ' + googleUser.getBasicProfile().getEmail());
-          console.log('Token: ' + googleUser.getAuthResponse().id_token);
-
-        }
-        function onFailure(error) {
-          console.log(error);
-        }
-        function renderButton() {
-          gapi.signin2.render('my-signin2', {
-            'scope': 'profile email',
-            'width': 240,
-            'height': 50,
-            'longtitle': true,
-            'theme': 'dark',
-            'onsuccess': onSuccess,
-            'onfailure': onFailure
-          });
-        }
-      </script>
-
-      <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-
 </head>
 <body class="mat-typography">
   <app-root></app-root>
