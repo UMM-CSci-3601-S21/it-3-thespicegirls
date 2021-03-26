@@ -48,7 +48,7 @@ export class EditContextpackComponent implements OnInit {
 		// value - we don't want to break unidirectional data-flow.
 		if ( this.pendingValue !== this.value ) {
 
-			this.valueChangeEvents.emit( this.pendingValue );
+			this.valueChangeEvents.emit( this.pendingValue.toString() );
 
 		}
 

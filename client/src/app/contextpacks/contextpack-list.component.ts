@@ -32,17 +32,49 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
 
   }
 
-  update(contextPack: ContextPack) {
-    this.contextpackService.updateContextPack(contextPack).subscribe(existingID => {
-      this.snackBar.open('Updated Pack ' + contextPack.name, null, {
-      duration: 2000,
+  updateField(contextPack: ContextPack, event: string[]) {
+    //to figure out what field is being changed so the correct http param can be sent
+    switch(event[1]) {
+
+    case 'name' :
+      this.contextpackService.updateContextPack(contextPack, {name: event[0]}).subscribe(existingID => {
+        this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
+        duration: 2000,
+      });
+    }, err => {
+      this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
+        duration: 5000,
+      });
     });
-    this.router.navigate(['/contextpacks/', existingID]);
-  }, err => {
-    this.snackBar.open('Failed to update the pack', 'OK', {
-      duration: 5000,
+
+    break;
+
+    case 'enabled' :
+      this.contextpackService.updateContextPack(contextPack, {enabled: event[0]}).subscribe(existingID => {
+        this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
+        duration: 2000,
+      });
+    }, err => {
+      this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
+        duration: 5000,
+      });
     });
-  });
+
+    break;
+
+    case 'icon' :
+      this.contextpackService.updateContextPack(contextPack, {icon: event[0]}).subscribe(existingID => {
+        this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
+        duration: 2000,
+      });
+    }, err => {
+      this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
+        duration: 5000,
+      });
+    });
+
+    break;
+    }
   }
 
   getContextpacksFromServer(): void {

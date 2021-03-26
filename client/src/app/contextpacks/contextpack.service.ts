@@ -44,10 +44,22 @@ export class ContextPackService {
     return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
   }
 
-  updateContextPack(updatedPack: ContextPack): Observable<ContextPack> {
-    // Send post request to update fields at existing context pack path.
-    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + updatedPack._id + '/' + 'editpack', updatedPack );
-  }
+  updateContextPack(contextPack: ContextPack, newValues: {name?: string; enabled?: string; icon?: string}): Observable<string> {
+   let httpParams: HttpParams = new HttpParams();
+
+     if(newValues.name){
+       httpParams = httpParams.set('name',newValues.name);
+     }
+     if(newValues.enabled){
+       httpParams = httpParams.set('enabled',newValues.enabled);
+     }
+    if(newValues.icon){
+      httpParams = httpParams.set('icon',newValues.icon);
+    }
+    return this.httpClient.put<string>(this.contextpackUrl + '/' + contextPack._id, {
+        params: httpParams,
+     });
+   }
 
 
 }

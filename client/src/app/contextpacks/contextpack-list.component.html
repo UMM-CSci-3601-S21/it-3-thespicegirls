@@ -22,7 +22,7 @@
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredContextpacks; else contextpackError" >
 
       <div fxLayout="row wrap" fxLayoutGap="10px" class="contextpack-cards-container">
-        <app-contextpack-card simple="true" *ngFor="let contextpack of filteredContextpacks" class="contextpack-card" [contextpack]="contextpack" (valueChangeEvents)="update($event)" fxFlex="1 1 280px"></app-contextpack-card>
+        <app-contextpack-card simple="true" *ngFor="let contextpack of filteredContextpacks" class="contextpack-card" [contextpack]="contextpack" (valueChangeEvents)="updateField(contextpack,$event)" fxFlex="1 1 280px"></app-contextpack-card>
       </div>
 
   </div>

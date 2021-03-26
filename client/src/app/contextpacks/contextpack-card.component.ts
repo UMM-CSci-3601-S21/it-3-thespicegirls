@@ -13,7 +13,7 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
-  @Output() valueChangeEvents: EventEmitter<ContextPack>;
+  @Output() valueChangeEvents: EventEmitter<any>;
 
   selected = 'true';
   contextPackForm: FormGroup;
@@ -24,9 +24,9 @@ export class ContextPackCardComponent implements OnInit {
   }
 
 
-  public save(contextPack: ContextPack, newData): void {
-    contextPack.name = newData;
-		this.valueChangeEvents.emit( contextPack );
+  public save(field: string, newData: string): void {
+
+		this.valueChangeEvents.emit( [newData, field] );
 
 	}
 

@@ -31,6 +31,7 @@ public class ContextPackController {
   String statusRegex = "^(?i)(true|false)$";
   private static final String NAME_KEY = "name";
   private static final String ENABLED_KEY = "enabled";
+  private static final String ICON_KEY = "icon";
   private static final String NOUN_DEL_KEY = "delnoun";
   private static final String VERB_DEL_KEY ="delverb";
   private static final String MISC_DEL_KEY ="delmisc";
@@ -89,10 +90,19 @@ public class ContextPackController {
     List<Bson> updateOperations = new ArrayList<>();
 
     if (ctx.queryParamMap().containsKey(NAME_KEY)) {
-     updateOperations.add(Updates.set("name",  ctx.queryParam(NAME_KEY)));
+     updateOperations.add(Updates.set("name", ctx.queryParam(NAME_KEY)));
     }
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
-      updateOperations.add(Updates.set("enabled",  ctx.queryParam(ENABLED_KEY)));
+      switch (ENABLED_KEY){
+        case "true" :
+        updateOperations.add(Updates.set("enabled", true));
+        break;
+        case "false" :
+        updateOperations.add(Updates.set("enabled", false));
+      }
+    }
+    if (ctx.queryParamMap().containsKey(ICON_KEY)) {
+      updateOperations.add(Updates.set("icon", ctx.queryParam(ICON_KEY)));
     }
     System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
 
