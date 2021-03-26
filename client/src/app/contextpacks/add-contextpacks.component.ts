@@ -14,7 +14,7 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
-  contextpackcard = new ContextPackCardComponent(this.contextPackService);
+  contextpackcard = new ContextPackCardComponent();
 
   formErrors = {
     wordlists: this.wordlistsErrors()

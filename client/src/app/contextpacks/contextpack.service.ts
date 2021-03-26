@@ -45,8 +45,8 @@ export class ContextPackService {
   }
 
   updateContextPack(updatedPack: ContextPack): Observable<ContextPack> {
-    // Send put request to update fields at existing context pack path.
-    return this.httpClient.put<ContextPack>(this.contextpackUrl + '/' + updatedPack._id, updatedPack );
+    // Send post request to update fields at existing context pack path.
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + updatedPack._id + '/' + 'editpack', updatedPack );
   }
 
 

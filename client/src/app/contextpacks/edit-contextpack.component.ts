@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContextPack } from './contextpack';
+import { ContextPackService } from './contextpack.service';
 
 @Component({
   selector: 'app-edit-contextpack',
@@ -12,7 +13,7 @@ export class EditContextpackComponent implements OnInit {
   @Input() value!: string;
   @Output() valueChangeEvents: EventEmitter<string>;
   isEditing: boolean;
-	pendingValue: string;
+  pendingValue: string;
 
   constructor() {
     this.isEditing = false;

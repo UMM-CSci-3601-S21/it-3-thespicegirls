@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContextPack } from './contextpack';
 import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contextpack-list-component',
@@ -26,8 +28,21 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   // We can call upon the service for interacting
   // with the server.
 
-  constructor(private contextpackService: ContextPackService) {
+  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
 
+  }
+
+  update(contextPack: ContextPack) {
+    this.contextpackService.updateContextPack(contextPack).subscribe(existingID => {
+      this.snackBar.open('Updated Pack ' + contextPack.name, null, {
+      duration: 2000,
+    });
+    this.router.navigate(['/contextpacks/', existingID]);
+  }, err => {
+    this.snackBar.open('Failed to update the pack', 'OK', {
+      duration: 5000,
+    });
+  });
   }
 
   getContextpacksFromServer(): void {

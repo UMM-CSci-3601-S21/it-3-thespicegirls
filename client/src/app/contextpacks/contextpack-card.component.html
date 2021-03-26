@@ -1,7 +1,7 @@
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
 
   <mat-card-header>
-  <mat-card-title><app-edit-contextpack [value]="this.contextpack.name" (valueChange)="save(this.contextpack, $event )"></app-edit-contextpack></mat-card-title>
+  <mat-card-title><app-edit-contextpack [value]="this.contextpack.name" (valueChangeEvents)="save(this.contextpack, $event )"></app-edit-contextpack></mat-card-title>
 
 
     <!-- <mat-card-title class="contextpack-card-name">{{ this.contextpack.name.charAt(0).toUpperCase() + this.contextpack.name.slice(1) }}</mat-card-title> -->

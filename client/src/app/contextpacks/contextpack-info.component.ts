@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContextPack } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contextpack-info',
@@ -20,7 +21,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
   id: string;
   getContextPackSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private contextPackService: ContextPackService) { }
+  constructor(private route: ActivatedRoute, private contextPackService: ContextPackService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     // We subscribe to the parameter map here so we'll be notified whenever
@@ -39,6 +40,18 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
     if (this.getContextPackSub) {
       this.getContextPackSub.unsubscribe();
     }
+  }
+
+  update(contextPack: ContextPack) {
+    this.contextPackService.updateContextPack(contextPack).subscribe(existingID => {
+      this.snackBar.open('Updated Pack ' + contextPack.name, null, {
+      duration: 2000,
+    });
+  }, err => {
+    this.snackBar.open('Failed to update the pack', 'OK', {
+      duration: 5000,
+    });
+  });
   }
 
 }

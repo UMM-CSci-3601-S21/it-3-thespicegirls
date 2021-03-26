@@ -13,14 +13,22 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
+  @Output() valueChangeEvents: EventEmitter<ContextPack>;
 
   selected = 'true';
   contextPackForm: FormGroup;
 
-  constructor(private contextPackService: ContextPackService) {}
+  constructor() {this.valueChangeEvents = new EventEmitter();}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
+
+  public save(contextPack: ContextPack, newData): void {
+    contextPack.name = newData;
+		this.valueChangeEvents.emit( contextPack );
+
+	}
 
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;
@@ -105,8 +113,4 @@ export class ContextPackCardComponent implements OnInit {
       return str;
   }
 
-  save(contextPack: ContextPack, newValue: string) {
-    contextPack.name = newValue;
-    this.contextPackService.updateContextPack(contextPack);
-  }
 }
