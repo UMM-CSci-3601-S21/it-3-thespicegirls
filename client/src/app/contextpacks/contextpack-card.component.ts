@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ContextPack, Wordlist, WordRole } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -21,7 +21,8 @@ export class ContextPackCardComponent implements OnInit {
   contextPackForm: FormGroup;
   editing = false;
 
-  constructor(private contextPackService: ContextPackService ) {this.valueChangeEvents = new EventEmitter();}
+  constructor( private contextPackService: ContextPackService )
+   {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
   }
@@ -32,9 +33,21 @@ export class ContextPackCardComponent implements OnInit {
 		this.valueChangeEvents.emit( [newData, field] );
 
 	}
+  deleteWord(list: Wordlist, delnoun: string) {
+    console.log('deleting');
+    console.log(list.name);
+    console.log(delnoun);
 
-
-
+    }
+  // deleteWord(){
+  //   console.log('deleting');
+  //   console.log(this.delnoun);
+  //   this.contextPackService.deleteWord(
+  //     this.contextpack,
+  //     {delverb: this.delverb, listname: this.listname,
+  //     delnoun:this.delnoun}
+  //   );
+  // }
 
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;

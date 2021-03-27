@@ -65,11 +65,11 @@ export class ContextPackService {
   }
 
 
-   deleteWord(contextpack: ContextPack, delValues: {delverb?: string; enabled?: string; icon?: string}): Observable<string> {
+   deleteWord(contextpack: ContextPack, delValues: {delnoun?: string; enabled?: string; icon?: string}): Observable<string> {
     let httpParams: HttpParams = new HttpParams();
 
-      if(delValues.delverb){
-        httpParams = httpParams.set('name', delValues.delverb);
+      if(delValues.delnoun){
+        httpParams = httpParams.set('name', delValues.delnoun);
       }
      httpParams = httpParams.set('listname', contextpack.name);
      return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', {
