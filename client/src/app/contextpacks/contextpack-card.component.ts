@@ -2,6 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContextPack, Wordlist, WordRole } from './contextpack';
 import { ContextPackService } from './contextpack.service';
+import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+
 
 
 @Component({
@@ -17,8 +19,9 @@ export class ContextPackCardComponent implements OnInit {
 
   selected = 'true';
   contextPackForm: FormGroup;
+  editing = false;
 
-  constructor() {this.valueChangeEvents = new EventEmitter();}
+  constructor(private contextPackService: ContextPackService ) {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
   }
@@ -29,6 +32,9 @@ export class ContextPackCardComponent implements OnInit {
 		this.valueChangeEvents.emit( [newData, field] );
 
 	}
+
+
+
 
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;
@@ -112,5 +118,29 @@ export class ContextPackCardComponent implements OnInit {
       }
       return str;
   }
+
+  displayWordsNoForms(contextpack: ContextPack, pos: WordRole){
+    let lists: Wordlist[];
+    let m: number;
+    if(contextpack.wordlists === undefined ){
+      lists = null;
+    }
+    else{
+      lists = [];
+    for (m = 0; m < contextpack.wordlists.length; m++){
+      lists = lists.concat(contextpack.wordlists[m]);
+      }
+    }
+    const words: string[] =[];
+    let j=0;
+    let i=0;
+
+    for( j=0; j<lists.length; j++){
+      for( i=0;i<lists[j][`${pos}`].length; i++){
+        words.push( ' '+ lists[j][`${pos}`][i].word);
+      }
+    }
+    return words;
+}
 
 }

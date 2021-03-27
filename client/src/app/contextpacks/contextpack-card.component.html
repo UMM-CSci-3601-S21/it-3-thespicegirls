@@ -27,11 +27,69 @@
     </div>
 
     <ng-template #templateWords>
-        <span class="contextpack-card-nouns"><div style="white-space: pre-line">Nouns: {{displayAllWords(this.contextpack, 'nouns')}}</div></span>
-        <span class="contextpack-card-verbs"><div style="white-space: pre-line">Verbs: {{displayAllWords(this.contextpack, 'verbs')}}</div></span>
-        <span class="contextpack-card-adjectives"><div style="white-space: pre-line">Adjectives: {{displayAllWords(this.contextpack, 'adjectives')}}</div></span>
-        <span class="contextpack-card-misc"><div style="white-space: pre-line">Misc: {{displayAllWords(this.contextpack, 'misc')}}</div></span>
+
+
+        <span class="contextpack-card-nouns">
+          <div style="white-space: pre-line">Nouns:
+            <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'nouns')">
+                {{word}} </mat-chip>
+            </mat-chip-list>
+            <button mat-stroked-button (click)="(this.editing =!this.editing)" class="edit-word-button">
+              <mat-icon>add</mat-icon>
+            </button>
+            <mat-accordion class="example-headers-align" multi *ngIf="this.editing">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Nouns
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Add Nouns
+                    <mat-icon>edit</mat-icon>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-form-field>
+                  <mat-label>Word</mat-label>
+                  <input matInput >
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Forms</mat-label>
+                  <input matInput type="string">
+                </mat-form-field>
+              </mat-expansion-panel>
+            </mat-accordion>
+
+
+          </div></span>
+
+        <span class="contextpack-card-verbs">
+        <div style="white-space: pre-line">Verbs:
+          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+            <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'verbs')">
+              {{word}} </mat-chip>
+          </mat-chip-list>
+
+        </div></span>
+        <span class="contextpack-card-adjectives">
+        <div style="white-space: pre-line">Adjectives:
+          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+            <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'adjectives')">
+              {{word}} </mat-chip>
+          </mat-chip-list>
+
+        </div></span>
+
+        <span class="contextpack-card-misc">
+          <div style="white-space: pre-line">Misc:
+            <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'misc')">
+                {{word}} </mat-chip>
+            </mat-chip-list>
+          </div></span>
   </ng-template>
+
 
 
 
