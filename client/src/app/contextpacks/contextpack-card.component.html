@@ -26,8 +26,34 @@
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">Nouns:
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')">
+              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')"
+              (click)="deleteWord(contextpack.wordlists[index], word)">
                 {{word}} </mat-chip>
+                <button mat-stroked-button (click)="(this.editing =!this.editing)" class="edit-word-button">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <mat-accordion class="example-headers-align" multi *ngIf="this.editing">
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Nouns
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        Add Nouns
+                        <mat-icon>edit</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-form-field>
+                      <mat-label>Word</mat-label>
+                      <input matInput >
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Forms</mat-label>
+                      <input matInput type="string">
+                    </mat-form-field>
+                  </mat-expansion-panel>
+                </mat-accordion>
             </mat-chip-list>
 
           </div></span>
@@ -68,32 +94,6 @@
               <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'nouns')">
                 {{word}} </mat-chip>
             </mat-chip-list>
-            <button mat-stroked-button (click)="(this.editing =!this.editing)" class="edit-word-button">
-              <mat-icon>add</mat-icon>
-            </button>
-            <mat-accordion class="example-headers-align" multi *ngIf="this.editing">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Nouns
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Add Nouns
-                    <mat-icon>edit</mat-icon>
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-form-field>
-                  <mat-label>Word</mat-label>
-                  <input matInput >
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>Forms</mat-label>
-                  <input matInput type="string">
-                </mat-form-field>
-              </mat-expansion-panel>
-            </mat-accordion>
-
 
           </div></span>
 
