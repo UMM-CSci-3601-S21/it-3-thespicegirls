@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContextPack, Wordlist, WordRole } from './contextpack';
-import { ContextPackService } from './contextpack.service';
-import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 
 
 @Component({
@@ -15,14 +14,13 @@ export class ContextPackCardComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
   @Input() simple ? = false;
-  @Output() valueChangeEvents: EventEmitter<any>;
+  @Output() valueChangeEvents: EventEmitter<string[]>;
 
   selected = 'true';
   contextPackForm: FormGroup;
   editing = false;
 
-  constructor( private contextPackService: ContextPackService )
-   {this.valueChangeEvents = new EventEmitter();}
+  constructor() {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
   }

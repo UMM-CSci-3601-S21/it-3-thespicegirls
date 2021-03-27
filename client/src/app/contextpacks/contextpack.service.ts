@@ -45,23 +45,24 @@ export class ContextPackService {
     return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
   }
 
-  updateContextPack(contextpack: ContextPack, newValues: {name?: string; enabled?: string; icon?: string}): Observable<string> {
+  updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack> {
    let httpParams: HttpParams = new HttpParams();
 
      if(newValues.name){
        httpParams = httpParams.set('name', newValues.name);
-       console.log(newValues.name);
+       console.log(httpParams.get('name'));
      }
      if(newValues.enabled){
-       httpParams = httpParams.set('enabled',newValues.enabled);
-     }
+      httpParams = httpParams.set('enabled',newValues.enabled);
+    }
     if(newValues.icon){
       httpParams = httpParams.set('icon',newValues.icon);
     }
 
-    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/edit', {
+     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/edit', null , {
       params: httpParams
    });
+
   }
 
 

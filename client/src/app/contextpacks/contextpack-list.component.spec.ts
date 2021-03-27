@@ -20,12 +20,14 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 import { ContextPackListComponent } from './contextpack-list.component';
 import { ContextPackService } from './contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 const COMMON_IMPORTS: any[] = [
   FormsModule,
   MatCardModule,
   MatFormFieldModule,
   MatSelectModule,
+  MatSnackBarModule,
   MatOptionModule,
   MatButtonModule,
   MatInputModule,

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ContextPack, Word, Wordlist } from './contextpack';
@@ -137,22 +137,18 @@ describe('Context Pack service: ', () => {
     req.flush({id: 'testid'});
   });
 
-  it('updateContextPack() posts to api/contextpack/:id/editpack', () => {
+  it('updateContextPack() posts to api/contextpack/:id/edit', () => {
 
     expect(testContextPacks[1].name).toEqual('sun');
 
-    const testUpdate = testContextPacks[1];
-    testUpdate.name = 'random';
-    expect(testUpdate.name).toEqual('random');
-
-    contextpackService.updateContextPack(testUpdate).subscribe(
-      contextPack => expect(contextPack).toBe(testUpdate)
+    contextpackService.updateContextPack(testContextPacks[1], {name: 'Birthday'}).subscribe(
+      contextPack => expect(contextPack.name).toBe('Birthday')
     );
 
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testUpdate._id+'/'+'editpack');
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/edit');
 
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual(testUpdate);
+    console.log(req.request.params);
   });
 });
 
