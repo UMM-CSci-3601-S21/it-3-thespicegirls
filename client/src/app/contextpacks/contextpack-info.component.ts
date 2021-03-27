@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContextPack } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 import { Subscription } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-contextpack-info',
@@ -21,7 +21,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
   id: string;
   getContextPackSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private contextPackService: ContextPackService, private snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private snackBar: MatSnackBar, private contextPackService: ContextPackService) { }
 
   ngOnInit(): void {
     // We subscribe to the parameter map here so we'll be notified whenever
@@ -42,7 +42,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateField(contextPack: ContextPack, event: string[]) {
+  updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
     switch(event[1]) {
 

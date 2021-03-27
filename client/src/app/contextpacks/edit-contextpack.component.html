@@ -13,5 +13,5 @@
   <button (click)="cancel()" (keydown.Enter)="cancel()" tabindex="0"><mat-icon>delete</mat-icon></button>
 </div>
 <div *ngIf="( ! isEditing )" (click)="edit()">
-  {{ value.toString().charAt(0).toUpperCase() + value.toString().slice(1) }}
+  {{ value }}
 </div>

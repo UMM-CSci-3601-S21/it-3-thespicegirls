@@ -9,14 +9,13 @@ import { ContextPackService } from './contextpack.service';
 })
 export class EditContextpackComponent implements OnInit {
 
-  @Input() contextpack: ContextPack;
-  @Input() word: Word;
-  @Input() value!: string;
+  @Input() value: string;
   @Output() valueChangeEvents: EventEmitter<string>;
+
   isEditing: boolean;
   pendingValue: string;
 
-  constructor( private contextPackService: ContextPackService) {
+  constructor() {
     this.isEditing = false;
 		this.pendingValue = '';
 		this.valueChangeEvents = new EventEmitter();
@@ -49,7 +48,8 @@ export class EditContextpackComponent implements OnInit {
 		// value - we don't want to break unidirectional data-flow.
 		if ( this.pendingValue !== this.value ) {
 
-			this.valueChangeEvents.emit( this.pendingValue.toString() );
+			this.valueChangeEvents.emit( this.pendingValue );
+
 
 		}
 
@@ -57,8 +57,4 @@ export class EditContextpackComponent implements OnInit {
 
 	}
 
-  public updateContextPack(): void {
-    this.contextPackService.updateContextPack(
-      this.contextpack, { name: this.contextpack.name});
-  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContextPack } from './contextpack';
 import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,21 +28,23 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   // We can call upon the service for interacting
   // with the server.
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
+  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar) {
 
   }
 
   updateField(contextPack: ContextPack, event: string[]) {
     //to figure out what field is being changed so the correct http param can be sent
-    switch(event[1]) {
+    const field = event[1];
+    const data = event[0];
+    switch(field) {
 
     case 'name' :
-      this.contextpackService.updateContextPack(contextPack, {name: event[0]}).subscribe(existingID => {
-        this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
+      this.contextpackService.updateContextPack(contextPack, {name: data}).subscribe(existingID => {
+        this.snackBar.open('Updated field ' + field + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
     }, err => {
-      this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
+      this.snackBar.open('Failed to update the ' + field + ' field with value ' + data, 'OK', {
         duration: 5000,
       });
     });
