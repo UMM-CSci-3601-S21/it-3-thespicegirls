@@ -23,6 +23,9 @@ import { MatOptionModule } from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -50,7 +53,10 @@ const MATERIAL_MODULES: any[] = [
   MatFormFieldModule,
   MatDividerModule,
   MatRadioModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatExpansionModule
 ];
 
 @NgModule({
