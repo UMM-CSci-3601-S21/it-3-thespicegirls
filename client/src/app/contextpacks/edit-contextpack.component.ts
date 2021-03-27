@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ContextPack } from './contextpack';
+import { ContextPack, Word } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
 @Component({
@@ -10,12 +10,13 @@ import { ContextPackService } from './contextpack.service';
 export class EditContextpackComponent implements OnInit {
 
   @Input() contextpack: ContextPack;
+  @Input() word: Word;
   @Input() value!: string;
   @Output() valueChangeEvents: EventEmitter<string>;
   isEditing: boolean;
   pendingValue: string;
 
-  constructor() {
+  constructor( private contextPackService: ContextPackService) {
     this.isEditing = false;
 		this.pendingValue = '';
 		this.valueChangeEvents = new EventEmitter();
@@ -55,4 +56,9 @@ export class EditContextpackComponent implements OnInit {
 		this.isEditing = false;
 
 	}
+
+  public updateContextPack(): void {
+    this.contextPackService.updateContextPack(
+      this.contextpack, { name: this.contextpack.name});
+  }
 }

@@ -93,13 +93,7 @@ public class ContextPackController {
      updateOperations.add(Updates.set("name", ctx.queryParam(NAME_KEY)));
     }
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
-      switch (ENABLED_KEY){
-        case "true" :
-        updateOperations.add(Updates.set("enabled", true));
-        break;
-        case "false" :
-        updateOperations.add(Updates.set("enabled", false));
-      }
+     updateOperations.add(Updates.set("enabled", ctx.queryParam(ENABLED_KEY)));
     }
     if (ctx.queryParamMap().containsKey(ICON_KEY)) {
       updateOperations.add(Updates.set("icon", ctx.queryParam(ICON_KEY)));

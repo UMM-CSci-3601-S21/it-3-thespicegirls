@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 
 
 
+
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
@@ -44,11 +45,12 @@ export class ContextPackService {
     return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
   }
 
-  updateContextPack(contextPack: ContextPack, newValues: {name?: string; enabled?: string; icon?: string}): Observable<string> {
+  updateContextPack(contextpack: ContextPack, newValues: {name?: string; enabled?: string; icon?: string}): Observable<string> {
    let httpParams: HttpParams = new HttpParams();
 
      if(newValues.name){
-       httpParams = httpParams.set('name',newValues.name);
+       httpParams = httpParams.set('name', newValues.name);
+       console.log(newValues.name);
      }
      if(newValues.enabled){
        httpParams = httpParams.set('enabled',newValues.enabled);
@@ -56,10 +58,24 @@ export class ContextPackService {
     if(newValues.icon){
       httpParams = httpParams.set('icon',newValues.icon);
     }
-    return this.httpClient.put<string>(this.contextpackUrl + '/' + contextPack._id, {
-        params: httpParams,
-     });
-   }
+
+    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/edit', {
+      params: httpParams
+   });
+  }
+
+
+   deleteWord(contextpack: ContextPack, delValues: {delverb?: string; enabled?: string; icon?: string}): Observable<string> {
+    let httpParams: HttpParams = new HttpParams();
+
+      if(delValues.delverb){
+        httpParams = httpParams.set('name', delValues.delverb);
+      }
+     httpParams = httpParams.set('listname', contextpack.name);
+     return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', {
+         params: httpParams,
+      });
+    }
 
 
 }
