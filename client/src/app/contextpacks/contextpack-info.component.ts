@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContextPack } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 import { Subscription } from 'rxjs';
@@ -21,7 +21,8 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
   id: string;
   getContextPackSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private snackBar: MatSnackBar, private contextPackService: ContextPackService) { }
+  constructor(private route: ActivatedRoute, private snackBar: MatSnackBar,
+    private contextPackService: ContextPackService, private router: Router) { }
 
   ngOnInit(): void {
     // We subscribe to the parameter map here so we'll be notified whenever
@@ -42,6 +43,13 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  reloadComponent() {
+    const currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    }
+
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
     switch(event[1]) {
@@ -51,6 +59,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
         this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
@@ -64,6 +73,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
         this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
@@ -77,6 +87,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
         this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,

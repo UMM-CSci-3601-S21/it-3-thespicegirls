@@ -28,9 +28,16 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   // We can call upon the service for interacting
   // with the server.
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar) {
+  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
 
   }
+
+  reloadComponent() {
+    const currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
+    }
 
   updateField(contextPack: ContextPack, event: string[]) {
     //to figure out what field is being changed so the correct http param can be sent
@@ -43,6 +50,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
         this.snackBar.open('Updated field ' + field + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + field + ' field with value ' + data, 'OK', {
         duration: 5000,
@@ -56,6 +64,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
         this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
@@ -69,6 +78,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
         this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
         duration: 2000,
       });
+      this.reloadComponent();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
