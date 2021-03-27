@@ -22,7 +22,40 @@
 
     <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-        <span class="contextpack-card-wordlists"><div style="white-space: pre-line">{{displayWordlists(this.contextpack.wordlists[index])}}</div></span>
+        <mat-card-title>{{contextpack.wordlists[index].name}}</mat-card-title>
+        <span class="contextpack-card-nouns">
+          <div style="white-space: pre-line">Nouns:
+            <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')">
+                {{word}} </mat-chip>
+            </mat-chip-list>
+
+          </div></span>
+          <span class="contextpack-card-verbs">
+            <div style="white-space: pre-line">Verbs:
+              <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'verbs')">
+                  {{word}} </mat-chip>
+              </mat-chip-list>
+
+            </div></span>
+            <span class="contextpack-card-adjectives">
+              <div style="white-space: pre-line">Adjectives:
+                <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                  <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'adjectives')">
+                    {{word}} </mat-chip>
+                </mat-chip-list>
+
+              </div></span>
+
+              <span class="contextpack-card-misc">
+                <div style="white-space: pre-line">Misc:
+                  <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                    <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'misc')">
+                      {{word}} </mat-chip>
+                  </mat-chip-list>
+
+                </div></span>
       </div>
     </div>
 

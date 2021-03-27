@@ -50,23 +50,20 @@ export class ContextPackCardComponent implements OnInit {
 
   displayWords(wordlist: Wordlist, pos: WordRole){
     let words: string[];
-    let str: string;
     if (wordlist[`${pos}`] === undefined){
       words = null;
-      str = null;
     }
     else{
       let i: number;
       words = [];
         for (i = 0; i < wordlist[`${pos}`].length; i++) {
-          words = words.concat(wordlist[`${pos}`][i].forms) ;
+          words = words.concat(wordlist[`${pos}`][i].word );
         }
-        str = words.join(', ');
-        str += '\n';
     }
 
-    return str;
+    return words;
   }
+
 
   downloadJson(myJson: ContextPack, topic: string){
       myJson = this.convertToBetterJson(myJson);
