@@ -50,7 +50,6 @@ export class ContextPackService {
 
      if(newValues.name){
        httpParams = httpParams.set('name', newValues.name);
-       console.log(httpParams.get('name'));
      }
      if(newValues.enabled){
       httpParams = httpParams.set('enabled',newValues.enabled);
