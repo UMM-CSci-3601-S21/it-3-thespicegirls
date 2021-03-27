@@ -337,6 +337,7 @@ public class ContextPackControllerSpec {
 
     // Test editing name
     mockReq.setQueryString("name=coconuts");
+    mockReq.setMethod("POST");
     contextPackController.editContextPack(ctx);
 
     assertEquals(200, mockRes.getStatus());
