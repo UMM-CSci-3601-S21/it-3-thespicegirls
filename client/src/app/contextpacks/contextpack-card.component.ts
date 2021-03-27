@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPack, Wordlist, WordRole } from './contextpack';
+import { ContextPackService } from './contextpack.service';
 
 
 
@@ -19,10 +22,16 @@ export class ContextPackCardComponent implements OnInit {
   selected = 'true';
   contextPackForm: FormGroup;
   editing = false;
+  list: Wordlist;
+  delnoun: string;
 
-  constructor() {this.valueChangeEvents = new EventEmitter();}
 
-  ngOnInit(): void {
+
+  constructor(private snackBar: MatSnackBar, private contextpackservice: ContextPackService)
+  {this.valueChangeEvents = new EventEmitter();}
+
+  ngOnInit(): void
+  {
   }
 
 
@@ -31,21 +40,43 @@ export class ContextPackCardComponent implements OnInit {
 		this.valueChangeEvents.emit( [newData, field] );
 
 	}
-  deleteWord(list: Wordlist, delnoun: string) {
+  setParams(list: Wordlist, delnoun: string){
+    this.list = list;
+    this.delnoun=delnoun;
+  }
+  deleteWord2(){
     console.log('deleting');
-    console.log(list.name);
-    console.log(delnoun);
+    console.log(this.list);
+    //to figure out what field is being changed so the correct http param can be sent
+      this.contextpackservice.deleteWord(this.contextpack, this.list.name, {delnoun:this.delnoun}).subscribe(existingID => {
+        this.snackBar.open('Updated field ' + this.delnoun + ' of pack ' + this.list.name, null, {
+        duration: 2000,
+      });
+    }, err => {
+      this.snackBar.open('Failed to update the ' + this.delnoun + ' field with value ' + this.delnoun, 'OK', {
+        duration: 5000,
+      });
+    });
+
+  }
+
+
+    deleteWord(list: Wordlist, word: string): void {
+      console.log('deleting');
+      console.log(list.name);
+      //to figure out what field is being changed so the correct http param can be sent
+        this.contextpackservice.deleteWord(this.contextpack, list.name, {delnoun:word}).subscribe(existingID => {
+          this.snackBar.open('Updated field ' + word + ' of pack ' + list.name, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to update the ' + word + ' field with value ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
 
     }
-  // deleteWord(){
-  //   console.log('deleting');
-  //   console.log(this.delnoun);
-  //   this.contextPackService.deleteWord(
-  //     this.contextpack,
-  //     {delverb: this.delverb, listname: this.listname,
-  //     delnoun:this.delnoun}
-  //   );
-  // }
+
 
   displayWordlists(contextpack: Wordlist){
     let  wordlists: string;

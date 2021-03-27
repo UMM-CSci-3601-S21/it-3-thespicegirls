@@ -11,9 +11,9 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
-
   constructor(private httpClient: HttpClient) {
   }
+
 
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
@@ -66,16 +66,19 @@ export class ContextPackService {
   }
 
 
-   deleteWord(contextpack: ContextPack, delValues: {delnoun?: string; enabled?: string; icon?: string}): Observable<string> {
+   deleteWord(contextpack: ContextPack, listname: string, delValues:
+     {delnoun?: string; enabled?: string; icon?: string}): Observable<string> {
     let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
 
-      if(delValues.delnoun){
-        httpParams = httpParams.set('name', delValues.delnoun);
-      }
-     httpParams = httpParams.set('listname', contextpack.name);
-     return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', {
-         params: httpParams,
-      });
+     if(delValues.delnoun){
+       httpParams = httpParams.append('delnoun', delValues.delnoun);
+
+     }
+     return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+
     }
 
 

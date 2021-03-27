@@ -26,9 +26,13 @@
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">Nouns:
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')"
-              (click)="deleteWord(contextpack.wordlists[index], word)">
-                {{word}} </mat-chip>
+              <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')">
+                {{word}}
+                 <button mat-stroked-button (click)="deleteWord(contextpack.wordlists[index], word)" class="edit-word-button" *ngIf="this.editing">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-chip>
+
                 <button mat-stroked-button (click)="(this.editing =!this.editing)" class="edit-word-button">
                   <mat-icon>add</mat-icon>
                 </button>
@@ -55,6 +59,8 @@
                   </mat-expansion-panel>
                 </mat-accordion>
             </mat-chip-list>
+
+
 
           </div></span>
           <span class="contextpack-card-verbs">

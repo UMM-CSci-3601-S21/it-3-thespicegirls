@@ -6,6 +6,7 @@ import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import {MatChipsModule} from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -15,7 +16,7 @@ import {MatChipsModule} from '@angular/material/chips';
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
-  contextpackcard = new ContextPackCardComponent();
+  contextpackcard = new ContextPackCardComponent(this.snackBar,this.contextPackService);
 
   formErrors = {
     wordlists: this.wordlistsErrors()
