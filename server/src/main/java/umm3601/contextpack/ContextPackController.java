@@ -117,12 +117,9 @@ public class ContextPackController {
   }
 
   public void editWordlist(Context ctx){
-    String listname = ctx.queryParam("listname");
-    String id = ctx.pathParam("id");
-    Bson filter = and(eq("_id", id));
+    Bson filter = and(eq("_id", ctx.pathParam("id")));
     ContextPack pack = contextPackCollection.find(filter).first();
-    int index = getListIndex(pack,listname);
-
+    int index = getListIndex(pack,ctx.queryParam("listname"));
 
     Wordlist list = pack.wordlists.get(index);
 
@@ -161,21 +158,18 @@ public class ContextPackController {
       ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
       list.addWord(posArray, "misc");
     }
-    contextPackCollection.replaceOne(eq("_id", id), pack);
+    contextPackCollection.replaceOne(eq("_id", ctx.pathParam("id")), pack);
 
     pack = contextPackCollection.find(filter).first();
     ctx.json(pack);
 
   }
   public void addFormsWordlist(Context ctx){
-    String listname = ctx.queryParam("listname");
     String id = ctx.pathParam("id");
-    Bson filter = and(eq("_id", id));
-    ContextPack pack = contextPackCollection.find(filter).first();
-    int index = getListIndex(pack,listname);
-
-
+    ContextPack pack = contextPackCollection.find(eq("_id", id)).first();
+    int index = getListIndex(pack,ctx.queryParam("listname"));
     Wordlist list = pack.wordlists.get(index);
+
     if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
       addForms(NOUN_FORM_KEY, ctx, list);
     }
@@ -189,10 +183,8 @@ public class ContextPackController {
       addForms(VERB_FORM_KEY, ctx, list);
     }
     contextPackCollection.replaceOne(eq("_id", id), pack);
-
-    pack = contextPackCollection.find(filter).first();
+    pack = contextPackCollection.find(eq("_id", id)).first();
     ctx.json(pack);
-
   }
 
   public void addForms(String key, Context ctx, Wordlist list){
@@ -204,32 +196,22 @@ public class ContextPackController {
       case VERB_FORM_KEY:
         wordIndex = getWordIndex(list, wordString, "verb");
         word = list.verbs.get(wordIndex);
-        for(int i=1; i<forms.length; i++){
-          word.addForm(forms[i]);
-        }
+        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
         break;
       case MISC_FORM_KEY:
         wordIndex = getWordIndex(list, wordString, "misc");
         word = list.misc.get(wordIndex);
-        for(int i=1; i<forms.length; i++){
-          word.addForm(forms[i]);
-        }
+        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
         break;
       case ADJ_FORM_KEY:
         wordIndex = getWordIndex(list, wordString, "adj");
         word = list.adjectives.get(wordIndex);
-        for(int i=1; i<forms.length; i++){
-          word.addForm(forms[i]);
-        }
+        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
         break;
       case NOUN_FORM_KEY:
         wordIndex = getWordIndex(list, wordString, "noun");
         word = list.nouns.get(wordIndex);
-        for(int i=1; i<forms.length; i++){
-          word.addForm(forms[i]);
-        }
-        break;
-      default:
+        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
         break;
     }
   }
@@ -239,8 +221,7 @@ public class ContextPackController {
     boolean match = false;
     for(int i=0; i<pack.wordlists.size(); i++){
       if(pack.wordlists.get(i).name.equals(listname)){
-        index =i;
-        match=true;
+        index =i;match=true;
         break;
       }
     }
@@ -255,28 +236,23 @@ public class ContextPackController {
     int size = 0;
     switch(pos){
       case "noun":
-        posArray = list.nouns;
-        size = list.nouns.size();
+        posArray = list.nouns;size = list.nouns.size();
         break;
       case "adj":
-        posArray = list.adjectives;
-        size = list.adjectives.size();
+        posArray = list.adjectives;size = list.adjectives.size();
         break;
       case "misc":
-        posArray = list.misc;
-        size = list.misc.size();
+        posArray = list.misc;size = list.misc.size();
         break;
       case "verb":
-        posArray = list.verbs;
-        size = list.verbs.size();
+        posArray = list.verbs;size = list.verbs.size();
         break;
       default:
       throw new NotFoundResponse("The requested part of speech was not found");
     }
     for(int i=0; i<size; i++){
       if(posArray.get(i).word.equals(word)){
-        index =i;
-        match=true;
+        index =i;match=true;
         break;
       }
     }
