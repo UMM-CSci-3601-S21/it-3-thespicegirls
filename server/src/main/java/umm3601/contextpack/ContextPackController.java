@@ -162,47 +162,61 @@ public class ContextPackController {
       list.addWord(posArray, "misc");
     }
     if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
-      String forms[] = ctx.queryParam(NOUN_FORM_KEY).split(",");
-      String wordString = forms[0];
-      int wordIndex = getWordIndex(list, wordString, "noun");
-      Word word = list.nouns.get(wordIndex);
-      for(int i=1; i<forms.length; i++){
-        word.addForm(forms[i]);
-      }
+      addForms(NOUN_FORM_KEY, ctx, list);
     }
     if(ctx.queryParamMap().containsKey(ADJ_FORM_KEY)){
-      String forms[] = ctx.queryParam(ADJ_FORM_KEY).split(",");
-      String wordString = forms[0];
-      int wordIndex = getWordIndex(list, wordString, "adj");
-      Word word = list.adjectives.get(wordIndex);
-      for(int i=1; i<forms.length; i++){
-        word.addForm(forms[i]);
-      }
+      addForms(ADJ_FORM_KEY, ctx, list);
     }
     if(ctx.queryParamMap().containsKey(MISC_FORM_KEY)){
-      String forms[] = ctx.queryParam(MISC_FORM_KEY).split(",");
-      String wordString = forms[0];
-      int wordIndex = getWordIndex(list, wordString, "misc");
-      Word word = list.misc.get(wordIndex);
-      for(int i=1; i<forms.length; i++){
-        word.addForm(forms[i]);
-      }
+      addForms(MISC_FORM_KEY, ctx, list);
     }
     if(ctx.queryParamMap().containsKey(VERB_FORM_KEY)){
-      String forms[] = ctx.queryParam(VERB_FORM_KEY).split(",");
-      String wordString = forms[0];
-      int wordIndex = getWordIndex(list, wordString, "verb");
-      Word word = list.verbs.get(wordIndex);
-      for(int i=1; i<forms.length; i++){
-        word.addForm(forms[i]);
-      }
+      addForms(VERB_FORM_KEY, ctx, list);
     }
-
     contextPackCollection.replaceOne(eq("_id", id), pack);
 
     pack = contextPackCollection.find(filter).first();
     ctx.json(pack);
 
+  }
+
+  public void addForms(String key, Context ctx, Wordlist list){
+    String forms[] = ctx.queryParam(key).split(",");
+    String wordString = forms[0];
+    int wordIndex =0;
+    Word word;
+    switch(key){
+      case VERB_FORM_KEY:
+        wordIndex = getWordIndex(list, wordString, "verb");
+        word = list.verbs.get(wordIndex);
+        for(int i=1; i<forms.length; i++){
+          word.addForm(forms[i]);
+        }
+        break;
+      case MISC_FORM_KEY:
+        wordIndex = getWordIndex(list, wordString, "misc");
+        word = list.misc.get(wordIndex);
+        for(int i=1; i<forms.length; i++){
+          word.addForm(forms[i]);
+        }
+        break;
+      case ADJ_FORM_KEY:
+        wordIndex = getWordIndex(list, wordString, "adj");
+        word = list.adjectives.get(wordIndex);
+        for(int i=1; i<forms.length; i++){
+          word.addForm(forms[i]);
+        }
+        break;
+      case NOUN_FORM_KEY:
+        wordIndex = getWordIndex(list, wordString, "noun");
+        word = list.nouns.get(wordIndex);
+        for(int i=1; i<forms.length; i++){
+          word.addForm(forms[i]);
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   public int getListIndex(ContextPack pack, String listname){
