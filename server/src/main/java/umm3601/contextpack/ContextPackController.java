@@ -161,6 +161,21 @@ public class ContextPackController {
       ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
       list.addWord(posArray, "misc");
     }
+    contextPackCollection.replaceOne(eq("_id", id), pack);
+
+    pack = contextPackCollection.find(filter).first();
+    ctx.json(pack);
+
+  }
+  public void addFormsWordlist(Context ctx){
+    String listname = ctx.queryParam("listname");
+    String id = ctx.pathParam("id");
+    Bson filter = and(eq("_id", id));
+    ContextPack pack = contextPackCollection.find(filter).first();
+    int index = getListIndex(pack,listname);
+
+
+    Wordlist list = pack.wordlists.get(index);
     if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
       addForms(NOUN_FORM_KEY, ctx, list);
     }

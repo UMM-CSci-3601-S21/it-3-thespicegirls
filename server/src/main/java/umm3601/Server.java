@@ -69,6 +69,9 @@ public class Server {
     server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
 
     server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
+    
+    // add forms to words
+    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
 
 
     server.exception(Exception.class, (e, ctx) -> {

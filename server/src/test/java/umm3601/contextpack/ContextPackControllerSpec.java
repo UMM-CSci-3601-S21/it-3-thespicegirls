@@ -479,9 +479,9 @@ public class ContextPackControllerSpec {
   public void addNounForms(){
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
     mockReq.setQueryString("nounforms=goat,goaty&listname=cats");
-    contextPackController.editWordlist(ctx);
+    contextPackController.addFormsWordlist(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
@@ -495,9 +495,9 @@ public class ContextPackControllerSpec {
   public void addAdjForms(){
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
     mockReq.setQueryString("adjforms=blue,bluer&listname=cats");
-    contextPackController.editWordlist(ctx);
+    contextPackController.addFormsWordlist(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
@@ -512,9 +512,9 @@ public class ContextPackControllerSpec {
   public void addMiscForms(){
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
     mockReq.setQueryString("miscforms=moo,moos&listname=cats");
-    contextPackController.editWordlist(ctx);
+    contextPackController.addFormsWordlist(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
@@ -529,9 +529,9 @@ public class ContextPackControllerSpec {
   public void addVerbForms(){
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
     mockReq.setQueryString("verbforms=run,runs&listname=cats");
-    contextPackController.editWordlist(ctx);
+    contextPackController.addFormsWordlist(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
@@ -546,13 +546,13 @@ public class ContextPackControllerSpec {
   public void addInvalidForms(){
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
     // yogurt is not an existing word in the contextpack
     mockReq.setQueryString("verbforms=yogurt,runs&listname=cats");
 
 
     assertThrows(NotFoundResponse.class, ()->{
-      contextPackController.editWordlist(ctx);
+      contextPackController.addFormsWordlist(ctx);
     });
   }
 
