@@ -98,6 +98,7 @@ public class ContextPackController {
 
   }
 
+  //Stores all designated update operations then updates document in one call
   public void editContextPack(Context ctx){
     String id = ctx.pathParam("id");
     Bson filter = eq("_id", id);
@@ -120,6 +121,7 @@ public class ContextPackController {
 
   }
 
+  //Edits wordlist name and enabled status, adds and removes words in word arrays - makes all the changes and then replaces mongo document
   public void editWordlist(Context ctx){
     Bson filter = and(eq("_id", ctx.pathParam("id")));
     ContextPack pack = contextPackCollection.find(filter).first();
@@ -168,6 +170,8 @@ public class ContextPackController {
     ctx.json(pack);
 
   }
+
+  //Calls correct addForms() version according to specified parameters - does all changes then replaces mongo document
   public void addFormsWordlist(Context ctx){
     String id = ctx.pathParam("id");
     ContextPack pack = contextPackCollection.find(eq("_id", id)).first();
@@ -191,6 +195,7 @@ public class ContextPackController {
     ctx.json(pack);
   }
 
+  //Looks through all the word arrays to find the designated word and adds new forms to it
   public void addForms(String key, Context ctx, Wordlist list){
     String forms[] = ctx.queryParam(key).split(",");
     String wordString = forms[0];
