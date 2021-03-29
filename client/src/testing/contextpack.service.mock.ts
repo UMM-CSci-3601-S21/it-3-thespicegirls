@@ -83,6 +83,16 @@ export class MockContextPackService extends ContextPackService {
       return of(null);
     }
   }
+  deleteWord(contextpack: ContextPack, listname: string, delValues:
+    { delnoun?: string; enabled?: string; icon?: string }): Observable<string>{
+      if((MockContextPackService.testContextPacks[0].wordlists[0].nouns[0].word) === delValues.delnoun){
+        delete MockContextPackService.testContextPacks[0].wordlists[0].nouns[0].word [delValues.delnoun];
+        return new Observable<string>();
+      };
+
+
+
+  }
 
 
 }

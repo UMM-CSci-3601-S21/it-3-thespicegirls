@@ -7,6 +7,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';3
 import {MatChipsModule} from '@angular/material/chips';
+import { workerData } from 'worker_threads';
+import { HttpClient } from '@angular/common/http';
 
 
 describe('ContextPackCardComponent', () => {
@@ -16,6 +18,7 @@ describe('ContextPackCardComponent', () => {
   let component2: ContextPackCardComponent;
   let fixture2: ComponentFixture<ContextPackCardComponent>;
   let emptyWordlist: Wordlist;
+  let contextpackService: ContextPackService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -33,6 +36,7 @@ describe('ContextPackCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
+    contextpackService = new MockContextPackService();
 
     component = fixture.componentInstance;
     component2 = fixture2.componentInstance;
@@ -50,15 +54,19 @@ describe('ContextPackCardComponent', () => {
       forms: ['green', 'greener']
     };
     const verb: Word = {
-      word: 'ran',
+      word: 'run',
       forms: ['ran', 'running']
+    };
+    const verb2: Word = {
+      word: 'walk',
+      forms: ['walks', 'walking']
     };
     const misc: Word = {
       word: 'langerhans',
       forms: ['langerhans', 'langerhan']
     };
-    const testNouns: Word[] = [noun];
-    const testVerbs: Word[] = [verb];
+    const testNouns: Word[] = [noun,noun2];
+    const testVerbs: Word[] = [verb,verb2];
     const testAdjectives: Word[] = [adjective];
     const testMisc: Word[] = [misc];
     emptyWordlist ={
@@ -73,14 +81,7 @@ describe('ContextPackCardComponent', () => {
       adjectives: testAdjectives,
       misc: testMisc
     },
-  {
-      name: 'partner',
-      enabled: true,
-      nouns: testNouns,
-      verbs: testVerbs,
-      adjectives: testAdjectives,
-      misc: testMisc
-  }];
+ ];
 
     component.contextpack = {
       _id: 'pat_id',
@@ -93,6 +94,7 @@ describe('ContextPackCardComponent', () => {
       enabled: true,
       name: 'Joy',
     };
+
 
     fixture.detectChanges();
   });
@@ -117,10 +119,34 @@ describe('ContextPackCardComponent', () => {
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
   });
+
   describe('Word display on cards', () => {
     it('should display the nouns with no forms',()=>{
       expect(component.displayWordsNoForms(component.contextpack, 'nouns').length).toEqual(2);
       expect(component.displayWordsNoForms(component.contextpack, 'nouns')[0]).toEqual('you');
     });
+    it('should display the verbs with no forms',()=>{
+      expect(component.displayWordsNoForms(component.contextpack, 'verbs').length).toEqual(2);
+      expect(component.displayWordsNoForms(component.contextpack, 'verbs')[0]).toEqual('run');
+      expect(component.displayWordsNoForms(component.contextpack, 'verbs')[1]).toEqual('walk');
+    });
+    it('should display the misc with no forms',()=>{
+      expect(component.displayWordsNoForms(component.contextpack, 'misc').length).toEqual(1);
+      expect(component.displayWordsNoForms(component.contextpack, 'misc')[0]).toEqual('langerhans');
+    });
+    it('should display the adjectives with no forms',()=>{
+      expect(component.displayWordsNoForms(component.contextpack, 'adjectives').length).toEqual(1);
+      expect(component.displayWordsNoForms(component.contextpack, 'adjectives')[0]).toEqual('green');
+    });
+  });
+
+  describe('Delete a noun', () => {
+
+    it('should display the nouns with no forms',()=>{
+      contextpackService.deleteWord(component.contextpack, component.contextpack.wordlists[0].name, {delnoun:'you'}).subscribe(
+        thing => expect(thing).toBeDefined
+      );
+    });
+
   });
 });
