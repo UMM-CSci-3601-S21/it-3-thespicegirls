@@ -2,6 +2,8 @@ package umm3601.contextpack;
 
 import java.util.ArrayList;
 
+import io.javalin.http.NotFoundResponse;
+
 public class Wordlist {
   public String name;
   public boolean enabled;
@@ -34,6 +36,34 @@ public class Wordlist {
   public void deleteMisc(String word){
     this.adjectives.removeIf(misc -> (misc.word.equals(word)));
   }
+
+
+  public void addWord(ArrayList<String> posArray, String pos){
+    Word newWord = new Word();
+    newWord.word = posArray.get(0);
+    newWord.forms = posArray;
+
+    switch(pos){
+      case "noun":
+        this.nouns.add(newWord);
+        break;
+      case "misc":
+        this.misc.add(newWord);
+        break;
+      case "verb":
+        this.verbs.add(newWord);
+        break;
+      case "adj":
+        this.adjectives.add(newWord);
+        break;
+      default:
+      throw new NotFoundResponse("The requested wordlist was not found");
+    }
+  }
+
+
+
+
 
 
 
