@@ -48,37 +48,57 @@ export class ContextPackService {
   updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack> {
    let httpParams: HttpParams = new HttpParams();
 
-     if(newValues.name){
-       httpParams = httpParams.set('name', newValues.name);
-     }
-     if(newValues.enabled){
-      httpParams = httpParams.set('enabled',newValues.enabled);
-    }
-    if(newValues.icon){
-      httpParams = httpParams.set('icon',newValues.icon);
-    }
+    if(newValues.name){httpParams = httpParams.set('name', newValues.name);}
+    if(newValues.enabled){httpParams = httpParams.set('enabled',newValues.enabled);}
+    if(newValues.icon){httpParams = httpParams.set('icon',newValues.icon);}
 
-     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/edit', null , {
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editpack', null , {
       params: httpParams
    });
 
   }
 
+  updateWordList(contextpack: ContextPack, listname: string,
+    editValues?: {name?: string; enabled?: string},
+    addValues?: { noun?: string; verb?: string; adjective?: string; misc?: string},
+    delValues?: { noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<string> {
 
-   deleteWord(contextpack: ContextPack, listname: string, delValues:
-     {delnoun?: string; enabled?: string; icon?: string}): Observable<string> {
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('listname', listname);
 
-     if(delValues.delnoun){
-       httpParams = httpParams.append('delnoun', delValues.delnoun);
+    if(editValues.name){httpParams = httpParams.set('name',editValues.name);}
+    if(editValues.enabled){httpParams = httpParams.set('enabled',editValues.enabled);}
 
-     }
-     return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+    if(addValues.noun){httpParams = httpParams.set('addnoun',addValues.noun);}
+    if(addValues.verb){httpParams = httpParams.set('addverb',addValues.verb);}
+    if(addValues.adjective){httpParams = httpParams.set('addadj',addValues.adjective);}
+    if(addValues.misc){httpParams = httpParams.set('addmisc',addValues.misc);}
+
+    if(delValues.noun){httpParams = httpParams.set('delnoun',delValues.noun);}
+    if(delValues.verb){httpParams = httpParams.set('delverb',delValues.verb);}
+    if(delValues.adjective){httpParams = httpParams.set('deladj',delValues.adjective);}
+    if(delValues.misc){httpParams = httpParams.set('delmisc',delValues.misc);}
+
+    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
       params: httpParams
    });
+  }
 
-    }
+  addForms(contextpack: ContextPack, listname: string,
+    addForms: {noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<string> {
+
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
+
+    if(addForms.noun){httpParams = httpParams.set('nounforms',addForms.noun);}
+    if(addForms.verb){httpParams = httpParams.set('verbforms',addForms.verb);}
+    if(addForms.adjective){httpParams = httpParams.set('adjforms',addForms.adjective);}
+    if(addForms.misc){httpParams = httpParams.set('miscforms',addForms.misc);}
+
+    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editforms', null , {
+      params: httpParams
+     });
+  }
 
 
 }
