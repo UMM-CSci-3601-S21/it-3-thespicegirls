@@ -62,9 +62,9 @@ public class Server {
     server.post("/api/contextpacks", contextPackController::addNewContextPack);
     // editing information about contextpacks
     server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
-
+    // editing information about wordlists
     server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
-    // add forms to words
+    // add forms to words in wordlists
     server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
 
 
