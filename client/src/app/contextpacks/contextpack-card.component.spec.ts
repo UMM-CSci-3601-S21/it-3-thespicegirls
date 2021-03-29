@@ -3,6 +3,9 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { Word, Wordlist } from './contextpack';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ContextPackService } from './contextpack.service';
+import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 
 
 describe('ContextPackCardComponent', () => {
@@ -17,9 +20,11 @@ describe('ContextPackCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        MatCardModule
+        MatCardModule,
+        MatSnackBarModule
       ],
-      declarations: [ ContextPackCardComponent ]
+      declarations: [ ContextPackCardComponent ],
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
     })
     .compileComponents();
   }));
