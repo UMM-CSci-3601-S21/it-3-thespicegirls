@@ -320,12 +320,12 @@ public class ContextPackControllerSpec {
     });
 
   }
-
   @Test
   public void editPackName() throws IOException {
+
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/edit", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "/api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
 
     // Test editing name and enabled together
     mockReq.setQueryString("name=frank&enabled=false");
@@ -341,7 +341,6 @@ public class ContextPackControllerSpec {
 
     // Test editing name
     mockReq.setQueryString("name=coconuts");
-    mockReq.setMethod("POST");
     contextPackController.editContextPack(ctx);
 
     assertEquals(200, mockRes.getStatus());
@@ -370,7 +369,7 @@ public class ContextPackControllerSpec {
   public void editListName() throws IOException {
     String id = testID.toHexString();
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("listname=dogs&enabled=false&name=donkeys");
     contextPackController.editWordlist(ctx);
 

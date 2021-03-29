@@ -104,7 +104,6 @@ public class ContextPackController {
     List<Bson> updateOperations = new ArrayList<>();
 
     if (ctx.queryParamMap().containsKey(NAME_KEY)) {
-      System.out.println(ctx.path());
      updateOperations.add(Updates.set("name", ctx.queryParam(NAME_KEY)));
     }
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
