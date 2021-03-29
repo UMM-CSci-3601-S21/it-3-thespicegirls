@@ -34,13 +34,16 @@ describe('ContextPackCardComponent', () => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
 
-
     component = fixture.componentInstance;
     component2 = fixture2.componentInstance;
 
     const noun: Word = {
       word: 'you',
       forms: ['you', 'yoyo', 'yos', 'yoted']
+    };
+    const noun2: Word = {
+      word: 'goat',
+      forms: ['goat', 'goats']
     };
     const adjective: Word = {
       word: 'green',
@@ -98,17 +101,12 @@ describe('ContextPackCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-
-
   it('should have displayNouns,verbs,adjective,misc return null if undefined', () => {
     expect(component.displayWords(emptyWordlist, 'nouns')).toBeNull();
     expect(component.displayWords(emptyWordlist, 'verbs')).toBeNull();
     expect(component.displayWords(emptyWordlist, 'adjectives')).toBeNull();
     expect(component.displayWords(emptyWordlist, 'misc')).toBeNull();
   });
-
-
 
   it('should create a download element when given a json', () => {
     expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
@@ -118,5 +116,11 @@ describe('ContextPackCardComponent', () => {
     expect(component.convertToBetterJson(component.contextpack).$schema).
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
+  });
+  describe('Word display on cards', () => {
+    it('should display the nouns with no forms',()=>{
+      expect(component.displayWordsNoForms(component.contextpack, 'nouns').length).toEqual(2);
+      expect(component.displayWordsNoForms(component.contextpack, 'nouns')[0]).toEqual('you');
+    });
   });
 });
