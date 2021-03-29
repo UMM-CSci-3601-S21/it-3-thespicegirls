@@ -1,4 +1,4 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,9 +8,18 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
-import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig, SocialUser, SocialAuthService } from 'angularx-social-login';
+import { BrowserModule } from '@angular/platform-browser';
+import { PartialObserver } from 'rxjs';
+import { userInfo } from 'os';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let authService: SocialAuthService;
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -20,8 +29,12 @@ describe('AppComponent', () => {
         MatIconModule,
         MatSidenavModule,
         MatCardModule,
+        MatSnackBarModule,
         MatListModule,
-        SocialLoginModule
+        SocialLoginModule,
+        BrowserModule,
+        RouterTestingModule,
+        HttpClientModule
       ],
       declarations: [
         AppComponent
@@ -40,21 +53,43 @@ describe('AppComponent', () => {
               }
             ]
           } as SocialAuthServiceConfig,
-        }
+        },
+        SocialAuthService
 
       ],
-    }).compileComponents();
+    }).compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
   }));
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    authService = TestBed.inject(SocialAuthService);
+    component.ngOnInit();
+    component.user = new SocialUser();
+    component.user.firstName = 'happy';
+    fixture.detectChanges();
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    expect(component).toBeTruthy();
     expect(app).toBeTruthy();
   });
 
   it(`should have as title 'Word River'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.returnTitle()).toEqual('Word River');
   });
+
+  it(`should run google signIn()`, () => {
+    expect(component.googleSignin()).toBeUndefined();
+  });
+
+  it(`should run google logOut()`, () => {
+    expect(component.logout()).toBeUndefined();
+  });
+
+
 });
