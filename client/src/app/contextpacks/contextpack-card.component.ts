@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPack, Wordlist, WordRole } from './contextpack';
 import { ContextPackService } from './contextpack.service';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 
@@ -78,18 +79,6 @@ export class ContextPackCardComponent implements OnInit {
     }
 
 
-  displayWordlists(contextpack: Wordlist){
-    let  wordlists: string;
-      wordlists = '';
-        wordlists += 'Word List ' + 'Name: ' + contextpack.name + '\n';
-        wordlists += 'Enabled: ' + contextpack.enabled + '\n';
-        wordlists += 'Nouns: \n' + this.displayWords(contextpack, 'nouns');
-        wordlists += 'Verbs: \n' + this.displayWords(contextpack, 'verbs');
-        wordlists += 'Adjectives: \n' + this.displayWords(contextpack, 'adjectives');
-        wordlists += 'Misc: \n' + this.displayWords(contextpack, 'misc');
-    return wordlists;
-  }
-
   displayWords(wordlist: Wordlist, pos: WordRole){
     let words: string[];
     if (wordlist[`${pos}`] === undefined){
@@ -131,33 +120,6 @@ export class ContextPackCardComponent implements OnInit {
       return obj;
   }
 
-  displayAllWords(contextpack: ContextPack, pos: WordRole){
-      let words: Wordlist[];
-      let m: number;
-      let str: string;
-      if(contextpack.wordlists === undefined || contextpack.wordlists[0][`${pos}`][0] === undefined){
-        words = null;
-        str = null;
-      }
-      else{
-        words = [];
-      for (m = 0; m < contextpack.wordlists.length; m++){
-          words = words.concat(contextpack.wordlists[m]);
-        }
-
-      let z: number;
-      str = '\n';
-      for (z = 0; z < words.length; z++){
-        str += this.displayWords(words[z], pos);
-        str = str.slice(0, -1);
-        if (z < words.length-1 && !(words[z+1][`${pos}`][0]===undefined)){
-          str += ', ';
-          }
-        }
-      }
-      return str;
-  }
-
   displayWordsNoForms(contextpack: ContextPack, pos: WordRole){
     let lists: Wordlist[];
     let m: number;
@@ -176,7 +138,7 @@ export class ContextPackCardComponent implements OnInit {
 
     for( j=0; j<lists.length; j++){
       for( i=0;i<lists[j][`${pos}`].length; i++){
-        words.push( ' '+ lists[j][`${pos}`][i].word);
+        words.push(lists[j][`${pos}`][i].word);
       }
     }
     return words;
