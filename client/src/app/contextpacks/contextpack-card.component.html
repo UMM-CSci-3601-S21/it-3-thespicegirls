@@ -1,7 +1,7 @@
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
 
   <mat-card-header>
-  <mat-card-title><app-edit-contextpack class="contextpack-card-name" [value]="this.contextpack.name" (valueChangeEvents)="save('name', $event )"></app-edit-contextpack></mat-card-title>
+  <mat-card-title><app-edit-contextpack class="contextpack-card-name" [value]="this.contextpack.name[0].toUpperCase() + this.contextpack.name.substring(1) " (valueChangeEvents)="save('name', $event )"></app-edit-contextpack></mat-card-title>
     <mat-card-subtitle><app-edit-contextpack class="contextpack-card-enabled" [value]="this.contextpack.enabled" (valueChangeEvents)="save('enabled',$event)"></app-edit-contextpack></mat-card-subtitle>
     <mat-card-subtitle><app-edit-contextpack class="contextpack-card-icon" [value]="this.contextpack.icon" (valueChangeEvents)="save('icon',$event)"></app-edit-contextpack></mat-card-subtitle>
   </mat-card-header>
@@ -22,19 +22,19 @@
 
     <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-        <mat-card-title>{{contextpack.wordlists[index].name}}</mat-card-title>
+        <mat-card-title>{{contextpack.wordlists[index].name[0].toUpperCase() + contextpack.wordlists[index].name.substring(1)}}</mat-card-title>
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">Nouns:
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
               <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')">
                 {{word}}
-                 <button mat-stroked-button (click)="deleteWord(contextpack.wordlists[index], word)" class="edit-word-button" *ngIf="this.editing">
+                 <button mat-icon-button (click)="deleteWord(contextpack.wordlists[index], word)" class="delete-word-button" *ngIf="this.editing">
                   <mat-icon>delete</mat-icon>
                 </button>
               </mat-chip>
 
-                <button mat-stroked-button (click)="(this.editing =!this.editing)" class="edit-word-button">
-                  <mat-icon>add</mat-icon>
+                <button mat-fab (click)="(this.editing =!this.editing)" class="edit-word-button">
+                  <mat-icon>edit</mat-icon>
                 </button>
                 <mat-accordion class="example-headers-align" multi *ngIf="this.editing">
                   <mat-expansion-panel>
