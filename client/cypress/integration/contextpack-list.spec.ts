@@ -19,7 +19,7 @@ describe('Contextpack list', () => {
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-name').should('contain.text', 'farm');
+      cy.wrap(e).find('.contextpack-card-name').should('contain.text', ' Farm\n');
     });
   });
 
@@ -34,7 +34,7 @@ describe('Contextpack list', () => {
       // We should see these topics
       .should('contain.text', 'Jojo Siwa')
       // We shouldn't see these topics
-      .should('not.contain.text', 'farm')
+      .should('not.contain.text', ' Farm\n')
       .should('not.contain.text', 'batman_villains');
   });
 
@@ -47,7 +47,7 @@ describe('Contextpack list', () => {
   it('Should click view info and see all the nouns and verbs', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-card-name').should('contain.text', 'farm');
+    cy.get('.contextpack-card-name').should('contain.text', ' Farm\n');
     cy.get('.contextpack-card-enabled').should('contain.text', 'true');
     // cy.get('.contextpack-card-wordlists').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
     // + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
@@ -60,7 +60,7 @@ describe('Contextpack list', () => {
     page.clickViewInfo(page.getContextpackCards().first());
     page.selectView('false');
 
-    cy.get('.contextpack-card-name').should('contain.text', 'farm');
+    cy.get('.contextpack-card-name').should('contain.text', ' Farm\n');
     cy.get('.contextpack-card-enabled').should('contain.text', 'true');
     // cy.get('.contextpack-card-nouns').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
     // + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
