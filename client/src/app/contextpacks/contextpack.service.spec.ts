@@ -145,10 +145,10 @@ describe('Context Pack service: ', () => {
       contextPack => expect(contextPack.name).toBe('Birthday')
     );
 
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/edit');
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/edit?name=Birthday');
 
     expect(req.request.method).toEqual('POST');
-    console.log(req.request.params);
+
   });
 });
 

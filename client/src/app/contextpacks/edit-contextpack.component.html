@@ -12,6 +12,6 @@
   <button (click)="processChanges()"><mat-icon>done</mat-icon></button>
   <button (click)="cancel()" (keydown.Enter)="cancel()" tabindex="0"><mat-icon>delete</mat-icon></button>
 </div>
-<div *ngIf="( ! isEditing )" (click)="edit()">
-  {{ value }}
+<div class="viewValue" *ngIf="( ! isEditing )" (click)="edit()">
+ {{ value }}
 </div>
