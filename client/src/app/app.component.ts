@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 import { Observable, UnsubscriptionError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -18,13 +19,13 @@ export class AppComponent implements OnInit {
   user: SocialUser;
   isSignedin: boolean;
   title: string;
-  readonly idTokenUrl: string = environment.apiUrl + 'idtoken=';
+  readonly idTokenUrl: string = environment.apiUrl + 'users';
 
   constructor(private socialAuthService: SocialAuthService, private httpClient: HttpClient, private snackBar: MatSnackBar,
     private router: Router) { }
 
   ngOnInit() {
-    this.sendToServer();
+
   }
 
   sendToServer() {
@@ -43,25 +44,48 @@ export class AppComponent implements OnInit {
         });
         this.logout();
       });
-
-      ;
     });
   }
 
   googleSignin(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    this.socialAuthService.authState.subscribe((user) => {
+      this.user = user;
+      console.log(this.user);
+      if (user != null){
+      this.addGoogleToken(this.user.idToken).subscribe(newID => {
+        this.snackBar.open('Logged into server', null, {
+          duration: 2000,
+        });
+        this.isSignedin = (user != null);
+        // this.router.navigate(['/contextpacks/', newID]);
+      }, err => {
+        this.snackBar.open('Failed login to server', 'OK', {
+          duration: 5000,
+        });
+        this.logout();
+      });
+    }
+    });
   }
 
   logout(): void {
     this.socialAuthService.signOut();
+    this.isSignedin = (false);
   }
   returnTitle(){
     return 'Word River';
   }
 
-  addGoogleToken(token: string): Observable<string> {
+  addGoogleToken(token: string): Observable<string>{
     // Send post request to add a new user with the user data as the body.
-    console.log(this.httpClient.get<string>(this.idTokenUrl + token));
-    return this.httpClient.get<string>(this.idTokenUrl + token);
+
+    console.log(this.idTokenUrl);
+    return this.httpClient.post<{id: string}>(this.idTokenUrl, token).pipe(map(res => res.id));
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', this.idTokenUrl);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    // xhr.send(token);
   }
 }

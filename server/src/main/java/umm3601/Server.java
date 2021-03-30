@@ -11,6 +11,7 @@ import com.mongodb.client.MongoDatabase;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
 import umm3601.contextpack.ContextPackController;
+import umm3601.user.UserController;
 
 public class Server {
 
@@ -35,6 +36,7 @@ public class Server {
 
 
     ContextPackController contextPackController = new ContextPackController(database);
+    UserController userController = new UserController(database);
 
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
@@ -62,6 +64,7 @@ public class Server {
 
     server.get("/api/contextpacks/:id", contextPackController::getContextPack);
 
+    server.post("/api/users", userController::checkToken);
 
     server.post("/api/contextpacks", contextPackController::addNewContextPack);
 

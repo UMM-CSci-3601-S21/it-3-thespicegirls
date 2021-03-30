@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AppModule } from './app.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
@@ -10,15 +9,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig, SocialUser, SocialAuthService } from 'angularx-social-login';
 import { BrowserModule } from '@angular/platform-browser';
-import { PartialObserver } from 'rxjs';
-import { userInfo } from 'os';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let authService: SocialAuthService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -65,7 +61,6 @@ describe('AppComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    authService = TestBed.inject(SocialAuthService);
     component.ngOnInit();
     component.user = new SocialUser();
     component.user.firstName = 'happy';
@@ -90,6 +85,5 @@ describe('AppComponent', () => {
   it(`should run google logOut()`, () => {
     expect(component.logout()).toBeUndefined();
   });
-
 
 });
