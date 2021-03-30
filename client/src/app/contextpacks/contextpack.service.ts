@@ -48,9 +48,10 @@ export class ContextPackService {
   updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack> {
    let httpParams: HttpParams = new HttpParams();
 
+   if(newValues !== null){
     if(newValues.name){httpParams = httpParams.set('name', newValues.name);}
     if(newValues.enabled){httpParams = httpParams.set('enabled',newValues.enabled);}
-    if(newValues.icon){httpParams = httpParams.set('icon',newValues.icon);}
+    if(newValues.icon){httpParams = httpParams.set('icon',newValues.icon);}}
 
     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editpack', null , {
       params: httpParams
@@ -66,18 +67,21 @@ export class ContextPackService {
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('listname', listname);
 
+    if(editValues !== null){
     if(editValues.name){httpParams = httpParams.set('name',editValues.name);}
-    if(editValues.enabled){httpParams = httpParams.set('enabled',editValues.enabled);}
+    if(editValues.enabled){httpParams = httpParams.set('enabled',editValues.enabled);}}
 
+    if(addValues !== null){
     if(addValues.noun){httpParams = httpParams.set('addnoun',addValues.noun);}
     if(addValues.verb){httpParams = httpParams.set('addverb',addValues.verb);}
     if(addValues.adjective){httpParams = httpParams.set('addadj',addValues.adjective);}
-    if(addValues.misc){httpParams = httpParams.set('addmisc',addValues.misc);}
+    if(addValues.misc){httpParams = httpParams.set('addmisc',addValues.misc);}}
 
+    if(delValues !== null){
     if(delValues.noun){httpParams = httpParams.set('delnoun',delValues.noun);}
     if(delValues.verb){httpParams = httpParams.set('delverb',delValues.verb);}
     if(delValues.adjective){httpParams = httpParams.set('deladj',delValues.adjective);}
-    if(delValues.misc){httpParams = httpParams.set('delmisc',delValues.misc);}
+    if(delValues.misc){httpParams = httpParams.set('delmisc',delValues.misc);}}
 
     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
       params: httpParams
@@ -90,10 +94,11 @@ export class ContextPackService {
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('listname', listname);
 
+    if(addForms !== null){
     if(addForms.noun){httpParams = httpParams.set('nounforms',addForms.noun);}
     if(addForms.verb){httpParams = httpParams.set('verbforms',addForms.verb);}
     if(addForms.adjective){httpParams = httpParams.set('adjforms',addForms.adjective);}
-    if(addForms.misc){httpParams = httpParams.set('miscforms',addForms.misc);}
+    if(addForms.misc){httpParams = httpParams.set('miscforms',addForms.misc);}}
 
     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editforms', null , {
       params: httpParams

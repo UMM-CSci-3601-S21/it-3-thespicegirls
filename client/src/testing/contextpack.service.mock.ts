@@ -89,6 +89,7 @@ export class MockContextPackService extends ContextPackService {
   addValues?: { noun?: string; verb?: string; adjective?: string; misc?: string},
   delValues?: { noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<ContextPack> {
 
+    if(editValues !== null){
     if(editValues.name){MockContextPackService.testContextPacks[0].wordlists[0].name = editValues.name;}
     if(editValues.enabled){
       switch(editValues.enabled){
@@ -97,7 +98,8 @@ export class MockContextPackService extends ContextPackService {
         break;
         case 'true' :
         MockContextPackService.testContextPacks[0].wordlists[0].enabled = true;
-        break; }}
+        break; }}}
+    if(addValues !== null){
     if(addValues.noun){
       const newWord: Word = null;
       const tmp = addValues.noun.split(',');
@@ -121,7 +123,8 @@ export class MockContextPackService extends ContextPackService {
       const tmp = addValues.misc.split(',');
       newWord.word = tmp[0];
       newWord.forms = tmp;
-      MockContextPackService.testContextPacks[0].wordlists[0].misc.push(newWord);}
+      MockContextPackService.testContextPacks[0].wordlists[0].misc.push(newWord);}}
+    if(delValues !== null){
     if(delValues.noun){
       delete MockContextPackService.testContextPacks[0].wordlists[0].nouns[0].word [delValues.noun];
     }
@@ -133,7 +136,7 @@ export class MockContextPackService extends ContextPackService {
     }
     if(delValues.misc){
       delete MockContextPackService.testContextPacks[0].wordlists[0].misc[0].word [delValues.misc];
-    }
+    }}
     return new Observable<ContextPack>();
   }
 

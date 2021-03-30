@@ -2,13 +2,14 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
-import { Word, Wordlist } from './contextpack';
+import { ContextPack, Word, Wordlist } from './contextpack';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import {MatChipsModule} from '@angular/material/chips';
 import { workerData } from 'worker_threads';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 describe('ContextPackCardComponent', () => {

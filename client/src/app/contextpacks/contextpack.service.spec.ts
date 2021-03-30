@@ -139,8 +139,6 @@ describe('Context Pack service: ', () => {
 
   it('updateContextPack() posts to api/contextpack/:id/editpack', () => {
 
-    expect(testContextPacks[1].name).toEqual('sun');
-
     contextpackService.updateContextPack(testContextPacks[1], {name: 'Birthday'}).subscribe(
       contextPack => expect(contextPack.name).toBe('Birthday')
     );
@@ -149,6 +147,27 @@ describe('Context Pack service: ', () => {
 
     expect(req.request.method).toEqual('POST');
 
+  });
+
+  it('UpdateWordlist() posts to api/contextpack/:id/editlist', () => {
+
+    contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, { name: 'Sad' }, null, null).subscribe(
+      contextPack => expect(contextPack.wordlists[0].name).toBe('Sad')
+    );
+
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/editlist?name=Sad');
+
+    expect(req.request.method).toEqual('POST');
+  });
+
+  it('AddForms() posts to api/contextpack/:id/addforms', () => {
+
+    contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { noun: 'teachers' }).subscribe(
+      contextPack => expect(contextPack.wordlists[0].nouns[0].forms).toContain('teachers'));
+
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/editlist?name=Sad');
+
+    expect(req.request.method).toEqual('POST');
   });
 });
 
