@@ -61,7 +61,7 @@ export class ContextPackService {
   updateWordList(contextpack: ContextPack, listname: string,
     editValues?: {name?: string; enabled?: string},
     addValues?: { noun?: string; verb?: string; adjective?: string; misc?: string},
-    delValues?: { noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<string> {
+    delValues?: { noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<ContextPack> {
 
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('listname', listname);
@@ -79,13 +79,13 @@ export class ContextPackService {
     if(delValues.adjective){httpParams = httpParams.set('deladj',delValues.adjective);}
     if(delValues.misc){httpParams = httpParams.set('delmisc',delValues.misc);}
 
-    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
       params: httpParams
    });
   }
 
   addForms(contextpack: ContextPack, listname: string,
-    addForms: {noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<string> {
+    addForms: {noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<ContextPack> {
 
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('listname', listname);
@@ -95,7 +95,7 @@ export class ContextPackService {
     if(addForms.adjective){httpParams = httpParams.set('adjforms',addForms.adjective);}
     if(addForms.misc){httpParams = httpParams.set('miscforms',addForms.misc);}
 
-    return this.httpClient.post<string>(this.contextpackUrl + '/' + contextpack._id +'/editforms', null , {
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editforms', null , {
       params: httpParams
      });
   }

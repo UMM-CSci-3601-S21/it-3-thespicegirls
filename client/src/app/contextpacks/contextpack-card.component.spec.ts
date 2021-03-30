@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Word, Wordlist } from './contextpack';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
-import { MockContextPackService } from 'src/testing/contextpack.service.mock';3
+import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import {MatChipsModule} from '@angular/material/chips';
 import { workerData } from 'worker_threads';
 import { HttpClient } from '@angular/common/http';
@@ -140,8 +140,18 @@ describe('ContextPackCardComponent', () => {
     });
   });
 
-  describe('Delete a noun', () => {
+  describe('Delete a word', () => {
+    it('should delete a noun', () => {
 
+    });
+    it('should delete a verb', () => {
 
+    });
+    it('should delete a adjective', () => {
+
+    });
+    it('should delete a misc', () => {
+
+    });
   });
 });
