@@ -142,11 +142,6 @@ describe('ContextPackCardComponent', () => {
 
   describe('Delete a noun', () => {
 
-    it('should display the nouns with no forms',()=>{
-      contextpackService.deleteWord(component.contextpack, component.contextpack.wordlists[0].name, {delnoun:'you'}).subscribe(
-        thing => expect(thing).toBeDefined
-      );
-    });
 
   });
 });

@@ -28,14 +28,10 @@
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
               <mat-chip class="example-box" cdkDrag *ngFor="let word of displayWords(contextpack.wordlists[index], 'nouns')">
                 {{word}}
-                 <button mat-icon-button (click)="deleteWord(contextpack.wordlists[index], word)" class="delete-word-button" *ngIf="this.editing">
+                 <button mat-icon-button (click)="deleteWord(contextpack.wordlists[index], word, 'noun')" class="delete-word-button" *ngIf="this.editing">
                   <mat-icon>delete</mat-icon>
                 </button>
               </mat-chip>
-
-                <button mat-fab (click)="(this.editing =!this.editing)" class="edit-word-button">
-                  <mat-icon>edit</mat-icon>
-                </button>
                 <mat-accordion class="example-headers-align" multi *ngIf="this.editing">
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>

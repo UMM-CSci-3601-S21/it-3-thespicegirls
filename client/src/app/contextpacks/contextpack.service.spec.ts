@@ -137,7 +137,7 @@ describe('Context Pack service: ', () => {
     req.flush({id: 'testid'});
   });
 
-  it('updateContextPack() posts to api/contextpack/:id/edit', () => {
+  it('updateContextPack() posts to api/contextpack/:id/editpack', () => {
 
     expect(testContextPacks[1].name).toEqual('sun');
 
@@ -145,7 +145,7 @@ describe('Context Pack service: ', () => {
       contextPack => expect(contextPack.name).toBe('Birthday')
     );
 
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/edit?name=Birthday');
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/editpack?name=Birthday');
 
     expect(req.request.method).toEqual('POST');
 

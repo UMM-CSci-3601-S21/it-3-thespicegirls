@@ -23,18 +23,11 @@ export class ContextPackCardComponent implements OnInit {
   selected = 'true';
   contextPackForm: FormGroup;
   editing = false;
-  list: Wordlist;
-  delnoun: string;
-
-
 
   constructor(private snackBar: MatSnackBar, private contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
 
-  ngOnInit(): void
-  {
-  }
-
+  ngOnInit(): void {}
 
   public save(field: string, newData: string): void {
 
@@ -42,21 +35,132 @@ export class ContextPackCardComponent implements OnInit {
 
 	}
 
-  deleteWord(list: Wordlist, word: string): void {
-      console.log('deleting');
-      console.log(list.name);
-      //to figure out what field is being changed so the correct http param can be sent
-        this.contextpackservice.deleteWord(this.contextpack, list.name, {delnoun:word}).subscribe(existingID => {
-          this.snackBar.open('Updated field ' + word + ' of pack ' + list.name, null, {
+  deleteWord(list: Wordlist, word: string, wordType: string): void {
+
+      switch(wordType){
+        case 'noun' :
+          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { noun: word }).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
+            duration: 2000,
+          });
+        }, err => {
+          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
+            duration: 5000,
+          });
+        });
+          break;
+        case 'verb':
+          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { verb: word }).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
+            duration: 2000,
+          });
+        }, err => {
+          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
+            duration: 5000,
+          });
+        });
+          break;
+        case 'adjective' :
+          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { adjective: word }).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
+            duration: 2000,
+          });
+        }, err => {
+          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
+            duration: 5000,
+          });
+        });
+          break;
+        case 'misc' :
+          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { misc: word }).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
+            duration: 2000,
+          });
+        }, err => {
+          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
+            duration: 5000,
+          });
+        });
+          break;
+      }
+    }
+
+  addWord(list: Wordlist, word: string, wordType: string){
+
+    switch(wordType){
+      case 'noun' :
+        this.contextpackservice.updateWordList(this.contextpack, list.name, null, { noun: word }, null).subscribe(existingID => {
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list.name, null, {
           duration: 2000,
         });
       }, err => {
-        this.snackBar.open('Failed to update the ' + word + ' field with value ' + list.name, 'OK', {
+        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list.name, 'OK', {
           duration: 5000,
         });
       });
-
+        break;
+      case 'verb':
+        this.contextpackservice.updateWordList(this.contextpack, list.name, null, { verb: word }, null).subscribe(existingID => {
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list.name, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
+        break;
+      case 'adjective' :
+        this.contextpackservice.updateWordList(this.contextpack, list.name, null, { adjective: word }, null).subscribe(existingID => {
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list.name, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
+        break;
+      case 'misc' :
+        this.contextpackservice.updateWordList(this.contextpack, list.name, null, { misc: word }, null).subscribe(existingID => {
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list.name, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
+        break;
     }
+  }
+
+  editField(list: Wordlist, newData: string, field: string){
+
+    switch(field) {
+      case 'name' :
+        this.contextpackservice.updateWordList(this.contextpack, list.name, { name: newData }, null , null).subscribe(existingID => {
+          this.snackBar.open('Updated name of Word list: ' + list.name + ' to: ' + newData, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to update name of list: ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
+        break;
+      case 'enabled' :
+        this.contextpackservice.updateWordList(this.contextpack, list.name, { enabled: newData }, null, null).subscribe(existingID => {
+          this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
+          duration: 5000,
+        });
+      });
+    }
+  }
 
   displayWords(wordlist: Wordlist, pos: WordRole){
     let words: string[];
