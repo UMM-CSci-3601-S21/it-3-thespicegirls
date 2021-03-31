@@ -1,12 +1,4 @@
-span.contextpack-card-wordlists{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  width: 70%;
-  margin: 5px;
-}
+
 .mat-card{
   background-color:white;
 }
@@ -16,14 +8,17 @@ span.contextpack-card-wordlists{
 
 }
 
+h2, mat-card-title, mat-card-subtitle{
+  text-transform: capitalize;
+  color:#01596e;
+  margin: 10px;
+}
+
 .contextpack-card-nouns, .contextpack-card-adjectives, .contextpack-card-verbs, .contextpack-card-misc {
   display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
   padding: 10px;
   margin: 5px;
-  width: 70%;
+  width: inherit;
   word-wrap: break-word;
   display: flex;
 }

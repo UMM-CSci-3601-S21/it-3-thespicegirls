@@ -16,7 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
-  contextpackcard = new ContextPackCardComponent(this.snackBar,this.contextPackService);
+  contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -59,9 +59,6 @@ export class AddContextpacksComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }
-
-
-
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({
