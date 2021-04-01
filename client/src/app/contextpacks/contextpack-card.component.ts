@@ -64,18 +64,7 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   deleteWord(list: Wordlist, word: string, wordType: string): void {
-    let obj: any;
-    switch(wordType){
-      case 'noun':obj =  { noun: word };
-        break;
-      case 'verb':obj =  { verb: word };
-        break;
-      case 'misc':obj =  { misc: word };
-        break;
-      case 'adjective':obj =  { adjective: word };
-        break;
-    }
-
+    const obj: any = this.createParamObj(wordType, word);
           this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
@@ -88,53 +77,30 @@ export class ContextPackCardComponent implements OnInit {
     }
 
   addWord(list: string, word: string, wordType: string){
-
+    const obj: any = this.createParamObj(wordType, word);
+        this.contextpackservice.updateWordList(this.contextpack, list, null, obj, null).subscribe(existingID => {
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
+          duration: 2000,
+        });
+      }, err => {
+        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
+          duration: 5000,
+        });
+      });
+  }
+  createParamObj(wordType: string, word: string){
+    let obj: any;
     switch(wordType){
-      case 'noun' :
-        this.contextpackservice.updateWordList(this.contextpack, list, null, { noun: word }, null).subscribe(existingID => {
-          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
-          duration: 5000,
-        });
-      });
+      case 'noun':obj =  { noun: word };
         break;
-      case 'verb':
-        this.contextpackservice.updateWordList(this.contextpack, list, null, { verb: word }, null).subscribe(existingID => {
-          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
-          duration: 5000,
-        });
-      });
+      case 'verb':obj =  { verb: word };
         break;
-      case 'adjective' :
-        this.contextpackservice.updateWordList(this.contextpack, list, null, { adjective: word }, null).subscribe(existingID => {
-          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
-          duration: 5000,
-        });
-      });
+      case 'misc':obj =  { misc: word };
         break;
-      case 'misc' :
-        this.contextpackservice.updateWordList(this.contextpack, list, null, { misc: word }, null).subscribe(existingID => {
-          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
-          duration: 5000,
-        });
-      });
+      case 'adjective':obj =  { adjective: word };
         break;
     }
+    return obj;
   }
 
   editField(list: Wordlist, newData: string, field: string){

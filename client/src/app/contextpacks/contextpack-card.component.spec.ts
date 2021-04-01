@@ -8,9 +8,11 @@ import { ContextPackService } from './contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import {MatChipsModule} from '@angular/material/chips';
 import { workerData } from 'worker_threads';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from 'src/environments/environment';
 
 
 describe('ContextPackCardComponent', () => {
@@ -21,6 +23,9 @@ describe('ContextPackCardComponent', () => {
   let fixture2: ComponentFixture<ContextPackCardComponent>;
   let emptyWordlist: Wordlist;
   let contextpackService: ContextPackService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -36,6 +41,17 @@ describe('ContextPackCardComponent', () => {
     })
     .compileComponents();
   }));
+  beforeEach(() => {
+    // Set up the mock handling of the HTTP requests
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    // Construct an instance of the service with the mock
+    // HTTP client.
+    contextpackService = new ContextPackService(httpClient);
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
@@ -44,6 +60,7 @@ describe('ContextPackCardComponent', () => {
 
     component = fixture.componentInstance;
     component2 = fixture2.componentInstance;
+
 
     const noun: Word = {
       word: 'you',
@@ -98,6 +115,27 @@ describe('ContextPackCardComponent', () => {
       enabled: true,
       name: 'Joy',
     };
+    const testContextPacks: ContextPack[] =
+    [
+      {
+        _id: 'chris_id',
+        name: 'fun',
+        enabled: true,
+        wordlists: testWordListBig
+      },
+      {
+        _id: 'pat_id',
+        name: 'sun',
+        enabled: true,
+        wordlists: testWordListBig
+      },
+      {
+        _id: 'jamie_id',
+        name: 'happy',
+        enabled: true,
+        wordlists: testWordListBig
+      }
+  ];
 
 
     fixture.detectChanges();
@@ -144,17 +182,45 @@ describe('ContextPackCardComponent', () => {
     });
   });
 
-  describe('Delete a word', () => {
-    it('should delete a noun', () => {
+  describe('set object Param', () => {
+    // it('should delete a noun', () => {
+
+    //     const targetContextPack: ContextPack = component.contextpack;
+    //     const targetId: string = targetContextPack._id;
+    //     contextpackService.updateWordList(targetContextPack, targetContextPack.wordlists[0].name, null,null, {noun: 'goat'})
+    //     .subscribe(
+    //       contextpack => expect(contextpack).toBe(targetContextPack)
+    //     );
+
+    //     const expectedUrl: string = contextpackService.contextpackUrl + '/' + targetId +
+    //     `/editlist?listname=${targetContextPack.wordlists[0].name}&delnoun=goat`;
+    //     const req = httpTestingController.expectOne(expectedUrl);
+    //     expect(req.request.method).toEqual('POST');
+    //     req.flush(targetContextPack);
+
+    // });
+    it('set the object param for nouns', () => {
+      const word = 'goat';
+      const wordType = 'noun';
+     expect(component.createParamObj(wordType, word)).toEqual({noun:'goat'});
 
     });
-    it('should delete a verb', () => {
+    it('set the object param for adjectives', () => {
+      const word = 'goat';
+      const wordType = 'adjective';
+     expect(component.createParamObj(wordType, word)).toEqual({adjective:'goat'});
 
     });
-    it('should delete a adjective', () => {
+    it('set the object param for verbs', () => {
+      const word = 'goat';
+      const wordType = 'verb';
+     expect(component.createParamObj(wordType, word)).toEqual({verb:'goat'});
 
     });
-    it('should delete a misc', () => {
+    it('set the object param for misc', () => {
+      const word = 'goat';
+      const wordType = 'misc';
+     expect(component.createParamObj(wordType, word)).toEqual({misc:'goat'});
 
     });
   });
