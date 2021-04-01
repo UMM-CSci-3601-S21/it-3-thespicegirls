@@ -155,7 +155,8 @@ describe('Context Pack service: ', () => {
       contextPack => expect(contextPack.wordlists[0].name).toBe('Sad')
     );
 
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/editlist?name=Sad');
+    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[0]._id+
+    '/editlist?listname=happy&name=Sad');
 
     expect(req.request.method).toEqual('POST');
   });
@@ -165,7 +166,7 @@ describe('Context Pack service: ', () => {
     contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { noun: 'teachers' }).subscribe(
       contextPack => expect(contextPack.wordlists[0].nouns[0].forms).toContain('teachers'));
 
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[1]._id+'/editlist?name=Sad');
+    const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&nounforms=teachers');
 
     expect(req.request.method).toEqual('POST');
   });

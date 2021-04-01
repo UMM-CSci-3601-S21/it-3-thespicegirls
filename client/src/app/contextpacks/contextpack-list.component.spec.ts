@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
@@ -39,6 +39,8 @@ const COMMON_IMPORTS: any[] = [
   MatIconModule,
   BrowserAnimationsModule,
   RouterTestingModule,
+  FormsModule,
+  ReactiveFormsModule,
 ];
 
 describe('ContextPack list', () => {

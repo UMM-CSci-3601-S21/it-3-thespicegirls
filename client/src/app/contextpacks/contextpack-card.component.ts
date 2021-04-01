@@ -68,7 +68,7 @@ export class ContextPackCardComponent implements OnInit {
       switch(wordType){
         case 'noun' :
           this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { noun: word }).subscribe(existingID => {
-            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
+            this.snackBar.open('Deleted ' + word[0] + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
         }, err => {

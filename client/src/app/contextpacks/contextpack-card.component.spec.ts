@@ -10,6 +10,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { workerData } from 'worker_threads';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 describe('ContextPackCardComponent', () => {
@@ -26,10 +27,12 @@ describe('ContextPackCardComponent', () => {
       imports: [
         BrowserAnimationsModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
       declarations: [ ContextPackCardComponent ],
-      providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()}]
     })
     .compileComponents();
   }));

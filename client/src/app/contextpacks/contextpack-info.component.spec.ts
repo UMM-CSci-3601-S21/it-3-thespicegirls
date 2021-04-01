@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -20,7 +21,9 @@ describe('ContextPackInfoComponent', () => {
       imports: [
         RouterTestingModule,
         MatCardModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
       declarations: [ContextPackInfoComponent, ContextPackCardComponent],
       providers: [
