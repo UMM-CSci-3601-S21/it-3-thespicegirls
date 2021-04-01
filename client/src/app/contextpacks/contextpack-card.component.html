@@ -173,7 +173,7 @@
             <h3>Nouns:</h3>
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
               <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
-              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'noun')">
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
                {{word.word}}
                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
              </mat-chip>
@@ -186,7 +186,7 @@
               <h3>Verbs:</h3>
               <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
                 <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
-                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'verb')">
+                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
                     {{word.word}}
                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                   </mat-chip>
@@ -199,7 +199,7 @@
                 <h3>Adjectives:</h3>
                 <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
                   <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
-                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'adjective')">
+                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
                     {{word.word}}
                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                   </mat-chip>
@@ -212,7 +212,7 @@
                   <h3>Misc:</h3>
                   <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
                     <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
-                    [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'misc')">
+                    [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
                      {{word.word}}
                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                    </mat-chip>
