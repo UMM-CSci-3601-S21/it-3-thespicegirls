@@ -104,30 +104,17 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   editField(list: Wordlist, newData: string, field: string){
+    const obj = this.createParamObj(field, newData);
+    this.contextpackservice.updateWordList(this.contextpack, list.name, obj, null, null).subscribe(existingID => {
+        this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
+        duration: 2000,
+        });
+    }, err => {
+      this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
+        duration: 5000,
+        });
+      });
 
-    switch(field) {
-      case 'name' :
-        this.contextpackservice.updateWordList(this.contextpack, list.name, { name: newData }, null , null).subscribe(existingID => {
-          this.snackBar.open('Updated name of Word list: ' + list.name + ' to: ' + newData, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to update name of list: ' + list.name, 'OK', {
-          duration: 5000,
-        });
-      });
-        break;
-      case 'enabled' :
-        this.contextpackservice.updateWordList(this.contextpack, list.name, { enabled: newData }, null, null).subscribe(existingID => {
-          this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
-          duration: 2000,
-        });
-      }, err => {
-        this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
-          duration: 5000,
-        });
-      });
-    }
   }
 
   displayWords(wordlist: Wordlist, pos: WordRole){

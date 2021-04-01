@@ -30,7 +30,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigate([currentUrl]);
-    }
+  }
 
   updateField(contextPack: ContextPack, event: string[]) {
     //to figure out what field is being changed so the correct http param can be sent

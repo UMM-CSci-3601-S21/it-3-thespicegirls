@@ -183,22 +183,6 @@ describe('ContextPackCardComponent', () => {
   });
 
   describe('set object Param', () => {
-    // it('should delete a noun', () => {
-
-    //     const targetContextPack: ContextPack = component.contextpack;
-    //     const targetId: string = targetContextPack._id;
-    //     contextpackService.updateWordList(targetContextPack, targetContextPack.wordlists[0].name, null,null, {noun: 'goat'})
-    //     .subscribe(
-    //       contextpack => expect(contextpack).toBe(targetContextPack)
-    //     );
-
-    //     const expectedUrl: string = contextpackService.contextpackUrl + '/' + targetId +
-    //     `/editlist?listname=${targetContextPack.wordlists[0].name}&delnoun=goat`;
-    //     const req = httpTestingController.expectOne(expectedUrl);
-    //     expect(req.request.method).toEqual('POST');
-    //     req.flush(targetContextPack);
-
-    // });
     it('set the object param for nouns', () => {
       const word = 'goat';
       const wordType = 'noun';
