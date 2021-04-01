@@ -7,7 +7,7 @@ import { AddContextpacksComponent } from './contextpacks/add-contextpacks.compon
 
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: ContextPackListComponent},
   {path: 'contextpacks', component: ContextPackListComponent},
   {path: 'contextpacks/:id', component: ContextPackInfoComponent},
   {path: 'edit', component: AddContextpacksComponent}

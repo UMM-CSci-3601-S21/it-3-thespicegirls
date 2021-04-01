@@ -2,7 +2,9 @@
 
   <mat-card-header>
   <mat-card-title><app-edit-contextpack class="contextpack-card-name" [value]="this.contextpack.name" (valueChangeEvents)="save('name', $event )"></app-edit-contextpack></mat-card-title>
-    <mat-card-subtitle><app-edit-contextpack class="contextpack-card-enabled" [value]="this.contextpack.enabled" (valueChangeEvents)="save('enabled',$event)"></app-edit-contextpack></mat-card-subtitle>
+    <mat-card-subtitle>{{displayEnabled(this.contextpack.enabled)}}
+      <div class="wordlist-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
+      <div class="wordlist-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
     <mat-card-subtitle><app-edit-contextpack class="contextpack-card-icon" [value]="this.contextpack.icon" (valueChangeEvents)="save('icon',$event)"></app-edit-contextpack></mat-card-subtitle>
   </mat-card-header>
 
@@ -10,20 +12,20 @@
   <mat-card-content *ngIf="!this.simple">
 
     <mat-form-field>
-      <mat-label>View Type</mat-label>
+      <mat-label>View</mat-label>
       <mat-select [(value)]="selected" data-test="contextpackWordSelect">
-        <mat-option value="true">View Wordlists</mat-option>
-        <mat-option value="false">View Words</mat-option>
+        <mat-option value="true">All Word Lists</mat-option>
+        <mat-option value="false">Just Words</mat-option>
       </mat-select>
     </mat-form-field>
 
-  <button mat-icon-button color="accent" class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>
+  <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>
     <mat-icon>download</mat-icon>
     </button>
-  <button mat-icon-button color="accent" class="editView" (click)="this.removable = !this.removable">
+  <button mat-icon-button matTooltip="Edit and Delete" matTooltipPosition="above" color="accent" class="editView" (click)="this.removable = !this.removable">
     <mat-icon>edit</mat-icon>
   </button>
-  <button mat-icon-button color="accent" class="addView" (click)="this.editing = !this.editing">
+  <button mat-icon-button matTooltip="Add to New and Existing" matTooltipPosition="above" color="accent" class="addView" (click)="this.editing = !this.editing">
     <mat-icon>add</mat-icon>
   </button>
 
@@ -42,11 +44,13 @@
       <mat-form-field>
         <mat-label>Word</mat-label>
        <input matInput formControlName="word" required>
+       <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Forms</mat-label>
-        <input matInput formControlName="forms" required>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
@@ -71,11 +75,13 @@
       <mat-form-field>
         <mat-label>Word</mat-label>
        <input matInput formControlName="word" required>
+       <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Forms</mat-label>
-        <input matInput formControlName="forms" required>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
@@ -100,11 +106,13 @@
       <mat-form-field>
         <mat-label>Word</mat-label>
        <input matInput formControlName="word" required>
+       <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Forms</mat-label>
-        <input matInput formControlName="forms" required>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
@@ -129,11 +137,13 @@
       <mat-form-field>
         <mat-label>Word</mat-label>
        <input matInput formControlName="word" required>
+       <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Forms</mat-label>
-        <input matInput formControlName="forms" required>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
       </mat-form-field>
 
       <mat-form-field>
@@ -162,7 +172,7 @@
           <div style="white-space: pre-line">
             <h3>Nouns:</h3>
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="example-box" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
               [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'noun')">
                {{word.word}}
                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -175,7 +185,7 @@
             <div style="white-space: pre-line">
               <h3>Verbs:</h3>
               <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-                <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="example-box" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+                <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
                    [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'verb')">
                     {{word.word}}
                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -188,7 +198,7 @@
               <div style="white-space: pre-line">
                 <h3>Adjectives:</h3>
                 <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="example-box" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
                    [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'adjective')">
                     {{word.word}}
                       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -201,7 +211,7 @@
                 <div style="white-space: pre-line">
                   <h3>Misc:</h3>
                   <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
-                    <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="example-box" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+                    <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
                     [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word,'misc')">
                      {{word.word}}
                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -219,9 +229,13 @@
           <div style="white-space: pre-line">
             <h3>Nouns:</h3>
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-              <mat-chip matTooltip="Forms go here" matTooltipPosition="above" color="noun" class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'nouns')">
-                {{word}}
+              <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="noun" class="nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
+                {{word.word}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
+              </div>
             </mat-chip-list>
           </div></span>
 
@@ -229,8 +243,13 @@
         <div style="white-space: pre-line">
           <h3>Verbs:</h3>
           <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-            <mat-chip matTooltip="Forms go here" matTooltipPosition="above" color="verb" class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'verbs')">
-              {{word}} </mat-chip>
+            <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+            <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="verb" class="verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+            [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
+              {{word.word}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            </div>
           </mat-chip-list>
         </div></span>
 
@@ -238,8 +257,13 @@
         <div style="white-space: pre-line">
           <h3>Adjectives:</h3>
           <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-            <mat-chip matTooltip="Forms go here" matTooltipPosition="above" color="adjective" class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'adjectives')">
-              {{word}} </mat-chip>
+            <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+            <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="adjective" class="adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+            [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
+              {{word.word}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            </div>
           </mat-chip-list>
         </div></span>
 
@@ -247,8 +271,13 @@
           <div style="white-space: pre-line">
             <h3>Misc:</h3>
             <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
-              <mat-chip matTooltip="Forms go here" matTooltipPosition="above" color="misc" class="example-box" cdkDrag *ngFor="let word of displayWordsNoForms(this.contextpack, 'misc')">
-                {{word}} </mat-chip>
+              <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="misc" class="miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
+                {{word.word}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              </div>
             </mat-chip-list>
           </div></span>
 
@@ -257,7 +286,7 @@
   </mat-card-content>
 
   <mat-card-actions *ngIf="this.simple">
-    <button mat-button data-test="viewInfoButton" [routerLink]="['/contextpacks', this.contextpack._id]">View Info</button>
+    <button class="viewInfoButton" mat-icon-button matTooltip="View Contents" color="primary" data-test="viewInfoButton" [routerLink]="['/contextpacks', this.contextpack._id]"><mat-icon>info</mat-icon></button>
   </mat-card-actions>
 
 </mat-card>

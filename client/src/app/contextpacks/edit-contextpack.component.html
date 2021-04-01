@@ -7,10 +7,9 @@
     [(ngModel)]="pendingValue"
     (keydown.Enter)="processChanges()"
     (keydown.Meta.Enter)="processChanges()"
-    (keydown.Escape)="cancel()"
-  />
-  <button (click)="processChanges()"><mat-icon>done</mat-icon></button>
-  <button (click)="cancel()" (keydown.Enter)="cancel()" tabindex="0"><mat-icon>delete</mat-icon></button>
+    (keydown.Escape)="cancel()">
+  <button mat-icon-button color="primary" (click)="processChanges()"><mat-icon>done</mat-icon></button>
+  <button mat-icon-button color="primary" (click)="cancel()" (keydown.Enter)="cancel()" tabindex="0"><mat-icon>delete</mat-icon></button>
 </div>
 <div class="viewValue" *ngIf="( ! isEditing )" (click)="edit()">
  {{ value }}

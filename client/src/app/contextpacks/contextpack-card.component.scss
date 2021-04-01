@@ -37,3 +37,23 @@ h2, mat-card-title, mat-card-subtitle{
   text-align: center;
 
 }
+
+.nounChip {
+  background-color: pink;
+}
+
+.verbChip {
+  background-color: rgb(193, 193, 235);
+}
+
+.adjectiveChip {
+  background-color: rgb(147, 233, 147);
+}
+
+.miscChip {
+  background-color: rgb(250, 250, 161);
+}
+
+mat-card-header {
+  text-align: left;
+}

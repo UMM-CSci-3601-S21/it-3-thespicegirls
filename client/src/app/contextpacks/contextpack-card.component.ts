@@ -34,7 +34,7 @@ export class ContextPackCardComponent implements OnInit {
         Validators.required,
       ])),
       forms: new FormControl('', Validators.compose([
-        Validators.required,
+
       ])),
       wordlist: new FormControl('', Validators.compose([
         Validators.required,
