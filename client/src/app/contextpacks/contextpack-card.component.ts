@@ -64,21 +64,19 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   deleteWord(list: Wordlist, word: string, wordType: string): void {
+    let obj: any;
+    switch(wordType){
+      case 'noun':obj =  { noun: word };
+        break;
+      case 'verb':obj =  { verb: word };
+        break;
+      case 'misc':obj =  { misc: word };
+        break;
+      case 'adjective':obj =  { adjective: word };
+        break;
+    }
 
-      switch(wordType){
-        case 'noun' :
-          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { noun: word }).subscribe(existingID => {
-            this.snackBar.open('Deleted ' + word[0] + ' from Word list: ' + list.name, null, {
-            duration: 2000,
-          });
-        }, err => {
-          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
-            duration: 5000,
-          });
-        });
-          break;
-        case 'verb':
-          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { verb: word }).subscribe(existingID => {
+          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
@@ -87,30 +85,6 @@ export class ContextPackCardComponent implements OnInit {
             duration: 5000,
           });
         });
-          break;
-        case 'adjective' :
-          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { adjective: word }).subscribe(existingID => {
-            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
-            duration: 2000,
-          });
-        }, err => {
-          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
-            duration: 5000,
-          });
-        });
-          break;
-        case 'misc' :
-          this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, { misc: word }).subscribe(existingID => {
-            this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
-            duration: 2000,
-          });
-        }, err => {
-          this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
-            duration: 5000,
-          });
-        });
-          break;
-      }
     }
 
   addWord(list: string, word: string, wordType: string){

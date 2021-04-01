@@ -88,55 +88,6 @@ export class MockContextPackService extends ContextPackService {
   editValues?: {name?: string; enabled?: string},
   addValues?: { noun?: string; verb?: string; adjective?: string; misc?: string},
   delValues?: { noun?: string; verb?: string; adjective?: string; misc?: string}): Observable<ContextPack> {
-
-    if(editValues !== null){
-    if(editValues.name){MockContextPackService.testContextPacks[0].wordlists[0].name = editValues.name;}
-    if(editValues.enabled){
-      switch(editValues.enabled){
-        case 'false' :
-        MockContextPackService.testContextPacks[0].wordlists[0].enabled = false;
-        break;
-        case 'true' :
-        MockContextPackService.testContextPacks[0].wordlists[0].enabled = true;
-        break; }}}
-    if(addValues !== null){
-    if(addValues.noun){
-      const newWord: Word = null;
-      const tmp = addValues.noun.split(',');
-      newWord.word = tmp[0];
-      newWord.forms = tmp;
-      MockContextPackService.testContextPacks[0].wordlists[0].nouns.push(newWord);}
-    if(addValues.verb){
-      const newWord: Word = null;
-      const tmp = addValues.verb.split(',');
-      newWord.word = tmp[0];
-      newWord.forms = tmp;
-      MockContextPackService.testContextPacks[0].wordlists[0].verbs.push(newWord);}
-    if(addValues.adjective){
-      const newWord: Word = null;
-      const tmp = addValues.adjective.split(',');
-      newWord.word = tmp[0];
-      newWord.forms = tmp;
-      MockContextPackService.testContextPacks[0].wordlists[0].adjectives.push(newWord);}
-    if(addValues.misc){
-      const newWord: Word = null;
-      const tmp = addValues.misc.split(',');
-      newWord.word = tmp[0];
-      newWord.forms = tmp;
-      MockContextPackService.testContextPacks[0].wordlists[0].misc.push(newWord);}}
-    if(delValues !== null){
-    if(delValues.noun){
-      delete MockContextPackService.testContextPacks[0].wordlists[0].nouns[0].word [delValues.noun];
-    }
-    if(delValues.verb){
-      delete MockContextPackService.testContextPacks[0].wordlists[0].verbs[0].word [delValues.verb];
-    }
-    if(delValues.adjective){
-      delete MockContextPackService.testContextPacks[0].wordlists[0].adjectives[0].word [delValues.adjective];
-    }
-    if(delValues.misc){
-      delete MockContextPackService.testContextPacks[0].wordlists[0].misc[0].word [delValues.misc];
-    }}
     return new Observable<ContextPack>();
   }
 

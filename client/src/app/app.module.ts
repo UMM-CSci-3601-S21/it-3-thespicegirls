@@ -81,7 +81,6 @@ const MATERIAL_MODULES: any[] = [
     HttpClientModule,
     MATERIAL_MODULES,
     LayoutModule,
-    FormBuilder
   ],
   providers: [
     ContextPackService
