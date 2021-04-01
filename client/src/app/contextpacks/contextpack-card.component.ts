@@ -2,12 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ContextPack, Wordlist, WordRole } from './contextpack';
+import { ContextPack, Word, Wordlist, WordRole } from './contextpack';
 import { ContextPackService } from './contextpack.service';
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-
-
 
 
 @Component({
@@ -26,6 +22,7 @@ export class ContextPackCardComponent implements OnInit {
   contextPackForm: FormGroup;
   editing = false;
   removable = false;
+  enabled = 'true';
 
 
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private contextpackservice: ContextPackService)
@@ -45,6 +42,15 @@ export class ContextPackCardComponent implements OnInit {
     });
   }
 
+
+  displayEnabled(status: boolean){
+    if(status === false){
+      return 'Disabled';
+    }
+    if(status === true){
+      return 'Enabled';
+    }
+  }
 
   save(field: string, newData: string): void {
 		this.valueChangeEvents.emit( [newData, field] );

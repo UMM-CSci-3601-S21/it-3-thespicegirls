@@ -25,6 +25,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 import { HomeComponent } from './home/home.component';
@@ -56,7 +57,8 @@ const MATERIAL_MODULES: any[] = [
   MatSnackBarModule,
   MatChipsModule,
   MatDialogModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatCheckboxModule
 ];
 
 @NgModule({
