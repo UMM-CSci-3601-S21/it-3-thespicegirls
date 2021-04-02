@@ -47,24 +47,7 @@ export class AppComponent implements OnInit {
 
   googleSignin(): void {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-    this.socialAuthService.authState.subscribe((user) => {
-      this.user = user;
-      console.log(this.user);
-      if (user != null){
-      this.addGoogleToken(this.user.idToken).subscribe(newID => {
-        this.snackBar.open('Logged into server', null, {
-          duration: 2000,
-        });
-        this.isSignedin = (user != null);
-        // this.router.navigate(['/contextpacks/', newID]);
-      }, err => {
-        this.snackBar.open('Failed login to server', 'OK', {
-          duration: 5000,
-        });
-        this.logout();
-      });
-    }
-    });
+    this.sendToServer();
   }
 
   logout(): void {
