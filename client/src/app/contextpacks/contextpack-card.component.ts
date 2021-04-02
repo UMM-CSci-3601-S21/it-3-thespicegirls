@@ -106,7 +106,13 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   editField(list: Wordlist, newData: string, field: string){
-    const obj = this.createParamObj(field, newData);
+    let obj: any;
+    switch(field){
+      case 'name':obj =  { name: newData };
+        break;
+      case 'enabled':obj =  { enabled: newData };
+        break;
+    }
     this.contextpackservice.updateWordList(this.contextpack, list.name, obj, null, null).subscribe(existingID => {
         this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
         duration: 2000,

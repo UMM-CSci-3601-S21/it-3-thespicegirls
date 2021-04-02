@@ -216,16 +216,11 @@ describe('ContextPackCardComponent', () => {
 
   describe('Deleting a word', () => {
     it('deletes a word', () => {
-
-
     const targetContextPack: ContextPack = component.contextpack;
     const targetId: string = targetContextPack._id;
     console.log(targetContextPack.wordlists[0].nouns[0].word);
     expect(component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun'))
     .toEqual(targetContextPack.wordlists[0].nouns[0].word);
-
-
-
     });
   });
 });
