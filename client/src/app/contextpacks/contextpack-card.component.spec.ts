@@ -52,6 +52,10 @@ describe('ContextPackCardComponent', () => {
     // HTTP client.
     contextpackService = new ContextPackService(httpClient);
   });
+  afterEach(() => {
+    // After every test, assert that there are no more pending requests.
+    httpTestingController.verify();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
@@ -183,6 +187,7 @@ describe('ContextPackCardComponent', () => {
   });
 
   describe('set object Param', () => {
+
     it('set the object param for nouns', () => {
       const word = 'goat';
       const wordType = 'noun';
@@ -205,6 +210,21 @@ describe('ContextPackCardComponent', () => {
       const word = 'goat';
       const wordType = 'misc';
      expect(component.createParamObj(wordType, word)).toEqual({misc:'goat'});
+
+    });
+  });
+
+  describe('Deleting a word', () => {
+    it('deletes a word', () => {
+
+
+    const targetContextPack: ContextPack = component.contextpack;
+    const targetId: string = targetContextPack._id;
+    console.log(targetContextPack.wordlists[0].nouns[0].word);
+    expect(component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun'))
+    .toEqual(targetContextPack.wordlists[0].nouns[0].word);
+
+
 
     });
   });

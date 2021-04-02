@@ -63,7 +63,7 @@ export class ContextPackCardComponent implements OnInit {
     this.ngOnInit();
   }
 
-  deleteWord(list: Wordlist, word: string, wordType: string): void {
+  deleteWord(list: Wordlist, word: string, wordType: string): string {
     const obj: any = this.createParamObj(wordType, word);
           this.contextpackservice.updateWordList(this.contextpack, list.name, null, null, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
@@ -73,7 +73,9 @@ export class ContextPackCardComponent implements OnInit {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
             duration: 5000,
           });
+          return 'failed';
         });
+        return word;
     }
 
   addWord(list: string, word: string, wordType: string){
