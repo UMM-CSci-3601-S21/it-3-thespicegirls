@@ -38,24 +38,7 @@ public class Server {
     ContextPackController contextPackController = new ContextPackController(database);
     UserController userController = new UserController(database);
 
-    Javalin server = Javalin.create(config -> {
-      config.registerPlugin(new RouteOverviewPlugin("/api"));
-    });
-    server.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
-    /*
-     * We want to shut the `mongoClient` down if the server either
-     * fails to start, or when it's shutting down for whatever reason.
-     * Since the mongClient needs to be available throughout the
-     * life of the server, the only way to do this is to wait for
-     * these events and close it then.
-     */
-    server.events(event -> {
-      event.serverStartFailed(mongoClient::close);
-      event.serverStopped(mongoClient::close);
-    });
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      server.stop();
-    }));
+    Javalin server = serverStarter(mongoClient);
 
     server.start(4567);
 
@@ -78,5 +61,27 @@ public class Server {
       ctx.status(500);
       ctx.json(e); // you probably want to remove this in production
     });
+  }
+
+  private static Javalin serverStarter(MongoClient mongoClient) {
+    Javalin server = Javalin.create(config -> {
+      config.registerPlugin(new RouteOverviewPlugin("/api"));
+    });
+    server.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
+    /*
+     * We want to shut the `mongoClient` down if the server either
+     * fails to start, or when it's shutting down for whatever reason.
+     * Since the mongClient needs to be available throughout the
+     * life of the server, the only way to do this is to wait for
+     * these events and close it then.
+     */
+    server.events(event -> {
+      event.serverStartFailed(mongoClient::close);
+      event.serverStopped(mongoClient::close);
+    });
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      server.stop();
+    }));
+    return server;
   }
 }
