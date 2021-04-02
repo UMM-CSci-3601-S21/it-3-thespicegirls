@@ -2,12 +2,14 @@ package umm3601.user;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,8 +52,6 @@ public class UserControllerSpec {
 
   private UserController userController;
 
-  private ObjectId samsId;
-
   static MongoClient mongoClient;
   static MongoDatabase db;
 
@@ -85,43 +85,13 @@ public class UserControllerSpec {
     testUsers.add(
       new Document()
         .append("name", "Chris")
-        .append("age", 25)
-        .append("company", "UMM")
-        .append("email", "chris@this.that")
-        .append("role", "admin")
-        .append("avatar", "https://gravatar.com/avatar/8c9616d6cc5de638ea6920fb5d65fc6c?d=identicon"));
-    testUsers.add(
-      new Document()
-        .append("name", "Pat")
-        .append("age", 37)
-        .append("company", "IBM")
-        .append("email", "pat@something.com")
-        .append("role", "editor")
-        .append("avatar", "https://gravatar.com/avatar/b42a11826c3bde672bce7e06ad729d44?d=identicon"));
+        .append("sub", "123456789"));
     testUsers.add(
       new Document()
         .append("name", "Jamie")
-        .append("age", 37)
-        .append("company", "OHMNET")
-        .append("email", "jamie@frogs.com")
-        .append("role", "viewer")
-        .append("avatar", "https://gravatar.com/avatar/d4a6c71dd9470ad4cf58f78c100258bf?d=identicon"));
-
-    samsId = new ObjectId();
-    Document sam =
-      new Document()
-        .append("_id", samsId)
-        .append("name", "Sam")
-        .append("age", 45)
-        .append("company", "OHMNET")
-        .append("email", "sam@frogs.com")
-        .append("role", "viewer")
-        .append("avatar", "https://gravatar.com/avatar/08b7610b558a4cbbd20ae99072801f4d?d=identicon");
-
+        .append("sub", "thissubhasletters"));
 
     userDocuments.insertMany(testUsers);
-    userDocuments.insertOne(sam);
-
     userController = new UserController(db);
   }
 
@@ -131,271 +101,79 @@ public class UserControllerSpec {
     mongoClient.close();
   }
 
-  @Test
-  public void GetAllUsers() throws IOException {
-
-    // Create our fake Javalin context
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.getUsers(ctx);
-
-
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    assertEquals(db.getCollection("users").countDocuments(), JavalinJson.fromJson(result, User[].class).length);
-  }
 
   @Test
-  public void GetUsersByAge() throws IOException {
+  public void ExistentIdShouldBeTrue() throws IOException {
 
-    // Set the query string to test with
-    mockReq.setQueryString("age=37");
+    String testID = "123456789";
+    String testID2 = "thissubhasletters";
 
-    // Create our fake Javalin context
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    assertTrue(userController.getUser(testID));
+    assertTrue(userController.getUser(testID2));
 
-    userController.getUsers(ctx);
-
-    assertEquals(200, mockRes.getStatus()); // The response status should be 200
-
-    String result = ctx.resultString();
-    User[] resultUsers = JavalinJson.fromJson(result, User[].class);
-
-    assertEquals(2, resultUsers.length); // There should be two users returned
-    for (User user : resultUsers) {
-      assertEquals(37, user.age); // Every user should be age 37
-    }
-  }
-
-  /**
-  * Test that if the user sends a request with an illegal value in
-  * the age field (i.e., something that can't be parsed to a number)
-  * we get a reasonable error code back.
-  */
-  @Test
-  public void GetUsersWithIllegalAge() {
-
-    mockReq.setQueryString("age=abc");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-
-    // This should now throw a `BadRequestResponse` exception because
-    // our request has an age that can't be parsed to a number.
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.getUsers(ctx);
-    });
-  }
-
-  @Test
-  public void GetUsersByCompany() throws IOException {
-
-    mockReq.setQueryString("company=OHMNET");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.getUsers(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-
-    User[] resultUsers = JavalinJson.fromJson(result, User[].class);
-
-    assertEquals(2, resultUsers.length); // There should be two users returned
-    for (User user : resultUsers) {
-      assertEquals("OHMNET", user.company);
-    }
-  }
-
-  @Test
-  public void GetUsersByRole() throws IOException {
-
-    mockReq.setQueryString("role=viewer");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.getUsers(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    for (User user : JavalinJson.fromJson(result, User[].class)) {
-      assertEquals("viewer", user.role);
-    }
-  }
-
-  @Test
-  public void GetUsersByCompanyAndAge() throws IOException {
-
-    mockReq.setQueryString("company=OHMNET&age=37");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.getUsers(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    User[] resultUsers = JavalinJson.fromJson(result, User[].class);
-
-    assertEquals(1, resultUsers.length); // There should be one user returned
-    for (User user : resultUsers) {
-      assertEquals("OHMNET", user.company);
-      assertEquals(37, user.age);
-    }
-  }
-
-  @Test
-  public void GetUserWithExistentId() throws IOException {
-
-    String testID = samsId.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users/:id", ImmutableMap.of("id", testID));
-    userController.getUser(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-
-    String result = ctx.resultString();
-    User resultUser = JavalinJson.fromJson(result, User.class);
-
-    assertEquals(resultUser._id, samsId.toHexString());
-    assertEquals(resultUser.name, "Sam");
   }
 
   @Test
   public void GetUserWithBadId() throws IOException {
+    String testID = "987654321";
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users/:id", ImmutableMap.of("id", "bad"));
+    assertFalse(userController.getUser(testID));
 
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.getUser(ctx);
-    });
   }
 
   @Test
   public void GetUserWithNonexistentId() throws IOException {
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users/:id", ImmutableMap.of("id", "58af3a600343927e48e87335"));
+    assertFalse(userController.getUser(""));
 
-    assertThrows(NotFoundResponse.class, () -> {
-      userController.getUser(ctx);
-    });
   }
 
   @Test
   public void AddUser() throws IOException {
+    User user = new User();
+    user.name = "Thom";
+    user.sub = "number";
+    userController.addNewUser(user);
+    assertTrue(userController.getUser("number"));
 
-    String testNewUser = "{"
-      + "\"name\": \"Test User\","
-      + "\"age\": 25,"
-      + "\"company\": \"testers\","
-      + "\"email\": \"test@example.com\","
-      + "\"role\": \"viewer\""
-      + "}";
+    assertEquals(1, db.getCollection("users").countDocuments(eq("sub", "number")));
 
-    mockReq.setBodyContent(testNewUser);
+    Document addedUser = db.getCollection("users").find(eq("sub", "number")).first();
+    assertNotNull(addedUser);
+    assertEquals("Thom", addedUser.getString("name"));
+    assertEquals("number", addedUser.getString("sub"));
+
+  }
+
+  @Test
+  public void OldLoginTokenChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEzZThkNDVhNDNjYjIyNDIxNTRjN2Y0ZGFmYWMyOTMzZmVhMjAzNzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMjM5NDc5ODk4MjI4LWpzYThrcXRjbnFnOTZ2OHI3NGoybXA5amJicDAxc2N1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMjM5NDc5ODk4MjI4LWpzYThrcXRjbnFnOTZ2OHI3NGoybXA5amJicDAxc2N1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA4MDY3ODI5NDQ3MjIyMjY4NjU0IiwiZW1haWwiOiJqdXN0YXRyb2xsaW50aGVwYXJrQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUEh5WkttY3UxeWczcFVURDFFMUdpQSIsIm5hbWUiOiJUZWVtb28gRG93Z2Vyc29uIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdqeEEtR0tBdW9tTXAxaEZ0YmNpSTdDbEtQdzY0WHdrZ3NPOW9oNXJBPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlRlZW1vbyIsImZhbWlseV9uYW1lIjoiRG93Z2Vyc29uIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MTczMjQ5NDEsImV4cCI6MTYxNzMyODU0MSwianRpIjoiZTdlYmRlMDRkNDM0ZGMwZTQ0OTc5ZDU4NDZkZTgwNGFkNDdiYTc5NiJ9.c43zXgk9vt_0Ammh6GeciqTM0EzSnU5_mEpEwKHdx3usiuIkkr5V8CheWj8eR0mcJKD3Mu1M2_981-g8GlW9UztHpMJUS50O4Jo1rXJYLMVayGQkUPqpyhsa4TwzznoLAdZ0VnURmU6vg3gFxA4nJXMwhp_kb8AOTcHknabMCR-WuN7aRREJZ7TzIfmnYt_7K_uR0I-TMyilzXAvFRYKRuf11nfu8Lh-HBPNxKqe6b0OeGM4_8M3_Gi2Iwn_QN8fUSyx6KgiQRkJRv1oOM-I8peWKp1kmG4l8UqyzoWEjvQyHYBpKPi0n8jApSyh5_JROHXBVqqUZiugSLRLnEnWVA";
+    mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
 
-    userController.addNewUser(ctx);
+    assertThrows(BadRequestResponse.class, () -> {
+      userController.checkToken(ctx);
+    });
+  }
 
+  @Test
+  public void GoodLoginTokenChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEzZThkNDVhNDNjYjIyNDIxNTRjN2Y0ZGFmYWMyOTMzZmVhMjAzNzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyMzk0Nzk4OTgyMjgtanNhOGtxdGNucWc5NnY4cjc0ajJtcDlqYmJwMDFzY3UuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyMzk0Nzk4OTgyMjgtanNhOGtxdGNucWc5NnY4cjc0ajJtcDlqYmJwMDFzY3UuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDkwMTQ4NDAxMzk5Mjg5MjQwNzYiLCJoZCI6Im1vcnJpcy51bW4uZWR1IiwiZW1haWwiOiJkYWhsZzEzNkBtb3JyaXMudW1uLmVkdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiM1RmZUlkTzdfS0JQM1BMTVRPbl8tZyIsIm5hbWUiOiJUaG9tYXMgRGFobGdyZW4iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDQuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1RcjZicVlKek94VS9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BTVp1dWNtMHVqaXhfY0kwcUp1eGE3SERJS19yU1dYU0FnL3M5Ni1jL3Bob3RvLmpwZyIsImdpdmVuX25hbWUiOiJUaG9tYXMiLCJmYW1pbHlfbmFtZSI6IkRhaGxncmVuIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MTczMzEyMDksImV4cCI6MTYxNzMzNDgwOX0.hcv9dd0L7hBI5K1b9XEHbOAOMIMPBBzAPOeQipzorOlHhhW7rUKoPBLRLAOxcL012ZZVZ0AEnHnqF-vU513r9GIzXgZuf2nG6gQYM4lFhoKN32YLeST26RKSbqvRKKZEXFF_0WcdjaFiQUqAzDsw-2q3cUmaOb91BDTe0LD98azLqgUVYGyA6-XzHno1Cq2KbN3b0xQYcYEzk5WLdMvdwqpg9y5ziubOWGub_du0zvNH-d8SZVeWXdHHLYYmFVuadFa0_J_8kvosaPAzuRMYvcX5N5_WDMB-fyxl0zxt75LCQBUQz2kv-zi4EJQnbldwkpleP4mp9A__s5njUtt4Qg";
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    userController.checkToken(ctx);
     assertEquals(201, mockRes.getStatus());
 
-    String result = ctx.resultString();
-    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    assertNotEquals("", id);
-    System.out.println(id);
-
-    assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(id))));
-
-    //verify user was added to the database and the correct ID
-    Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(id))).first();
-    assertNotNull(addedUser);
-    assertEquals("Test User", addedUser.getString("name"));
-    assertEquals(25, addedUser.getInteger("age"));
-    assertEquals("testers", addedUser.getString("company"));
-    assertEquals("test@example.com", addedUser.getString("email"));
-    assertEquals("viewer", addedUser.getString("role"));
-    assertTrue(addedUser.containsKey("avatar"));
-  }
-
-  @Test
-  public void AddInvalidEmailUser() throws IOException {
-    String testNewUser = "{"
-      + "\"name\": \"Test User\","
-      + "\"age\": 25,"
-      + "\"company\": \"testers\","
-      + "\"email\": \"invalidemail\","
-      + "\"role\": \"viewer\""
-      + "}";
-    mockReq.setBodyContent(testNewUser);
+    mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    Context ctx2 = ContextUtil.init(mockReq, mockRes, "api/users");
+    userController.checkToken(ctx2);
+    assertEquals(201, mockRes.getStatus());
 
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.addNewUser(ctx);
-    });
   }
-
-  @Test
-  public void AddInvalidAgeUser() throws IOException {
-    String testNewUser = "{"
-      + "\"name\": \"Test User\","
-      + "\"age\": \"notanumber\","
-      + "\"company\": \"testers\","
-      + "\"email\": \"test@example.com\","
-      + "\"role\": \"viewer\""
-      + "}";
-    mockReq.setBodyContent(testNewUser);
-    mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.addNewUser(ctx);
-    });
-  }
-
-  @Test
-  public void AddInvalidNameUser() throws IOException {
-    String testNewUser = "{"
-      + "\"age\": 25,"
-      + "\"company\": \"testers\","
-      + "\"email\": \"test@example.com\","
-      + "\"role\": \"viewer\""
-      + "}";
-    mockReq.setBodyContent(testNewUser);
-    mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.addNewUser(ctx);
-    });
-  }
-
-  @Test
-  public void AddInvalidRoleUser() throws IOException {
-    String testNewUser = "{"
-      + "\"name\": \"Test User\","
-      + "\"age\": 25,"
-      + "\"company\": \"testers\","
-      + "\"email\": \"test@example.com\","
-      + "\"role\": \"invalidrole\""
-      + "}";
-    mockReq.setBodyContent(testNewUser);
-    mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-
-    assertThrows(BadRequestResponse.class, () -> {
-      userController.addNewUser(ctx);
-    });
-  }
-
-  @Test
-  public void DeleteUser() throws IOException {
-
-    String testID = samsId.toHexString();
-
-    // User exists before deletion
-    assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(testID))));
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users/:id", ImmutableMap.of("id", testID));
-    userController.deleteUser(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-
-    // User is no longer in the database
-    assertEquals(0, db.getCollection("users").countDocuments(eq("_id", new ObjectId(testID))));
-  }
-
 }
