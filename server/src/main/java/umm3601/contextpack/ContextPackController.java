@@ -52,9 +52,8 @@ public class ContextPackController {
 
   public void getContextPacks(Context ctx){
 
-    List<Bson> filters = new ArrayList<>();
 
-    ctx.json(contextPackCollection.find(filters.isEmpty()? new Document() : and(filters))
+    ctx.json(contextPackCollection.find()
     .into(new ArrayList<>()));
   }
 

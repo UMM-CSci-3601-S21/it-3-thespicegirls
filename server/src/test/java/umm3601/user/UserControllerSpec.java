@@ -3,6 +3,7 @@ package umm3601.user;
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,7 +16,10 @@ import java.util.List;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.json.webtoken.JsonWebSignature.Header;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mongodb.MongoClientSettings;
@@ -26,6 +30,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -159,18 +164,49 @@ public class UserControllerSpec {
   @Test
   public void GoodLoginTokenChecker() throws GeneralSecurityException, IOException {
 
-    String testToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEzZThkNDVhNDNjYjIyNDIxNTRjN2Y0ZGFmYWMyOTMzZmVhMjAzNzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyMzk0Nzk4OTgyMjgtanNhOGtxdGNucWc5NnY4cjc0ajJtcDlqYmJwMDFzY3UuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyMzk0Nzk4OTgyMjgtanNhOGtxdGNucWc5NnY4cjc0ajJtcDlqYmJwMDFzY3UuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDkwMTQ4NDAxMzk5Mjg5MjQwNzYiLCJoZCI6Im1vcnJpcy51bW4uZWR1IiwiZW1haWwiOiJkYWhsZzEzNkBtb3JyaXMudW1uLmVkdSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiM1RmZUlkTzdfS0JQM1BMTVRPbl8tZyIsIm5hbWUiOiJUaG9tYXMgRGFobGdyZW4iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDQuZ29vZ2xldXNlcmNvbnRlbnQuY29tLy1RcjZicVlKek94VS9BQUFBQUFBQUFBSS9BQUFBQUFBQUFBQS9BTVp1dWNtMHVqaXhfY0kwcUp1eGE3SERJS19yU1dYU0FnL3M5Ni1jL3Bob3RvLmpwZyIsImdpdmVuX25hbWUiOiJUaG9tYXMiLCJmYW1pbHlfbmFtZSI6IkRhaGxncmVuIiwibG9jYWxlIjoiZW4iLCJpYXQiOjE2MTczMzEyMDksImV4cCI6MTYxNzMzNDgwOX0.hcv9dd0L7hBI5K1b9XEHbOAOMIMPBBzAPOeQipzorOlHhhW7rUKoPBLRLAOxcL012ZZVZ0AEnHnqF-vU513r9GIzXgZuf2nG6gQYM4lFhoKN32YLeST26RKSbqvRKKZEXFF_0WcdjaFiQUqAzDsw-2q3cUmaOb91BDTe0LD98azLqgUVYGyA6-XzHno1Cq2KbN3b0xQYcYEzk5WLdMvdwqpg9y5ziubOWGub_du0zvNH-d8SZVeWXdHHLYYmFVuadFa0_J_8kvosaPAzuRMYvcX5N5_WDMB-fyxl0zxt75LCQBUQz2kv-zi4EJQnbldwkpleP4mp9A__s5njUtt4Qg";
+    String testToken = "12345";
     mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.checkToken(ctx);
-    assertEquals(201, mockRes.getStatus());
 
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    Header header = new Header();
+    header.set("alg", "RS256");
+    Payload payload = new Payload();
+    payload.set("name", "Thomas");
+    payload.set("email", "Thomas");
+    payload.set("email_verified", true);
+    payload.set("pictureUrl", "Thomas");
+    payload.set("locale", "Thomas");
+    payload.set("familyName", "Thomas");
+    payload.set("givenName", "Thomas");
+    payload.set("sub", "Thomas");
+    byte[] signatureBytes = {1};
+    byte[] signedContentBytes = {1};
+    GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
+
+    userController.userTokenChecker(idToken, ctx);
+
+    assertEquals(201, mockRes.getStatus());
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+    assertNotEquals("", id);
+    assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(id))));
+
+    Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(id))).first();
+    assertNotNull(addedUser);
+    assertEquals("Thomas", addedUser.getString("name"));
+    assertEquals("Thomas", addedUser.getString("sub"));
+    assertEquals("Thomas", addedUser.getString("email"));
+
+    //This test makes sure an already added user doesn't get added again
+    mockReq.clearAttributes();
     mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
+
     Context ctx2 = ContextUtil.init(mockReq, mockRes, "api/users");
-    userController.checkToken(ctx2);
+    userController.userTokenChecker(idToken, ctx2);
     assertEquals(201, mockRes.getStatus());
+    assertEquals(3, db.getCollection("users").countDocuments());
 
   }
 }

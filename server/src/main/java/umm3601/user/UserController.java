@@ -83,34 +83,37 @@ public void checkToken(Context ctx) throws GeneralSecurityException, IOException
   String idTokenString = ctx.body();
   GoogleIdToken idToken = verifier.verify(idTokenString);
   if (idToken != null) {
-    Payload payload = idToken.getPayload();
-
-    // Print user identifier
-    String userId = payload.getSubject();
-    System.out.println("User ID: " + userId);
-
-    if (getUser(payload.get("sub").toString())){
-      ctx.status(201);
-      ctx.json(ImmutableMap.of("id", true));
-    }
-    else{
-      User user = new User();
-      user.email = payload.getEmail();
-      user.emailVerified = Boolean.valueOf(payload.getEmailVerified());
-      user.name = (String) payload.get("name");
-      user.pictureUrl = (String) payload.get("picture");
-      user.locale = (String) payload.get("locale");
-      user.familyName = (String) payload.get("family_name");
-      user.givenName = (String) payload.get("given_name");
-      user.sub = (String) payload.get("sub");
-
-      String id = addNewUser(user);
-      ctx.status(201);
-      ctx.json(ImmutableMap.of("id", id));
-    }
+    ctx = userTokenChecker(idToken, ctx);
   }
   else {
     throw new BadRequestResponse("The requested user token was not legal.");
   }
+}
+
+public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
+
+  Payload payload = idToken.getPayload();
+
+  if (getUser(payload.get("sub").toString())){
+    ctx.status(201);
+    ctx.json(ImmutableMap.of("id", "true"));
+  }
+  else{
+    User user = new User();
+    user.email = payload.getEmail();
+    user.emailVerified = Boolean.valueOf(payload.getEmailVerified());
+    user.name = (String) payload.get("name");
+    user.pictureUrl = (String) payload.get("picture");
+    user.locale = (String) payload.get("locale");
+    user.familyName = (String) payload.get("family_name");
+    user.givenName = (String) payload.get("given_name");
+    user.sub = (String) payload.get("sub");
+
+    String id = addNewUser(user);
+    ctx.status(201);
+    ctx.json(ImmutableMap.of("id", id));
+  }
+  return ctx;
+
 }
 }
