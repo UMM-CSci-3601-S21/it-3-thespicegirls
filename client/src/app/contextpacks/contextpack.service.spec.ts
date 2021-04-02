@@ -148,17 +148,28 @@ describe('Context Pack service: ', () => {
     expect(req.request.method).toEqual('POST');
 
   });
+  describe('Editing Contextpack information', ()=>{
+    it('Edits the naem of a contextpack', () => {
+      contextpackService.updateContextPack(testContextPacks[0], { name: 'cows', enabled:'true', icon:'icon.png'}).subscribe(
+        contextPack => expect(contextPack.wordlists[0].nouns[0].forms));
 
-  it('UpdateWordlist() posts to api/contextpack/:id/editlist', () => {
-    contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, { name: 'Sad' }, null, null).subscribe(
-      contextPack => expect(contextPack.wordlists[0].name).toBe('Sad')
-    );
-
-    const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[0]._id+
-    '/editlist?listname=happy&name=Sad');
-
-    expect(req.request.method).toEqual('POST');
+      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editpack?name=cows&enabled=true&icon=icon.png');
+      expect(req.request.method).toEqual('POST');
+    });
   });
+  describe('Editing wordlist information', ()=>{
+    it('Updates the name and status of the wordlist', () => {
+      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name,
+         { name: 'Sad', enabled:'true' }, null, null).subscribe(contextPack => expect);
+
+      const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[0]._id+
+      '/editlist?listname=happy&name=Sad&enabled=true');
+
+      expect(req.request.method).toEqual('POST');
+    });
+  });
+
+
   describe('Adding forms to a word in a wordlist', ()=>{
     it('adding a noun posts to the correct url', () => {
       contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { noun: 'teachers' }).subscribe(
@@ -188,7 +199,6 @@ describe('Context Pack service: ', () => {
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&adjforms=teachers');
       expect(req.request.method).toEqual('POST');
     });
-
   });
 
 
