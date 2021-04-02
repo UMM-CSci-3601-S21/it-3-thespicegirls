@@ -41,6 +41,7 @@ public class Server {
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
     });
+    server.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
     /*
      * We want to shut the `mongoClient` down if the server either
      * fails to start, or when it's shutting down for whatever reason.

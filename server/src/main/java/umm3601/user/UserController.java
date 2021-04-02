@@ -41,8 +41,8 @@ public class UserController {
   /**
    * Get the single user specified by the `id` parameter in the request.
    *
-   * @param ctx a Javalin HTTP context
-   * @return
+   * @param sub a string with users google ID
+   * @return true or false based on if user exists in database
    */
   public boolean getUser(String sub) {
     String id = sub;
@@ -62,7 +62,7 @@ public class UserController {
   /**
    * Get a JSON response with a list of all the users.
    *
-   * @param ctx a Javalin HTTP context
+   * @param user a user to be added to the database
    * @return
    */
   public String addNewUser(User user) {

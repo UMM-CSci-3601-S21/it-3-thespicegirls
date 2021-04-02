@@ -7,10 +7,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
-import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig, SocialUser, SocialAuthService } from 'angularx-social-login';
+import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig, SocialAuthService } from 'angularx-social-login';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('AppComponent', () => {
   let component: AppComponent;
