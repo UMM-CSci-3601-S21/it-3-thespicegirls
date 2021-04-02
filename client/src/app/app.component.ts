@@ -21,8 +21,7 @@ export class AppComponent implements OnInit {
   title: string;
   readonly idTokenUrl: string = environment.apiUrl + 'users';
 
-  constructor(private socialAuthService: SocialAuthService, private httpClient: HttpClient, private snackBar: MatSnackBar,
-    private router: Router) { }
+  constructor(private socialAuthService: SocialAuthService, private httpClient: HttpClient, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
 

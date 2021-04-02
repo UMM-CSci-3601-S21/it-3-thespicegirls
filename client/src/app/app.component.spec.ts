@@ -62,8 +62,6 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
-    component.user = new SocialUser();
-    component.user.firstName = 'happy';
     fixture.detectChanges();
   });
 
@@ -80,10 +78,6 @@ describe('AppComponent', () => {
 
   it(`should run google signIn()`, () => {
     expect(component.googleSignin()).toBeUndefined();
-  });
-
-  it(`should run google logOut()`, () => {
-    expect(component.logout()).toBeUndefined();
   });
 
 });
