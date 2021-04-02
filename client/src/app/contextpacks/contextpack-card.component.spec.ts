@@ -153,12 +153,6 @@ describe('ContextPackCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have displayNouns,verbs,adjective,misc return null if undefined', () => {
-    expect(component.displayWords(emptyWordlist, 'nouns')).toBeNull();
-    expect(component.displayWords(emptyWordlist, 'verbs')).toBeNull();
-    expect(component.displayWords(emptyWordlist, 'adjectives')).toBeNull();
-    expect(component.displayWords(emptyWordlist, 'misc')).toBeNull();
-  });
 
   it('should create a download element when given a json', () => {
     expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
@@ -168,26 +162,6 @@ describe('ContextPackCardComponent', () => {
     expect(component.convertToBetterJson(component.contextpack).$schema).
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
-  });
-
-  describe('Word display on cards', () => {
-    it('should display the nouns with no forms',()=>{
-      expect(component.displayWordsNoForms(component.contextpack, 'nouns').length).toEqual(2);
-      expect(component.displayWordsNoForms(component.contextpack, 'nouns')[0]).toEqual('you');
-    });
-    it('should display the verbs with no forms',()=>{
-      expect(component.displayWordsNoForms(component.contextpack, 'verbs').length).toEqual(2);
-      expect(component.displayWordsNoForms(component.contextpack, 'verbs')[0]).toEqual('run');
-      expect(component.displayWordsNoForms(component.contextpack, 'verbs')[1]).toEqual('walk');
-    });
-    it('should display the misc with no forms',()=>{
-      expect(component.displayWordsNoForms(component.contextpack, 'misc').length).toEqual(1);
-      expect(component.displayWordsNoForms(component.contextpack, 'misc')[0]).toEqual('langerhans');
-    });
-    it('should display the adjectives with no forms',()=>{
-      expect(component.displayWordsNoForms(component.contextpack, 'adjectives').length).toEqual(1);
-      expect(component.displayWordsNoForms(component.contextpack, 'adjectives')[0]).toEqual('green');
-    });
   });
 
   describe('set object Param', () => {
@@ -227,6 +201,22 @@ describe('ContextPackCardComponent', () => {
     expect(component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun'))
     .toEqual(targetContextPack.wordlists[0].nouns[0].word);
     expect(component.snackBar.open).toHaveBeenCalled();
+    });
+  });
+
+  describe('Event Emitter', () => {
+    it('Emits a string array with the value then the field', () => {
+      expect(component.save('noun','test')).toEqual(['test','noun']);
+    });
+  });
+
+  describe('Helper Functions', () => {
+    it('displayEnabled should show enabled or disable string', () => {
+      expect(component.displayEnabled(true)).toEqual('Enabled');
+      expect(component.displayEnabled(false)).toEqual('Disabled');
+    });
+    it('submitForm returns string confirming it ran without error', () => {
+      expect(component.submitForm('noun')).toEqual('submitted form');
     });
   });
 });

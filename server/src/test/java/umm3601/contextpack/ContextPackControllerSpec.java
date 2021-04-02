@@ -476,87 +476,6 @@ public class ContextPackControllerSpec {
   }
 
   @Test
-  public void addNounForms(){
-    String id = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
-    mockReq.setQueryString("nounforms=goat,goaty&listname=cats");
-    contextPackController.addFormsWordlist(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
-
-    assertEquals(resultPack._id, testID.toHexString());
-    assertEquals(resultPack.wordlists.get(1).nouns.get(0).forms, Arrays.asList("goat","goats","goaty"));
-  }
-
-  @Test
-  public void addAdjForms(){
-    String id = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
-    mockReq.setQueryString("adjforms=blue,bluer&listname=cats");
-    contextPackController.addFormsWordlist(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
-
-    assertEquals(resultPack._id, testID.toHexString());
-    assertEquals(resultPack.wordlists.get(1).adjectives.get(1).forms, Arrays.asList("blue","blues","bluer"));
-    assertEquals(resultPack.wordlists.get(1).adjectives.get(0).forms, Arrays.asList("red","reds"));
-  }
-
-  @Test
-  public void addMiscForms(){
-    String id = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
-    mockReq.setQueryString("miscforms=moo,moos&listname=cats");
-    contextPackController.addFormsWordlist(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
-
-    assertEquals(resultPack._id, testID.toHexString());
-    assertEquals(resultPack.wordlists.get(1).misc.get(0).forms, Arrays.asList("moo","moos"));
-    assertEquals(resultPack.wordlists.get(1).misc.get(1).forms, Arrays.asList("bark","barks", "barky"));
-  }
-
-  @Test
-  public void addVerbForms(){
-    String id = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
-    mockReq.setQueryString("verbforms=run,runs&listname=cats");
-    contextPackController.addFormsWordlist(ctx);
-
-    assertEquals(200, mockRes.getStatus());
-    String result = ctx.resultString();
-    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
-
-    assertEquals(resultPack._id, testID.toHexString());
-    assertEquals(resultPack.wordlists.get(1).verbs.get(0).forms, Arrays.asList("run","running", "runs"));
-    assertEquals(resultPack.wordlists.get(1).verbs.get(1).forms, Arrays.asList("walk","walking"));
-  }
-
-  @Test
-  public void addInvalidForms(){
-    String id = testID.toHexString();
-
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/addforms", ImmutableMap.of("id", id));
-    // yogurt is not an existing word in the contextpack
-    mockReq.setQueryString("verbforms=yogurt,runs&listname=cats");
-
-
-    assertThrows(NotFoundResponse.class, ()->{
-      contextPackController.addFormsWordlist(ctx);
-    });
-  }
-
-  @Test
   public void addVerb(){
     String id = testID.toHexString();
 
@@ -647,14 +566,6 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(1).nouns.get(2).word, "jeep");
   }
 
-  @Test
-  public void GetWordIndexInvalidPos(){
-    Wordlist list = new Wordlist();
-    assertThrows(NotFoundResponse.class, ()->{
-      contextPackController.getWordIndex( list,  "ball", "banana");
-    });
-   }
-
    @Test
    public void AddWordPos(){
      Wordlist list = new Wordlist();
@@ -663,8 +574,6 @@ public class ContextPackControllerSpec {
      assertThrows(NotFoundResponse.class, ()->{
        list.addWord( posArray, "banana");
      });
-
-
 
     }
 

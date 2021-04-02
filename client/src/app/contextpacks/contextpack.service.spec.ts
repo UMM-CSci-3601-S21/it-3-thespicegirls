@@ -160,7 +160,7 @@ describe('Context Pack service: ', () => {
   describe('Editing wordlist information', ()=>{
     it('Updates the name and status of the wordlist', () => {
       contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name,
-         { name: 'Sad', enabled:'true' }, null, null).subscribe(contextPack => expect);
+         { name: 'Sad', enabled:'true' }).subscribe(contextPack => expect);
 
       const req = httpTestingController.expectOne(contextpackService.contextpackUrl+'/'+testContextPacks[0]._id+
       '/editlist?listname=happy&name=Sad&enabled=true');
@@ -169,67 +169,33 @@ describe('Context Pack service: ', () => {
     });
   });
 
-
-  describe('Adding forms to a word in a wordlist', ()=>{
-    it('adding a noun posts to the correct url', () => {
-      contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { noun: 'teachers' }).subscribe(
-        contextPack => expect(contextPack.wordlists[0].nouns[0].forms).toContain('teachers'));
-
-      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&nounforms=teachers');
-      expect(req.request.method).toEqual('POST');
-    });
-    it('adding a verb posts to the correct url', () => {
-      contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { verb: 'teachers' }).subscribe(
-        contextPack => expect(contextPack.wordlists[0].verbs[0].forms));
-
-      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&verbforms=teachers');
-      expect(req.request.method).toEqual('POST');
-    });
-    it('adding a misc posts to the correct url', () => {
-      contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { misc: 'teachers' }).subscribe(
-        contextPack => expect(contextPack.wordlists[0].misc[0].forms));
-
-      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&miscforms=teachers');
-      expect(req.request.method).toEqual('POST');
-    });
-    it('adding a adjective posts to the correct url', () => {
-      contextpackService.addForms(testContextPacks[0], testContextPacks[0].wordlists[0].name, { adjective: 'teachers' }).subscribe(
-        contextPack => expect(contextPack.wordlists[0].adjectives[0].forms));
-
-      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editforms?listname=happy&adjforms=teachers');
-      expect(req.request.method).toEqual('POST');
-    });
-  });
-
-
-
   describe('Adding Words to a wordlist', ()=>{
     it('Add a noun posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, {noun: 'teachers'}, null)
+      contextpackService.addWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {noun: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].nouns[0].forms).toContain('teachers'));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&addnoun=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Add a noun wtih forms posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, {noun: 'teachers,teach'}, null
+      contextpackService.addWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {noun: 'teachers,teach'}
       ).subscribe(contextPack => expect(contextPack.wordlists[0].nouns[0].forms).toContain('teachers'));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&addnoun=teachers,teach');
       expect(req.request.method).toEqual('POST');
     });
     it('Add a verb posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, {verb: 'teachers'}, null)
+      contextpackService.addWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {verb: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].verbs[0].forms).toContain('teachers'));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&addverb=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Add a misc posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, {misc: 'teachers'}, null)
+      contextpackService.addWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {misc: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].misc[0].forms).toContain('teachers'));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&addmisc=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Add a adjectives posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, {adjective: 'teachers'}, null)
+      contextpackService.addWord(testContextPacks[0], testContextPacks[0].wordlists[0].name,{adjective: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].adjectives[0].forms).toContain('teachers'));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&addadj=teachers');
       expect(req.request.method).toEqual('POST');
@@ -239,31 +205,30 @@ describe('Context Pack service: ', () => {
   describe('Deleting Words from a wordlist', ()=>{
     it('Deleting a noun posts to the correct url', () => {
       console.log(testContextPacks[0].wordlists[0].name);
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, null , {noun: 'teachers'})
+      contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {noun: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].nouns[0].word));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delnoun=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Deleting a verb posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, null , {verb: 'teachers'})
+      contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name,{verb: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].verbs[0].forms));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delverb=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Deleting a misc posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, null , {misc: 'teachers'})
+      contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {misc: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].misc[0].forms));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delmisc=teachers');
       expect(req.request.method).toEqual('POST');
     });
     it('Deleting a adj posts to the correct url', () => {
-      contextpackService.updateWordList(testContextPacks[0], testContextPacks[0].wordlists[0].name, null, null , {adjective: 'teachers'})
+      contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name,{adjective: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].adjectives[0].forms));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&deladj=teachers');
       expect(req.request.method).toEqual('POST');
     });
   });
-
 
 });
 

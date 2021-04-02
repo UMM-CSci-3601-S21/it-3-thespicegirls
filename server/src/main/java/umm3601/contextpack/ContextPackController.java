@@ -41,10 +41,6 @@ public class ContextPackController {
   private static final String VERB_DEL_KEY ="delverb";
   private static final String MISC_DEL_KEY ="delmisc";
   private static final String ADJ_DEL_KEY ="deladj";
-  private static final String NOUN_FORM_KEY ="nounforms";
-  private static final String ADJ_FORM_KEY ="adjforms";
-  private static final String MISC_FORM_KEY ="miscforms";
-  private static final String VERB_FORM_KEY ="verbforms";
   private static final String ADD_VERB_KEY = "addverb";
   private static final String ADD_MISC_KEY = "addmisc";
   private static final String ADD_ADJ_KEY = "addadj";
@@ -170,115 +166,5 @@ public class ContextPackController {
     ctx.json(pack);
 
   }
-
-  //Calls correct addForms() version according to specified parameters - does all changes then replaces mongo document
-  public void addFormsWordlist(Context ctx){
-    String id = ctx.pathParam("id");
-    ContextPack pack = contextPackCollection.find(eq("_id", id)).first();
-    int index = getListIndex(pack,ctx.queryParam("listname"));
-    Wordlist list = pack.wordlists.get(index);
-
-    if(ctx.queryParamMap().containsKey(NOUN_FORM_KEY)){
-      addForms(NOUN_FORM_KEY, ctx, list);
-    }
-    if(ctx.queryParamMap().containsKey(ADJ_FORM_KEY)){
-      addForms(ADJ_FORM_KEY, ctx, list);
-    }
-    if(ctx.queryParamMap().containsKey(MISC_FORM_KEY)){
-      addForms(MISC_FORM_KEY, ctx, list);
-    }
-    if(ctx.queryParamMap().containsKey(VERB_FORM_KEY)){
-      addForms(VERB_FORM_KEY, ctx, list);
-    }
-    contextPackCollection.replaceOne(eq("_id", id), pack);
-    pack = contextPackCollection.find(eq("_id", id)).first();
-    ctx.json(pack);
-  }
-
-  //Looks through all the word arrays to find the designated word and adds new forms to it
-  public void addForms(String key, Context ctx, Wordlist list){
-    String forms[] = ctx.queryParam(key).split(",");
-    String wordString = forms[0];
-    int wordIndex =0;
-    Word word;
-    switch(key){
-      case VERB_FORM_KEY:
-        wordIndex = getWordIndex(list, wordString, "verb");
-        word = list.verbs.get(wordIndex);
-        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
-        break;
-      case MISC_FORM_KEY:
-        wordIndex = getWordIndex(list, wordString, "misc");
-        word = list.misc.get(wordIndex);
-        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
-        break;
-      case ADJ_FORM_KEY:
-        wordIndex = getWordIndex(list, wordString, "adj");
-        word = list.adjectives.get(wordIndex);
-        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
-        break;
-      case NOUN_FORM_KEY:
-        wordIndex = getWordIndex(list, wordString, "noun");
-        word = list.nouns.get(wordIndex);
-        for(int i=1; i<forms.length; i++){word.addForm(forms[i]);}
-        break;
-    }
-  }
-
-  public int getListIndex(ContextPack pack, String listname){
-    int index=0;
-    boolean match = false;
-    for(int i=0; i<pack.wordlists.size(); i++){
-      if(pack.wordlists.get(i).name.equals(listname)){
-        index =i;match=true;
-        break;
-      }
-    }
-    if(match == false){throw new NotFoundResponse("The requested wordlist was not found");}
-    return index;
-  }
-
-  public int getWordIndex(Wordlist list, String word, String pos) {
-    int index=0;
-    boolean match = false;
-    ArrayList<Word>posArray = new ArrayList<Word>();
-    int size = 0;
-    switch(pos){
-      case "noun":
-        posArray = list.nouns;size = list.nouns.size();
-        break;
-      case "adj":
-        posArray = list.adjectives;size = list.adjectives.size();
-        break;
-      case "misc":
-        posArray = list.misc;size = list.misc.size();
-        break;
-      case "verb":
-        posArray = list.verbs;size = list.verbs.size();
-        break;
-      default:
-      throw new NotFoundResponse("The requested part of speech was not found");
-    }
-    for(int i=0; i<size; i++){
-      if(posArray.get(i).word.equals(word)){
-        index =i;match=true;
-        break;
-      }
-    }
-    if(match == false){throw new NotFoundResponse("The requested word was not found");}
-    return index;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
