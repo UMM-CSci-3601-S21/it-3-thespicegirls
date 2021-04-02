@@ -33,10 +33,15 @@
 }
 
 #googleBtn {
-  background: transparent;
-  border: none;
+  width: 191px;
+  height: 46px;
+  background-image: url("/assets/img/btn_google_signin_light_normal_web.png");
+
 }
 
+#googleBtn:hover {
+  background-image: url("/assets/img/btn_google_signin_light_focus_web.png");
+}
 
 
 .main-content {
