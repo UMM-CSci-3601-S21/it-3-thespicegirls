@@ -11,6 +11,7 @@ import com.mongodb.client.MongoDatabase;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
 import umm3601.contextpack.ContextPackController;
+import umm3601.user.UserController;
 
 public class Server {
 
@@ -35,10 +36,38 @@ public class Server {
 
 
     ContextPackController contextPackController = new ContextPackController(database);
+    UserController userController = new UserController(database);
 
+    Javalin server = serverStarter(mongoClient);
+
+    server.start(4567);
+
+
+    server.get("/api/contextpacks", contextPackController::getContextPacks);
+    server.get("/api/contextpacks/:id", contextPackController::getContextPack);
+
+    server.post("/api/users", userController::checkToken);
+
+    server.post("/api/contextpacks", contextPackController::addNewContextPack);
+    // editing information about contextpacks
+    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
+    // editing information about wordlists
+    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
+    // add forms to words in wordlists
+    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
+
+
+    server.exception(Exception.class, (e, ctx) -> {
+      ctx.status(500);
+      ctx.json(e); // you probably want to remove this in production
+    });
+  }
+
+  private static Javalin serverStarter(MongoClient mongoClient) {
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
     });
+    server.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
     /*
      * We want to shut the `mongoClient` down if the server either
      * fails to start, or when it's shutting down for whatever reason.
@@ -53,24 +82,6 @@ public class Server {
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       server.stop();
     }));
-
-    server.start(4567);
-
-
-    server.get("/api/contextpacks", contextPackController::getContextPacks);
-    server.get("/api/contextpacks/:id", contextPackController::getContextPack);
-    server.post("/api/contextpacks", contextPackController::addNewContextPack);
-    // editing information about contextpacks
-    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
-    // editing information about wordlists
-    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
-    // add forms to words in wordlists
-    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
-
-
-    server.exception(Exception.class, (e, ctx) -> {
-      ctx.status(500);
-      ctx.json(e); // you probably want to remove this in production
-    });
+    return server;
   }
 }
