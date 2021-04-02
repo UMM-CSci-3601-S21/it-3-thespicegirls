@@ -42,14 +42,6 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.getContextPackSub.unsubscribe();
     }
   }
-
-  reloadComponent() {
-    const currentUrl = this.router.url;
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([currentUrl]);
-    }
-
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
     let obj: any;
@@ -65,7 +57,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    this.reloadComponent();
+    location.reload();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
