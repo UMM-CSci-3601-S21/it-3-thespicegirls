@@ -25,7 +25,7 @@ export class ContextPackCardComponent implements OnInit {
   enabled = 'true';
 
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private contextpackservice: ContextPackService)
+  constructor(private fb: FormBuilder, public snackBar: MatSnackBar, private contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
@@ -61,6 +61,7 @@ export class ContextPackCardComponent implements OnInit {
     const wordlist = this.contextPackForm.controls.wordlist.value;
     this.addWord(wordlist,word,wordType);
     this.ngOnInit();
+    location.reload();
   }
 
   deleteWord(list: Wordlist, word: string, wordType: string): string {
@@ -89,6 +90,7 @@ export class ContextPackCardComponent implements OnInit {
           duration: 5000,
         });
       });
+      location.reload();
   }
   createParamObj(wordType: string, word: string){
     let obj: any;
@@ -122,6 +124,7 @@ export class ContextPackCardComponent implements OnInit {
         duration: 5000,
         });
       });
+     location.reload();
 
   }
 

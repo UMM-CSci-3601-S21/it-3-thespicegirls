@@ -3,7 +3,7 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { ContextPack, Word, Wordlist } from './contextpack';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import {MatChipsModule} from '@angular/material/chips';
@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
+import { MatSnackBarStub } from 'src/testing/MatSnackBarStub';
 
 
 describe('ContextPackCardComponent', () => {
@@ -37,10 +38,13 @@ describe('ContextPackCardComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [ ContextPackCardComponent ],
-      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()}]
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()},
+        { provide: MatSnackBar, useClass: MatSnackBarStub }]
     })
     .compileComponents();
   }));
+
+
   beforeEach(() => {
     // Set up the mock handling of the HTTP requests
     TestBed.configureTestingModule({
@@ -218,9 +222,11 @@ describe('ContextPackCardComponent', () => {
     it('deletes a word', () => {
     const targetContextPack: ContextPack = component.contextpack;
     const targetId: string = targetContextPack._id;
-    console.log(targetContextPack.wordlists[0].nouns[0].word);
+    spyOn(component.snackBar,'open').and.callThrough();
+    component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun')
     expect(component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun'))
     .toEqual(targetContextPack.wordlists[0].nouns[0].word);
+    expect(component.snackBar.open).toHaveBeenCalled();
     });
   });
 });
