@@ -155,4 +155,17 @@ public class ContextPackController {
 
   }
 
+  public int getListIndex(ContextPack pack, String listname){
+    int index=0;
+    boolean match = false;
+    for(int i=0; i<pack.wordlists.size(); i++){
+      if(pack.wordlists.get(i).name.equals(listname)){
+        index =i;match=true;
+        break;
+      }
+    }
+    if(match == false){throw new NotFoundResponse("The requested wordlist was not found");}
+    return index;
+  }
+
 }

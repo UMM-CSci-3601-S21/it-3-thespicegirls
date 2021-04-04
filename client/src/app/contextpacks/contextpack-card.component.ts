@@ -52,47 +52,42 @@ export class ContextPackCardComponent implements OnInit {
     }
   }
 
-  save(field: string, newData: string): string[] {
+  save(field: string, newData: string) {
 		this.valueChangeEvents.emit( [newData, field] );
-    return [newData,field];
 	}
 
-  submitForm(wordType: string): string{
+  submitForm(wordType: string) {
     const word = this.contextPackForm.controls.word.value + ', ' + this.contextPackForm.controls.forms.value;
     const wordlist = this.contextPackForm.controls.wordlist.value;
-    this.addWord(wordlist,word,wordType);
-    this.ngOnInit();
-    location.reload();
-    return 'submitted form';
+    this.addWord(wordlist,word,wordType); //addWord already reloads the page
   }
 
-  deleteWord(list: Wordlist, word: string, wordType: string): string {
+  deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
-          this.contextpackservice.updateWordList(this.contextpack, list.name, obj).subscribe(existingID => {
+          this.contextpackservice.deleteWord(this.contextpack, list.name, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
+          location.reload();
         }, err => {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
             duration: 5000,
           });
-          return 'failed';
         });
-        return word;
     }
 
   addWord(list: string, word: string, wordType: string){
     const obj: any = this.createParamObj(wordType, word);
-        this.contextpackservice.updateWordList(this.contextpack, list, obj).subscribe(existingID => {
+        this.contextpackservice.addWord(this.contextpack, list, obj).subscribe(existingID => {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
           duration: 2000,
         });
+        location.reload();
       }, err => {
         this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
           duration: 5000,
         });
       });
-      location.reload();
   }
 
   createParamObj(wordType: string, word: string){
@@ -119,16 +114,15 @@ export class ContextPackCardComponent implements OnInit {
         break;
     }
     this.contextpackservice.updateWordList(this.contextpack, list.name, obj).subscribe(existingID => {
-        this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
-        duration: 2000,
-        });
+      this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
+      duration: 2000,
+    });
+    location.reload();
     }, err => {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
         duration: 5000,
         });
       });
-     location.reload();
-
   }
 
   downloadJson(myJson: ContextPack, topic: string){

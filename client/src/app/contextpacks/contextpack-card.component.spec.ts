@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
+import { doesNotMatch } from 'assert';
 
 
 describe('ContextPackCardComponent', () => {
@@ -37,7 +38,7 @@ describe('ContextPackCardComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [ ContextPackCardComponent ],
-      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()},]
+      providers: [ContextPackService]
     })
     .compileComponents();
   }));
@@ -62,11 +63,8 @@ describe('ContextPackCardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
-    contextpackService = new MockContextPackService();
 
     component = fixture.componentInstance;
-    component2 = fixture2.componentInstance;
-
 
     const noun: Word = {
       word: 'you',
@@ -116,11 +114,7 @@ describe('ContextPackCardComponent', () => {
       name: 'happy',
       wordlists: testWordListBig
     };
-    component2.contextpack = {
-      _id: 'mat_id',
-      enabled: true,
-      name: 'Joy',
-    };
+
     const testContextPacks: ContextPack[] =
     [
       {
@@ -142,6 +136,7 @@ describe('ContextPackCardComponent', () => {
         wordlists: testWordListBig
       }
   ];
+
 
 
     fixture.detectChanges();
@@ -188,6 +183,36 @@ describe('ContextPackCardComponent', () => {
      expect(component.createParamObj(wordType, word)).toEqual({misc:'goat'});
 
     });
+  });
+
+  describe('Helper Functions', () => {
+    it('displayEnabled shows the correct string', () => {
+      expect(component.displayEnabled(false)).toEqual('Disabled');
+      expect(component.displayEnabled(true)).toEqual('Enabled');
+    });
+    it('save emits the correct info', () => {
+      component.valueChangeEvents.subscribe(output =>
+        expect(output).toEqual(['person','noun']));
+      component.save('noun','person');
+    });
+    it('submitForm calls addWord from contextpack service', () => {
+      spyOn(component,'addWord');
+      component.submitForm('noun');
+      expect(component.addWord).toHaveBeenCalled();
+    });
+  });
+
+  describe('Add Word', () => {
+    it('addWord calls contextpackservice.addWord with correct parameters', () => {
+      // spyOn(contextpackService,'addWord');
+      // component.addWord('fakeWordList','test','noun');
+      // expect(contextpackService.addWord).toHaveBeenCalled();
+
+      // httpTestingController.expectOne('/api/contextpacks/pat_id/editlist?listname=fakeWordList&addnoun=test')
+      // .flush(null, { status: 200, statusText:'Ok' });
+    });
+    it('addWord calls correct snackbar message when word is added', () => {});
+    it('addWord calls correct snackbar message when word is not added', () => {});
   });
 
 });
