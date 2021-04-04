@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
-import { MatSnackBarStub } from 'src/testing/MatSnackBarStub';
 
 
 describe('ContextPackCardComponent', () => {
@@ -38,8 +37,7 @@ describe('ContextPackCardComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [ ContextPackCardComponent ],
-      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()},
-        { provide: MatSnackBar, useClass: MatSnackBarStub }]
+      providers: [{ provide: ContextPackService, useValue: new MockContextPackService()},]
     })
     .compileComponents();
   }));
@@ -192,31 +190,4 @@ describe('ContextPackCardComponent', () => {
     });
   });
 
-  describe('Deleting a word', () => {
-    it('deletes a word', () => {
-    const targetContextPack: ContextPack = component.contextpack;
-    const targetId: string = targetContextPack._id;
-    spyOn(component.snackBar,'open').and.callThrough();
-    component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun')
-    expect(component.deleteWord(targetContextPack.wordlists[0], targetContextPack.wordlists[0].nouns[0].word, 'noun'))
-    .toEqual(targetContextPack.wordlists[0].nouns[0].word);
-    expect(component.snackBar.open).toHaveBeenCalled();
-    });
-  });
-
-  describe('Event Emitter', () => {
-    it('Emits a string array with the value then the field', () => {
-      expect(component.save('noun','test')).toEqual(['test','noun']);
-    });
-  });
-
-  describe('Helper Functions', () => {
-    it('displayEnabled should show enabled or disable string', () => {
-      expect(component.displayEnabled(true)).toEqual('Enabled');
-      expect(component.displayEnabled(false)).toEqual('Disabled');
-    });
-    it('submitForm returns string confirming it ran without error', () => {
-      expect(component.submitForm('noun')).toEqual('submitted form');
-    });
-  });
 });

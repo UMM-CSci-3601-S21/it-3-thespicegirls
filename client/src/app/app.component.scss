@@ -14,6 +14,20 @@
   border: none;
 }
 
+#space{
+  flex: 1 1 auto;
+}
+
+#googleBtn {
+  width: 191px;
+  height: 46px;
+  background-image: url("/assets/img/btn_google_signin_light_normal_web.png");
+
+}
+
+#googleBtn:hover {
+  background-image: url("/assets/img/btn_google_signin_light_focus_web.png");
+}
 
 .main-content.mat-typography {
   color:#01596e;
