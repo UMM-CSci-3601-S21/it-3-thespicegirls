@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  let socialAuthService: SocialAuthService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -63,6 +64,7 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
     component.ngOnInit();
     fixture.detectChanges();
+
   });
 
   it('should create the app', () => {
@@ -80,5 +82,9 @@ describe('AppComponent', () => {
     expect(component.googleSignin()).toBeUndefined();
   });
 
+  it('should change isLoggedIn after calling sendToserver()', () =>{
+    expect(component.sendToServer() === false);
+    expect(component.isSignedin).toBeFalsy();
+  });
 
 });

@@ -34,15 +34,16 @@ export class AppComponent implements OnInit {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
-        this.isSignedin = (user != null);
-        // this.router.navigate(['/contextpacks/', newID]);
+        this.isSignedin = (true);
       }, err => {
         this.snackBar.open('Failed login to server', 'OK', {
           duration: 5000,
         });
+        this.isSignedin = false;
         this.logout();
       });
     });
+    return this.isSignedin;
   }
 
   googleSignin(): void {
