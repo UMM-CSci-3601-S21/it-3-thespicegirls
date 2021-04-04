@@ -1,5 +1,6 @@
 package umm3601;
 
+import java.lang.management.MemoryType;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +21,7 @@ import umm3601.user.UserController;
 
 public class Server {
   enum MyRole implements Role {
-    ANYONE, ROLE_ONE, ROLE_TWO, ROLE_THREE;
+    ANYONE, USER, ADMIN, ROLE_THREE;
 }
 
   static String appName = "Word River";
@@ -50,19 +51,21 @@ public class Server {
 
     server.start(4567);
 
+    server.get("/api/users/logout", ctx -> {ctx.req.getSession().invalidate();}, roles(MyRole.ANYONE));
 
     server.get("/api/contextpacks", contextPackController::getContextPacks, roles(MyRole.ANYONE));
     server.get("/api/contextpacks/:id", contextPackController::getContextPack, roles(MyRole.ANYONE));
 
     server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 
-    server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.ROLE_ONE));
+    server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.USER));
     // editing information about contextpacks
     server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ANYONE));
     // editing information about wordlists
     server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist, roles(MyRole.ANYONE));
     // add forms to words in wordlists
     server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist, roles(MyRole.ANYONE));
+
 
 
     server.exception(Exception.class, (e, ctx) -> {
@@ -100,16 +103,15 @@ public class Server {
     }));
     return server;
   }
-  private static Set<Role> roles(MyRole anyone) {
-    Set<Role> happy = new HashSet<Role>();
-    happy.add(MyRole.ANYONE);
-    happy.add(anyone);
-    return happy;
+  private static Set<Role> roles(MyRole role) {
+    Set<Role> setRole = new HashSet<Role>();
+    setRole.add(role);
+    return setRole;
   }
   private static boolean userHasValidRole(Context ctx, Set<Role> permittedRoles) {
     boolean result = false;
 
-    if(permittedRoles.equals(roles(MyRole.ANYONE))){
+    if(permittedRoles.contains(MyRole.ANYONE)){
       result = true;
     }
     else{
@@ -118,8 +120,8 @@ public class Server {
       }
       else{
         System.out.println(ctx.sessionAttribute("current-user").toString());
-        if(ctx.sessionAttribute("current-user").toString() == "ROLE_ONE"){
-          Set<Role> userRole = roles(MyRole.ROLE_ONE);
+        if(ctx.sessionAttribute("current-user").toString() == "USER"){
+          Set<Role> userRole = roles(MyRole.USER);
           if(permittedRoles.equals(userRole)){
             result = true;
           }

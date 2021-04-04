@@ -53,21 +53,17 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.socialAuthService.signOut();
-    this.isSignedin = (false);
+    this.httpClient.get<string>(this.idTokenUrl + '/' + 'logout').subscribe(res => {
+      this.isSignedin = false;
+  });
   }
+
   returnTitle(){
     return 'Word River';
   }
 
   addGoogleToken(token: string): Observable<string>{
-    // Send post request to add a new user with the user data as the body.
-
     console.log(this.idTokenUrl);
     return this.httpClient.post<{id: string}>(this.idTokenUrl, token).pipe(map(res => res.id));
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('POST', this.idTokenUrl);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    // xhr.send(token);
   }
 }
