@@ -177,19 +177,19 @@ public class UserControllerSpec {
     header.set("alg", "RS256");
     Payload payload = new Payload();
     payload.set("name", "Thomas");
-    payload.set("email", "Thomas");
+    payload.set("email", "Thomas@mail");
     payload.set("email_verified", true);
-    payload.set("pictureUrl", "Thomas");
-    payload.set("locale", "Thomas");
-    payload.set("familyName", "Thomas");
-    payload.set("givenName", "Thomas");
-    payload.set("sub", "Thomas");
+    payload.set("picture", "ThomasPicture");
+    payload.set("locale", "EN");
+    payload.set("family_name", "Joe");
+    payload.set("given_name", "Thomas");
+    payload.set("sub", "12345");
     byte[] signatureBytes = {1};
     byte[] signedContentBytes = {1};
     GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
 
     userController.userTokenChecker(idToken, ctx);
-    assertEquals("ROLE_ONE", mockSession.getAttribute("current-user").toString());
+    assertEquals("USER", mockSession.getAttribute("current-user").toString());
 
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
@@ -200,8 +200,14 @@ public class UserControllerSpec {
     Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(id))).first();
     assertNotNull(addedUser);
     assertEquals("Thomas", addedUser.getString("name"));
-    assertEquals("Thomas", addedUser.getString("sub"));
-    assertEquals("Thomas", addedUser.getString("email"));
+    assertEquals("Thomas@mail", addedUser.getString("email"));
+    assertTrue(addedUser.getBoolean("emailVerified"));
+    assertEquals("ThomasPicture", addedUser.getString("pictureUrl"));
+    assertEquals("EN", addedUser.getString("locale"));
+    assertEquals("Joe", addedUser.getString("familyName"));
+    assertEquals("Thomas", addedUser.getString("givenName"));
+    assertEquals("12345", addedUser.getString("sub"));
+
 
     //This test makes sure an already added user doesn't get added again
     mockReq.clearAttributes();
