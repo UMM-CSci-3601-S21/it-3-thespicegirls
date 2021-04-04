@@ -22,6 +22,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.json.webtoken.JsonWebSignature.Header;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
+import com.mockrunner.mock.web.MockHttpSession;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
@@ -51,6 +52,7 @@ public class UserControllerSpec {
 
   MockHttpServletRequest mockReq = new MockHttpServletRequest();
   MockHttpServletResponse mockRes = new MockHttpServletResponse();
+  MockHttpSession mockSession = new MockHttpSession();
 
   private UserController userController;
 
@@ -79,6 +81,7 @@ public class UserControllerSpec {
     // Reset our mock request and response objects
     mockReq.resetAll();
     mockRes.resetAll();
+    mockSession.resetAll();
 
     // Setup database
     MongoCollection<Document> userDocuments = db.getCollection("users");
@@ -167,6 +170,7 @@ public class UserControllerSpec {
     String testToken = "12345";
     mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
     Header header = new Header();
@@ -185,6 +189,7 @@ public class UserControllerSpec {
     GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
 
     userController.userTokenChecker(idToken, ctx);
+    assertEquals("ROLE_ONE", mockSession.getAttribute("current-user").toString());
 
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
