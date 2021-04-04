@@ -1,6 +1,8 @@
 package umm3601;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
@@ -9,11 +11,17 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
 import io.javalin.Javalin;
+import io.javalin.core.security.Role;
 import io.javalin.core.util.RouteOverviewPlugin;
+import io.javalin.http.Context;
+import io.javalin.http.UnauthorizedResponse;
 import umm3601.contextpack.ContextPackController;
 import umm3601.user.UserController;
 
 public class Server {
+  enum MyRole implements Role {
+    ANYONE, ROLE_ONE, ROLE_TWO, ROLE_THREE;
+}
 
   static String appName = "Word River";
 
@@ -43,18 +51,18 @@ public class Server {
     server.start(4567);
 
 
-    server.get("/api/contextpacks", contextPackController::getContextPacks);
-    server.get("/api/contextpacks/:id", contextPackController::getContextPack);
+    server.get("/api/contextpacks", contextPackController::getContextPacks, roles(MyRole.ANYONE));
+    server.get("/api/contextpacks/:id", contextPackController::getContextPack, roles(MyRole.ANYONE));
 
-    server.post("/api/users", userController::checkToken);
+    server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 
-    server.post("/api/contextpacks", contextPackController::addNewContextPack);
+    server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.ROLE_ONE));
     // editing information about contextpacks
-    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
+    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ANYONE));
     // editing information about wordlists
-    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
+    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist, roles(MyRole.ANYONE));
     // add forms to words in wordlists
-    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
+    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist, roles(MyRole.ANYONE));
 
 
     server.exception(Exception.class, (e, ctx) -> {
@@ -66,6 +74,14 @@ public class Server {
   private static Javalin serverStarter(MongoClient mongoClient) {
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
+      // config.sessionHandler(Sessions::fileSessionHandler);
+            config.accessManager((handler, ctx, permittedRoles) -> {
+                  if (userHasValidRole(ctx, permittedRoles)) {
+                    handler.handle(ctx);
+                } else {
+                    throw new UnauthorizedResponse();
+                }
+            });
     });
     server.before(ctx -> ctx.header("Access-Control-Allow-Credentials", "true"));
     /*
@@ -84,4 +100,34 @@ public class Server {
     }));
     return server;
   }
+  private static Set<Role> roles(MyRole anyone) {
+    Set<Role> happy = new HashSet<Role>();
+    happy.add(MyRole.ANYONE);
+    happy.add(anyone);
+    return happy;
+  }
+  private static boolean userHasValidRole(Context ctx, Set<Role> permittedRoles) {
+    boolean result = false;
+
+    if(permittedRoles.equals(roles(MyRole.ANYONE))){
+      result = true;
+    }
+    else{
+      if(ctx.sessionAttribute("current-user") == null){
+        System.out.println("IT'S NULL");
+      }
+      else{
+        System.out.println(ctx.sessionAttribute("current-user").toString());
+        if(ctx.sessionAttribute("current-user").toString() == "ROLE_ONE"){
+          Set<Role> userRole = roles(MyRole.ROLE_ONE);
+          if(permittedRoles.equals(userRole)){
+            result = true;
+          }
+        }
+      }
+
+    }
+    return result;
+}
+
 }

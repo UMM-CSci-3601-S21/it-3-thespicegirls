@@ -17,6 +17,7 @@ import com.mongodb.client.MongoDatabase;
 
 import org.mongojack.JacksonMongoCollection;
 
+import io.javalin.core.security.Role;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 
@@ -90,11 +91,15 @@ public void checkToken(Context ctx) throws GeneralSecurityException, IOException
   }
 }
 
+enum MyRole implements Role {
+  ANYONE, ROLE_ONE, ROLE_TWO, ROLE_THREE;
+}
 public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
   Payload payload = idToken.getPayload();
 
   if (getUser(payload.get("sub").toString())){
+    ctx.sessionAttribute("current-user", MyRole.ROLE_ONE);
     ctx.status(201);
     ctx.json(ImmutableMap.of("id", "true"));
   }
@@ -110,6 +115,7 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
     user.sub = (String) payload.get("sub");
 
     String id = addNewUser(user);
+    ctx.sessionAttribute("current-user", MyRole.ROLE_ONE);
     ctx.status(201);
     ctx.json(ImmutableMap.of("id", id));
   }
