@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 
-export let browserRefresh = false;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,21 +24,16 @@ export class AppComponent implements OnInit {
   subscription: Subscription;
 
 
-  constructor(private router: Router, private socialAuthService: SocialAuthService,
-    private httpClient: HttpClient, private snackBar: MatSnackBar) {
-      this.router.events
-      .pipe(filter((rs): rs is NavigationEnd => rs instanceof NavigationEnd))
-      .subscribe(event => {
-        if (
-          event.id === 1 &&
-          event.url === event.urlAfterRedirects
-        ) {
-         this.logout();
-        }
-      });
-  }
+  constructor(private socialAuthService: SocialAuthService,
+    private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
+    this.httpClient.get<string>(this.idTokenUrl + '/' + 'loggedin').subscribe(res => {
+      const user2 = new SocialUser();
+      user2.firstName = res.toString();
+      this.user = user2;
+      this.isSignedin = true;
+  });
 
   }
 

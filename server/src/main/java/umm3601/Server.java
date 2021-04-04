@@ -52,6 +52,7 @@ public class Server {
     server.start(4567);
 
     server.get("/api/users/logout", ctx -> {ctx.req.getSession().invalidate();}, roles(MyRole.ANYONE));
+    server.get("/api/users/loggedin", userController::loggedIn, roles(MyRole.ANYONE));
 
     server.get("/api/contextpacks", contextPackController::getContextPacks, roles(MyRole.ANYONE));
     server.get("/api/contextpacks/:id", contextPackController::getContextPack, roles(MyRole.ANYONE));

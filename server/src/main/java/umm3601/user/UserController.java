@@ -44,18 +44,11 @@ public class UserController {
    * @param sub a string with users google ID
    * @return true or false based on if user exists in database
    */
-  public boolean getUser(String sub) {
+  public User getUser(String sub) {
     String id = sub;
     User user;
-    boolean exists;
     user = userCollection.find(eq("sub", id)).first();
-    if (user == null) {
-      exists = false;
-    }
-    else {
-      exists = true;
-    }
-    return exists;
+    return user;
   }
 
 
@@ -93,9 +86,11 @@ public void checkToken(Context ctx) throws GeneralSecurityException, IOException
 public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
   Payload payload = idToken.getPayload();
+  User loggedUser = getUser(payload.get("sub").toString());
 
-  if (getUser(payload.get("sub").toString())){
+  if (!(loggedUser == null)){
     ctx.sessionAttribute("current-user", "USER");
+    ctx.sessionAttribute("user-name", loggedUser.givenName);
     ctx.status(201);
     ctx.json(ImmutableMap.of("id", "true"));
   }
@@ -112,10 +107,16 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
     String id = addNewUser(user);
     ctx.sessionAttribute("current-user", "USER");
+    ctx.sessionAttribute("user-name", (String) payload.get("given_name"));
     ctx.status(201);
     ctx.json(ImmutableMap.of("id", id));
   }
   return ctx;
+}
+public void loggedIn(Context ctx)  {
+  if(!(ctx.sessionAttribute("user-name")==null)){
+    ctx.json(ctx.sessionAttribute("user-name").toString());
+  }
 
 }
 }

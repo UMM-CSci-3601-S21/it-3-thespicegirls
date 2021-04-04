@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -113,8 +114,8 @@ public class UserControllerSpec {
     String testID = "123456789";
     String testID2 = "thissubhasletters";
 
-    assertTrue(userController.getUser(testID));
-    assertTrue(userController.getUser(testID2));
+    assertNotNull(userController.getUser(testID));
+    assertNotNull(userController.getUser(testID2));
 
   }
 
@@ -122,14 +123,14 @@ public class UserControllerSpec {
   public void GetUserWithBadId() throws IOException {
     String testID = "987654321";
 
-    assertFalse(userController.getUser(testID));
+    assertNull(userController.getUser(testID));
 
   }
 
   @Test
   public void GetUserWithNonexistentId() throws IOException {
 
-    assertFalse(userController.getUser(""));
+    assertNull(userController.getUser(""));
 
   }
 
@@ -139,7 +140,7 @@ public class UserControllerSpec {
     user.name = "Thom";
     user.sub = "number";
     userController.addNewUser(user);
-    assertTrue(userController.getUser("number"));
+    assertNotNull(userController.getUser("number"));
 
     assertEquals(1, db.getCollection("users").countDocuments(eq("sub", "number")));
 
