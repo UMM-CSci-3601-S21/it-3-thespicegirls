@@ -1,17 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
 
+export let browserRefresh = false;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 
 export class AppComponent implements OnInit {
 
@@ -19,8 +23,22 @@ export class AppComponent implements OnInit {
   isSignedin: boolean;
   title: string;
   readonly idTokenUrl: string = environment.apiUrl + 'users';
+  subscription: Subscription;
 
-  constructor(private socialAuthService: SocialAuthService, private httpClient: HttpClient, private snackBar: MatSnackBar) { }
+
+  constructor(private router: Router, private socialAuthService: SocialAuthService,
+    private httpClient: HttpClient, private snackBar: MatSnackBar) {
+      this.router.events
+      .pipe(filter((rs): rs is NavigationEnd => rs instanceof NavigationEnd))
+      .subscribe(event => {
+        if (
+          event.id === 1 &&
+          event.url === event.urlAfterRedirects
+        ) {
+         this.logout();
+        }
+      });
+  }
 
   ngOnInit() {
 
@@ -66,4 +84,5 @@ export class AppComponent implements OnInit {
     console.log(this.idTokenUrl);
     return this.httpClient.post<{id: string}>(this.idTokenUrl, token).pipe(map(res => res.id));
   }
+
 }
