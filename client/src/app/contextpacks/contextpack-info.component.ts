@@ -57,7 +57,7 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    location.reload();
+    // location.reload();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
