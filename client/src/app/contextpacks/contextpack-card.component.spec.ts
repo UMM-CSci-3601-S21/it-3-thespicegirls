@@ -9,7 +9,7 @@ import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import {MatChipsModule} from '@angular/material/chips';
 import { workerData } from 'worker_threads';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
@@ -26,9 +26,43 @@ describe('ContextPackCardComponent', () => {
   let contextpackService: ContextPackService;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+  let packServiceSpy: jasmine.SpyObj<MockContextPackService>;
+
+
+  // beforeEach(waitForAsync(() => {
+  //   TestBed.configureTestingModule({
+  //     imports: [
+  //       BrowserAnimationsModule,
+  //       MatCardModule,
+  //       MatSnackBarModule,
+  //       FormsModule,
+  //       ReactiveFormsModule,
+  //     ],
+  //     declarations: [ ContextPackCardComponent ],
+  //     providers: [ContextPackService]
+  //   })
+  //   .compileComponents();
+  // }));
+
+
+  // beforeEach(() => {
+  //   // Set up the mock handling of the HTTP requests
+  //   TestBed.configureTestingModule({
+  //     imports: [HttpClientTestingModule]
+  //   });
+  //   httpClient = TestBed.inject(HttpClient);
+  //   httpTestingController = TestBed.inject(HttpTestingController);
+  //   // Construct an instance of the service with the mock
+  //   // HTTP client.
+  //   contextpackService = new ContextPackService(httpClient);
+  // });
+  let spy: jasmine.SpyObj<ContextPackService>;
+
+
 
 
   beforeEach(waitForAsync(() => {
+    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList']);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -38,27 +72,24 @@ describe('ContextPackCardComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [ ContextPackCardComponent ],
-      providers: [ContextPackService]
+      providers: [{ provide: ContextPackService, useValue: spy },
+        ]
     })
-    .compileComponents();
+    .compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
+    contextpackService = TestBed.inject(ContextPackService);
+    packServiceSpy = TestBed.inject(ContextPackService) as jasmine.SpyObj<ContextPackService>;
   }));
 
 
   beforeEach(() => {
-    // Set up the mock handling of the HTTP requests
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
-    httpClient = TestBed.inject(HttpClient);
-    httpTestingController = TestBed.inject(HttpTestingController);
-    // Construct an instance of the service with the mock
-    // HTTP client.
-    contextpackService = new ContextPackService(httpClient);
+    fixture = TestBed.createComponent(ContextPackCardComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
   });
-  afterEach(() => {
-    // After every test, assert that there are no more pending requests.
-    httpTestingController.verify();
-  });
+
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
@@ -142,6 +173,7 @@ describe('ContextPackCardComponent', () => {
     fixture.detectChanges();
   });
 
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -156,6 +188,7 @@ describe('ContextPackCardComponent', () => {
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
   });
+
 
   describe('set object Param', () => {
 
@@ -185,6 +218,28 @@ describe('ContextPackCardComponent', () => {
     });
   });
 
+  describe('Add Word', () => {
+    it('calls the contextPack service when given correct parameters', () => {
+      expect(spy.addWord).toHaveBeenCalledTimes(0);
+      spy.addWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.addWord('fakeWordList','test','noun');
+      expect(spy.addWord).toHaveBeenCalledTimes(1);
+    });
+    it('addWord calls correct snackbar message when word is added', () => {});
+    it('addWord calls correct snackbar message when word is not added', () => {});
+  });
+  describe('delete Word', () => {
+    it('calls contextpackservice.addWord with correct parameters', () => {
+      expect(spy.deleteWord).toHaveBeenCalledTimes(0);
+      spy.deleteWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.deleteWord(component.contextpack.wordlists[0],'test','noun');
+      expect(spy.deleteWord).toHaveBeenCalledTimes(1);
+    });
+    it('deleteWord calls correct snackbar message when word is added', () => {});
+
+    it('deleteWord calls correct snackbar message when word is not added', () => {});
+  });
+
   describe('Helper Functions', () => {
     it('displayEnabled shows the correct string', () => {
       expect(component.displayEnabled(false)).toEqual('Disabled');
@@ -202,17 +257,21 @@ describe('ContextPackCardComponent', () => {
     });
   });
 
-  describe('Add Word', () => {
-    it('addWord calls contextpackservice.addWord with correct parameters', () => {
-      // spyOn(contextpackService,'addWord');
-      // component.addWord('fakeWordList','test','noun');
-      // expect(contextpackService.addWord).toHaveBeenCalled();
-
-      // httpTestingController.expectOne('/api/contextpacks/pat_id/editlist?listname=fakeWordList&addnoun=test')
-      // .flush(null, { status: 200, statusText:'Ok' });
+  describe('editField()', () => {
+    it('calls contextpackservice.updateWordlist with correct parameters', () => {
+      expect(spy.updateWordList).toHaveBeenCalledTimes(0);
+      spy.updateWordList.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.editField(component.contextpack.wordlists[0],'test','name');
+      expect(spy.updateWordList).toHaveBeenCalledTimes(1);
+      component.editField(component.contextpack.wordlists[0],'test','enabled');
+      expect(spy.updateWordList).toHaveBeenCalledTimes(2);
     });
-    it('addWord calls correct snackbar message when word is added', () => {});
-    it('addWord calls correct snackbar message when word is not added', () => {});
+    it('calls correct snackbar message when word is added', () => {});
+
+    it('calls correct snackbar message when word is not added', () => {});
   });
+
+
+
 
 });

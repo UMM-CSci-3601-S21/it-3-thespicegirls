@@ -68,7 +68,7 @@ export class ContextPackCardComponent implements OnInit {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
-          location.reload();
+          // location.reload();
         }, err => {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
             duration: 5000,
@@ -82,7 +82,7 @@ export class ContextPackCardComponent implements OnInit {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
           duration: 2000,
         });
-        location.reload();
+        // location.reload();
       }, err => {
         this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
           duration: 5000,
@@ -117,7 +117,7 @@ export class ContextPackCardComponent implements OnInit {
       this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
       duration: 2000,
     });
-    location.reload();
+    // location.reload();
     }, err => {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
         duration: 5000,
