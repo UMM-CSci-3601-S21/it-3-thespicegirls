@@ -60,6 +60,8 @@ describe('Add a Context pack', () => {
   });
 
   it('should add a new pack', () =>{
+    page.googleLogin();
+
     page.showJson();
 
     const pack: ContextPack = {
