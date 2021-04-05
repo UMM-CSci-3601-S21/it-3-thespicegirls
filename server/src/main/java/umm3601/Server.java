@@ -78,7 +78,6 @@ public class Server {
   private static Javalin serverStarter(MongoClient mongoClient) {
     Javalin server = Javalin.create(config -> {
       config.registerPlugin(new RouteOverviewPlugin("/api"));
-      // config.sessionHandler(Sessions::fileSessionHandler);
             config.accessManager((handler, ctx, permittedRoles) -> {
                   if (userHasValidRole(ctx, permittedRoles)) {
                     handler.handle(ctx);
