@@ -89,10 +89,19 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
   User loggedUser = getUser(payload.get("sub").toString());
 
   if (!(loggedUser == null)){
-    ctx.sessionAttribute("current-user", "USER");
-    ctx.sessionAttribute("user-name", loggedUser.givenName);
-    ctx.status(201);
-    ctx.json(ImmutableMap.of("id", "true"));
+    if (loggedUser.admin == true){
+      ctx.sessionAttribute("current-user", "ADMIN");
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", "true"));
+    }
+    else{
+      ctx.sessionAttribute("current-user", "USER");
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", "true"));
+    }
+
   }
   else{
     User user = new User();
@@ -104,6 +113,7 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
     user.familyName = (String) payload.get("family_name");
     user.givenName = (String) payload.get("given_name");
     user.sub = (String) payload.get("sub");
+    user.admin = false;
 
     String id = addNewUser(user);
     ctx.sessionAttribute("current-user", "USER");

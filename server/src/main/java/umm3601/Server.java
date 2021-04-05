@@ -61,11 +61,11 @@ public class Server {
 
     server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.USER));
     // editing information about contextpacks
-    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ANYONE));
+    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ADMIN));
     // editing information about wordlists
-    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist, roles(MyRole.ANYONE));
+    server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist, roles(MyRole.ADMIN));
     // add forms to words in wordlists
-    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist, roles(MyRole.ANYONE));
+    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist, roles(MyRole.ADMIN));
 
 
 
@@ -127,6 +127,8 @@ public class Server {
             result = true;
           }
         }
+        if(ctx.sessionAttribute("current-user").toString() == "ADMIN"){result = true;}
+
       }
 
     }

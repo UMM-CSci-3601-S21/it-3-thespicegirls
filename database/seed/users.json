@@ -9,6 +9,21 @@
     "pictureUrl": "test",
     "locale": "test",
     "familyName": "test",
-    "givenName": "test"
+    "givenName": "test",
+    "admin": false
+  },
+  {
+    "_id": {
+      "$oid": "606a5a9fd2b1da77da015c94"
+    },
+    "email": "dahlg136@morris.umn.edu",
+    "emailVerified": true,
+    "name": "Thomas Dahlgren",
+    "pictureUrl": "https://lh4.googleusercontent.com/-Qr6bqYJzOxU/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucm0ujix_cI0qJuxa7HDIK_rSWXSAg/s96-c/photo.jpg",
+    "locale": "en",
+    "familyName": "Dahlgren",
+    "givenName": "Thomas",
+    "sub": "109014840139928924076",
+    "admin": true
   }
 ]

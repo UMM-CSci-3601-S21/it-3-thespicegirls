@@ -65,7 +65,7 @@ export class AddPackPage {
     body: {
       grant_type: 'refresh_token',
       client_id: '239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com',
-      client_secret: process.env.API_SECRET,
+      client_secret: 'super secret code',
       refresh_token: '1//04PtCRYlxcBhaCgYIARAAGAQSNwF-L9IreHQjyhF-I-dhSUXxeumuvI8gkohBwRfSPp7f_PxGL-TvHaKU7zTF6vlUXpz5DaMYK68',
     },
   }).then(({ body }) => {
