@@ -17,12 +17,17 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   public serverFilteredContextpacks: ContextPack[];
   public filteredContextpacks: ContextPack[];
 
+  public contextpack: ContextPack;
   public contextpackName: string;
 
   getContextpacksSub: Subscription;
 
   constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
 
+  }
+
+  reload(){
+    window.location.reload();
   }
 
   updateField(contextPack: ContextPack, event: string[]): void {
@@ -40,7 +45,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    location.reload();
+    this.reload();
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,

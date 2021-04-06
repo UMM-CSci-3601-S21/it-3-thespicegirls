@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
 import { doesNotMatch } from 'assert';
+import { delay } from 'rxjs/operators';
 
 
 describe('ContextPackCardComponent', () => {
@@ -28,38 +29,7 @@ describe('ContextPackCardComponent', () => {
   let httpTestingController: HttpTestingController;
   let packServiceSpy: jasmine.SpyObj<MockContextPackService>;
 
-
-  // beforeEach(waitForAsync(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [
-  //       BrowserAnimationsModule,
-  //       MatCardModule,
-  //       MatSnackBarModule,
-  //       FormsModule,
-  //       ReactiveFormsModule,
-  //     ],
-  //     declarations: [ ContextPackCardComponent ],
-  //     providers: [ContextPackService]
-  //   })
-  //   .compileComponents();
-  // }));
-
-
-  // beforeEach(() => {
-  //   // Set up the mock handling of the HTTP requests
-  //   TestBed.configureTestingModule({
-  //     imports: [HttpClientTestingModule]
-  //   });
-  //   httpClient = TestBed.inject(HttpClient);
-  //   httpTestingController = TestBed.inject(HttpTestingController);
-  //   // Construct an instance of the service with the mock
-  //   // HTTP client.
-  //   contextpackService = new ContextPackService(httpClient);
-  // });
   let spy: jasmine.SpyObj<ContextPackService>;
-
-
-
 
   beforeEach(waitForAsync(() => {
     spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList']);
@@ -82,7 +52,6 @@ describe('ContextPackCardComponent', () => {
     packServiceSpy = TestBed.inject(ContextPackService) as jasmine.SpyObj<ContextPackService>;
   }));
 
-
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     component = fixture.componentInstance;
@@ -90,12 +59,12 @@ describe('ContextPackCardComponent', () => {
     fixture.detectChanges();
   });
 
-
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPackCardComponent);
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
 
     component = fixture.componentInstance;
+    spyOn(component,'reload').and.callFake(() => {});
 
     const noun: Word = {
       word: 'you',
@@ -168,8 +137,6 @@ describe('ContextPackCardComponent', () => {
       }
   ];
 
-
-
     fixture.detectChanges();
   });
 
@@ -188,7 +155,6 @@ describe('ContextPackCardComponent', () => {
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
   });
-
 
   describe('set object Param', () => {
 

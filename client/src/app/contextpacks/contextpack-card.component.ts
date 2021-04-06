@@ -42,7 +42,6 @@ export class ContextPackCardComponent implements OnInit {
     });
   }
 
-
   displayEnabled(status: boolean){
     if(status === false){
       return 'Disabled';
@@ -62,13 +61,17 @@ export class ContextPackCardComponent implements OnInit {
     this.addWord(wordlist,word,wordType); //addWord already reloads the page
   }
 
+  reload(){
+    window.location.reload();
+  }
+
   deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
           this.contextpackservice.deleteWord(this.contextpack, list.name, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
-          // location.reload();
+          this.reload();
         }, err => {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
             duration: 5000,
@@ -82,7 +85,7 @@ export class ContextPackCardComponent implements OnInit {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
           duration: 2000,
         });
-        // location.reload();
+        this.reload();
       }, err => {
         this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
           duration: 5000,
@@ -117,7 +120,7 @@ export class ContextPackCardComponent implements OnInit {
       this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
       duration: 2000,
     });
-    // location.reload();
+    this.reload();
     }, err => {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
         duration: 5000,

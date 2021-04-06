@@ -96,37 +96,6 @@ describe('editField()', () => {
   let contextpackService: ContextPackService;
   let packServiceSpy: jasmine.SpyObj<MockContextPackService>;
 
-
-  // beforeEach(waitForAsync(() => {
-  //   TestBed.configureTestingModule({
-  //     imports: [
-  //       BrowserAnimationsModule,
-  //       MatCardModule,
-  //       MatSnackBarModule,
-  //       FormsModule,
-  //       ReactiveFormsModule,
-  //     ],
-  //     declarations: [ ContextPackCardComponent ],
-  //     providers: [ContextPackService]
-  //   })
-  //   .compileComponents();
-  // }));
-
-
-  // beforeEach(() => {
-  //   // Set up the mock handling of the HTTP requests
-  //   TestBed.configureTestingModule({
-  //     imports: [HttpClientTestingModule]
-  //   });
-  //   httpClient = TestBed.inject(HttpClient);
-  //   httpTestingController = TestBed.inject(HttpTestingController);
-  //   // Construct an instance of the service with the mock
-  //   // HTTP client.
-  //   contextpackService = new ContextPackService(httpClient);
-  // });
-
-
-
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
@@ -166,6 +135,7 @@ describe('editField()', () => {
 
 
     component = fixture.componentInstance;
+    spyOn(component,'reload').and.callFake(() => {});
 
     const noun: Word = {
       word: 'you',
@@ -241,7 +211,7 @@ describe('editField()', () => {
     fixture.detectChanges();
   });
 
-  it('calls contextpackservice.updateWordlist with correct parameters', () => {
+  it('calls contextpackservice.updateContextPack with correct parameters', () => {
     expect(spy.updateContextPack).toHaveBeenCalledTimes(0);
     spy.updateContextPack.and.returnValue(of(MockContextPackService.testContextPacks[0]));
     component.updateField(component.contextpack, ['name', 'name']);
