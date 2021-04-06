@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
@@ -20,12 +20,15 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 import { ContextPackListComponent } from './contextpack-list.component';
 import { ContextPackService } from './contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 const COMMON_IMPORTS: any[] = [
   FormsModule,
   MatCardModule,
   MatFormFieldModule,
   MatSelectModule,
+  MatSnackBarModule,
   MatOptionModule,
   MatButtonModule,
   MatInputModule,
@@ -37,6 +40,8 @@ const COMMON_IMPORTS: any[] = [
   MatIconModule,
   BrowserAnimationsModule,
   RouterTestingModule,
+  FormsModule,
+  ReactiveFormsModule,
 ];
 
 describe('ContextPack list', () => {
@@ -123,3 +128,4 @@ describe('Misbehaving ContextPack List', () => {
   });
 
 });
+

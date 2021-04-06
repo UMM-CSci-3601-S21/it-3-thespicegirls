@@ -12,12 +12,6 @@ describe('Contextpack list', () => {
     page.navigateTo();
   });
 
-  it('Should show context packs in both card and list view', () => {
-    page.getContextpackCards().should('have.length.above', 1);
-    page.changeView('list');
-    page.getContextpackListItems().should('have.length.above', 1);
-  });
-
   it('Should type something in the name filter and check that it returned correct elements', () => {
     // Filter for contextpack 'batman_villains'
     cy.get('[data-test=contextpackNameInput]').clear();
@@ -25,16 +19,11 @@ describe('Contextpack list', () => {
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-name').should('have.text', 'Farm');
+      cy.wrap(e).find('.contextpack-card-name').should('contain.text', ' farm\n');
     });
-
-    // (We check this two ways to show multiple ways to check this)
-    page.getContextpackCards().find('.contextpack-card-name').each(el =>
-      expect(el.text()).to.equal('Farm')
-    );
   });
 
-  it('Should type something partial in the topic filter and check that it returned correct elements', () => {
+  it('Should type something partial in the name filter and check that it returned correct elements', () => {
     // Filter for topics that contain 'd'
     cy.get('[data-test=contextpackNameInput]').type('j');
 
@@ -45,43 +34,8 @@ describe('Contextpack list', () => {
       // We should see these topics
       .should('contain.text', 'Jojo Siwa')
       // We shouldn't see these topics
-      .should('not.contain.text', 'farm')
+      .should('not.contain.text', ' Farm\n')
       .should('not.contain.text', 'batman_villains');
-  });
-
-  it('Should change the view', () => {
-    // Choose the view type "List"
-    page.changeView('list');
-
-    // We should not see any cards
-    // There should be list items
-    page.getContextpackCards().should('not.exist');
-    page.getContextpackListItems().should('exist');
-
-    // Choose the view type "Card"
-    page.changeView('card');
-
-    // There should be cards
-    // We should not see any list items
-    page.getContextpackCards().should('exist');
-    page.getContextpackListItems().should('not.exist');
-  });
-
-  it('Should type a name, switch the view, and check that it returned correct elements', () => {
-    // Filter for contextpack 'batman_villains'
-    cy.get('[data-test=contextpackNameInput]').type('jojo');
-
-
-    // Choose the view type "List"
-    page.changeView('list');
-
-    // Some of the contextpacks should be listed
-    page.getContextpackListItems().should('have.lengthOf.above', 0);
-
-    // (We check this two ways to show multiple ways to check this)
-    page.getContextpackListItems().each(el => {
-      cy.wrap(el).find('.contextpack-list-name').should('contain', 'Jojo Siwa');
-    });
   });
 
   it('Should find a download button on contextpack info page', () => {
@@ -93,26 +47,24 @@ describe('Contextpack list', () => {
   it('Should click view info and see all the nouns and verbs', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-card-name').should('have.text', 'Farm');
-    cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
-    cy.get('.contextpack-card-wordlists').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
-    + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
-    cy.get('.contextpack-card-wordlists').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
-    + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
-    + 'meowed, bark, barks, barked, barking');
+    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
+    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+      + ' duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.wordlist-verbChip').should('contain.text', ' moo  oink  cluck  baa  meow  bark  farm  grow  plow ');
   });
 
   it('Should click view info, select a view words, and see all the words', () => {
     page.clickViewInfo(page.getContextpackCards().first());
     page.selectView('false');
 
-    cy.get('.contextpack-card-name').should('have.text', 'Farm');
-    cy.get('.contextpack-card-enabled').should('have.text', 'Enabled: true');
-    cy.get('.contextpack-card-nouns').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
-    + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
-    cy.get('.contextpack-card-verbs').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
-    + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
-    + 'meowed, bark, barks, barked, barking');
+    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
+    cy.get('.nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig '
+    + ' chicken  duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower '
+    + ' cultivator  plow  backhoe  loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.verbChip').should('contain.text', ' moo  oink  cluck  baa  meow  bark  farm  grow  plow ');
   });
 
 

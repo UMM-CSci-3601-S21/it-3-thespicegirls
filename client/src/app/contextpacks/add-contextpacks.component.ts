@@ -6,6 +6,7 @@ import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
 
+
 @Component({
   selector: 'app-add-contextpacks',
   templateUrl: './add-contextpacks.component.html',
@@ -13,8 +14,8 @@ import { ContextPackCardComponent } from './contextpack-card.component';
 })
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
-  contextpackcard = new ContextPackCardComponent();
   isShown = false;
+  contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -57,9 +58,6 @@ export class AddContextpacksComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }
-
-
-
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({

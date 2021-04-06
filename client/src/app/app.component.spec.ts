@@ -79,5 +79,12 @@ describe('AppComponent', () => {
   it(`should run google signIn()`, () => {
     expect(component.googleSignin()).toBeUndefined();
   });
+  it('should log out the person', () =>{
+    component.isSignedin = true;
+    expect(component.isSignedin).toBeTruthy();
+    component.logout();
+    expect(component.isSignedin).toBeFalsy();
+  });
+
 
 });

@@ -16,13 +16,10 @@ import umm3601.user.UserController;
 public class Server {
 
   static String appName = "Word River";
+  private static String mongoAddr = System.getenv().getOrDefault("MONGO_ADDR", "localhost");
+  private static String databaseName = System.getenv().getOrDefault("MONGO_DB", "dev");
 
   public static void main(String[] args) {
-
-    // Get the MongoDB address and database name from environment variables and
-    // if they aren't set, use the defaults of "localhost" and "dev".
-    String mongoAddr = System.getenv().getOrDefault("MONGO_ADDR", "localhost");
-    String databaseName = System.getenv().getOrDefault("MONGO_DB", "dev");
 
     // Setup the MongoDB client object with the information we set earlier
     MongoClient mongoClient
@@ -53,13 +50,9 @@ public class Server {
     server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack);
     // editing information about wordlists
     server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist);
-    // add forms to words in wordlists
-    server.post("/api/contextpacks/:id/addforms", contextPackController::addFormsWordlist);
-
 
     server.exception(Exception.class, (e, ctx) -> {
       ctx.status(500);
-      ctx.json(e); // you probably want to remove this in production
     });
   }
 

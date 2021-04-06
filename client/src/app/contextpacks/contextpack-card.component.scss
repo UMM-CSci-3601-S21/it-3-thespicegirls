@@ -1,84 +1,59 @@
-span.contextpack-card-wordlists{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  width: 70%;
-  margin: 5px;
-}
+
 .mat-card{
   background-color:white;
-
 }
+
 .contextpack-card-name{
   color:#01596e;
 
 }
 
-
-span.contextpack-card-nouns{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px;
-  width: 70%;
-  word-wrap: break-word;
-  display: flex;
-}
-
-
-span.contextpack-card-misc{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px;
-  width: 70%;
-  word-wrap: break-word;
-  display: flex;
-
-}
-
-span.contextpack-card-adjectives{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  width: 70%;
-  margin: 5px;
-  word-wrap: break-word;
-  display: flex;
-
-}
-
-span.contextpack-card-verbs{
-  display: inline-block;
-  background-color: rgba(0, 225, 255, 0.713);
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  width: 70%;
-  margin: 5px;
-  word-wrap: break-word;
-  display: flex;
-}
-
-
-.contextpack-download-button {
-  border:none;
-  margin-right:68%;
-  float:right;
+h2, mat-card-title, mat-card-subtitle{
+  text-transform: capitalize;
   color:#01596e;
-  background-color:#02c3eb;
-  border: 2px solid#01596e;
-  border-radius: 3px;
+  margin: 10px;
+}
 
+.contextpack-card-nouns, .contextpack-card-adjectives, .contextpack-card-verbs, .contextpack-card-misc {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  width: inherit;
+  word-wrap: break-word;
+  display: flex;
+}
 
+.contextpack-download-button, .editView, mat-form-field{
+  display: inline-block;
+  padding: 10px;
 
 }
 
+.wordlist-enable-button, .wordlist-disable-button, h4{
+  display: inline-block;
+  padding: 10px;
+  text-transform: capitalize;
+  color:#01596e;
+  text-align: center;
+
+}
+
+.nounChip {
+  background-color: pink;
+}
+
+.verbChip {
+  background-color: rgb(193, 193, 235);
+}
+
+.adjectiveChip {
+  background-color: rgb(147, 233, 147);
+}
+
+.miscChip {
+  background-color: rgb(250, 250, 161);
+}
+
+mat-card-header {
+  text-align: left;
+}

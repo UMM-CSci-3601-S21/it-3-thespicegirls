@@ -23,6 +23,10 @@ import { MatOptionModule } from '@angular/material/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +38,7 @@ import { ContextPackInfoComponent } from './contextpacks/contextpack-info.compon
 import { AddContextpacksComponent } from './contextpacks/add-contextpacks.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { EditContextpackComponent } from './contextpacks/edit-contextpack.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -51,7 +56,11 @@ const MATERIAL_MODULES: any[] = [
   MatFormFieldModule,
   MatDividerModule,
   MatRadioModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatChipsModule,
+  MatDialogModule,
+  MatExpansionModule,
+  MatCheckboxModule
 ];
 
 @NgModule({
@@ -61,7 +70,8 @@ const MATERIAL_MODULES: any[] = [
     ContextPackCardComponent,
     ContextPackListComponent,
     ContextPackInfoComponent,
-    AddContextpacksComponent
+    AddContextpacksComponent,
+    EditContextpackComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +83,7 @@ const MATERIAL_MODULES: any[] = [
     HttpClientModule,
     SocialLoginModule,
     MATERIAL_MODULES,
-    LayoutModule
+    LayoutModule,
   ],
   providers: [
     ContextPackService,
