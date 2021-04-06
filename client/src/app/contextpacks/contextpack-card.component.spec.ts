@@ -192,6 +192,13 @@ describe('ContextPackCardComponent', () => {
       component.addWord('fakeWordList','test','noun');
       expect(spy.addWord).toHaveBeenCalledTimes(1);
     });
+    it('adds a word locally when a word is added from the server', () => {
+      spy.addWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.localAdd(`nouns`, `milk,milks`,component.contextpack.wordlists[0].name);
+      const addWord: Word = {word:'milk',forms:`milk,milks`.split(',') };
+      expect(component.contextpack.wordlists[0].nouns).toContain(addWord);
+    });
+
     it('addWord calls correct snackbar message when word is added', () => {});
     it('addWord calls correct snackbar message when word is not added', () => {});
   });
@@ -210,7 +217,6 @@ describe('ContextPackCardComponent', () => {
 
     it('deleteWord calls correct snackbar message when word is added', () => {});
 
-    it('deleteWord calls correct snackbar message when word is not added', () => {});
   });
 
   describe('Helper Functions', () => {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ContextPack, Wordlist} from './contextpack';
+import { ContextPack, Word, Wordlist} from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
 
@@ -90,6 +90,15 @@ export class ContextPackCardComponent implements OnInit {
       }
     }
   }
+  localAdd(wordType: string, pos: string, listname: string){
+    const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
+    for(const list of this.contextpack.wordlists){
+      if(list.name === listname){
+        console.log('done good');
+        list[`${wordType}`].push(addWord);
+      }
+    }
+  }
 
   addWord(list: string, word: string, wordType: string){
     const obj: any = this.createParamObj(wordType, word);
@@ -97,7 +106,8 @@ export class ContextPackCardComponent implements OnInit {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
           duration: 2000,
         });
-        this.reload();
+        if(wordType !== `misc`){(wordType += `s`);}
+        this.localAdd(wordType, word,list);
       }, err => {
         this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
           duration: 5000,
