@@ -26,10 +26,6 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
 
   }
 
-  reload(){
-    window.location.reload();
-  }
-
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
     let obj: any;
@@ -45,12 +41,25 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    this.reload();
+    this.updateLocalFields(contextPack, obj);
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
       });
     });
+  }
+  updateLocalFields(contextpack: ContextPack, obj: any){
+    if(obj.name){
+      contextpack.name =obj.name;
+    }
+    if(obj.enabled){
+      contextpack.name =obj.name;
+    }
+    if(obj.icon){
+      contextpack.icon = obj.icon;
+      this.ngOnInit();
+    }
+
   }
 
   getContextpacksFromServer(): void {
