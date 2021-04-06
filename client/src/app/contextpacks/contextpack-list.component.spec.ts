@@ -77,9 +77,7 @@ describe('ContextPack list', () => {
   it('contain a ContextPack named \'happy\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'happy')).toBe(true);
   });
-  it('contain a ContextPack named \'sun\'', () => {
-    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'sun')).toBe(true);
-  });
+
   it('doesn\'t contain a contextpack named \'Santa\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'Santa')).toBe(false);
   });
@@ -165,7 +163,7 @@ describe('ContextPackListComponent', () => {
   });
   it('should update fields by correctly calling the context pack service', () => {
     spy.updateContextPack.and.returnValue(of(MockContextPackService.testContextPacks[0]));
-    component.updateField(MockContextPackService.testContextPacks[0],['fun','name']);
+    component.updateField(MockContextPackService.testContextPacks[1],['fun','name']);
     expect(spy.updateContextPack).toHaveBeenCalledTimes(1);
     component.updateField(MockContextPackService.testContextPacks[0],['false','enabled']);
     expect(spy.updateContextPack).toHaveBeenCalledTimes(2);
