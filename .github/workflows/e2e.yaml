@@ -43,6 +43,7 @@ jobs:
     - name: Run e2e tests
       uses: cypress-io/github-action@v2
       with:
+        super_secret: ${{ secrets.API_SECRET }}
         start: ${{ github.workspace }}/server/gradlew run -p ${{ github.workspace }}/server/
         command: npm run e2e
         working-directory: ./client
