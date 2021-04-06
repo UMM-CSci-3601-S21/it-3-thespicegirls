@@ -70,13 +70,26 @@ export class ContextPackCardComponent implements OnInit {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
             duration: 2000,
           });
-          this.reload();
+          if(wordType !== `misc`){(wordType += `s`);}
+          this.localDelete(wordType, word);
         }, err => {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
             duration: 5000,
           });
         });
+  }
+
+  localDelete(wordType: string, word: string){
+    let index =0;
+    for(const list of this.contextpack.wordlists){
+      index++;
+      for(const pos of list[`${wordType}`]){
+        if (pos.word === word){
+          list[`${wordType}`].splice(index,1);
+        }
+      }
     }
+  }
 
   addWord(list: string, word: string, wordType: string){
     const obj: any = this.createParamObj(wordType, word);
