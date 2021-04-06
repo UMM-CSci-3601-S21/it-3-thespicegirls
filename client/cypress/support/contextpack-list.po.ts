@@ -24,5 +24,16 @@ export class ContextpackListPage {
       .get(`mat-option[value="${value}"]`).click();
   }
 
+  getFormField(fieldName: string) {
+    return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
+  }
+
+  enableEditDeleteMode(){
+    return cy.get('.editView').click({force: true});
+  }
+
+  enableAddMode(){
+    return cy.get('.addView').click({force: true});
+  }
 
 }
