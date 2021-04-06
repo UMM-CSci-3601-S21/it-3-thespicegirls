@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ContextPack, Word } from './contextpack';
-import { ContextPackService } from './contextpack.service';
 
 @Component({
   selector: 'app-edit-contextpack',

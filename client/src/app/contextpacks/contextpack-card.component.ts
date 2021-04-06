@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ContextPack, Word, Wordlist, WordRole } from './contextpack';
+import { ContextPack, Wordlist} from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
 
