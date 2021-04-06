@@ -1,90 +1,138 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { User } from './contextpacks/user';
 import { AppComponent } from './app.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatCardModule } from '@angular/material/card';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatListModule } from '@angular/material/list';
-import { GoogleLoginProvider, SocialLoginModule, SocialAuthServiceConfig, SocialAuthService } from 'angularx-social-login';
-import { BrowserModule } from '@angular/platform-browser';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { GoogleLoginProvider, LoginProvider, SocialAuthService,
+  SocialAuthServiceConfig, SocialLoginModule, SocialUser } from 'angularx-social-login';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/compiler';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
+describe('Context Pack service: ', () => {
+  // A small collection of test contextpacks
+
+
+  const one = new Promise<void>((resolve, reject) => {});
+  const one2 = new Promise<SocialUser>((resolve, reject) => {});
+
+  class MockConfig{
+    autoLogin: false;
+    providers: {
+        id: '12345';
+        provider: LoginProvider;
+    }[];
+    onError?: (error: any) => any;
+  }
+
+  let appService: AppComponent;
+  // These are used to mock the HTTP requests so that we (a) don't have to
+  // have the server running and (b) we can check exactly which HTTP
+  // requests were made to ensure that we're making the correct requests.
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+  let matSnackBar: MatSnackBar;
   let socialAuthService: SocialAuthService;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        RouterTestingModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatSidenavModule,
-        MatCardModule,
-        MatSnackBarModule,
-        MatListModule,
-        SocialLoginModule,
-        BrowserModule,
-        RouterTestingModule,
-        HttpClientModule
-      ],
-      declarations: [
-        AppComponent
-      ],
-      providers: [
-        {
-          provide: 'SocialAuthServiceConfig',
-          useValue: {
-            autoLogin: false,
-            providers: [
-              {
-                id: GoogleLoginProvider.PROVIDER_ID,
-                provider: new GoogleLoginProvider(
-                  '239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com'
-                )
-              }
-            ]
-          } as SocialAuthServiceConfig,
-        },
-        SocialAuthService
-
-      ],
-    }).compileComponents().catch(error => {
-      expect(error).toBeNull();
-    });
-  }));
+  let spy: any;
+  let spy2: any;
+  let config: MockConfig;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-    component.ngOnInit();
-    fixture.detectChanges();
+    // Set up the mock handling of the HTTP requests
+    TestBed.configureTestingModule({
 
+      imports: [ HttpClientTestingModule, ReactiveFormsModule, MatSnackBarModule, SocialLoginModule ],
+      providers: [{
+        provide: 'SocialAuthServiceConfig',
+        useValue: {
+          autoLogin: true,
+          providers: [
+            {
+              id: 'cool ID',
+              provider: new GoogleLoginProvider(
+                'somethingcool.google.bing.yahoo'
+              )
+            }
+          ]
+        } as SocialAuthServiceConfig,
+      }
+
+],
+      schemas: [ NO_ERRORS_SCHEMA ]
+    }).compileComponents();
+    httpClient = TestBed.inject(HttpClient);
+    matSnackBar = TestBed.inject(MatSnackBar);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    socialAuthService = TestBed.inject(SocialAuthService);
+    // Construct an instance of the service with the mock
+    // HTTP client.
+    appService = new AppComponent(socialAuthService, httpClient,  matSnackBar);
   });
 
-  it('should create the app', () => {
-    const app = fixture.componentInstance;
-    expect(component).toBeTruthy();
-    expect(app).toBeTruthy();
+  afterEach(() => {
+    // After every test, assert that there are no more pending requests.
+    httpTestingController.verify();
   });
 
   it(`should have as title 'Word River'`, () => {
-    const app = fixture.componentInstance;
-    expect(app.returnTitle()).toEqual('Word River');
+
+    expect(appService.returnTitle()).toEqual('Word River');
   });
 
-  it(`should run google signIn()`, () => {
-    expect(component.googleSignin()).toBeUndefined();
+  it(`should spy on login`, () => {
+    spy = spyOn(socialAuthService, 'signIn');
+    appService.googleSignin();
+    expect(spy).toHaveBeenCalled();
+  });
+  it(`should spy on sendToServer`, () => {
+    spy = spyOn(appService, 'sendToServer');
+    appService.googleSignin();
+    expect(spy).toHaveBeenCalled();
+  });
+  it(`should spy on logout and change isSignedIn to false`, () => {
+    appService.isSignedin = true;
+    spy = spyOn(socialAuthService, 'signOut').and.returnValue(one);
+    spy2 = spyOn(appService, 'sendLogOutToServer').and.callFake(() => of( 'true' ));
+    appService.logout();
+    expect(appService.isSignedin).toBeFalsy();
+    expect(spy).toHaveBeenCalled();
   });
 
-  it('should change isLoggedIn after calling sendToserver()', () =>{
-    expect(component.sendToServer() === false);
-    expect(component.isSignedin).toBeFalsy();
+  it(`should make an api request to api/user/logout`, () => {
+    appService.sendLogOutToServer().subscribe(
+    );
+    const req = httpTestingController.expectOne(appService.idTokenUrl + '/logout');
+    expect(req.request.method).toEqual('GET');
   });
+
+  it(`should post an api request to api/users and get a string back`, () => {
+
+    appService.addGoogleToken('me').subscribe();
+    const req = httpTestingController.expectOne(appService.idTokenUrl);
+    expect(req.request.method).toEqual('POST');
+
+    //Now we spy and make sure that it does something with the response
+    spy2 = spyOn(appService, 'addGoogleToken').and.callFake(() => of( 'Hello' ));
+    appService.addGoogleToken('bobby').subscribe(
+      user => expect(user).toBe('Hello')
+    );
+  });
+
+  it(`should make an api request to api/user/loggedin with askServerIfLoggedIn`, () => {
+    appService.askServerIfLoggedIn().subscribe();
+    const req = httpTestingController.expectOne(appService.idTokenUrl + '/loggedin');
+    expect(req.request.method).toEqual('GET');
+  });
+
+  it(`should return a fake response for ngOnInit so it sets the right values for user`, () => {
+    spy2 = spyOn(appService, 'askServerIfLoggedIn').and.callFake(() => of( 'Billy' ));
+
+    appService.ngOnInit();
+    expect(appService.user.firstName).toEqual('Billy');
+    expect(appService.isSignedin).toBeTruthy();
+  });
+
 
 });

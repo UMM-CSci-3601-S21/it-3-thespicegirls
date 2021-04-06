@@ -28,13 +28,15 @@ export class AppComponent implements OnInit {
     private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.httpClient.get<string>(this.idTokenUrl + '/' + 'loggedin').subscribe(res => {
+    this.askServerIfLoggedIn().subscribe(res => {
       const user2 = new SocialUser();
       user2.firstName = res.toString();
       this.user = user2;
       this.isSignedin = true;
   });
-
+  }
+  askServerIfLoggedIn(): Observable<string>{
+    return this.httpClient.get<string>(this.idTokenUrl + '/' + 'loggedin');
   }
 
   sendToServer() {
@@ -64,9 +66,13 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.socialAuthService.signOut();
-    this.httpClient.get<string>(this.idTokenUrl + '/' + 'logout').subscribe(res => {
+    this.sendLogOutToServer().subscribe(res => {
       this.isSignedin = false;
   });
+  }
+
+  sendLogOutToServer(): Observable<string>{
+    return this.httpClient.get<string>(this.idTokenUrl + '/' + 'logout');
   }
 
   returnTitle(){
