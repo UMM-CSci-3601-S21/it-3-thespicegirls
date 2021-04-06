@@ -13,16 +13,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MockContextPackService } from '../../testing/contextpack.service.mock';
-import { ContextPack, Word, Wordlist } from './contextpack';
+import { ContextPack } from './contextpack';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { ContextPackListComponent } from './contextpack-list.component';
 import { ContextPackService } from './contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRouteStub } from 'src/testing/activated-route-stub';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 const COMMON_IMPORTS: any[] = [
   FormsModule,

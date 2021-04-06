@@ -5,8 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
-import {MatChipsModule} from '@angular/material/chips';
-import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-add-contextpacks',
