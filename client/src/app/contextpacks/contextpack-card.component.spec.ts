@@ -64,7 +64,6 @@ describe('ContextPackCardComponent', () => {
     fixture2 = TestBed.createComponent(ContextPackCardComponent);
 
     component = fixture.componentInstance;
-    spyOn(component,'reload').and.callFake(() => {});
 
     const noun: Word = {
       word: 'you',

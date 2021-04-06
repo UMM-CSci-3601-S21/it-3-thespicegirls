@@ -42,11 +42,6 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.getContextPackSub.unsubscribe();
     }
   }
-
-  reload(){
-    window.location.reload();
-  }
-
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
     let obj: any;
@@ -62,12 +57,24 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    this.reload();
+    this.localEdit(obj);
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
       });
     });
+  }
+  localEdit(obj: any){
+        if(obj.name){
+          this.contextpack.name = obj.name;
+        }
+        if(obj.enabled){
+          this.contextpack.enabled = obj.enabled;
+          this.ngOnInit();
+        }
+        if(obj.icon){
+          this.contextpack.icon = obj.icon;
+        }
   }
 
 }

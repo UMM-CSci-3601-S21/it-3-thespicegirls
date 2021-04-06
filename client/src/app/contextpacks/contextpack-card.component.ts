@@ -60,9 +60,6 @@ export class ContextPackCardComponent implements OnInit {
     this.addWord(wordlist,word,wordType); //addWord already reloads the page
   }
 
-  reload(){
-    window.location.reload();
-  }
 
   deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
@@ -94,7 +91,6 @@ export class ContextPackCardComponent implements OnInit {
     const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
     for(const list of this.contextpack.wordlists){
       if(list.name === listname){
-        console.log('done good');
         list[`${wordType}`].push(addWord);
       }
     }
@@ -142,12 +138,27 @@ export class ContextPackCardComponent implements OnInit {
       this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
       duration: 2000,
     });
-    this.reload();
+    this.localEdit(list, obj);
     }, err => {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
         duration: 5000,
         });
       });
+  }
+
+  localEdit(list: Wordlist, obj: any){
+    let i;
+    for(i=0;i<this.contextpack.wordlists.length; i++){
+      if(this.contextpack.wordlists[i].name === list.name){
+        if(obj.name){
+          list.name = obj.name;
+        }
+        if(obj.enabled){
+          list.enabled = obj.enabled;
+          this.save('enabled',obj.enabled);
+        }
+      }
+    }
   }
 
   downloadJson(myJson: ContextPack, topic: string){

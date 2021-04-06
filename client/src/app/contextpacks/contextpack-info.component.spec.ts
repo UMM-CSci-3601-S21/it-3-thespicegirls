@@ -135,7 +135,6 @@ describe('editField()', () => {
 
 
     component = fixture.componentInstance;
-    spyOn(component,'reload').and.callFake(() => {});
 
     const noun: Word = {
       word: 'you',
