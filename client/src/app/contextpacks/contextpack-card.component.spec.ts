@@ -146,6 +146,7 @@ describe('ContextPackCardComponent', () => {
   });
 
 
+
   it('should create a download element when given a json', () => {
     expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
 
@@ -201,6 +202,12 @@ describe('ContextPackCardComponent', () => {
       component.deleteWord(component.contextpack.wordlists[0],'test','noun');
       expect(spy.deleteWord).toHaveBeenCalledTimes(1);
     });
+    it('deletes a word locally when a word is deleted from the server', () => {
+      spy.deleteWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.localDelete(`nouns`, `goat`);
+      expect(component.contextpack.wordlists[0].nouns[0].word).not.toContain('goat');
+    });
+
     it('deleteWord calls correct snackbar message when word is added', () => {});
 
     it('deleteWord calls correct snackbar message when word is not added', () => {});
@@ -236,6 +243,8 @@ describe('ContextPackCardComponent', () => {
 
     it('calls correct snackbar message when word is not added', () => {});
   });
+
+
 
 
 

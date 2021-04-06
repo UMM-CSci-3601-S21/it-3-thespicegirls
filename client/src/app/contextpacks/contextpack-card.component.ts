@@ -85,7 +85,6 @@ export class ContextPackCardComponent implements OnInit {
       for(const pos of list[`${wordType}`]){
         index++;
         if (pos.word === word){
-          console.log(index);
           list[`${wordType}`].splice(index-1,1);
         }
       }
