@@ -57,18 +57,14 @@ export class ContextPackCardComponent implements OnInit {
   submitForm(wordType: string) {
     const word = this.contextPackForm.controls.word.value + ', ' + this.contextPackForm.controls.forms.value;
     const wordlist = this.contextPackForm.controls.wordlist.value;
-    this.addWord(wordlist,word,wordType); //addWord already reloads the page
-  }
-
-  reload(){
-    window.location.reload();
+    this.addWord(wordlist,word,wordType);
   }
 
   deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
           this.contextpackservice.deleteWord(this.contextpack, list.name, obj).subscribe(existingID => {
             this.snackBar.open('Deleted ' + word + ' from Word list: ' + list.name, null, {
-            duration: 2000,
+            duration: 3000,
           });
           if(wordType !== `misc`){(wordType += `s`);}
           this.localDelete(wordType, word);
@@ -90,6 +86,7 @@ export class ContextPackCardComponent implements OnInit {
       }
     }
   }
+
   localAdd(wordType: string, pos: string, listname: string){
     const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
     for(const list of this.contextpack.wordlists){
@@ -104,7 +101,7 @@ export class ContextPackCardComponent implements OnInit {
     const obj: any = this.createParamObj(wordType, word);
         this.contextpackservice.addWord(this.contextpack, list, obj).subscribe(existingID => {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 2000,
+          duration: 3000,
         });
         if(wordType !== `misc`){(wordType += `s`);}
         this.localAdd(wordType, word,list);
@@ -140,9 +137,9 @@ export class ContextPackCardComponent implements OnInit {
     }
     this.contextpackservice.updateWordList(this.contextpack, list.name, obj).subscribe(existingID => {
       this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
-      duration: 2000,
+      duration: 3000,
     });
-    this.reload();
+    //this.reload();
     }, err => {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
         duration: 5000,
