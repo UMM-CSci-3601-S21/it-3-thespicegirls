@@ -19,7 +19,7 @@ describe('Contextpack list', () => {
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-name').should('contain.text', ' Farm\n');
+      cy.wrap(e).find('.contextpack-card-name').should('contain.text', ' farm\n');
     });
   });
 
@@ -47,26 +47,24 @@ describe('Contextpack list', () => {
   it('Should click view info and see all the nouns and verbs', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-card-name').should('contain.text', ' Farm\n');
-    cy.get('.contextpack-card-enabled').should('contain.text', 'true');
-    // cy.get('.contextpack-card-wordlists').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
-    // + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
-    // cy.get('.contextpack-card-wordlists').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
-    // + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
-    // + 'meowed, bark, barks, barked, barking');
+    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
+    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+      + ' duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.wordlist-verbChip').should('contain.text', ' moo  oink  cluck  baa  meow  bark  farm  grow  plow ');
   });
 
   it('Should click view info, select a view words, and see all the words', () => {
     page.clickViewInfo(page.getContextpackCards().first());
     page.selectView('false');
 
-    cy.get('.contextpack-card-name').should('contain.text', ' Farm\n');
-    cy.get('.contextpack-card-enabled').should('contain.text', 'true');
-    // cy.get('.contextpack-card-nouns').should('contain.text', 'goat, goats, sheep, cat, cats, dog, '
-    // + 'dogs, cow, cows, pig, pigs, chicken, chickens, duck, ducks, llama, llamas');
-    // cy.get('.contextpack-card-verbs').should('contain.text', 'moo, moos, mooed, mooing, oink, oinks, '
-    // + 'oinked, oinking, cluck, clucks, clucking, clucked, baa, baas, baaed, baaing, meow, meows, meowing, '
-    // + 'meowed, bark, barks, barked, barking');
+    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
+    cy.get('.nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig '
+    + ' chicken  duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower '
+    + ' cultivator  plow  backhoe  loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.verbChip').should('contain.text', ' moo  oink  cluck  baa  meow  bark  farm  grow  plow ');
   });
 
 
