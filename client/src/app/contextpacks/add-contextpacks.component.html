@@ -43,9 +43,9 @@
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
 	<div formArrayName="wordlists">
 		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
-			<div formGroupName="{{ix}}" class="wordlists">
+			<div *ngIf="ix===index" formGroupName="{{ix}}" class="wordlists">
 
-        <h1>Wordlist {{ix}}:</h1>
+        <h1 >Wordlist {{ix}}:</h1>
         <label>
           Wordlist Name:
           <mat-form-field>
