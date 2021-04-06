@@ -22,8 +22,6 @@ button {
   display: inline-table;
   z-index: 1;
   font-family: Arial, sans-serif;
-  background-color:#02c3eb;
-  border: 2px solid black;
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
@@ -55,15 +53,40 @@ button:disabled {
   cursor: auto;
 }
 
-.misc, .verbs, .nouns, .adjectives {
-  border: 3px solid#01596e;
+.misc {
+  border: 3px solid#EDB76A;
   border-radius: 5px;
   padding: 10px;
   width: 400px;
   margin: 5px;
 }
+
+.nouns {
+  border: 3px solid#0A608A;
+  border-radius: 5px;
+  padding: 10px;
+  width: 400px;
+  margin: 5px;
+}
+
+.adjectives {
+  border: 3px solid#7FA791;
+  border-radius: 5px;
+  padding: 10px;
+  width: 400px;
+  margin: 5px;
+}
+
+.verbs {
+  border: 3px solid#F6F2C3;
+  border-radius: 5px;
+  padding: 10px;
+  width: 400px;
+  margin: 5px;
+}
+
 .wordlists{
-  border: 4px solid #3baada;
+  border: 4px;
   border-radius: 5px;
   padding: 10px;
   width: 60%;
@@ -82,4 +105,24 @@ h3{
 
 .sidenav-list a{
   background-color:red;
+}
+
+.red-icon{
+  color: #F43911
+}
+
+.noun-accordion{
+  border: 10px #0A608A;
+}
+
+.adjective-accordion{
+  border: 3px #7FA791;
+}
+
+.verb-accordion{
+  border: 3px #F6F2C3;
+}
+
+.misc-accordion{
+  border: 3px #EDB76A;
 }

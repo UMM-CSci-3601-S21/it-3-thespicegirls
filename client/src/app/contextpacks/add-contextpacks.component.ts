@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @Component({
@@ -16,6 +19,10 @@ export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
   contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
+  tabs = [];
+  activeTab = this.tabs[0];
+  selected = new FormControl(0);
+  panelOpenState= false;
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -107,6 +114,9 @@ export class AddContextpacksComponent implements OnInit {
   addWordlist() {
     const control = this.contextPackForm.controls.wordlists as FormArray;
     control.push(this.initwordlist());
+    //Add tab
+    this.tabs.push('Wordlist ' + this.tabs.length);
+    this.selected.setValue(this.tabs.length - 1);
   }
   addPosArray(ix: number, pos: string){
     const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray;
@@ -131,6 +141,8 @@ export class AddContextpacksComponent implements OnInit {
 
   removeWordlists(empIndex: number){
     (this.contextPackForm.controls.wordlists as FormArray).removeAt(empIndex);
+    //Remove tab
+    this.tabs.splice(empIndex, 1);
   }
 
   removeWord(ix: number, iy: number, pos: string){
