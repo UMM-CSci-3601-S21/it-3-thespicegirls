@@ -80,12 +80,13 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   localDelete(wordType: string, word: string){
-    let index =0;
     for(const list of this.contextpack.wordlists){
-      index++;
+      let index =0;
       for(const pos of list[`${wordType}`]){
+        index++;
         if (pos.word === word){
-          list[`${wordType}`].splice(index,1);
+          console.log(index);
+          list[`${wordType}`].splice(index-1,1);
         }
       }
     }
