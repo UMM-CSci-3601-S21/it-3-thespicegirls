@@ -39,7 +39,7 @@
 
 
     <!-- Wordlists -->
-<mat-tab-group  [selectedIndex]="selected.value" (selectionIndexChange)="selected.setValue($event)"  >
+<mat-tab-group  [selectedIndex]="selected.value" (selectionIndexChange)="selected.setValue($event)">
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
 	<div formArrayName="wordlists">
 		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
@@ -224,8 +224,6 @@
                    </button>
                  </div>
                   <!--end add button-->
-
-
                </div>
              </div>
            </div>
@@ -290,27 +288,20 @@
       </mat-accordion>
       <button type="button"
                 class="delete-button"
-                (click)="removeWordlists(ix)"
-                [disabled]="tabs.length === 1">
+                (click)="removeWordlists(ix)">
                 <mat-icon class="red-icon">delete</mat-icon>
                 </button>
 			</div>
 		</div>
 	</div>
-
 	<!-- X End -->
 
-    <!-- <button class="delete-tab-button"
-            [disabled]="tabs.length === 1"
-            (click)="removeTab(index)"
-            (click)="removeWordlists()">
-            <mat-icon>delete</mat-icon>
-          </button> -->
   </mat-tab>
 </mat-tab-group>
 </mat-card-content>
 </mat-card>
 	<!-- X End -->
+
 </form>
     <div class="buttons-div">
 
@@ -320,8 +311,7 @@
         color="primary"
         [disabled]="!contextPackForm.valid"
         type="submit"
-        data-test="confirmAddPackButton"
-      >
+        data-test="confirmAddPackButton">
         ADD CONTEXT PACK
       </button>
 
