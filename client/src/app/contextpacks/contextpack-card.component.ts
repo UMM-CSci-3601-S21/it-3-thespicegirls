@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 import { ContextPack, Word, Wordlist} from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
@@ -23,6 +24,12 @@ export class ContextPackCardComponent implements OnInit {
   removable = false;
   enabled = 'true';
 
+  validationMessages = {
+    word: [
+    {type: 'required', message: 'One word is required'},
+    ],
+    wordlist: {type: 'required', message: 'Choose a Word List'}
+  };
 
   constructor(private fb: FormBuilder, public snackBar: MatSnackBar, private contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
@@ -54,10 +61,15 @@ export class ContextPackCardComponent implements OnInit {
 		this.valueChangeEvents.emit( [newData, field] );
 	}
 
+  saveWordlist(list: Wordlist, field: string, newData: string){
+    this.valueChangeEvents.emit( [list.name, newData, field ]);
+  }
+
   submitForm(wordType: string) {
     const word = this.contextPackForm.controls.word.value + ', ' + this.contextPackForm.controls.forms.value;
     const wordlist = this.contextPackForm.controls.wordlist.value;
     this.addWord(wordlist,word,wordType);
+    this.contextPackForm.reset();
   }
 
 
@@ -88,16 +100,10 @@ export class ContextPackCardComponent implements OnInit {
     }
   }
 
-  localAdd(wordType: string, pos: string, listname: string){
-    const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
-    for(const list of this.contextpack.wordlists){
-      if(list.name === listname){
-        list[`${wordType}`].push(addWord);
-      }
-    }
-  }
 
   addWord(list: string, word: string, wordType: string){
+    word = word.trim();
+
     const obj: any = this.createParamObj(wordType, word);
         this.contextpackservice.addWord(this.contextpack, list, obj).subscribe(existingID => {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
@@ -111,6 +117,16 @@ export class ContextPackCardComponent implements OnInit {
         });
       });
   }
+
+  localAdd(wordType: string, pos: string, listname: string){
+    const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
+    for(const list of this.contextpack.wordlists){
+      if(list.name === listname){
+        list[`${wordType}`].push(addWord);
+      }
+    }
+  }
+
 
   createParamObj(wordType: string, word: string){
     let obj: any;
@@ -127,40 +143,6 @@ export class ContextPackCardComponent implements OnInit {
     return obj;
   }
 
-  editField(list: Wordlist, newData: string, field: string){
-    let obj: any;
-    switch(field){
-      case 'name':obj =  { name: newData };
-        break;
-      case 'enabled':obj =  { enabled: newData };
-        break;
-    }
-    this.contextpackservice.updateWordList(this.contextpack, list.name, obj).subscribe(existingID => {
-      this.snackBar.open('Updated enabled status of Word list: ' + list.name, null, {
-      duration: 3000,
-    });
-    this.localEdit(list, obj);
-    }, err => {
-      this.snackBar.open('Failed to update enabled status of Word list: ' + list.name, 'OK', {
-        duration: 5000,
-        });
-      });
-  }
-
-  localEdit(list: Wordlist, obj: any){
-    let i;
-    for(i=0;i<this.contextpack.wordlists.length; i++){
-      if(this.contextpack.wordlists[i].name === list.name){
-        if(obj.name){
-          list.name = obj.name;
-        }
-        if(obj.enabled){
-          list.enabled = obj.enabled;
-          this.save('enabled',obj.enabled);
-        }
-      }
-    }
-  }
 
   downloadJson(myJson: ContextPack, topic: string){
       myJson = this.convertToBetterJson(myJson);

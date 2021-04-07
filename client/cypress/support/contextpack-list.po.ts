@@ -24,8 +24,11 @@ export class ContextpackListPage {
       .get(`mat-option[value="${value}"]`).click();
   }
 
-  getFormField(fieldName: string) {
-    return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
+  nounDest(value: string) {
+    // Find and click the drop down
+    return cy.get('[data-test=nounDest]').click()
+      // Select and click the desired value from the resulting menu
+      .get(`mat-option[value="${value}"]`).click();
   }
 
   enableEditDeleteMode(){

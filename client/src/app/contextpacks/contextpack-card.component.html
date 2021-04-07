@@ -33,7 +33,7 @@
 
   <mat-accordion class="example-headers-align" *ngIf="this.editing">
 
-    <mat-expansion-panel>
+    <mat-expansion-panel class='addNouns'>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Add Nouns
@@ -43,7 +43,11 @@
       <form [formGroup]="contextPackForm">
       <mat-form-field>
         <mat-label>Word</mat-label>
-       <input matInput formControlName="word" required>
+       <input matInput class="nounWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
        <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
@@ -55,9 +59,13 @@
 
       <mat-form-field>
         <mat-label>Destination</mat-label>
-        <mat-select formControlName="wordlist" required>
+        <mat-select data-test="nounDest" formControlName="wordlist" required>
           <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
         </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
       </mat-form-field>
 
       <button mat-icon-button class="addNounButton" (click)="submitForm('noun')"><mat-icon>add</mat-icon></button>
@@ -74,7 +82,11 @@
       <form [formGroup]="contextPackForm">
       <mat-form-field>
         <mat-label>Word</mat-label>
-       <input matInput formControlName="word" required>
+       <input matInput formcontrolname="verbWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
        <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
@@ -89,6 +101,10 @@
         <mat-select formControlName="wordlist" required>
           <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
         </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
       </mat-form-field>
 
       <button mat-icon-button class="addNounButton" (click)="submitForm('verb')"><mat-icon>add</mat-icon></button>
@@ -105,7 +121,11 @@
       <form [formGroup]="contextPackForm">
       <mat-form-field>
         <mat-label>Word</mat-label>
-       <input matInput formControlName="word" required>
+       <input matInput formcontrolname="adjWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
        <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
@@ -120,6 +140,10 @@
         <mat-select formControlName="wordlist" required>
           <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
         </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
       </mat-form-field>
 
       <button mat-icon-button class="addNounButton" (click)="submitForm('adjective')"><mat-icon>add</mat-icon></button>
@@ -136,7 +160,11 @@
       <form [formGroup]="contextPackForm">
       <mat-form-field>
         <mat-label>Word</mat-label>
-       <input matInput formControlName="word" required>
+       <input matInput formcontrolname="miscWord" formControlName="word" required>
+      <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
        <mat-hint>One word only</mat-hint>
       </mat-form-field>
 
@@ -151,6 +179,10 @@
         <mat-select formControlName="wordlist" required>
           <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
         </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
       </mat-form-field>
 
       <button mat-icon-button class="addNounButton" (click)="submitForm('misc')"><mat-icon>add</mat-icon></button>
@@ -163,10 +195,10 @@
 
     <div *ngIf="selected === 'true'; else templateWords">
       <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-        <h2><app-edit-contextpack class="wordlist-name" [value]="this.contextpack.wordlists[index].name" (valueChangeEvents)="editField(contextpack.wordlists[index],$event,'name')"></app-edit-contextpack></h2>
+        <h2><app-edit-contextpack class="wordlist-name" [value]="this.contextpack.wordlists[index].name" (valueChangeEvents)="saveWordlist(contextpack.wordlists[index],'name',$event)"></app-edit-contextpack></h2>
         <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
-        <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="editField(this.contextpack.wordlists[index],'true','enabled')">Enable</button></div>
-        <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="editField(this.contextpack.wordlists[index],'false','enabled')">Disable</button></div></h4>
+        <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
+        <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div></h4>
 
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">

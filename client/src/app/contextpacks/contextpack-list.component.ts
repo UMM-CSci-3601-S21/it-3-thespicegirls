@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContextPack } from './contextpack';
+import { ContextPack, Wordlist } from './contextpack';
 import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,9 +22,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
 
   getContextpacksSub: Subscription;
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
-
-  }
+  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {}
 
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
@@ -48,6 +46,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       });
     });
   }
+
   updateLocalFields(contextpack: ContextPack, obj: any){
     if(obj.name){
       contextpack.name =obj.name;
@@ -57,9 +56,8 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
     }
     if(obj.icon){
       contextpack.icon = obj.icon;
-      this.ngOnInit();
     }
-
+    this.ngOnInit();
   }
 
   getContextpacksFromServer(): void {
@@ -77,10 +75,6 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       this.serverFilteredContextpacks, { name: this.contextpackName });
   }
 
-  /**
-   * Starts an asynchronous operation to update the contextpacks list
-   *
-   */
   ngOnInit(): void {
     this.getContextpacksFromServer();
   }

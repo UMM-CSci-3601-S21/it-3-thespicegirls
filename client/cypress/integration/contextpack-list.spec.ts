@@ -1,3 +1,4 @@
+import { eq } from 'cypress/types/lodash';
 import { ContextpackListPage } from '../support/contextpack-list.po';
 
 const page = new ContextpackListPage();
@@ -96,13 +97,16 @@ describe('Contextpack Info View', () => {
     cy.get('.verbChip').should('contain.text', ' moo  oink  cluck  baa  meow  bark  farm  grow  plow ');
   });
 
-  it('Should hover over a word and show the forms', () => {
+  it('Should click the icon URL and change it', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    //cy.get('.wordlist-nounChip').eq(0).trigger('mouseover').should('show', 'goat goats');
-  });
+    cy.get('.contextpack-card-icon').should('have.text',' barn.jpg\n');
+    cy.get('.contextpack-card-icon').click();
+    cy.get('.editValue').clear().type('exampleIcon.png');
+    cy.get('.done-button').click();
+    cy.get('.contextpack-card-icon').should('have.text',' exampleIcon.png\n');
 
-  it('Should click the icon URL and change it', () => {});
+  });
 
 });
 
@@ -131,14 +135,14 @@ describe('Info Page Edit View', () => {
   it('Should click the edit button and change the enabled status', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
+    cy.get('.wordlist-enabled').eq(0).should('contain.text','Enabled');
 
     page.enableEditDeleteMode();
     cy.get('.wordlist-disable-button').should('be.visible');
-
-    cy.get('.wordlist-enabled').eq(0).should('contain.text','Enabled');
     cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals');
-    //cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled');
+    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(1000);
+    page.enableEditDeleteMode();
+    cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled ');
   });
 });
 
@@ -152,7 +156,33 @@ describe('Info Page Add View', () => {
     page.navigateTo();
   });
 
-  it('Should click the add button and then add a noun', () => {});
-  it('Should click the add button and then fail to add a misc', () => {});
+  it('Should click the add button and then add a noun', () => {
+    page.clickViewInfo(page.getContextpackCards().first());
+
+    page.enableAddMode();
+    cy.get('.addNouns').click();
+    cy.get('.nounWord').type('test');
+    cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
+    cy.get('.addNounButton').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_animals').wait(1000);
+
+    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+  });
+  it('Should click the add button and then fail to add a noun', () => {
+    page.clickViewInfo(page.getContextpackCards().first());
+
+    page.enableAddMode();
+    cy.get('.addNouns').click();
+    cy.get('.nounWord').type('test');
+
+    cy.get('.addNounButton').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain','Failed to add test, to Word list: ').wait(1000);
+
+    cy.get('.wordlist-nounChip').should('contain.text',' goat  sheep  cat  dog  cow  pig  chicken  duck  llama  test  harrow'
+    + '  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe  loader  sprayer  sickle  rake  wagon'
+    + '  trailer  farm truck  hoe  shovel ');
+  });
 });
 
