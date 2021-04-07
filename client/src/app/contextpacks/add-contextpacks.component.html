@@ -74,7 +74,9 @@
               </mat-panel-title>
             </mat-expansion-panel-header>
             <div formArrayName="nouns" >
-              <button class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">Add Noun</button>
+              <button mat-mini-fab class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">
+              <mat-icon fxFlexAlign="center">add</mat-icon>
+              </button>
                <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
                  <div formGroupName="{{iy}}" class="nouns">
                    <div>
@@ -104,8 +106,8 @@
 
                    </div>
                    <!--add button-->
-                   <div class="add-button">
-                     <button class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')">
+                   <div  class="add-button">
+                     <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')">
                        <mat-icon>add</mat-icon>
                      </button>
                    </div>
@@ -126,7 +128,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div formArrayName="adjectives" >
-            <button class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">Add Adjective</button>
+            <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective"><mat-icon>add</mat-icon></button>
              <div *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
                <div formGroupName="{{iy}}" class="adjectives" >
                  <div>

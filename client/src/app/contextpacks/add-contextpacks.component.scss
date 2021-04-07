@@ -18,14 +18,14 @@ input {
   padding-left: .4em;
 }
 
-button {
-  display: inline-table;
-  z-index: 1;
-  font-family: Arial, sans-serif;
-  padding: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
+// button {
+//   display: inline-table;
+//   z-index: 1;
+//   font-family: Arial, sans-serif;
+//   padding: 5px;
+//   border-radius: 5px;
+//   cursor: pointer;
+// }
 .delete-button{
   margin: 5px;
   border:none;
@@ -89,7 +89,7 @@ button:disabled {
   border: 4px;
   border-radius: 5px;
   padding: 10px;
-  // width: 60%;
+  width: 60%;
   margin: 5px;
 
 }
@@ -110,11 +110,36 @@ h3{
 .red-icon{
   color: #F43911
 }
+.add-noun-button{
+  background-color: lightcoral;
+  border:none;
+  float:right;
+}
+.add-adj-button{
+  background-color: lightgreen;
+  border:none;
+  float:right;
 
-// .noun-accordion, .adjective-accordion, .verb-accordion, .misc-accordion{
-//   width: 100%;
-// }
+}
+.add-noun-button:focus{
+  background-color: lightcoral;
+  text-decoration: none;
+  bottom:0;
+  margin-bottom:0;
+  float:right;
+
+}
+.add-button{
+  display: inline-block;
+  border:none;
+
+}
+
+
+
+
 
 .mat-tab-group{
   width: fit-content;
 }
+
