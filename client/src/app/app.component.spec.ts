@@ -177,12 +177,5 @@ const observableString = new Observable<string>((observer) => {
     expect(appService.user.firstName).toEqual('Billy');
     expect(appService.isSignedin).toBeTruthy();
   });
-  it('should log out the person', () =>{
-    component.isSignedin = true;
-    expect(component.isSignedin).toBeTruthy();
-    component.logout();
-    expect(component.isSignedin).toBeFalsy();
-  });
-
 
 });
