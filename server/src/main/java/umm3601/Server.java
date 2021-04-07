@@ -1,6 +1,5 @@
 package umm3601;
 
-import java.lang.management.MemoryType;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

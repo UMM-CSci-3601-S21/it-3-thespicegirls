@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   sendToServer() {
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthState().subscribe((user) => {
       this.user = user;
       console.log(this.user);
       this.addGoogleToken(this.user.idToken).subscribe(newID => {
@@ -57,6 +57,10 @@ export class AppComponent implements OnInit {
       });
     });
     return this.isSignedin;
+  }
+
+  socialAuthState(): Observable<SocialUser>{
+    return this.socialAuthService.authState;
   }
 
   googleSignin(): void {
