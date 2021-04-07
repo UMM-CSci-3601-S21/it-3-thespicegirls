@@ -135,6 +135,7 @@ const observableString = new Observable<string>((observer) => {
   });
   it(`should spy on logout and change isSignedIn to false`, () => {
     appService.isSignedin = true;
+    spy = spyOn(appService, 'reload').and.returnValue();
     spy2 = spyOn(appService, 'sendLogOutToServer').and.callFake(() => of( 'true' ));
     appService.logout();
     expect(appService.isSignedin).toBeFalsy();

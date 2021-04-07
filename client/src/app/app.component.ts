@@ -72,7 +72,12 @@ export class AppComponent implements OnInit {
     this.socialAuthService.signOut();
     this.sendLogOutToServer().subscribe(res => {
       this.isSignedin = false;
+      this.reload();
   });
+  }
+
+  reload(): void{
+    window.location.reload();
   }
 
   sendLogOutToServer(): Observable<string>{
