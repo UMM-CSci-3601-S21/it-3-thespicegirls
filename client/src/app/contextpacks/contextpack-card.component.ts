@@ -103,7 +103,10 @@ export class ContextPackCardComponent implements OnInit {
 
   addWord(list: string, word: string, wordType: string){
     word = word.trim();
-
+    console.log(word);
+    if(word.endsWith(', null')){
+      word = word.slice(0,word.length-6);
+    }
     const obj: any = this.createParamObj(wordType, word);
         this.contextpackservice.addWord(this.contextpack, list, obj).subscribe(existingID => {
           this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
@@ -119,7 +122,12 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   localAdd(wordType: string, pos: string, listname: string){
-    const addWord: Word = {word:pos.split(',')[0],forms:pos.split(',') };
+    pos =pos.trim();
+    const forms = pos.split(',');
+    if(forms[1]===' null'){
+      forms.pop();
+    }
+    const addWord: Word = {word:pos.split(',')[0],forms };
     for(const list of this.contextpack.wordlists){
       if(list.name === listname){
         list[`${wordType}`].push(addWord);
