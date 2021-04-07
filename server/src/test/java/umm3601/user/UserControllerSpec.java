@@ -95,6 +95,11 @@ public class UserControllerSpec {
       new Document()
         .append("name", "Jamie")
         .append("sub", "thissubhasletters"));
+        testUsers.add(
+      new Document()
+        .append("name", "Admin")
+        .append("admin", true)
+        .append("sub", "54321"));
 
     userDocuments.insertMany(testUsers);
     userController = new UserController(db);
@@ -217,7 +222,60 @@ public class UserControllerSpec {
     Context ctx2 = ContextUtil.init(mockReq, mockRes, "api/users");
     userController.userTokenChecker(idToken, ctx2);
     assertEquals(201, mockRes.getStatus());
-    assertEquals(3, db.getCollection("users").countDocuments());
+    assertEquals(4, db.getCollection("users").countDocuments());
+
+    //And then asks if he is logged in
+    userController.loggedIn(ctx2);
+    String result2 = ctx2.resultString();
+    assertEquals("\"Thomas\"", result2);
+
+  }
+  @Test
+  public void GoodLoginChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "12345";
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+
+    userController.loggedIn(ctx);
+    String result3 = ctx.resultString();
+    assertNull(result3);
+
+  }
+  @Test
+  public void GoodAdminChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "12345";
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    Header header = new Header();
+    header.set("alg", "RS256");
+    Payload payload = new Payload();
+    payload.set("name", "Thomas");
+    payload.set("email", "Thomas@mail");
+    payload.set("email_verified", true);
+    payload.set("picture", "ThomasPicture");
+    payload.set("locale", "EN");
+    payload.set("family_name", "Joe");
+    payload.set("given_name", "Thomas");
+    payload.set("sub", "54321");
+    byte[] signatureBytes = {1};
+    byte[] signedContentBytes = {1};
+    GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
+
+    userController.userTokenChecker(idToken, ctx);
+    assertEquals("ADMIN", mockSession.getAttribute("current-user").toString());
+
+    assertEquals(201, mockRes.getStatus());
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+    assertEquals("true", id);
 
   }
 }
