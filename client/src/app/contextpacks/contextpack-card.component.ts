@@ -103,19 +103,16 @@ export class ContextPackCardComponent implements OnInit {
 
   addWord(list: string, word: string, wordType: string){
     word = word.trim();
-    console.log(word);
     if(word.endsWith(', null')){
       word = word.slice(0,word.length-6);
     }
     const obj: any = this.createParamObj(wordType, word);
         this.contextpackservice.addWord(this.contextpack, list, obj).subscribe(existingID => {
-          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, {
-          duration: 3000,
+          this.snackBar.open('Added ' + word + ' to Word list: ' + list, null, { duration: 3000,
         });
         if(wordType !== `misc`){(wordType += `s`);}
         this.localAdd(wordType, word,list);
-      }, err => {
-        this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
+      }, err => { this.snackBar.open('Failed to add ' + word + ' to Word list: ' + list, 'OK', {
           duration: 5000,
         });
       });
