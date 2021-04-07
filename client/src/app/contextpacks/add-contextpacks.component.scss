@@ -57,7 +57,7 @@ button:disabled {
   border: 3px solid#EDB76A;
   border-radius: 5px;
   padding: 10px;
-  width: 400px;
+  width: 75%;
   margin: 5px;
 }
 
@@ -65,7 +65,7 @@ button:disabled {
   border: 3px solid#0A608A;
   border-radius: 5px;
   padding: 10px;
-  width: 400px;
+  width: 75%;
   margin: 5px;
 }
 
@@ -73,7 +73,7 @@ button:disabled {
   border: 3px solid#7FA791;
   border-radius: 5px;
   padding: 10px;
-  width: 400px;
+  width: 75%;
   margin: 5px;
 }
 
@@ -81,7 +81,7 @@ button:disabled {
   border: 3px solid#F6F2C3;
   border-radius: 5px;
   padding: 10px;
-  width: 400px;
+  width: 75%;
   margin: 5px;
 }
 
@@ -89,7 +89,7 @@ button:disabled {
   border: 4px;
   border-radius: 5px;
   padding: 10px;
-  width: 60%;
+  // width: 60%;
   margin: 5px;
 
 }
@@ -111,22 +111,10 @@ h3{
   color: #F43911
 }
 
-.noun-accordion{
-  border: 10px #0A608A;
-}
+// .noun-accordion, .adjective-accordion, .verb-accordion, .misc-accordion{
+//   width: 100%;
+// }
 
-.adjective-accordion{
-  border: 3px #7FA791;
-}
-
-.verb-accordion{
-  border: 3px #F6F2C3;
-}
-
-.misc-accordion{
-  border: 3px #EDB76A;
-}
-
-.mat-radio-group{
-  margin-right: 40px;
+.mat-tab-group{
+  width: fit-content;
 }

@@ -23,7 +23,7 @@ export class AddContextpacksComponent implements OnInit {
   activeTab = this.tabs[0];
   selected = new FormControl(0);
   panelOpenState= false;
-  enabled = new FormControl(true);
+
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -132,6 +132,7 @@ export class AddContextpacksComponent implements OnInit {
       control.setValue(formAdd);
       console.log(ix,iy);
   }
+
   toggleEnabled(){
     console.log('button is being checked');
     this.contextPackForm.controls.enabled.setValue(!this.contextPackForm.controls.enabled);

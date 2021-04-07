@@ -1,89 +1,67 @@
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-<form [formGroup]="contextPackForm" (ngSubmit)="submitForm()" class="form">
-  <mat-card class="add-contextpack-card">
-    <mat-card-title class="add-pack-title">Create A New Context Pack</mat-card-title>
-    <mat-card-content fxLayout="column">
+    <form [formGroup]="contextPackForm" (ngSubmit)="submitForm()" class="form">
+      <mat-card class="add-contextpack-card">
+        <mat-card-title class="add-pack-title">Create A New Context Pack</mat-card-title>
+        <mat-card-content fxLayout="column">
 
-    <mat-form-field>
-      <mat-label>Pack Name</mat-label>
-      <input matInput placeholder="Name" formControlName="name" required>
-      <mat-error *ngFor="let validation of validationMessages.wordlists.name">
-        <mat-error  class="error-message" data-test="nameError"
-                    *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
-          {{validation.message}}
-        </mat-error>
-      </mat-error>
-    </mat-form-field>
+          <!-- context pack name -->
+          <mat-form-field>
+            <mat-label>Pack Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name" required>
+            <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+              <mat-error  class="error-message" data-test="nameError"
+              *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
+              {{validation.message}}
+            </mat-error>
+          </mat-error>
+        </mat-form-field>
 
 
+        <!-- context pack icon -->
         <mat-form-field>
           <mat-label>Icon (optional)</mat-label>
           <input matInput placeholder="Icon" formControlName="icon">
         </mat-form-field>
 
+        <!-- context pack enabled -->
         <div class="enabled-checkbox">
           <input type="checkbox" placeholder="Enabled" formControlName="enabled">
-          <p>enable contextpack</p>
         </div>
 
 
+        <!-- add word list button -->
+        <div>
+          <button mat-raised-button type="button" class="add-wordlist-button" (click)="addWordlist()" value="Add Wordlist">Add Wordlist</button>
+        </div>
 
-
-
-
-
-
-
-  <mat-error *ngIf="contextPackForm.get('enabled').hasError('required')">You must make a selection</mat-error>
-  <mat-error *ngIf="contextPackForm.get('enabled').hasError('pattern') && !contextPackForm.get('enabled').hasError('required')">
-    Your selection is invalid
-  </mat-error>
-
-
-<div>
-  <button mat-raised-button type="button" class="add-wordlist-button" (click)="addWordlist()" value="Add Wordlist">Add Wordlist</button>
-</div>
-
-
-
-
-    <!-- Wordlists -->
-<mat-tab-group  [selectedIndex]="selected.value" (selectionIndexChange)="selected.setValue($event)">
-  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
-	<div formArrayName="wordlists">
-		<div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
-			<div *ngIf="ix===index" formGroupName="{{ix}}" class="wordlists">
-
-        <h1 >Wordlist {{ix}}:</h1>
-        <label>
-          Wordlist Name:
-          <mat-form-field>
-            <mat-label>Wordlist Name</mat-label>
-            <input matInput placeholder="Name" formControlName="name"
-                  required>
-            <mat-error *ngFor="let validation of validationMessages.wordlists.name">
-              <mat-error class="error-message" data-test="nameError"
+        <!-- Wordlists -->
+        <mat-tab-group  [selectedIndex]="selected.value" (selectionIndexChange)="selected.setValue($event)" class="mat-tab-group">
+          <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab">
+            <div formArrayName="wordlists">
+              <div *ngFor="let wordlists of contextPackForm['controls'].wordlists['controls']; let ix=index">
+                <div *ngIf="ix===index" formGroupName="{{ix}}" class="wordlists">
+                  <h1 >Wordlist {{ix}}:</h1>
+                  <label>
+                    <mat-form-field>
+                      <mat-label>Wordlist Name</mat-label>
+                      <input matInput placeholder="Name" formControlName="name"
+                      required>
+                      <mat-error *ngFor="let validation of validationMessages.wordlists.name">
+                        <mat-error class="error-message" data-test="nameError"
                         *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
-                {{validation.message}}
-              </mat-error>
-            </mat-error>
-          </mat-form-field>
-        </label>
+                        {{validation.message}}
+                      </mat-error>
+                    </mat-error>
+                  </mat-form-field>
+                </label>
 
 
         <div class="enabled-checkbox">
           <input type="checkbox" placeholder="Enabled" formControlName="enabled">
         </div>
 
-        <!-- <mat-radio-group required formControlName="enabled">
-          <mat-radio-button value="true">Enabled</mat-radio-button>
-          <mat-radio-button value="false">Disabled</mat-radio-button>
-        </mat-radio-group>
-        <mat-error *ngIf="contextPackForm.get('enabled').hasError('required')">You must make a selection</mat-error>
-        <mat-error *ngIf="contextPackForm.get('enabled').hasError('pattern') && !contextPackForm.get('enabled').hasError('required')">
-          Your selection is invalid
-        </mat-error> -->
+
 
 
 				<!-- Nouns -->
