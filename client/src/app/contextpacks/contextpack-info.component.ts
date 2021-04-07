@@ -13,8 +13,6 @@ import { MatSnackBar} from '@angular/material/snack-bar';
 })
 export class ContextPackInfoComponent implements OnInit, OnDestroy {
 
-
-
   public contextpackName: string;
 
   contextpack: ContextPack;
@@ -43,8 +41,13 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  reload(){
-    window.location.reload();
+  update(contextPack: ContextPack, event: string[]) {
+    if(event.length === 3){
+      this.editField(event[0],event[1],event[2]);
+    }
+    if(event.length === 2){
+      this.updateField(contextPack,event);
+    }
   }
 
   updateField(contextPack: ContextPack, event: string[]): void {
@@ -62,12 +65,60 @@ export class ContextPackInfoComponent implements OnInit, OnDestroy {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    this.reload();
+    this.updateLocalFields(contextPack, obj);
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
       });
     });
+  }
+
+  updateLocalFields(contextpack: ContextPack, obj: any){
+    if(obj.name){
+      contextpack.name =obj.name;
+    }
+    if(obj.enabled){
+      contextpack.name =obj.name;
+    }
+    if(obj.icon){
+      contextpack.icon = obj.icon;
+    }
+    this.ngOnInit();
+  }
+
+  editField(list: string, newData: string, field: string){
+    let obj: any;
+    switch(field){
+      case 'name':obj =  { name: newData };
+        break;
+      case 'enabled':obj =  { enabled: newData };
+        break;
+    }
+    this.contextPackService.updateWordList(this.contextpack, list, obj).subscribe(existingID => {
+      this.snackBar.open('Updated enabled status of Word list: ' + list, null, {
+      duration: 3000,
+    });
+    this.localEdit(list, obj);
+    }, err => {
+      this.snackBar.open('Failed to update enabled status of Word list: ' + list, 'OK', {
+        duration: 5000,
+        });
+      });
+  }
+
+  localEdit(list: string, obj: any){
+    let i;
+    for(i=0;i<this.contextpack.wordlists.length; i++){
+      if(this.contextpack.wordlists[i].name === list){
+        if(obj.name){
+          this.contextpack.wordlists[i].name = obj.name;
+        }
+        if(obj.enabled){
+          this.contextpack.wordlists[i].enabled = obj.enabled;
+        }
+      }
+    }
+    this.ngOnInit();
   }
 
 }

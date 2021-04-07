@@ -22,13 +22,7 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
 
   getContextpacksSub: Subscription;
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {
-
-  }
-
-  reload(){
-    window.location.reload();
-  }
+  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {}
 
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
@@ -45,12 +39,25 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
       duration: 2000,
     });
-    this.reload();
+    this.updateLocalFields(contextPack, obj);
     }, err => {
       this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
         duration: 5000,
       });
     });
+  }
+
+  updateLocalFields(contextpack: ContextPack, obj: any){
+    if(obj.name){
+      contextpack.name =obj.name;
+    }
+    if(obj.enabled){
+      contextpack.name =obj.name;
+    }
+    if(obj.icon){
+      contextpack.icon = obj.icon;
+    }
+    this.ngOnInit();
   }
 
   getContextpacksFromServer(): void {
@@ -68,10 +75,6 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       this.serverFilteredContextpacks, { name: this.contextpackName });
   }
 
-  /**
-   * Starts an asynchronous operation to update the contextpacks list
-   *
-   */
   ngOnInit(): void {
     this.getContextpacksFromServer();
   }
