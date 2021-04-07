@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MockContextPackService } from '../../testing/contextpack.service.mock';
 import { ContextPack } from './contextpack';
 import { ContextPackCardComponent } from './contextpack-card.component';
@@ -77,9 +77,7 @@ describe('ContextPack list', () => {
   it('contain a ContextPack named \'happy\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'happy')).toBe(true);
   });
-  it('contain a ContextPack named \'sun\'', () => {
-    expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'sun')).toBe(true);
-  });
+
   it('doesn\'t contain a contextpack named \'Santa\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'Santa')).toBe(false);
   });
@@ -126,6 +124,55 @@ describe('Misbehaving ContextPack List', () => {
     // Since the observer throws an error, we don't expect contextpacks to be defined.
     expect(contextpackList.serverFilteredContextpacks).toBeUndefined();
   });
+
+});
+describe('ContextPackListComponent', () => {
+
+  let contextpackService: ContextPackService;
+  let packServiceSpy: jasmine.SpyObj<MockContextPackService>;
+  let component: ContextPackListComponent;
+  let fixture: ComponentFixture<ContextPackListComponent>;
+  let spy: jasmine.SpyObj<ContextPackService>;
+
+  beforeEach(waitForAsync(() => {
+    spy = jasmine.createSpyObj('ContextPackService', ['updateContextPack','getContextPacks','filterContextPacks']);
+    spy.getContextPacks.and.returnValue(of (MockContextPackService.testContextPacks));
+    TestBed.configureTestingModule({
+      imports: [
+        COMMON_IMPORTS
+      ],
+      declarations: [ ContextPackListComponent, ContextPackCardComponent ],
+      providers: [{ provide: ContextPackService, useValue: spy },
+        ]
+    })
+    .compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
+    contextpackService = TestBed.inject(ContextPackService);
+    packServiceSpy = TestBed.inject(ContextPackService) as jasmine.SpyObj<ContextPackService>;
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ContextPackListComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+  });
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should update fields by correctly calling the context pack service', () => {
+    spy.updateContextPack.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+    component.updateField(MockContextPackService.testContextPacks[1],['fun','name']);
+    expect(spy.updateContextPack).toHaveBeenCalledTimes(1);
+    component.updateField(MockContextPackService.testContextPacks[0],['false','enabled']);
+    expect(spy.updateContextPack).toHaveBeenCalledTimes(2);
+    component.updateField(MockContextPackService.testContextPacks[0],['test','icon']);
+    expect(spy.updateContextPack).toHaveBeenCalledTimes(3);
+  });
+
+
+
 
 });
 

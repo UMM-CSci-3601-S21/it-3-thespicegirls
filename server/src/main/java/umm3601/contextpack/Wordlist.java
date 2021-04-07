@@ -34,7 +34,7 @@ public class Wordlist {
   }
 
   public void deleteMisc(String word){
-    this.adjectives.removeIf(misc -> (misc.word.equals(word)));
+    this.misc.removeIf(misc -> (misc.word.equals(word)));
   }
 
 
