@@ -1,5 +1,5 @@
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-    <app-contextpack-card [contextpack]="this.contextpack"></app-contextpack-card>
+    <app-contextpack-card [contextpack]="this.contextpack" (valueChangeEvents)="update(this.contextpack,$event)"></app-contextpack-card>
   </div>
 </div>

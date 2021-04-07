@@ -13,9 +13,6 @@ describe('Add a Context pack', () => {
   });
 
   it('Should add parts of speech when buttons are pushed and show a json file preview with button push', () => {
-    // ADD USER button should be disabled until all the necessary fields
-    // are filled. Once the last (`#emailField`) is filled, then the button should
-    // become enabled.
     page.addWordlist();
     page.showJson();
     page.contextPackForm().should('contain', 'nouns');

@@ -1,22 +1,4 @@
-.sidenav-container {
-  height: 100%;
-
-}
-.mat-sidenav-content{
-  background-color: #f8f8f6;
-}
-
-.sidenav {
-  background-color:#f8f8f6;
-  font:#01596e;
-  width: 256px;
-}
-
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-.mat-toolbar.mat-primary {
+.mat-toolbar {
   background-color:  #02c3eb;
   color:#01596e;
   position: sticky;
@@ -24,8 +6,12 @@
   z-index: 1;
 }
 
-.app-title {
-  padding-left: 16px;
+.homeButton {
+  background-image: url('/assets/img/logo.jpg');
+  background-size: contain;
+  width: 198px;
+  height: 50px;
+  border: none;
 }
 
 #space{
@@ -43,11 +29,11 @@
   background-image: url("/assets/img/btn_google_signin_light_focus_web.png");
 }
 
-
-.main-content {
+.main-content.mat-typography {
   color:#01596e;
   margin: 24px;
   @media (max-width: 599px) {
     margin: 16px;
   }
+  align-items: center;
 }

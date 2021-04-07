@@ -1,3 +1,4 @@
+
 export interface Word{
   word?: string;
   forms?: string[];
@@ -9,6 +10,7 @@ export interface Wordlist{
   adjectives?: Word[];
   verbs?: Word[];
   misc?: Word[];
+
 }
 
 export interface ContextPack {
@@ -19,5 +21,6 @@ export interface ContextPack {
   wordlists?: Wordlist[];
 
 }
+
 
 export type WordRole = 'nouns' | 'verbs' | 'adjectives' | 'misc';

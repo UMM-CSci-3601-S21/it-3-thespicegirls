@@ -7,12 +7,13 @@ import { map } from 'rxjs/operators';
 
 
 
+
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
-
   constructor(private httpClient: HttpClient) {
   }
+
 
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
@@ -40,10 +41,64 @@ export class ContextPackService {
   }
 
   addContextPack(newPack: ContextPack): Observable<string> {
-    // Send post request to add a new user with the user data as the body.
+    // Send post request to add a new context pack with the new data as the body.
     return this.httpClient.post<{id: string}>(this.contextpackUrl, newPack).pipe(map(res => res.id));
   }
 
+  updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack> {
+   let httpParams: HttpParams = new HttpParams();
+
+   if(newValues !== null){
+    if(newValues.name){httpParams = httpParams.set('name', newValues.name);}
+    if(newValues.enabled){httpParams = httpParams.set('enabled',newValues.enabled);}
+    if(newValues.icon){httpParams = httpParams.set('icon',newValues.icon);}}
+
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editpack', null , {
+      params: httpParams
+   });
+
+  }
+
+  addWord(contextpack: ContextPack, listname: string, addValues: {noun?: string; verb?: string; adjective?: string; misc?: string}){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
+
+    if(addValues.noun){httpParams = httpParams.set('addnoun',addValues.noun);}
+    if(addValues.verb){httpParams = httpParams.set('addverb',addValues.verb);}
+    if(addValues.adjective){httpParams = httpParams.set('addadj',addValues.adjective);}
+    if(addValues.misc){httpParams = httpParams.set('addmisc',addValues.misc);}
+
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
+
+  deleteWord(contextpack: ContextPack, listname: string, delValues: {noun?: string; verb?: string; adjective?: string; misc?: string}){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
+
+    if(delValues.noun){httpParams = httpParams.set('delnoun',delValues.noun);}
+    if(delValues.verb){httpParams = httpParams.set('delverb',delValues.verb);}
+    if(delValues.adjective){httpParams = httpParams.set('deladj',delValues.adjective);}
+    if(delValues.misc){httpParams = httpParams.set('delmisc',delValues.misc);}
+
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
+
+  updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack> {
+
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
+
+    if(editValues.name){httpParams = httpParams.set('name',editValues.name);}
+    if(editValues.enabled){httpParams = httpParams.set('enabled',editValues.enabled);}
+
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
 
 }
 

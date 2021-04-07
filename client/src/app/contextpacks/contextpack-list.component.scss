@@ -1,11 +1,13 @@
 .contextpack-cards-container {
   width: 100%;
   position: relative;
+  align-items: center;
 }
 
 
 .contextpack-card {
-  margin-bottom: 10px;
+  padding: 5px;
+  align-items: center;
 }
 
 .search-card {
@@ -20,4 +22,5 @@
   position: fixed;
   bottom: 15px;
   right: 30px;
+  float: right;
 }

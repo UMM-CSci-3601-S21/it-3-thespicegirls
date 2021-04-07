@@ -1,0 +1,17 @@
+<!-- https://www.bennadel.com/blog/3865-looking-at-different-click-to-edit-implementations-in-angular-9-1-12.htm -->
+<div *ngIf="isEditing" class="editor">
+  <input class="editValue" matInput
+    type="text"
+    name="value"
+    autofocus
+    [(ngModel)]="pendingValue"
+    (keydown.Enter)="processChanges()"
+    (keydown.Meta.Enter)="processChanges()"
+    (keydown.Escape)="cancel()">
+  <button class="done-button" mat-icon-button color="primary" (click)="processChanges()"><mat-icon>done</mat-icon></button>
+  <button class="cancel-button" mat-icon-button color="primary" (click)="cancel()" (keydown.Enter)="cancel()" tabindex="0"><mat-icon>delete</mat-icon></button>
+</div>
+<div class="viewValue" *ngIf="( ! isEditing )" (click)="edit()">
+ {{ value }}
+</div>
+

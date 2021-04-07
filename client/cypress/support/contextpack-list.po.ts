@@ -7,10 +7,6 @@ export class ContextpackListPage {
     return cy.get('.contextpack-card');
   }
 
-  getContextpackListItems() {
-    return cy.get('.contextpack-nav-list .contextpack-list-item');
-  }
-
   /**
    * Clicks the "view info" button for the given contextpack card.
    * Requires being in the "card" view.
@@ -28,15 +24,19 @@ export class ContextpackListPage {
       .get(`mat-option[value="${value}"]`).click();
   }
 
-  /**
-   * Change the view of contextpacks.
-   *
-   * @param viewType Which view type to change to: "card" or "list".
-   */
-  changeView(viewType: 'card' | 'list') {
-    return cy.get(`[data-test=viewTypeRadio] .mat-radio-button[value="${viewType}"]`).click();
+  nounDest(value: string) {
+    // Find and click the drop down
+    return cy.get('[data-test=nounDest]').click()
+      // Select and click the desired value from the resulting menu
+      .get(`mat-option[value="${value}"]`).click();
   }
 
+  enableEditDeleteMode(){
+    return cy.get('.editView').click({force: true});
+  }
 
+  enableAddMode(){
+    return cy.get('.addView').click({force: true});
+  }
 
 }
