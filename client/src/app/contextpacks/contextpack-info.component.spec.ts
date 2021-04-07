@@ -221,6 +221,20 @@ describe('editField()', () => {
     expect(spy.updateContextPack).toHaveBeenCalledTimes(3);
   });
 
+  describe('editField()', () => {
+    it('calls contextpackservice.updateWordlist with correct parameters', () => {
+      expect(spy.updateWordList).toHaveBeenCalledTimes(0);
+      spy.updateWordList.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.editField(component.contextpack.wordlists[0].name,'test','name');
+      expect(spy.updateWordList).toHaveBeenCalledTimes(1);
+      component.editField(component.contextpack.wordlists[0].name,'test','enabled');
+      expect(spy.updateWordList).toHaveBeenCalledTimes(2);
+    });
+    it('calls correct snackbar message when word is added', () => {});
+
+    it('calls correct snackbar message when word is not added', () => {});
+  });
+
 });
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContextPack, Wordlist } from './contextpack';
+import { ContextPack } from './contextpack';
 import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

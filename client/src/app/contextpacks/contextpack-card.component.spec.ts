@@ -1,20 +1,15 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { ContextPack, Word, Wordlist } from './contextpack';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
-import {MatChipsModule} from '@angular/material/chips';
-import { workerData } from 'worker_threads';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
+import { of } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from 'src/environments/environment';
-import { doesNotMatch } from 'assert';
-import { delay } from 'rxjs/operators';
+import {HttpTestingController } from '@angular/common/http/testing';
 
 
 describe('ContextPackCardComponent', () => {
@@ -234,24 +229,6 @@ describe('ContextPackCardComponent', () => {
       expect(component.addWord).toHaveBeenCalled();
     });
   });
-
-  describe('editField()', () => {
-    it('calls contextpackservice.updateWordlist with correct parameters', () => {
-      expect(spy.updateWordList).toHaveBeenCalledTimes(0);
-      spy.updateWordList.and.returnValue(of(MockContextPackService.testContextPacks[0]));
-      component.editField(component.contextpack.wordlists[0],'test','name');
-      expect(spy.updateWordList).toHaveBeenCalledTimes(1);
-      component.editField(component.contextpack.wordlists[0],'test','enabled');
-      expect(spy.updateWordList).toHaveBeenCalledTimes(2);
-    });
-    it('calls correct snackbar message when word is added', () => {});
-
-    it('calls correct snackbar message when word is not added', () => {});
-  });
-
-
-
-
 
 
 });
