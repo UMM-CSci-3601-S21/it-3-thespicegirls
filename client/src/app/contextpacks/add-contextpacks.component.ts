@@ -23,6 +23,7 @@ export class AddContextpacksComponent implements OnInit {
   activeTab = this.tabs[0];
   selected = new FormControl(0);
   panelOpenState= false;
+  enabled = new FormControl(true);
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -71,10 +72,7 @@ export class AddContextpacksComponent implements OnInit {
       name: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      enabled: new FormControl('true', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(true|false)'),
-      ])),
+      enabled: true,
       icon: '',
       wordlists: this.fb.array([])
     });
@@ -87,10 +85,7 @@ export class AddContextpacksComponent implements OnInit {
       name: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      enabled: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(true|false)$'),
-      ])),
+      enabled: true,
       // ---------------------------------------------------------------------
       nouns: this.fb.array([]),
       adjectives: this.fb.array([]),
@@ -136,6 +131,10 @@ export class AddContextpacksComponent implements OnInit {
     console.log('didnt go through');
       control.setValue(formAdd);
       console.log(ix,iy);
+  }
+  toggleEnabled(){
+    console.log('button is being checked');
+    this.contextPackForm.controls.enabled.setValue(!this.contextPackForm.controls.enabled);
   }
 
 
