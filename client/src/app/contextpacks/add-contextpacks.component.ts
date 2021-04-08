@@ -5,8 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
-import { SocialAuthService, SocialUser } from 'angularx-social-login';
-import { Observable } from 'rxjs';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -15,6 +14,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./add-contextpacks.component.scss']
 })
 export class AddContextpacksComponent implements OnInit {
+  appComponent = new AppComponent(null,null,null);
   contextPackForm: FormGroup;
   isShown = false;
   contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
@@ -57,10 +57,10 @@ export class AddContextpacksComponent implements OnInit {
       }
     }
   };
-  isLoggedIn: boolean;
+  isSignedIn: boolean;
 
   constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
-    private snackBar: MatSnackBar, private router: Router, private socialAuthService: SocialAuthService) { }
+    private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit() {
     this.contextPackForm = this.fb.group({
@@ -75,17 +75,17 @@ export class AddContextpacksComponent implements OnInit {
       wordlists: this.fb.array([])
     });
     this.contextPackForm.valueChanges.subscribe(data => this.validateForm());
-    this.checkLoggedIn();
-  }
+    this.checkIfLoggedIn(localStorage.getItem('loggedIn'));
 
-  socialAuthState(): Observable<SocialUser>{
-    return this.socialAuthService.authState;
   }
-  checkLoggedIn(){
-    this.socialAuthState().subscribe((user) => {
-      console.log('it is alive');
-      this.isLoggedIn = true;
-    });
+  checkIfLoggedIn(log: string){
+    if (log === 'true'){
+      this.isSignedIn = true;
+    }
+    else{
+      this.isSignedIn = false;
+    }
+
   }
 
   initwordlist() {
