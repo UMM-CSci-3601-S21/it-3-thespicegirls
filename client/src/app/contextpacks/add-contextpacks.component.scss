@@ -6,41 +6,55 @@
   background-color: #f8f8f6;
 }
 
-label {
-  display: block;
-  width: 50em;
-  margin: .5em 0;
-  color:#01596e;
+div {
+  width: inherit;
 }
+.contextpackSection, .wordlist {
+  display: inline-block;
+  width: inherit;
+}
+
+.enabled-checkbox, .wordlist-enabled-checkbox{
+  padding: 10px;
+  display: inline-block;
+}
+.nameField, .iconField, .wordlist-nameField {
+  width: 40%;
+  padding:10px;
+}
+
 input {
-  height: 2em;
   font-size: 1em;
   padding-left: .4em;
+  color:#01596e;
 }
 
-// button {
-//   display: inline-table;
-//   z-index: 1;
-//   font-family: Arial, sans-serif;
-//   padding: 5px;
-//   border-radius: 5px;
-//   cursor: pointer;
-// }
-.delete-button{
-  margin: 5px;
-  border:none;
-  display: inline-block;
-  color: #F43911
+h2 {
+  color:#01596e;
 }
+
+.delete-button{
+  padding: 10px;
+  float: right;
+  color: #F43911;
+  border: none;
+  margin: 10px;
+}
+
 .add-button {
   border:none;
-  display: inline-block;
+}
+
+.cancelWord{
+  color: red;
+  float: right;
+}
+
+.nounButtons {
+  float: left;
 
 }
-.buttons-div{
-  background-color:none;
-  position:relative;
-}
+
 
 button:hover {
   background-color: #757474;
@@ -52,27 +66,37 @@ button:disabled {
   cursor: auto;
 }
 
+
+
 .misc {
+  display:inline-block;
   border: 3px solid#EDB76A;
   border-radius: 5px;
   padding: 10px;
-  width: 75%;
+  width: 25%;
   margin: 5px;
 }
 
-.nouns {
-  border: 3px solid#356398;
-  border-radius: 5px;
-  padding: 10px;
-  width: 75%;
+.nouns, .nounsform, .nounWord {
   margin: 5px;
+  padding: 5px;
+  align-items: left;
+}
+
+.nounsContainer, .verbsContainer, .adjectivesContainer, .miscContainer {
+  display: inline-block;
+}
+
+.noun-delete-button {
+  display: inline-block;
+  border: none;
 }
 
 .adjectives {
   border: 3px solid#7FA791;
   border-radius: 5px;
   padding: 10px;
-  width: 75%;
+  width: 25%;
   margin: 5px;
 }
 
@@ -80,22 +104,13 @@ button:disabled {
   border: 3px solid#F6F2C3;
   border-radius: 5px;
   padding: 10px;
-  width: 75%;
+  width: 25%;
   margin: 5px;
 }
 
-.wordlists{
-  border: 4px;
-  border-radius: 5px;
-  padding: 10px;
-  width: 60%;
-  margin: 5px;
-
-}
 .mat-card-title{
   color:#01596e;
 }
-
 
 h3{
   font-style:oblique;
