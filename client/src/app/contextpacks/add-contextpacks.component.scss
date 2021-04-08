@@ -77,17 +77,17 @@ button:disabled {
   margin: 5px;
 }
 
-.nouns, .nounsform, .nounWord {
+.nouns, .nounsform, .nounWord .adjectives {
   margin: 5px;
   padding: 5px;
   align-items: left;
 }
 
-.nounsContainer, .verbsContainer, .adjectivesContainer, .miscContainer {
+.posContainer {
   display: inline-block;
 }
 
-.noun-delete-button {
+.noun-delete-button, .cancelWord {
   display: inline-block;
   border: none;
 }

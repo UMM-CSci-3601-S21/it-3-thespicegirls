@@ -81,7 +81,7 @@
                             <mat-icon fxFlexAlign="center">add</mat-icon>
                           </button>
 
-                          <div class="nounsContainer" *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
+                          <div class="posContainer" *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
                             <div formGroupName="{{iy}}">
                               <mat-card class="nouns">
                                 <button mat-icon-button matTooltip="Remove Noun" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'nouns')">
@@ -130,13 +130,28 @@
                         <mat-expansion-panel-header>
                           <mat-panel-title>Adjectives</mat-panel-title>
                         </mat-expansion-panel-header>
+
                         <div formArrayName="adjectives" >
-                          <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective"><mat-icon>add</mat-icon></button>
-                          <div *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
-                            <div formGroupName="{{iy}}" class="adjectives" >
-                              <div>
-                                <mat-icon matTooltip="Remove Noun" matTooltipPosition="above" class="cancelWord" mat-mini-fab (click)="removeWord(ix, iy, 'adjectives')">cancel</mat-icon>
-                              </div>
+                          <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">
+                            <mat-icon>add</mat-icon>
+                          </button>
+
+                          <div class="posContainer" *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
+                            <div formGroupName="{{iy}}" class="nouns" >
+                              <mat-card class="nouns">
+                              <button mat-icon-button matTooltip="Remove Adjective" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'adjectives')">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                              <mat-card-subtitle class="nounButtons">
+
+                              <!-- add forms button -->
+                                <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')" matTooltip="add adjective forms">
+                                  <mat-icon>add</mat-icon>
+                                </button>
+
+                              </mat-card-subtitle>
+                              <mat-card-content>
+
                               <div *ngFor="let forms of adj['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
@@ -144,10 +159,11 @@
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
                                   </mat-form-field>
                                 </div>
-                                <ng-template #templateForms>
+
+                                <ng-template #templateForms class="nounsform">
                                   <mat-form-field formArrayName="forms">
                                     <mat-label>Forms:(optional) </mat-label>
-                                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
+                                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" >
                                   </mat-form-field>
 
                                   <!--delete forms button--->
@@ -158,13 +174,8 @@
                                   </div>
                                 </ng-template>
                               </div>
-
-                              <!-- add forms button -->
-                              <div class="add-button">
-                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')" matTooltip="add adjective forms">
-                                  <mat-icon>add</mat-icon>
-                                </button>
-                              </div>
+                            </mat-card-content>
+                              </mat-card>
                             </div>
                           </div>
                         </div>
@@ -181,7 +192,7 @@
                           <button mat-mini-fab class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb"><mat-icon>add</mat-icon></button>                          <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="verbs" >
                               <div>
-                                <mat-icon matTooltip="Remove Noun" matTooltipPosition="above" class="cancelWord" mat-mini-fab (click)="removeWord(ix, iy, 'verbs')">cancel</mat-icon>
+                                <mat-icon matTooltip="Remove Verb" matTooltipPosition="above" class="cancelWord" mat-mini-fab (click)="removeWord(ix, iy, 'verbs')">cancel</mat-icon>
                               </div>
                               <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
