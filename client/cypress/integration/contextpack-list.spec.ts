@@ -123,8 +123,10 @@ describe('Info Page Edit View', () => {
     page.navigateTo();
   });
 
-  it('Should click the edit button and delete a word', () => {
+  it('Should click the edit button and delete a word if they are an admin', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
 
     page.enableEditDeleteMode();
@@ -136,21 +138,13 @@ describe('Info Page Edit View', () => {
     cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
   });
 
-  it('Should click the edit button and fail to change the enabled status if not logged in to admin account', () => {
-    pageLogin.googleLogin();
-    page.clickViewInfo(page.getContextpackCards().first());
-
-    cy.get('.wordlist-enabled').eq(0).should('contain.text','Enabled');
-
-    page.enableEditDeleteMode();
-    cy.get('.wordlist-disable-button').should('be.visible');
-    cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Failed').wait(3000);
-    page.enableEditDeleteMode();
-    cy.get('.wordlist-enabled').eq(0).should('contain.text','Enabled ');
+  it('Should not see an edit button if not an admin', () => {
+    cy.get('.wordlist-disable-button').should('not.exist');
   });
   it('Should click the edit button and change the enabled status if logged into admin account', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
 
     cy.get('.wordlist-enabled').eq(0).should('contain.text','Enabled');
@@ -175,8 +169,10 @@ describe('Info Page Add View', () => {
   });
 
   it('Should click the add button and then fail to add a noun if not logged in to admin account', () => {
-    page.clickViewInfo(page.getContextpackCards().first());
     pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().first());
 
     page.enableAddMode();
     cy.get('.addNouns').click();
@@ -189,6 +185,9 @@ describe('Info Page Add View', () => {
   });
 
   it('Should click the add button and then add a noun', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
     pageLogin.googleAdminLogin();
     page.clickViewInfo(page.getContextpackCards().first());
 
@@ -205,6 +204,8 @@ describe('Info Page Add View', () => {
   });
 
   it('Should click the add button and then fail to add a noun', () => {
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
 
     page.enableAddMode();
