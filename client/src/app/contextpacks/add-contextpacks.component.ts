@@ -110,7 +110,7 @@ export class AddContextpacksComponent implements OnInit {
     const control = this.contextPackForm.controls.wordlists as FormArray;
     control.push(this.initwordlist());
     //Add tab
-    this.tabs.push('Wordlist ' + this.tabs.length);
+    this.tabs.push('Wordlist');
     this.selected.setValue(this.tabs.length - 1);
   }
   addPosArray(ix: number, pos: string){

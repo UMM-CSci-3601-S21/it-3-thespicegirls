@@ -72,9 +72,9 @@
                           <mat-panel-title>Nouns</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="nouns" >
-                          <button mat-mini-fab class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun">
+                          <button mat-mini-fab class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun" matTooltip="add new noun">
                             <mat-icon fxFlexAlign="center">add</mat-icon>
-                            </button>
+                          </button>
                           <div *ngFor="let nouns of wordlists['controls'].nouns['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="nouns">
                               <div>
@@ -104,8 +104,10 @@
                               </div>
 
                               <!--add forms button-->
-                              <div class="add-button">
-                                  <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')"></button>
+                              <div  class="add-button">
+                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')" matTooltip="add noun forms">
+                                  <mat-icon>add</mat-icon>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -150,7 +152,7 @@
 
                               <!-- add forms button -->
                               <div class="add-button">
-                                <button class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')">
+                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')" matTooltip="add adjective forms">
                                   <mat-icon>add</mat-icon>
                                 </button>
                               </div>
@@ -167,8 +169,7 @@
                           <mat-panel-title>Verbs</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="verbs">
-                          <button class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">Add Verb</button>
-                          <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
+                          <button mat-mini-fab class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb"><mat-icon>add</mat-icon></button>                          <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="verbs" >
                               <div>
                                 <button type="button" (click)="removeWord(ix, iy, 'verbs')">Remove Verb</button>
@@ -197,7 +198,7 @@
 
                               <!--add button-->
                               <div class="add-button">
-                                <button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')">
+                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="add verb forms">
                                   <mat-icon>add</mat-icon>
                                 </button>
                               </div>
@@ -214,8 +215,7 @@
                           <mat-panel-title>Misc</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="misc">
-                          <button class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"> Add Misc</button>
-                          <div *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
+                          <button mat-mini-fab class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"><mat-icon>add</mat-icon></button>                          <div *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="misc" >
                               <div>
                                 <button type="button" (click)="removeWord(ix, iy, 'misc')">Remove Misc</button>
@@ -244,7 +244,7 @@
 
                               <!--add button-->
                               <div class="add-button">
-                                <button class="add-button" type="button" (click)="addForms(ix, iy, 'misc')">
+                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'misc')" matTooltip="add misc forms">
                                   <mat-icon>add</mat-icon>
                                 </button>
                               </div>
@@ -261,6 +261,7 @@
                     <!-- word list delete button -->
                     <button type="button"
                     class="delete-button"
+                    [disabled]="tabs.length===1"
                     (click)="removeWordlists(ix)">
                     <mat-icon class="red-icon">delete</mat-icon>
                   </button>
