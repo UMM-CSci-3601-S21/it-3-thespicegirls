@@ -1,12 +1,9 @@
 <div *ngIf="isSignedIn === false || isSignedIn === undefined; else templateWords">
-    <h1 id="sign">Sign in to add context pack.</h1>
+    <h1 class="sign">Sign in to add context pack.</h1>
 </div>
-
+<ng-template #templateWords>
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-
-<ng-template #templateWords>
-
 <mat-tab-group>
 <mat-tab label="Add Form">
 <form [formGroup]="contextPackForm" (ngSubmit)="submitForm()" class="form">
@@ -319,6 +316,7 @@
 (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name).click()'><mat-icon>save_alt</mat-icon></button>
 </mat-tab>
 </mat-tab-group>
-
+</div>
+</div>
 </ng-template>
 

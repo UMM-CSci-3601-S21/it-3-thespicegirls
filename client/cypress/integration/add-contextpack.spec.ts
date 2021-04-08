@@ -8,11 +8,19 @@ describe('Add a Context pack', () => {
     page.navigateTo();
   });
 
+  it('should see need to login page if local storage isnt set up', () =>{
+    cy.get('.sign').eq(0).should('contain.text','Sign in to add context pack');
+
+  });
   it('Should have the correct title', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     page.getTitle().should('have.text', 'Create A New Context Pack');
   });
 
   it('Should add parts of speech when buttons are pushed and show a json file preview with button push', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     page.addWordlist();
     page.getJsonTab();
     page.contextPackForm().should('contain', 'nouns');
@@ -20,6 +28,8 @@ describe('Add a Context pack', () => {
     page.contextPackForm().should('contain', 'nouns');
   });
   it('should disable submission when needed', () =>{
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     page.addWordlist();
     page.addPosArray('noun');
 
@@ -29,6 +39,8 @@ describe('Add a Context pack', () => {
     page.addPackButton().should('be.enabled');
   });
   it('Should show error messages for invalid inputs', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     // Before doing anything there shouldn't be an error
     cy.get('[data-test=nameError]').should('not.exist');
     // Just clicking the name field without entering anything should cause an error message
@@ -54,8 +66,9 @@ describe('Add a Context pack', () => {
   });
 
   it('should add a new pack', () =>{
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     page.googleLogin();
-
     const pack: ContextPack = {
       _id: null,
       name: 'barn',
@@ -121,6 +134,8 @@ describe('Add a Context pack', () => {
   });
 
   it('should fail to add a new pack if not logged in', () =>{
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     const pack: ContextPack = {
       _id: null,
       name: 'barn',
