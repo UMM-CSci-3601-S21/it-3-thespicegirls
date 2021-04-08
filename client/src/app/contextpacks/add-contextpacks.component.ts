@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { AppComponent } from '../app.component';
 
-
 @Component({
   selector: 'app-add-contextpacks',
   templateUrl: './add-contextpacks.component.html',
@@ -18,6 +17,11 @@ export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
   contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
+  tabs = [];
+  activeTab = this.tabs[0];
+  selected = new FormControl(0);
+  panelOpenState= false;
+
 
   formErrors = {
     wordlists: this.wordlistsErrors()
@@ -67,10 +71,7 @@ export class AddContextpacksComponent implements OnInit {
       name: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      enabled: new FormControl('true', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(true|false)'),
-      ])),
+      enabled: true,
       icon: '',
       wordlists: this.fb.array([])
     });
@@ -85,10 +86,7 @@ export class AddContextpacksComponent implements OnInit {
       name: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      enabled: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^(true|false)$'),
-      ])),
+      enabled: true,
       // ---------------------------------------------------------------------
       nouns: this.fb.array([]),
       adjectives: this.fb.array([]),
@@ -101,7 +99,7 @@ export class AddContextpacksComponent implements OnInit {
   initNouns() {
     return this.fb.group({
       //  ---------------------forms fields on y level ------------------------
-      word: [''],
+      word: '',
       // ---------------------------------------------------------------------
       forms: this.fb.array([
         this.fb.control('')
@@ -112,6 +110,9 @@ export class AddContextpacksComponent implements OnInit {
   addWordlist() {
     const control = this.contextPackForm.controls.wordlists as FormArray;
     control.push(this.initwordlist());
+    //Add tab
+    this.tabs.push('Wordlist');
+    this.selected.setValue(this.tabs.length - 1);
   }
   addPosArray(ix: number, pos: string){
     const control = (this.contextPackForm.controls.wordlists as FormArray).at(ix).get(`${pos}`) as FormArray;
@@ -133,9 +134,16 @@ export class AddContextpacksComponent implements OnInit {
       console.log(ix,iy);
   }
 
+  toggleEnabled(){
+    console.log('button is being checked');
+    this.contextPackForm.controls.enabled.setValue(!this.contextPackForm.controls.enabled);
+  }
+
 
   removeWordlists(empIndex: number){
     (this.contextPackForm.controls.wordlists as FormArray).removeAt(empIndex);
+    //Remove tab
+    this.tabs.splice(empIndex, 1);
   }
 
   removeWord(ix: number, iy: number, pos: string){
@@ -212,9 +220,5 @@ return this.isShown;
       });
     });
   }
-
-
-
-
 
 }

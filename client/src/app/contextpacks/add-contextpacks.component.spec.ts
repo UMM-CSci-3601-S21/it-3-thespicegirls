@@ -85,16 +85,6 @@ describe('AddContextpacksComponent', () => {
     beforeEach(() => {
       enabledControl = component.contextPackForm.controls.enabled;
     });
-    it('should only allow boolean values', () => {
-      enabledControl.setValue('559546sd');
-      expect(enabledControl.valid).toBeFalsy();
-      enabledControl.setValue('true');
-      expect(enabledControl.valid).toBeTruthy();
-      enabledControl.setValue('True');
-      expect(enabledControl.valid).toBeFalsy();
-      enabledControl.setValue('false');
-      expect(enabledControl.valid).toBeTruthy();
-    });
   });
   describe('Add wordlist', () =>{
     it('should add a wordlist when prompted', () =>{
