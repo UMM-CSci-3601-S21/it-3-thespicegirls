@@ -138,6 +138,9 @@ public void loggedIn(Context ctx)  {
 
     ctx.json(user);
   }
+  else{
+    throw new BadRequestResponse("No user logged in");
+  }
 
 }
 }

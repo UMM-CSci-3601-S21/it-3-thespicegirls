@@ -230,7 +230,10 @@ public class UserControllerSpec {
     //And then asks if he is logged in
     userController.loggedIn(ctx2);
     String result2 = ctx2.resultString();
-    assertEquals("\"Thomas\"", result2);
+    String name = jsonMapper.readValue(result2, ObjectNode.class).get("name").asText();
+    String admin = jsonMapper.readValue(result2, ObjectNode.class).get("admin").asText();
+    assertEquals("Thomas", name);
+    assertEquals("false", admin);
 
   }
   @Test
