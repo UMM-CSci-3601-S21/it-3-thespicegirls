@@ -16,7 +16,17 @@ export class ContextPackService {
   constructor(private httpClient: HttpClient) {
   }
 
+  checkIfLoggedIn(log: string){
+    let isSignedIn: boolean;
+    if (log === 'true'){
+      isSignedIn = true;
+    }
+    else{
+      isSignedIn = false;
+    }
+    return isSignedIn;
 
+  }
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
