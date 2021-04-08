@@ -34,8 +34,12 @@ export class AppComponent implements OnInit {
       this.user = user2;
       this.isSignedin = true;
       localStorage.setItem('loggedIn', 'true');
+      if(res.admin === true){
+        localStorage.setItem('admin', 'true');
+      }
   }, err =>{
-    localStorage.setItem('loggedIn', 'false');
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('admin');
   });
   }
   askServerIfLoggedIn(): Observable<User>{
@@ -77,7 +81,8 @@ export class AppComponent implements OnInit {
     this.socialAuthService.signOut();
     this.sendLogOutToServer().subscribe(res => {
       this.isSignedin = false;
-      localStorage.setItem('loggedIn', 'false');
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('admin');
       this.reload();
   });
   }

@@ -27,6 +27,17 @@ export class ContextPackService {
     return isSignedIn;
 
   }
+  checkIfAdmin(log: string){
+    let isAdmin: boolean;
+    if (log === 'true'){
+      isAdmin = true;
+    }
+    else{
+      isAdmin = false;
+    }
+    return isAdmin;
+
+  }
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
