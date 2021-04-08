@@ -2,7 +2,7 @@
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
   <div *ngIf="isAdmin === false || isAdmin === undefined; else templateCards">
     <mat-card-header>
-      <mat-card-title><app-edit-contextpack class="contextpack-card-name" [value]="this.contextpack.name" (valueChangeEvents)="save('name', $event )"></app-edit-contextpack></mat-card-title>
+      <mat-card-title class="contextpack-card-name">{{this.contextpack.name}}</mat-card-title>
         <mat-card-subtitle class="contextpack-card-enabled">{{displayEnabled(this.contextpack.enabled)}}
           <div class="contextpack-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
           <div class="contextpack-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
@@ -32,7 +32,7 @@
 
         <div *ngIf="selected === 'true'; else templateWords">
           <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
-            <h2><app-edit-contextpack class="wordlist-name" [value]="this.contextpack.wordlists[index].name" (valueChangeEvents)="saveWordlist(contextpack.wordlists[index],'name',$event)"></app-edit-contextpack></h2>
+            <h2 class="wordlist-name">{{this.wordlists.name}}</h2>
             <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
             <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
             <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div></h4>
