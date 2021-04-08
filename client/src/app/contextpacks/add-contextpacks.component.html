@@ -127,7 +127,61 @@
                         <mat-expansion-panel-header>
                           <mat-panel-title>Verbs</mat-panel-title>
                         </mat-expansion-panel-header>
+                        <div formArrayName="verbs">
 
+                          <button mat-mini-fab matTooltip="Add Verb" class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
+                            <mat-icon>add</mat-icon>
+                          </button>
+
+                          <div class="posContainer" *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
+                            <div formGroupName="{{iy}}" class="verbs" >
+
+                              <mat-card class="verbs">
+                              <button mat-icon-button matTooltip="Remove Verb" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'verbs')">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                              <mat-card-subtitle class="nounButtons">
+                              <!--add button-->
+                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="Add Form" matTooltipPosition="above">
+                                <mat-icon>add</mat-icon>
+                              </button>
+
+                              </mat-card-subtitle>
+                              <mat-card-content fxLayout="column">
+
+                              <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
+                                <div *ngIf="iz === 0; else templateForms">
+                                  <mat-form-field formArrayName="forms">
+                                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
+                                  </mat-form-field>
+                                </div>
+                                <ng-template #templateForms>
+                                  <mat-form-field formArrayName="forms">
+                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
+                                  </mat-form-field>
+
+                                  <!--delete forms button--->
+                                  <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'verbs')"  >
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+                                </ng-template>
+                              </div>
+                            </mat-card-content>
+                            </mat-card>
+                            </div>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+
+
+                      <!-- Verbs End -->
+
+
+                      <!-- Adjectives -->
+                      <mat-expansion-panel class="adjective-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>Adjectives</mat-panel-title>
+                        </mat-expansion-panel-header>
                         <div formArrayName="adjectives" >
                           <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective" matTooltip="Add Adjective">
                             <mat-icon>add</mat-icon>
@@ -171,59 +225,6 @@
                               </div>
                             </mat-card-content>
                               </mat-card>
-                            </div>
-                          </div>
-                        </div>
-                      </mat-expansion-panel>
-                      <!-- Verbs End -->
-
-
-                      <!-- Adjectives -->
-                      <mat-expansion-panel class="adjective-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                        <mat-expansion-panel-header>
-                          <mat-panel-title>Adjectives</mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <div formArrayName="verbs">
-
-                          <button mat-mini-fab matTooltip="Add Verb" class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
-                            <mat-icon>add</mat-icon>
-                          </button>
-
-                          <div class="posContainer" *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
-                            <div formGroupName="{{iy}}" class="verbs" >
-
-                              <mat-card class="verbs">
-                              <button mat-icon-button matTooltip="Remove Verb" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'verbs')">
-                                <mat-icon>cancel</mat-icon>
-                              </button>
-                              <mat-card-subtitle class="nounButtons">
-                              <!--add button-->
-                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="Add Form" matTooltipPosition="above">
-                                <mat-icon>add</mat-icon>
-                              </button>
-
-                              </mat-card-subtitle>
-                              <mat-card-content fxLayout="column">
-
-                              <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
-                                <div *ngIf="iz === 0; else templateForms">
-                                  <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
-                                  </mat-form-field>
-                                </div>
-                                <ng-template #templateForms>
-                                  <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
-                                  </mat-form-field>
-
-                                  <!--delete forms button--->
-                                  <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'verbs')"  >
-                                    <mat-icon>delete</mat-icon>
-                                  </button>
-                                </ng-template>
-                              </div>
-                            </mat-card-content>
-                            </mat-card>
                             </div>
                           </div>
                         </div>
