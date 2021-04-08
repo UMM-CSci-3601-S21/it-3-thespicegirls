@@ -166,8 +166,6 @@ describe('Add a Context pack', () => {
   });
 
   it('should fail to add a new pack if not logged in', () =>{
-    page.showJson();
-
     const pack: ContextPack = {
       _id: null,
       name: 'barn',

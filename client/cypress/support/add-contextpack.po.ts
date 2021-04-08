@@ -37,9 +37,7 @@ export class AddPackPage {
   addPosArray(pos: string){
     return cy.get(`.add-${pos}-button`).click({force: true});
   }
-  showJson(fieldName: number){
-    return cy.get(`mat-tab`).click({force: true});;
-  }
+
   contextPackForm(){
     return cy.get('.form-value');
   }
