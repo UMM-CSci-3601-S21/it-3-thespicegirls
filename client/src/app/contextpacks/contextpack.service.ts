@@ -5,9 +5,6 @@ import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
 import { map } from 'rxjs/operators';
 
-
-
-
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';

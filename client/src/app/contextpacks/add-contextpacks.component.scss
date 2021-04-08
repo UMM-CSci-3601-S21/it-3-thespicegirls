@@ -6,47 +6,57 @@
   background-color: #f8f8f6;
 }
 
-label {
-  display: block;
-  width: 50em;
-  margin: .5em 0;
-  color:#01596e;
+div {
+  width: inherit;
 }
+.contextpackSection, .wordlist {
+  display: inline-block;
+  width: inherit;
+}
+
+.enabled-checkbox, .wordlist-enabled-checkbox{
+  padding: 10px;
+  display: inline-block;
+}
+.nameField, .iconField, .wordlist-nameField {
+  width: 40%;
+  padding:10px;
+}
+
 input {
-  height: 2em;
   font-size: 1em;
   padding-left: .4em;
+  color:#01596e;
 }
 
-button {
-  display: inline-table;
-  z-index: 1;
-  font-family: Arial, sans-serif;
-  background-color:#02c3eb;
-  border: 2px solid black;
-  padding: 5px;
-  border-radius: 5px;
-  cursor: pointer;
+h2 {
+  color:#01596e;
 }
+
 .delete-button{
-  margin: 5px;
-  border:none;
-  display: inline-block;
+  padding: 10px;
+  float: right;
+  color: #F43911;
+  border: none;
+  margin: 10px;
 }
+
 .add-button {
   border:none;
-  display: inline-block;
-
-
-}
-.buttons-div{
-  background-color:none;
-  position:relative;
 }
 
+.cancelWord{
+  color: #F43911;
+  float: right;
+}
+
+.nounButtons {
+  float: left;
+
+}
 
 button:hover {
-  background-color: #3baada;
+  background-color: #757474;
 }
 
 button:disabled {
@@ -55,25 +65,24 @@ button:disabled {
   cursor: auto;
 }
 
-.misc, .verbs, .nouns, .adjectives {
-  border: 3px solid#01596e;
-  border-radius: 5px;
-  padding: 10px;
-  width: 400px;
+.nouns, .nounsform, .nounWord .adjectives, .verbs, .misc {
   margin: 5px;
+  padding: 5px;
+  align-items: left;
 }
-.wordlists{
-  border: 4px solid #3baada;
-  border-radius: 5px;
-  padding: 10px;
-  width: 60%;
-  margin: 5px;
 
+.posContainer {
+  display: inline-block;
 }
+
+.noun-delete-button, .cancelWord {
+  display: inline-block;
+  border: none;
+}
+
 .mat-card-title{
   color:#01596e;
 }
-
 
 h3{
   font-style:oblique;
@@ -83,3 +92,54 @@ h3{
 .sidenav-list a{
   background-color:red;
 }
+
+.red-icon{
+  color: #F43911
+}
+
+.add-noun-button{
+  background-color: #356398;
+  border:none;
+  float:right;
+}
+
+.add-noun-button:focus{
+  background-color:  #356398;
+  text-decoration: none;
+  bottom:0;
+  margin-bottom:0;
+  float:right;
+}
+
+.add-adj-button{
+  background-color: #7FA791;
+  border:none;
+  float:right;
+}
+
+.add-verb-button{
+  background-color: #F6F2C3;
+  border:none;
+  float:right;
+  color: black;
+}
+
+.add-misc-button{
+  background-color: #EDB76A;
+  border:none;
+  float:right;
+  color: black;
+}
+
+.contextpack-download-button{
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  float: right;
+  background-color: #3baada;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+}
+
+
