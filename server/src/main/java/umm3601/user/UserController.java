@@ -44,18 +44,11 @@ public class UserController {
    * @param sub a string with users google ID
    * @return true or false based on if user exists in database
    */
-  public boolean getUser(String sub) {
+  public User getUser(String sub) {
     String id = sub;
     User user;
-    boolean exists;
-    user = userCollection.find(eq("sub", id)).first();
-    if (user == null) {
-      exists = false;
-    }
-    else {
-      exists = true;
-    }
-    return exists;
+    user = userCollection.find(eq("email", id)).first();
+    return user;
   }
 
 
@@ -93,10 +86,22 @@ public void checkToken(Context ctx) throws GeneralSecurityException, IOException
 public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
   Payload payload = idToken.getPayload();
+  User loggedUser = getUser(payload.get("email").toString());
 
-  if (getUser(payload.get("sub").toString())){
-    ctx.status(201);
-    ctx.json(ImmutableMap.of("id", "true"));
+  if (!(loggedUser == null)){
+    if (loggedUser.admin == true){
+      ctx.sessionAttribute("current-user", "ADMIN");
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", "true"));
+    }
+    else{
+      ctx.sessionAttribute("current-user", "USER");
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", "true"));
+    }
+
   }
   else{
     User user = new User();
@@ -108,12 +113,20 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
     user.familyName = (String) payload.get("family_name");
     user.givenName = (String) payload.get("given_name");
     user.sub = (String) payload.get("sub");
+    user.admin = false;
 
     String id = addNewUser(user);
+    ctx.sessionAttribute("current-user", "USER");
+    ctx.sessionAttribute("user-name", (String) payload.get("given_name"));
     ctx.status(201);
     ctx.json(ImmutableMap.of("id", id));
   }
   return ctx;
+}
+public void loggedIn(Context ctx)  {
+  if(!(ctx.sessionAttribute("user-name")==null)){
+    ctx.json(ctx.sessionAttribute("user-name").toString());
+  }
 
 }
 }

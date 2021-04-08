@@ -6,6 +6,7 @@ import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-soc
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,36 +14,53 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.scss']
 })
 
+
 export class AppComponent implements OnInit {
 
   user: SocialUser;
   isSignedin: boolean;
   title: string;
   readonly idTokenUrl: string = environment.apiUrl + 'users';
+  subscription: Subscription;
 
-  constructor(private socialAuthService: SocialAuthService, private httpClient: HttpClient, private snackBar: MatSnackBar) { }
+
+  constructor(private socialAuthService: SocialAuthService,
+    private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
-
+    this.askServerIfLoggedIn().subscribe(res => {
+      const user2 = new SocialUser();
+      user2.firstName = res.toString();
+      this.user = user2;
+      this.isSignedin = true;
+  });
+  }
+  askServerIfLoggedIn(): Observable<string>{
+    return this.httpClient.get<string>(this.idTokenUrl + '/' + 'loggedin');
   }
 
   sendToServer() {
-    this.socialAuthService.authState.subscribe((user) => {
+    this.socialAuthState().subscribe((user) => {
       this.user = user;
       console.log(this.user);
       this.addGoogleToken(this.user.idToken).subscribe(newID => {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
-        this.isSignedin = (user != null);
-        // this.router.navigate(['/contextpacks/', newID]);
+        this.isSignedin = (true);
       }, err => {
         this.snackBar.open('Failed login to server', 'OK', {
           duration: 5000,
         });
+        this.isSignedin = false;
         this.logout();
       });
     });
+    return this.isSignedin;
+  }
+
+  socialAuthState(): Observable<SocialUser>{
+    return this.socialAuthService.authState;
   }
 
   googleSignin(): void {
@@ -52,21 +70,27 @@ export class AppComponent implements OnInit {
 
   logout(): void {
     this.socialAuthService.signOut();
-    this.isSignedin = (false);
+    this.sendLogOutToServer().subscribe(res => {
+      this.isSignedin = false;
+      this.reload();
+  });
   }
+
+  reload(): void{
+    window.location.reload();
+  }
+
+  sendLogOutToServer(): Observable<string>{
+    return this.httpClient.get<string>(this.idTokenUrl + '/' + 'logout');
+  }
+
   returnTitle(){
     return 'Word River';
   }
 
   addGoogleToken(token: string): Observable<string>{
-    // Send post request to add a new user with the user data as the body.
-
     console.log(this.idTokenUrl);
     return this.httpClient.post<{id: string}>(this.idTokenUrl, token).pipe(map(res => res.id));
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('POST', this.idTokenUrl);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    // xhr.send(token);
   }
+
 }
