@@ -23,6 +23,10 @@ export class AddPackPage {
   getFormField(fieldName: string) {
     return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
   }
+  getJsonTab() {
+    return cy.get(`.mat-tab-label`).click({multiple: true,force: true});
+  }
+
 
   addWordlist(){
     return cy.get('.add-wordlist-button').click({force: true});
@@ -30,8 +34,8 @@ export class AddPackPage {
   addPosArray(pos: string){
     return cy.get(`.add-${pos}-button`).click({force: true});
   }
-  showJson(){
-    return cy.get('[data-test="showJsonButton"]').click({force: true});
+  showJson(fieldName: number){
+    return cy.get(`mat-tab`).click({force: true});;
   }
   contextPackForm(){
     return cy.get('.form-value');
@@ -40,9 +44,9 @@ export class AddPackPage {
 
 
 
+
   addPack(newPack: ContextPack) {
     this.getFormField('name').type(newPack.name);
-    this.getFormField('enabled').click({force: true});
     this.addWordlist();
     this.addPosArray('noun');
     this.addPosArray('verb');
@@ -53,7 +57,6 @@ export class AddPackPage {
         [...els].forEach(el => cy.wrap(el).type('horsies', {force:true}));
       });
     }
-    this.selectMatSelectValue(this.getFormField('enabled'), newPack.enabled.toString());
     return this.addPackButton().click({ multiple: true, force:true });
   }
 }

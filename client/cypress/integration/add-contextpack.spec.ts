@@ -14,28 +14,25 @@ describe('Add a Context pack', () => {
 
   it('Should add parts of speech when buttons are pushed and show a json file preview with button push', () => {
     page.addWordlist();
-    page.showJson();
+    page.getJsonTab();
     page.contextPackForm().should('contain', 'nouns');
     page.addPosArray(`noun`);
     page.contextPackForm().should('contain', 'nouns');
   });
   it('should disable submission when needed', () =>{
-    page.addPackButton().should('be.disabled');
     page.addWordlist();
     page.addPosArray('noun');
-    page.showJson();
-    page.addPackButton().should('be.disabled');
+
     page.getFormField('name').then(els => {
-      [...els].forEach(el => cy.wrap(el).type('Hello World'));
+      [...els].forEach(el => cy.wrap(el).type('Hello World', {force:true}));
     });
-    page.addPackButton().should('be.disabled');
-    page.selectMatSelectValue( page.getFormField('enabled'), 'true'  );
+    page.addPackButton().should('be.enabled');
   });
   it('Should show error messages for invalid inputs', () => {
     // Before doing anything there shouldn't be an error
     cy.get('[data-test=nameError]').should('not.exist');
     // Just clicking the name field without entering anything should cause an error message
-    page.showJson();
+
     page.getFormField('name').click().blur();
     cy.get('[data-test=nameError]').should('exist').and('be.visible');
     // Entering a valid name should remove the error.
@@ -57,8 +54,6 @@ describe('Add a Context pack', () => {
   });
 
   it('should add a new pack', () =>{
-    page.showJson();
-
     const pack: ContextPack = {
       _id: null,
       name: 'barn',
