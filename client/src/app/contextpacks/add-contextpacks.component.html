@@ -47,7 +47,7 @@
 
                     <!-- word list name -->
                       <mat-form-field class="wordlist-nameField">
-                        <input matInput placeholder="Name" formControlName="name" required>
+                        <input class="wordlistName" matInput placeholder="Name" formControlName="name" required>
                         <mat-error *ngFor="let validation of validationMessages.wordlists.name">
                           <mat-error class="error-message" data-test="nameError"
                           *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
@@ -69,8 +69,8 @@
                     <!-- Nouns -->
                     <mat-accordion>
                       <mat-expansion-panel class="noun-accordion"  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                        <mat-expansion-panel-header class="noun-accordion">
-                          <mat-panel-title>Nouns</mat-panel-title>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title class="noun-accordion2">Nouns</mat-panel-title>
                         </mat-expansion-panel-header>
 
                         <div formArrayName="nouns" >
@@ -97,7 +97,7 @@
                                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                                     <div *ngIf="iz === 0; else templateForms">
                                       <mat-form-field class="nounWord" formArrayName="forms">
-                                        <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'nouns')">
+                                        <input class="nounInput" autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'nouns')">
                                       </mat-form-field>
                                     </div>
 
@@ -152,12 +152,12 @@
                               <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
+                                    <input class="verbInput" autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
                                   </mat-form-field>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
+                                    <input class="verbForm" autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
                                   </mat-form-field>
 
                                   <!--delete forms button--->
@@ -206,13 +206,13 @@
                               <div *ngFor="let forms of adj['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <input required autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
+                                    <input required class="adjectiveInput" autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
                                   </mat-form-field>
                                 </div>
 
                                 <ng-template #templateForms class="nounsform">
                                   <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz" >
+                                    <input class="adjectiveForm" autocomplete="off" matInput placeholder="Form" [formControlName]="iz" >
                                   </mat-form-field>
 
                                   <!--delete forms button--->
@@ -259,12 +259,12 @@
                               <div *ngFor="let forms of misc['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
+                                    <input class="miscInput" autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
                                   </mat-form-field>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
-                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
+                                    <input class="miscForm" autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
                                   </mat-form-field>
 
                                   <!--delete forms button--->

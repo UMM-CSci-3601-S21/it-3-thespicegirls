@@ -26,6 +26,7 @@ export class AddPackPage {
   getFormField(fieldName: string) {
     return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
   }
+
   getJsonTab() {
     return cy.get(`.mat-tab-label`).click({multiple: true,force: true});
   }
@@ -42,24 +43,39 @@ export class AddPackPage {
     return cy.get('.form-value');
   }
 
-
-
-
-
   addPack(newPack: ContextPack) {
     this.getFormField('name').type(newPack.name);
+    let index = 1;
+    for(const wordlist of newPack.wordlists){
     this.addWordlist();
-    this.addPosArray('noun');
-    this.addPosArray('verb');
-    this.addPosArray('adj');
-    this.addPosArray('misc');
-    if (newPack.wordlists) {
-      this.getFormField('name').then(els => {
-        [...els].forEach(el => cy.wrap(el).type('horsies', {force:true}));
-      });
+    this.getFormField('name').eq(index).type(wordlist.name);
+    index++;
+    let w = 0;
+    let i = 0;
+    for(const wordPos of [wordlist.nouns,wordlist.verbs,wordlist.adjectives,wordlist.misc]){
+      const accordions = ['.noun-accordion','.verb-accordion','.adjective-accordion','.misc-accordion'];
+      let a = 0;
+    for(const word of wordPos){
+      const arrayOptions = ['noun','verb','adjective','misc'];
+      const inputOptions = ['.nounInput','.verbInput','.adjectiveInput','.miscInput'];
+      const formOptions = ['.nounForm','.verbForm','.adjectiveForm','.miscForm'];
+      cy.get(accordions[i]).click();
+      this.addPosArray(arrayOptions[i]);
+      cy.get(inputOptions[i]).type(word.word);
+      let f = 0;
+      for(const form of word.forms){
+        cy.get('.add-button').eq(w).click();
+        cy.get(formOptions[i]).eq(f).type(form);
+        f++;
+      }
+      w++;
+      a++;
     }
-    return this.addPackButton().click({ multiple: true, force:true });
+    i++;
   }
+}
+    return this.addPackButton().click({ multiple: true, force:true });
+}
 
 
 

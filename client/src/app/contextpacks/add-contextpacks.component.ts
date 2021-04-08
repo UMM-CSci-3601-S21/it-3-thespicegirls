@@ -94,9 +94,7 @@ export class AddContextpacksComponent implements OnInit {
   initNouns() {
     return this.fb.group({
       //  ---------------------forms fields on y level ------------------------
-      word: new FormControl('', Validators.compose([
-        Validators.required,
-      ])),
+      word: '',
       // ---------------------------------------------------------------------
       forms: this.fb.array([
         this.fb.control('')
