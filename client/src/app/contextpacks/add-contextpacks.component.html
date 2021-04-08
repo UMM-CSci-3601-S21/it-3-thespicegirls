@@ -154,9 +154,6 @@
                                   <mat-form-field formArrayName="forms">
                                     <input required autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
                                   </mat-form-field>
-                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'verbs')" matTooltip="delete this word">
-                                    <mat-icon>delete</mat-icon>
-                                  </button>
                                 </div>
 
                                 <ng-template #templateForms class="nounsform">
@@ -213,9 +210,6 @@
                                   <mat-form-field formArrayName="forms">
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
                                   </mat-form-field>
-                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'adjectives')" matTooltip="delete this word">
-                                    <mat-icon>delete</mat-icon>
-                                  </button>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
@@ -266,9 +260,6 @@
                                   <mat-form-field formArrayName="forms">
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
                                   </mat-form-field>
-                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'nouns')" matTooltip="delete this word">
-                                    <mat-icon>delete</mat-icon>
-                                  </button>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
