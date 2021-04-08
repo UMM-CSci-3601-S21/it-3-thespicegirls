@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {ContextPack} from 'src/app/contextpacks/contextpack';
-
+const half1 = 'mAXr0aPv9HU2';
+const half2 = 'ZqzYWTm6o3-n';
+const secret = half1 + half2;
 export class AddPackPage {
   navigateTo() {
     return cy.visit('/edit');
@@ -58,5 +61,50 @@ export class AddPackPage {
       });
     }
     return this.addPackButton().click({ multiple: true, force:true });
+  }
+
+
+
+  googleLogin(){
+  cy.request({
+    method: 'POST',
+    url: 'https://www.googleapis.com/oauth2/v4/token',
+    body: {
+      grant_type: 'refresh_token',
+      client_id: '239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com',
+      client_secret: secret,
+      refresh_token: '1//04PtCRYlxcBhaCgYIARAAGAQSNwF-L9IreHQjyhF-I-dhSUXxeumuvI8gkohBwRfSPp7f_PxGL-TvHaKU7zTF6vlUXpz5DaMYK68',
+    },
+  }).then(this.googleMethod());
+  }
+
+  googleAdminLogin(){
+  cy.request({
+    method: 'POST',
+    url: 'https://www.googleapis.com/oauth2/v4/token',
+    body: {
+      grant_type: 'refresh_token',
+      client_id: '239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com',
+      client_secret: secret,
+      refresh_token: '1//04waMMGEB5ZeYCgYIARAAGAQSNwF-L9Ir-i0RDTKrc64pPSiG3exu4kMvfo0R5LmnKJWAFBOsJ98PrY3UsL1jIRv9Zih1vaBMxfY',
+    },
+  }).then(this.googleMethod());
+  }
+
+  private googleMethod(): (this: Cypress.ObjectLike, currentSubject: Cypress.Response) => void {
+    return ({ body }) => {
+      const { access_token, id_token } = body;
+      cy.request({
+        method: 'GET',
+        url: 'https://www.googleapis.com/oauth2/v3/userinfo',
+        headers: { Authorization: `Bearer ${access_token}` },
+        // eslint-disable-next-line no-shadow
+      }).then(({ body }) => {
+        cy.request('POST', 'api/users', id_token).then(
+          (response) => {
+          }
+        );
+      });
+    };
   }
 }

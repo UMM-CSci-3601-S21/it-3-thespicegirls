@@ -2,9 +2,9 @@ package umm3601.user;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,6 +22,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.json.webtoken.JsonWebSignature.Header;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
+import com.mockrunner.mock.web.MockHttpSession;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
@@ -51,6 +52,7 @@ public class UserControllerSpec {
 
   MockHttpServletRequest mockReq = new MockHttpServletRequest();
   MockHttpServletResponse mockRes = new MockHttpServletResponse();
+  MockHttpSession mockSession = new MockHttpSession();
 
   private UserController userController;
 
@@ -79,6 +81,7 @@ public class UserControllerSpec {
     // Reset our mock request and response objects
     mockReq.resetAll();
     mockRes.resetAll();
+    mockSession.resetAll();
 
     // Setup database
     MongoCollection<Document> userDocuments = db.getCollection("users");
@@ -87,11 +90,18 @@ public class UserControllerSpec {
     testUsers.add(
       new Document()
         .append("name", "Chris")
+        .append("email", "chris@mail.com")
         .append("sub", "123456789"));
     testUsers.add(
       new Document()
         .append("name", "Jamie")
         .append("sub", "thissubhasletters"));
+        testUsers.add(
+      new Document()
+        .append("name", "Admin")
+        .append("email", "admin@mail.com")
+        .append("admin", true)
+        .append("sub", "54321"));
 
     userDocuments.insertMany(testUsers);
     userController = new UserController(db);
@@ -107,11 +117,11 @@ public class UserControllerSpec {
   @Test
   public void ExistentIdShouldBeTrue() throws IOException {
 
-    String testID = "123456789";
-    String testID2 = "thissubhasletters";
+    String testID = "admin@mail.com";
+    String testID2 = "chris@mail.com";
 
-    assertTrue(userController.getUser(testID));
-    assertTrue(userController.getUser(testID2));
+    assertNotNull(userController.getUser(testID));
+    assertNotNull(userController.getUser(testID2));
 
   }
 
@@ -119,14 +129,14 @@ public class UserControllerSpec {
   public void GetUserWithBadId() throws IOException {
     String testID = "987654321";
 
-    assertFalse(userController.getUser(testID));
+    assertNull(userController.getUser(testID));
 
   }
 
   @Test
   public void GetUserWithNonexistentId() throws IOException {
 
-    assertFalse(userController.getUser(""));
+    assertNull(userController.getUser(""));
 
   }
 
@@ -134,9 +144,10 @@ public class UserControllerSpec {
   public void AddUser() throws IOException {
     User user = new User();
     user.name = "Thom";
+    user.email = "thom@mail.com";
     user.sub = "number";
     userController.addNewUser(user);
-    assertTrue(userController.getUser("number"));
+    assertNotNull(userController.getUser("thom@mail.com"));
 
     assertEquals(1, db.getCollection("users").countDocuments(eq("sub", "number")));
 
@@ -167,24 +178,26 @@ public class UserControllerSpec {
     String testToken = "12345";
     mockReq.setBodyContent(testToken);
     mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
     Header header = new Header();
     header.set("alg", "RS256");
     Payload payload = new Payload();
     payload.set("name", "Thomas");
-    payload.set("email", "Thomas");
+    payload.set("email", "Thomas@mail");
     payload.set("email_verified", true);
-    payload.set("pictureUrl", "Thomas");
-    payload.set("locale", "Thomas");
-    payload.set("familyName", "Thomas");
-    payload.set("givenName", "Thomas");
-    payload.set("sub", "Thomas");
+    payload.set("picture", "ThomasPicture");
+    payload.set("locale", "EN");
+    payload.set("family_name", "Joe");
+    payload.set("given_name", "Thomas");
+    payload.set("sub", "12345");
     byte[] signatureBytes = {1};
     byte[] signedContentBytes = {1};
     GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
 
     userController.userTokenChecker(idToken, ctx);
+    assertEquals("USER", mockSession.getAttribute("current-user").toString());
 
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
@@ -195,8 +208,14 @@ public class UserControllerSpec {
     Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(id))).first();
     assertNotNull(addedUser);
     assertEquals("Thomas", addedUser.getString("name"));
-    assertEquals("Thomas", addedUser.getString("sub"));
-    assertEquals("Thomas", addedUser.getString("email"));
+    assertEquals("Thomas@mail", addedUser.getString("email"));
+    assertTrue(addedUser.getBoolean("emailVerified"));
+    assertEquals("ThomasPicture", addedUser.getString("pictureUrl"));
+    assertEquals("EN", addedUser.getString("locale"));
+    assertEquals("Joe", addedUser.getString("familyName"));
+    assertEquals("Thomas", addedUser.getString("givenName"));
+    assertEquals("12345", addedUser.getString("sub"));
+
 
     //This test makes sure an already added user doesn't get added again
     mockReq.clearAttributes();
@@ -206,7 +225,60 @@ public class UserControllerSpec {
     Context ctx2 = ContextUtil.init(mockReq, mockRes, "api/users");
     userController.userTokenChecker(idToken, ctx2);
     assertEquals(201, mockRes.getStatus());
-    assertEquals(3, db.getCollection("users").countDocuments());
+    assertEquals(4, db.getCollection("users").countDocuments());
+
+    //And then asks if he is logged in
+    userController.loggedIn(ctx2);
+    String result2 = ctx2.resultString();
+    assertEquals("\"Thomas\"", result2);
+
+  }
+  @Test
+  public void NotLoggedChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "12345";
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+
+    userController.loggedIn(ctx);
+    String result3 = ctx.resultString();
+    assertNull(result3);
+
+  }
+  @Test
+  public void GoodAdminChecker() throws GeneralSecurityException, IOException {
+
+    String testToken = "12345";
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+    mockReq.setSession(mockSession);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    Header header = new Header();
+    header.set("alg", "RS256");
+    Payload payload = new Payload();
+    payload.set("name", "Thomas");
+    payload.set("email", "admin@mail.com");
+    payload.set("email_verified", true);
+    payload.set("picture", "ThomasPicture");
+    payload.set("locale", "EN");
+    payload.set("family_name", "Joe");
+    payload.set("given_name", "Thomas");
+    payload.set("sub", "54321");
+    byte[] signatureBytes = {1};
+    byte[] signedContentBytes = {1};
+    GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
+
+    userController.userTokenChecker(idToken, ctx);
+    assertEquals("ADMIN", mockSession.getAttribute("current-user").toString());
+
+    assertEquals(201, mockRes.getStatus());
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+    assertEquals("true", id);
 
   }
 }

@@ -16,4 +16,5 @@ public class User {
  public String familyName;
  public String givenName;
  public String sub;
+ public Boolean admin;
 }

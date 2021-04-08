@@ -9,6 +9,8 @@ services:
     environment:
       CADDY_HOST: "${APP_HOST:-localhost}" # The domain/host to serve to
       CADDY_GLOBAL_OPTIONS: "${APP_CADDY_GLOBAL_OPTIONS}" # A valid Caddy global option, see Caddyfile
+      API_SECRET: ${{secrets.API_SECRET}}
+      OLD_SECRET: ${{secrets.OLD_IDTOKEN}}
     ports:
       - "80:80" # http
       - "443:443" # https
@@ -21,6 +23,8 @@ services:
       MONGO_ADDR: mongo # hostname of the mongo container
       MONGO_DB: prod
       WAIT_HOSTS: mongo:27017 # wait for mongo to start up before starting the server
+      API_SECRET: ${{secrets.API_SECRET}}
+      OLD_SECRET: ${{secrets.OLD_IDTOKEN}}
     depends_on:
       - mongo
   mongo:
