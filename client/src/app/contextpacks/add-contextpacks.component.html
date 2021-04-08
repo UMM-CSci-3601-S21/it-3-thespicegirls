@@ -137,7 +137,7 @@
                           </button>
 
                           <div class="posContainer" *ngFor="let adj of wordlists['controls'].adjectives['controls']; let iy=index">
-                            <div formGroupName="{{iy}}" class="nouns" >
+                            <div formGroupName="{{iy}}" class="adjectives" >
                               <mat-card class="nouns">
                               <button mat-icon-button matTooltip="Remove Adjective" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'adjectives')">
                                 <mat-icon>cancel</mat-icon>
@@ -167,11 +167,11 @@
                                   </mat-form-field>
 
                                   <!--delete forms button--->
-                                  <div class="delete-button">
-                                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'adjectives')"  >
+
+                                    <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'adjectives')"  >
                                       <mat-icon>delete</mat-icon>
                                     </button>
-                                  </div>
+
                                 </ng-template>
                               </div>
                             </mat-card-content>
@@ -189,11 +189,27 @@
                           <mat-panel-title>Verbs</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="verbs">
-                          <button mat-mini-fab class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb"><mat-icon>add</mat-icon></button>                          <div *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
+
+                          <button mat-mini-fab class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
+                            <mat-icon>add</mat-icon>
+                          </button>
+
+                          <div class="posContainer" *ngFor="let verbs of wordlists['controls'].verbs['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="verbs" >
-                              <div>
-                                <mat-icon matTooltip="Remove Verb" matTooltipPosition="above" class="cancelWord" mat-mini-fab (click)="removeWord(ix, iy, 'verbs')">cancel</mat-icon>
-                              </div>
+
+                              <mat-card class="verbs">
+                              <button mat-icon-button matTooltip="Remove Verb" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'verbs')">
+                                <mat-icon>cancel</mat-icon>
+                              </button>
+                              <mat-card-subtitle class="nounButtons">
+                              <!--add button-->
+                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="add verb forms">
+                                <mat-icon>add</mat-icon>
+                              </button>
+
+                              </mat-card-subtitle>
+                              <mat-card-content>
+
                               <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
@@ -208,20 +224,14 @@
                                   </mat-form-field>
 
                                   <!--delete forms button--->
-                                  <div class="delete-button">
-                                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'verbs')"  >
-                                      <mat-icon>delete</mat-icon>
-                                    </button>
-                                  </div>
+                                  <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'verbs')"  >
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+                                  <!--delete forms button-->
                                 </ng-template>
                               </div>
-
-                              <!--add button-->
-                              <div class="add-button">
-                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="add verb forms">
-                                  <mat-icon>add</mat-icon>
-                                </button>
-                              </div>
+                            </mat-card-content>
+                            </mat-card>
                             </div>
                           </div>
                         </div>
@@ -235,11 +245,24 @@
                           <mat-panel-title>Misc</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="misc">
-                          <button mat-mini-fab class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc"><mat-icon>add</mat-icon></button>                          <div *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
+
+                          <button mat-mini-fab class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                          <div class="posContainer" *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
                             <div formGroupName="{{iy}}" class="misc" >
-                              <div>
-                                <mat-icon matTooltip="Remove Noun" matTooltipPosition="above" class="cancelWord" mat-mini-fab (click)="removeWord(ix, iy, 'misc')">cancel</mat-icon>
-                              </div>
+
+                              <mat-card class="misc">
+                                <button mat-icon-button matTooltip="Remove Misc" matTooltipPosition="above" class="cancelWord" (click)="removeWord(ix, iy, 'misc')">
+                                  <mat-icon>cancel</mat-icon>
+                                </button>
+                                <mat-card-subtitle class="nounButtons">
+                              <!--add button-->
+                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'misc')" matTooltip="add misc forms">
+                                <mat-icon>add</mat-icon>
+                              </button>
+                                </mat-card-subtitle>
+                                <mat-card-content>
                               <div *ngFor="let forms of misc['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
@@ -254,20 +277,14 @@
                                   </mat-form-field>
 
                                   <!--delete forms button--->
-                                  <div class="delete-button">
-                                    <button class="delete-button"(click)="removeForm(ix, iy, iz, 'misc')"  >
-                                      <mat-icon>delete</mat-icon>
-                                    </button>
-                                  </div>
+                                  <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'misc')"  >
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+
                                 </ng-template>
                               </div>
-
-                              <!--add button-->
-                              <div class="add-button">
-                                <button  mat-mini-fab class="add-button" type="button" (click)="addForms(ix, iy, 'misc')" matTooltip="add misc forms">
-                                  <mat-icon>add</mat-icon>
-                                </button>
-                              </div>
+                            </mat-card-content>
+                            </mat-card>
                             </div>
                           </div>
                         </div>

@@ -68,16 +68,8 @@ button:disabled {
 
 
 
-.misc {
-  display:inline-block;
-  border: 3px solid#EDB76A;
-  border-radius: 5px;
-  padding: 10px;
-  width: 25%;
-  margin: 5px;
-}
 
-.nouns, .nounsform, .nounWord .adjectives {
+.nouns, .nounsform, .nounWord .adjectives, .verbs, .misc {
   margin: 5px;
   padding: 5px;
   align-items: left;
@@ -92,21 +84,8 @@ button:disabled {
   border: none;
 }
 
-.adjectives {
-  border: 3px solid#7FA791;
-  border-radius: 5px;
-  padding: 10px;
-  width: 25%;
-  margin: 5px;
-}
 
-.verbs {
-  border: 3px solid#F6F2C3;
-  border-radius: 5px;
-  padding: 10px;
-  width: 25%;
-  margin: 5px;
-}
+
 
 .mat-card-title{
   color:#01596e;
