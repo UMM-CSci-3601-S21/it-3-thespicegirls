@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
 import { map } from 'rxjs/operators';
+import { User } from './user';
 
 
 
@@ -11,6 +12,7 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
+  readonly idTokenUrl: string = environment.apiUrl + 'users';
   constructor(private httpClient: HttpClient) {
   }
 
@@ -20,6 +22,10 @@ export class ContextPackService {
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
       params: httpParams,
     });
+  }
+
+  askServerIfLoggedIn(): Observable<User>{
+    return this.httpClient.get<User>(this.idTokenUrl + '/' + 'loggedin');
   }
 
   getContextPackById(id: string): Observable<ContextPack> {
