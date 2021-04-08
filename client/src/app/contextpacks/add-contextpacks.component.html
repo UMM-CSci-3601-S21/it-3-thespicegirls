@@ -122,10 +122,10 @@
                       <!-- Nouns End -->
 
 
-                      <!-- Adjectives -->
-                      <mat-expansion-panel class="adjective-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                      <!-- Verbs -->
+                      <mat-expansion-panel class="verb-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
-                          <mat-panel-title>Adjectives</mat-panel-title>
+                          <mat-panel-title>Verbs</mat-panel-title>
                         </mat-expansion-panel-header>
 
                         <div formArrayName="adjectives" >
@@ -154,6 +154,9 @@
                                   <mat-form-field formArrayName="forms">
                                     <input required autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
                                   </mat-form-field>
+                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'verbs')" matTooltip="delete this word">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
                                 </div>
 
                                 <ng-template #templateForms class="nounsform">
@@ -175,13 +178,13 @@
                           </div>
                         </div>
                       </mat-expansion-panel>
-                      <!-- Adjectives End -->
+                      <!-- Verbs End -->
 
 
-                      <!-- Verbs -->
-                      <mat-expansion-panel class="verb-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                      <!-- Adjectives -->
+                      <mat-expansion-panel class="adjective-accordion" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                         <mat-expansion-panel-header>
-                          <mat-panel-title>Verbs</mat-panel-title>
+                          <mat-panel-title>Adjectives</mat-panel-title>
                         </mat-expansion-panel-header>
                         <div formArrayName="verbs">
 
@@ -210,6 +213,9 @@
                                   <mat-form-field formArrayName="forms">
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
                                   </mat-form-field>
+                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'adjectives')" matTooltip="delete this word">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
@@ -228,7 +234,7 @@
                           </div>
                         </div>
                       </mat-expansion-panel>
-                      <!-- Verbs End -->
+                      <!-- Adjectives End -->
 
 
                       <!-- Misc -->
@@ -260,6 +266,9 @@
                                   <mat-form-field formArrayName="forms">
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
                                   </mat-form-field>
+                                  <button class="delete-word-button" (click)="removeWord(ix, iy, 'nouns')" matTooltip="delete this word">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
@@ -313,4 +322,5 @@
 
 <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary' [disabled]="!contextPackForm.valid"
 (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name).click()'><mat-icon>save_alt</mat-icon></button>
+
 
