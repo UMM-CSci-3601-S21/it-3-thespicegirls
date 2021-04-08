@@ -11,7 +11,7 @@
       <div class="contextpackSection">
           <!-- context pack name -->
           <mat-form-field class="nameField">
-            <input matInput placeholder="Name" formControlName="name" required>
+            <input autocomplete="off" matInput placeholder="Name" formControlName="name" required>
             <mat-error *ngFor="let validation of validationMessages.wordlists.name">
               <mat-error  class="error-message" data-test="nameError"
               *ngIf="contextPackForm.get('name').hasError(validation.type) && (contextPackForm.get('name').dirty || contextPackForm.get('name').touched)">
@@ -23,7 +23,7 @@
 
           <!-- context pack icon -->
           <mat-form-field class="iconField">
-            <input matInput placeholder="Icon" formControlName="icon">
+            <input autocomplete="off" matInput placeholder="Icon" formControlName="icon">
           </mat-form-field>
 
         <!-- context pack enabled -->
