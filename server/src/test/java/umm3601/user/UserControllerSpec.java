@@ -245,12 +245,14 @@ public class UserControllerSpec {
     mockReq.setSession(mockSession);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/users");
+    boolean result = false;
+    try{
+      userController.loggedIn(ctx);
+      }catch(BadRequestResponse ref){result = true;}
 
-    userController.loggedIn(ctx);
-    String result3 = ctx.resultString();
-    assertNull(result3);
-
+    assertTrue(result);
   }
+
   @Test
   public void GoodAdminChecker() throws GeneralSecurityException, IOException {
 
