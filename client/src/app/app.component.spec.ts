@@ -9,6 +9,7 @@ import {  NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable, of, throwError } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { User } from './contextpacks/user';
 
 describe('Context Pack service: ', () => {
 
@@ -37,6 +38,11 @@ const observableString = new Observable<string>((observer) => {
   observer.next('12345');
   observer.complete();
 });
+const userTest: User = {
+  name: 'Thomas',
+  admin: true
+};
+
 
   let appService: AppComponent;
   // These are used to mock the HTTP requests so that we (a) don't have to
@@ -47,6 +53,7 @@ const observableString = new Observable<string>((observer) => {
   let matSnackBar: MatSnackBar;
   let spy: any;
   let spy2: any;
+  let spy3: any;
 
   let apiSpy: any;
 
@@ -100,6 +107,7 @@ const observableString = new Observable<string>((observer) => {
     appService.isSignedin = false;
     spy = spyOn(appService, 'socialAuthState').and.returnValue(goodUser);
     spy2 = spyOn(appService, 'addGoogleToken').and.returnValue(observableString);
+    spy3 = spyOn(appService, 'reload').and.returnValue();
     appService.sendToServer();
 
     expect(appService.isSignedin).toBeTruthy();
@@ -107,16 +115,19 @@ const observableString = new Observable<string>((observer) => {
     expect(appService.user.name).toEqual('joe');
     expect(spy).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
+    expect(spy3).toHaveBeenCalled();
   });
   it(`should spy on sendToServer() and make sure it makes an api request to api/users`, () => {
     appService.isSignedin = false;
     spy = spyOn(appService, 'socialAuthState').and.returnValue(goodUser);
+    spy2 = spyOn(appService, 'reload').and.returnValue();
     appService.sendToServer();
     const req = httpTestingController.expectOne(appService.idTokenUrl);
     expect(req.request.method).toEqual('POST');
     expect(appService.user).toEqual(userSmall);
     expect(appService.user.name).toEqual('joe');
     expect(spy).toHaveBeenCalled();
+    expect(spy2).toHaveBeenCalled();
   });
 
   it(`should spy on socialAuth() and make sure it does the right thing with successful subscription`, () => {
@@ -172,10 +183,10 @@ const observableString = new Observable<string>((observer) => {
 
   it(`should return a fake response for ngOnInit so it sets the right values for user`, () => {
     appService.isSignedin = false;
-    spy2 = spyOn(appService, 'askServerIfLoggedIn').and.callFake(() => of( 'Billy' ));
+    spy2 = spyOn(appService, 'askServerIfLoggedIn').and.callFake(() => of( userTest ));
 
     appService.ngOnInit();
-    expect(appService.user.firstName).toEqual('Billy');
+    expect(appService.user.firstName).toEqual('Thomas');
     expect(appService.isSignedin).toBeTruthy();
   });
 
