@@ -108,10 +108,9 @@ public class Server {
     }
     else{
       if(ctx.sessionAttribute("current-user") == null){
-        System.out.println("IT'S NULL");
+        throw new UnauthorizedResponse();
       }
       else{
-        System.out.println(ctx.sessionAttribute("current-user").toString());
         if(ctx.sessionAttribute("current-user").toString() == "USER"){
           Set<Role> userRole = roles(MyRole.USER);
           if(permittedRoles.equals(userRole)){

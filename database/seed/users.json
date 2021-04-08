@@ -25,5 +25,19 @@
     "givenName": "Thomas",
     "sub": "109014840139928924076",
     "admin": true
+  },
+  {
+    "_id": {
+      "$oid": "606a5a9fd2b1da77da015c25"
+    },
+    "email": "lamberty@morris.umn.edu",
+    "emailVerified": true,
+    "name": "KK Lamberty",
+    "pictureUrl": "null",
+    "locale": "en",
+    "familyName": "Lamberty",
+    "givenName": "KK",
+    "sub": "123456789",
+    "admin": true
   }
 ]

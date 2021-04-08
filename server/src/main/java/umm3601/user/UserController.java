@@ -47,7 +47,7 @@ public class UserController {
   public User getUser(String sub) {
     String id = sub;
     User user;
-    user = userCollection.find(eq("sub", id)).first();
+    user = userCollection.find(eq("email", id)).first();
     return user;
   }
 
@@ -86,7 +86,7 @@ public void checkToken(Context ctx) throws GeneralSecurityException, IOException
 public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
   Payload payload = idToken.getPayload();
-  User loggedUser = getUser(payload.get("sub").toString());
+  User loggedUser = getUser(payload.get("email").toString());
 
   if (!(loggedUser == null)){
     if (loggedUser.admin == true){

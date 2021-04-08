@@ -90,6 +90,7 @@ public class UserControllerSpec {
     testUsers.add(
       new Document()
         .append("name", "Chris")
+        .append("email", "chris@mail.com")
         .append("sub", "123456789"));
     testUsers.add(
       new Document()
@@ -98,6 +99,7 @@ public class UserControllerSpec {
         testUsers.add(
       new Document()
         .append("name", "Admin")
+        .append("email", "admin@mail.com")
         .append("admin", true)
         .append("sub", "54321"));
 
@@ -115,8 +117,8 @@ public class UserControllerSpec {
   @Test
   public void ExistentIdShouldBeTrue() throws IOException {
 
-    String testID = "123456789";
-    String testID2 = "thissubhasletters";
+    String testID = "admin@mail.com";
+    String testID2 = "chris@mail.com";
 
     assertNotNull(userController.getUser(testID));
     assertNotNull(userController.getUser(testID2));
@@ -142,9 +144,10 @@ public class UserControllerSpec {
   public void AddUser() throws IOException {
     User user = new User();
     user.name = "Thom";
+    user.email = "thom@mail.com";
     user.sub = "number";
     userController.addNewUser(user);
-    assertNotNull(userController.getUser("number"));
+    assertNotNull(userController.getUser("thom@mail.com"));
 
     assertEquals(1, db.getCollection("users").countDocuments(eq("sub", "number")));
 
@@ -231,7 +234,7 @@ public class UserControllerSpec {
 
   }
   @Test
-  public void GoodLoginChecker() throws GeneralSecurityException, IOException {
+  public void NotLoggedChecker() throws GeneralSecurityException, IOException {
 
     String testToken = "12345";
     mockReq.setBodyContent(testToken);
@@ -258,7 +261,7 @@ public class UserControllerSpec {
     header.set("alg", "RS256");
     Payload payload = new Payload();
     payload.set("name", "Thomas");
-    payload.set("email", "Thomas@mail");
+    payload.set("email", "admin@mail.com");
     payload.set("email_verified", true);
     payload.set("picture", "ThomasPicture");
     payload.set("locale", "EN");
