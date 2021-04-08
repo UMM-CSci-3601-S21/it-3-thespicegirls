@@ -55,7 +55,6 @@ h2 {
 
 }
 
-
 button:hover {
   background-color: #757474;
 }
@@ -65,9 +64,6 @@ button:disabled {
   color:rgba(128, 128, 128, 0.734);
   cursor: auto;
 }
-
-
-
 
 .nouns, .nounsform, .nounWord .adjectives, .verbs, .misc {
   margin: 5px;
@@ -83,9 +79,6 @@ button:disabled {
   display: inline-block;
   border: none;
 }
-
-
-
 
 .mat-card-title{
   color:#01596e;
@@ -128,12 +121,14 @@ h3{
   background-color: #F6F2C3;
   border:none;
   float:right;
+  color: black;
 }
 
 .add-misc-button{
   background-color: #EDB76A;
   border:none;
   float:right;
+  color: black;
 }
 
 .contextpack-download-button{

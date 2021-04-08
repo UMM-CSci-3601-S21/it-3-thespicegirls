@@ -58,14 +58,11 @@
 
                     <!-- word list enabled -->
                   <div class="wordlist-enabled-checkbox">
-                    <input matTooltip="Enable/Disable Contextpack" matTooltipPosition="right" type="checkbox" placeholder="Enabled" formControlName="enabled">
+                    <input matTooltip="Enable/Disable Wordlist" matTooltipPosition="right" type="checkbox" placeholder="Enabled" formControlName="enabled">
                   </div>
 
                  <!-- word list delete button -->
-                <button type="button"
-                 class="delete-button"
-                 [disabled]="tabs.length===1"
-                 (click)="removeWordlists(ix)">
+                <button type="button" class="delete-button" [disabled]="tabs.length===1" (click)="removeWordlists(ix)" matTooltip="Delete Wordlist" matTooltipPosition="above">
                  <mat-icon class="red-icon">delete</mat-icon>
                 </button>
 
@@ -77,7 +74,7 @@
                         </mat-expansion-panel-header>
 
                         <div formArrayName="nouns" >
-                          <button mat-mini-fab class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun" matTooltip="add new noun">
+                          <button mat-mini-fab class="add-noun-button" type="button" (click)="addPosArray(ix,'nouns')" value="Add Noun" matTooltip="Add Noun">
                             <mat-icon fxFlexAlign="center">add</mat-icon>
                           </button>
 
@@ -91,12 +88,12 @@
 
 
                                   <!--add forms button-->
-                                  <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')" matTooltip="add form" matTooltipPosition="above">
+                                  <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'nouns')" matTooltip="Add Form" matTooltipPosition="above">
                                     <mat-icon>add</mat-icon>
                                   </button>
 
                                 </mat-card-subtitle>
-                                <mat-card-content>
+                                <mat-card-content fxLayout="column">
                                   <div *ngFor="let forms of nouns['controls'].forms['controls']; let iz=index">
                                     <div *ngIf="iz === 0; else templateForms">
                                       <mat-form-field class="nounWord" formArrayName="forms">
@@ -132,7 +129,7 @@
                         </mat-expansion-panel-header>
 
                         <div formArrayName="adjectives" >
-                          <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective">
+                          <button mat-mini-fab class="add-adj-button" type="button" (click)="addPosArray(ix,'adjectives')" value="Add Adjective" matTooltip="Add Adjective">
                             <mat-icon>add</mat-icon>
                           </button>
 
@@ -145,25 +142,23 @@
                               <mat-card-subtitle class="nounButtons">
 
                               <!-- add forms button -->
-                                <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')" matTooltip="add adjective forms">
+                                <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'adjectives')" matTooltip="Add Form" matTooltipPosition="above">
                                   <mat-icon>add</mat-icon>
                                 </button>
 
                               </mat-card-subtitle>
-                              <mat-card-content>
+                              <mat-card-content fxLayout="column">
 
                               <div *ngFor="let forms of adj['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Word: </mat-label>
-                                    <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
+                                    <input required autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'adjectives')">
                                   </mat-form-field>
                                 </div>
 
                                 <ng-template #templateForms class="nounsform">
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Forms:(optional) </mat-label>
-                                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz" >
+                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz" >
                                   </mat-form-field>
 
                                   <!--delete forms button--->
@@ -190,7 +185,7 @@
                         </mat-expansion-panel-header>
                         <div formArrayName="verbs">
 
-                          <button mat-mini-fab class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
+                          <button mat-mini-fab matTooltip="Add Verb" class="add-verb-button" type="button" (click)="addPosArray(ix,'verbs')" value="Add Verb">
                             <mat-icon>add</mat-icon>
                           </button>
 
@@ -203,31 +198,28 @@
                               </button>
                               <mat-card-subtitle class="nounButtons">
                               <!--add button-->
-                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="add verb forms">
+                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'verbs')" matTooltip="Add Form" matTooltipPosition="above">
                                 <mat-icon>add</mat-icon>
                               </button>
 
                               </mat-card-subtitle>
-                              <mat-card-content>
+                              <mat-card-content fxLayout="column">
 
                               <div *ngFor="let forms of verbs['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Word: </mat-label>
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'verbs')">
                                   </mat-form-field>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Forms:(optional) </mat-label>
-                                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
+                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
                                   </mat-form-field>
 
                                   <!--delete forms button--->
                                   <button mat-icon-button class="noun-delete-button" (click)="removeForm(ix, iy, iz, 'verbs')"  >
                                     <mat-icon>delete</mat-icon>
                                   </button>
-                                  <!--delete forms button-->
                                 </ng-template>
                               </div>
                             </mat-card-content>
@@ -246,7 +238,7 @@
                         </mat-expansion-panel-header>
                         <div formArrayName="misc">
 
-                          <button mat-mini-fab class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc">
+                          <button mat-mini-fab matTooltip="Add Misc" class="add-misc-button" type="button" (click)="addPosArray(ix,'misc')" value="Add Misc">
                             <mat-icon>add</mat-icon>
                           </button>
                           <div class="posContainer" *ngFor="let misc of wordlists['controls'].misc['controls']; let iy=index">
@@ -258,22 +250,20 @@
                                 </button>
                                 <mat-card-subtitle class="nounButtons">
                               <!--add button-->
-                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'misc')" matTooltip="add misc forms">
+                              <button  mat-icon-button class="add-button" type="button" (click)="addForms(ix, iy, 'misc')" matTooltip="Add Form" matTooltipPosition="above">
                                 <mat-icon>add</mat-icon>
                               </button>
                                 </mat-card-subtitle>
-                                <mat-card-content>
+                                <mat-card-content fxLayout="column">
                               <div *ngFor="let forms of misc['controls'].forms['controls']; let iz=index">
                                 <div *ngIf="iz === 0; else templateForms">
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Word: </mat-label>
                                     <input autocomplete="off" matInput placeholder="Word" [formControlName]="iz" (keyup)="setWord(ix, iy, 'misc')">
                                   </mat-form-field>
                                 </div>
                                 <ng-template #templateForms>
                                   <mat-form-field formArrayName="forms">
-                                    <mat-label>Forms:(optional) </mat-label>
-                                    <input autocomplete="off" matInput placeholder="form" [formControlName]="iz">
+                                    <input autocomplete="off" matInput placeholder="Form" [formControlName]="iz">
                                   </mat-form-field>
 
                                   <!--delete forms button--->
@@ -312,7 +302,7 @@
     type="submit"
     [disabled]="!contextPackForm.valid"
     data-test="confirmAddPackButton">
-    ADD CONTEXT PACK
+    SUBMIT CONTEXT PACK
     </button>
 </mat-tab>
 
@@ -321,6 +311,6 @@
 </mat-tab>
 </mat-tab-group>
 
-<button mat-icon-button class="contextpack-download-button" type="button" color='primary' [disabled]="!contextPackForm.valid"
+<button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary' [disabled]="!contextPackForm.valid"
 (click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name).click()'><mat-icon>save_alt</mat-icon></button>
 

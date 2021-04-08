@@ -39,19 +39,21 @@ h2, mat-card-title, mat-card-subtitle{
 }
 
 .nounChip, .wordlist-nounChip {
-  background-color: pink;
+  background-color: #356398;
+  color: white;
 }
 
 .verbChip, .wordlist-verbChip {
-  background-color: rgb(193, 193, 235);
+  background-color: #F6F2C3;
 }
 
 .adjectiveChip, .wordlist-adjectiveChip {
-  background-color: rgb(147, 233, 147);
+  background-color: #7FA791;
+  color: white;
 }
 
 .miscChip, .wordlist-miscChip {
-  background-color: rgb(250, 250, 161);
+  background-color: #EDB76A;
 }
 
 mat-card-header {

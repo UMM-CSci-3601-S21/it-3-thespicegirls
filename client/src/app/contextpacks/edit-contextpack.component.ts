@@ -22,15 +22,12 @@ export class EditContextpackComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  	// I cancel the editing of the value.
 	public cancel(): void {
 
 		this.isEditing = false;
 
 	}
 
-
-	// I enable the editing of the value.
 	public edit(): void {
 
 		this.pendingValue = this.value;
@@ -38,22 +35,12 @@ export class EditContextpackComponent implements OnInit {
 
 	}
 
-
-	// I process changes to the pending value.
 	public processChanges(): void {
 
-		// If the value actually changed, emit the change but don't change the local
-		// value - we don't want to break unidirectional data-flow.
 		if ( this.pendingValue !== this.value ) {
-
 			this.valueChangeEvents.emit( this.pendingValue );
-
-
 		}
 
 		this.isEditing = false;
-
 	}
-
-
 }
