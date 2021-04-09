@@ -99,7 +99,7 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
       ctx.sessionAttribute("current-user", "USER");
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
-      ctx.json(ImmutableMap.of("id", "true"));
+      ctx.json(ImmutableMap.of("id", "false"));
     }
 
   }
