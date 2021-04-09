@@ -99,7 +99,7 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
       ctx.sessionAttribute("current-user", "USER");
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
-      ctx.json(ImmutableMap.of("id", "true"));
+      ctx.json(ImmutableMap.of("id", "false"));
     }
 
   }
@@ -125,7 +125,21 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 }
 public void loggedIn(Context ctx)  {
   if(!(ctx.sessionAttribute("user-name")==null)){
-    ctx.json(ctx.sessionAttribute("user-name").toString());
+    boolean admin;
+    if(ctx.sessionAttribute("current-user")=="USER"){
+      admin = false;
+    }
+    else{
+      admin = true;
+    }
+    User user = new User();
+    user.name = ctx.sessionAttribute("user-name").toString();
+    user.admin  = admin;
+
+    ctx.json(user);
+  }
+  else{
+    throw new BadRequestResponse("No user logged in");
   }
 
 }

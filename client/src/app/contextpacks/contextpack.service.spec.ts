@@ -116,6 +116,12 @@ describe('Context Pack service: ', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(targetContextPack);
   });
+  it('should check some strings with admin checker', () => {
+    expect(contextpackService.checkIfAdmin('true')).toEqual(true);
+  });
+  it('should check some strings with login checker', () => {
+    expect(contextpackService.checkIfLoggedIn('true')).toEqual(true);
+  });
 
   it('filterContextPack() filters by name', () => {
     expect(testContextPacks.length).toBe(3);

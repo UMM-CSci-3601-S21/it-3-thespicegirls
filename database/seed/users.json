@@ -95,6 +95,34 @@
     "givenName": "Josh",
     "sub": "123456",
     "admin": true
+  },
+  {
+    "_id": {
+      "$oid": "606a5a9fd2b1da77da015c15"
+    },
+    "email": "mcphee@morris.umn.edu",
+    "emailVerified": true,
+    "name": "Nic M",
+    "pictureUrl": "null",
+    "locale": "en",
+    "familyName": "m",
+    "givenName": "Nic",
+    "sub": "someweirdstring",
+    "admin": true
+  },
+  {
+    "_id": {
+      "$oid": "606a5a9fd2b1da77da015c75"
+    },
+    "email": "walbr037@morris.umn.edu",
+    "emailVerified": true,
+    "name": "Joe W",
+    "pictureUrl": "null",
+    "locale": "en",
+    "familyName": "W",
+    "givenName": "Joe",
+    "sub": "helloImanID",
+    "admin": true
   }
 ]
 

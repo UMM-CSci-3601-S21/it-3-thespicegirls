@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from './contextpacks/user';
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,13 +30,20 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.askServerIfLoggedIn().subscribe(res => {
       const user2 = new SocialUser();
-      user2.firstName = res.toString();
+      user2.firstName = res.name;
       this.user = user2;
       this.isSignedin = true;
+      localStorage.setItem('loggedIn', 'true');
+      if(res.admin === true){
+        localStorage.setItem('admin', 'true');
+      }
+  }, err =>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('admin');
   });
   }
-  askServerIfLoggedIn(): Observable<string>{
-    return this.httpClient.get<string>(this.idTokenUrl + '/' + 'loggedin');
+  askServerIfLoggedIn(): Observable<User>{
+    return this.httpClient.get<User>(this.idTokenUrl + '/' + 'loggedin');
   }
 
   sendToServer() {
@@ -46,12 +54,19 @@ export class AppComponent implements OnInit {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
-        this.isSignedin = (true);
+        console.log(newID);
+        if(newID === 'true'){
+          localStorage.setItem('admin', 'true');
+        }
+        localStorage.setItem('loggedIn', 'true');
+        this.reload();
       }, err => {
         this.snackBar.open('Failed login to server', 'OK', {
           duration: 5000,
         });
         this.isSignedin = false;
+        localStorage.setItem('loggedIn', 'false');
+        localStorage.setItem('admin', 'false');
         this.logout();
       });
     });
@@ -71,6 +86,8 @@ export class AppComponent implements OnInit {
     this.socialAuthService.signOut();
     this.sendLogOutToServer().subscribe(res => {
       this.isSignedin = false;
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('admin');
       this.reload();
   });
   }

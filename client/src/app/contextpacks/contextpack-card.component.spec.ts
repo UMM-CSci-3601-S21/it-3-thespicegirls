@@ -27,7 +27,7 @@ describe('ContextPackCardComponent', () => {
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList']);
+    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList', 'checkIfAdmin']);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,

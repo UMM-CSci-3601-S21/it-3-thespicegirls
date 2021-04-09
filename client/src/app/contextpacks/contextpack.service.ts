@@ -8,10 +8,32 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
+  readonly idTokenUrl: string = environment.apiUrl + 'users';
   constructor(private httpClient: HttpClient) {
   }
 
+  checkIfLoggedIn(log: string){
+    let isSignedIn: boolean;
+    if (log === 'true'){
+      isSignedIn = true;
+    }
+    else{
+      isSignedIn = false;
+    }
+    return isSignedIn;
 
+  }
+  checkIfAdmin(log: string){
+    let isAdmin: boolean;
+    if (log === 'true'){
+      isAdmin = true;
+    }
+    else{
+      isAdmin = false;
+    }
+    return isAdmin;
+
+  }
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {

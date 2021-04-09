@@ -59,6 +59,7 @@ export class AddContextpacksComponent implements OnInit {
       }
     }
   };
+  isSignedIn: boolean;
 
   constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }
@@ -73,6 +74,8 @@ export class AddContextpacksComponent implements OnInit {
       wordlists: this.fb.array([])
     });
     this.contextPackForm.valueChanges.subscribe(data => this.validateForm());
+    this.isSignedIn = this.contextPackService.checkIfLoggedIn(localStorage.getItem('loggedIn'));
+
   }
 
   initwordlist() {

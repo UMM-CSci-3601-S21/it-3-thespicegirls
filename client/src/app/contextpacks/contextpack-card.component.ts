@@ -22,6 +22,7 @@ export class ContextPackCardComponent implements OnInit {
   editing = false;
   removable = false;
   enabled = 'true';
+  isAdmin: boolean;
 
   validationMessages = {
     word: [
@@ -45,6 +46,7 @@ export class ContextPackCardComponent implements OnInit {
         Validators.required,
       ]))
     });
+    this.isAdmin = this.contextpackservice.checkIfAdmin(localStorage.getItem('admin'));
   }
 
   displayEnabled(status: boolean){
