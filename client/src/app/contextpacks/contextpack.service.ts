@@ -42,10 +42,6 @@ export class ContextPackService {
     });
   }
 
-  askServerIfLoggedIn(): Observable<User>{
-    return this.httpClient.get<User>(this.idTokenUrl + '/' + 'loggedin');
-  }
-
   getContextPackById(id: string): Observable<ContextPack> {
     return this.httpClient.get<ContextPack>(this.contextpackUrl + '/' + id);
   }

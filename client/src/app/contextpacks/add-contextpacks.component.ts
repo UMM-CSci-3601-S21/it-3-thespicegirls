@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from './contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from './contextpack-card.component';
-import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -13,7 +12,6 @@ import { AppComponent } from '../app.component';
   styleUrls: ['./add-contextpacks.component.scss']
 })
 export class AddContextpacksComponent implements OnInit {
-  appComponent = new AppComponent(null,null,null);
   contextPackForm: FormGroup;
   isShown = false;
   contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);

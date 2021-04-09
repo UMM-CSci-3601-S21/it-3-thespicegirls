@@ -54,6 +54,10 @@ export class AppComponent implements OnInit {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
+        console.log(newID);
+        if(newID === 'true'){
+          localStorage.setItem('admin', 'true');
+        }
         localStorage.setItem('loggedIn', 'true');
         this.reload();
       }, err => {
@@ -62,6 +66,7 @@ export class AppComponent implements OnInit {
         });
         this.isSignedin = false;
         localStorage.setItem('loggedIn', 'false');
+        localStorage.setItem('admin', 'false');
         this.logout();
       });
     });
