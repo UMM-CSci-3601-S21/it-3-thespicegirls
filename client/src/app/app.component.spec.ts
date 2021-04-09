@@ -104,15 +104,15 @@ const userTest: User = {
   });
 
   it(`should spy on sendToServer()`, () => {
-    appService.isSignedin = false;
     spy = spyOn(appService, 'socialAuthState').and.returnValue(goodUser);
     spy2 = spyOn(appService, 'addGoogleToken').and.returnValue(observableString);
+    spyOn(localStorage.__proto__, 'setItem').and.returnValue('true');
     spy3 = spyOn(appService, 'reload').and.returnValue();
     appService.sendToServer();
 
-    expect(appService.isSignedin).toBeTruthy();
     expect(appService.user).toEqual(userSmall);
     expect(appService.user.name).toEqual('joe');
+    expect(localStorage.__proto__.setItem).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
     expect(spy3).toHaveBeenCalled();
@@ -120,14 +120,14 @@ const userTest: User = {
   it(`should spy on sendToServer() and make sure it makes an api request to api/users`, () => {
     appService.isSignedin = false;
     spy = spyOn(appService, 'socialAuthState').and.returnValue(goodUser);
-    spy2 = spyOn(appService, 'reload').and.returnValue();
+
     appService.sendToServer();
     const req = httpTestingController.expectOne(appService.idTokenUrl);
     expect(req.request.method).toEqual('POST');
     expect(appService.user).toEqual(userSmall);
     expect(appService.user.name).toEqual('joe');
     expect(spy).toHaveBeenCalled();
-    expect(spy2).toHaveBeenCalled();
+
   });
 
   it(`should spy on socialAuth() and make sure it does the right thing with successful subscription`, () => {
@@ -184,8 +184,10 @@ const userTest: User = {
   it(`should return a fake response for ngOnInit so it sets the right values for user`, () => {
     appService.isSignedin = false;
     spy2 = spyOn(appService, 'askServerIfLoggedIn').and.callFake(() => of( userTest ));
+    spyOn(localStorage.__proto__, 'setItem').and.returnValue('true');
 
     appService.ngOnInit();
+    expect(localStorage.__proto__.setItem).toHaveBeenCalled();
     expect(appService.user.firstName).toEqual('Thomas');
     expect(appService.isSignedin).toBeTruthy();
   });

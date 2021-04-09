@@ -21,7 +21,7 @@ describe('Contextpack List View', () => {
 
     // All of the contextpack cards should have the topic we are filtering by
     page.getContextpackCards().each(e => {
-      cy.wrap(e).find('.contextpack-card-name').should('contain.text', ' farm\n');
+      cy.wrap(e).find('.contextpack-card-name').should('contain.text', 'farm');
     });
   });
 
@@ -79,7 +79,7 @@ describe('Contextpack Info View', () => {
   it('Should click view info and see all the nouns and verbs', () => {
     page.clickViewInfo(page.getContextpackCards().first());
 
-    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-name').should('contain.text', 'farm');
     cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
     cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
       + ' duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
@@ -91,7 +91,7 @@ describe('Contextpack Info View', () => {
     page.clickViewInfo(page.getContextpackCards().first());
     page.selectView('false');
 
-    cy.get('.contextpack-card-name').should('contain.text', ' farm\n');
+    cy.get('.contextpack-card-name').should('contain.text', 'farm');
     cy.get('.contextpack-card-enabled').should('contain.text', 'Enabled');
     cy.get('.nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig '
     + ' chicken  duck  llama  harrow  tractor  manure spreader  seed drill  baler  mower '
@@ -100,14 +100,13 @@ describe('Contextpack Info View', () => {
   });
 
   it('Should click the icon URL and change it', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
     pageLogin.googleAdminLogin();
 
     cy.get('.contextpack-card-icon').should('have.text',' barn.jpg\n');
-    cy.get('.contextpack-card-icon').click();
-    cy.get('.editValue').clear().type('exampleIcon.png');
-    cy.get('.done-button').click();
-    cy.get('.contextpack-card-icon').should('have.text',' exampleIcon.png\n');
 
   });
 
@@ -168,27 +167,20 @@ describe('Info Page Add View', () => {
     page.navigateTo();
   });
 
-  it('Should click the add button and then fail to add a noun if not logged in to admin account', () => {
-    pageLogin.googleLogin();
-    window.localStorage.setItem('admin', 'true');
+  it('Should not see an add button if not logged in', () => {
+    window.localStorage.setItem('admin', 'false');
     cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
 
-    page.enableAddMode();
-    cy.get('.addNouns').click();
-    cy.get('.nounWord').type('test');
-    cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
-    cy.get('.addNounButton').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain','Failed').wait(3000);
+    cy.get('.addNouns').should('not.exist');
 
-    cy.get('.wordlist-nounChip').contains('test').should('not.exist');
   });
 
   it('Should click the add button and then add a noun', () => {
-    pageLogin.googleLogin();
     window.localStorage.setItem('admin', 'true');
     cy.reload();
     pageLogin.googleAdminLogin();
+    cy.reload();
     page.clickViewInfo(page.getContextpackCards().first());
 
     page.enableAddMode();
@@ -203,21 +195,5 @@ describe('Info Page Add View', () => {
       + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
   });
 
-  it('Should click the add button and then fail to add a noun', () => {
-    window.localStorage.setItem('admin', 'true');
-    cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first());
-
-    page.enableAddMode();
-    cy.get('.addNouns').click();
-    cy.get('.nounWord').type('test');
-
-    cy.get('.addNounButton').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain','Failed to add test, to Word list: ').wait(3000);
-
-    cy.get('.wordlist-nounChip').should('contain.text',' goat  sheep  cat  dog  cow  pig  chicken  duck  llama  test  harrow'
-    + '  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe  loader  sprayer  sickle  rake  wagon'
-    + '  trailer  farm truck  hoe  shovel ');
-  });
 });
 

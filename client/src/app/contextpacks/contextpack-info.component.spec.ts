@@ -99,7 +99,7 @@ describe('editField()', () => {
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'updateContextPack','updateWordList']);
+    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'updateContextPack','updateWordList', 'checkIfAdmin']);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
