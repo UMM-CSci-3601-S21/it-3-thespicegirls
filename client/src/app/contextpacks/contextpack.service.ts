@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
 import { map } from 'rxjs/operators';
-import { User } from './user';
 
 @Injectable()
 export class ContextPackService {
