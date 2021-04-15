@@ -16,6 +16,7 @@ import io.javalin.core.util.RouteOverviewPlugin;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import umm3601.contextpack.ContextPackController;
+import umm3601.user.User;
 import umm3601.user.UserController;
 
 public class Server {
@@ -111,13 +112,14 @@ public class Server {
         throw new UnauthorizedResponse();
       }
       else{
-        if(ctx.sessionAttribute("current-user").toString() == "USER"){
+        User user = ctx.sessionAttribute("current-user");
+        if(user.admin == false){
           Set<Role> userRole = roles(MyRole.USER);
           if(permittedRoles.equals(userRole)){
             result = true;
           }
         }
-        if(ctx.sessionAttribute("current-user").toString() == "ADMIN"){result = true;}
+        if(user.admin == true){result = true;}
 
       }
 
