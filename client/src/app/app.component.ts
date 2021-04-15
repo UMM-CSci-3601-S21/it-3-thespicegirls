@@ -27,21 +27,24 @@ export class AppComponent implements OnInit {
   constructor(private socialAuthService: SocialAuthService,
     private httpClient: HttpClient, private snackBar: MatSnackBar) {}
 
-  ngOnInit() {
-    this.askServerIfLoggedIn().subscribe(res => {
-      const user2 = new SocialUser();
-      user2.firstName = res.name;
-      this.user = user2;
-      this.isSignedin = true;
-      localStorage.setItem('loggedIn', 'true');
-      if(res.admin === true){
-        localStorage.setItem('admin', 'true');
-      }
-  }, err =>{
-    localStorage.removeItem('loggedIn');
-    localStorage.removeItem('admin');
-  });
-  }
+    ngOnInit() {
+      this.askServerIfLoggedIn().subscribe(res => {
+        const user2 = new SocialUser();
+        user2.firstName = res.name;
+        this.user = user2;
+        this.isSignedin = true;
+        localStorage.setItem('loggedIn', 'true');
+        if(res.admin === true){
+          localStorage.setItem('admin', 'true');
+        }
+        else{
+          localStorage.setItem('admin', 'false');
+        }
+    }, err =>{
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('admin');
+    });
+    }
   askServerIfLoggedIn(): Observable<User>{
     return this.httpClient.get<User>(this.idTokenUrl + '/' + 'loggedin');
   }
@@ -57,6 +60,9 @@ export class AppComponent implements OnInit {
         console.log(newID);
         if(newID === 'true'){
           localStorage.setItem('admin', 'true');
+        }
+        else{
+          localStorage.setItem('admin', 'false');
         }
         localStorage.setItem('loggedIn', 'true');
         this.reload();
