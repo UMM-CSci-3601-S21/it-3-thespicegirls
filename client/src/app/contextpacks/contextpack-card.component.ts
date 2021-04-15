@@ -88,6 +88,18 @@ export class ContextPackCardComponent implements OnInit {
           });
         });
   }
+  deleteWordlist(list: Wordlist) {
+          this.contextpackservice.deleteWordlist(this.contextpack, list.name).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + list.name + ' from Context Pack: ' + this.contextpack.name, null, {
+            duration: 3000,
+          });
+          // delete wordlist locally
+        }, err => {
+          this.snackBar.open('Failed to delete ' + list.name + ' from Word list: ' + this.contextpack.name, 'OK', {
+            duration: 5000,
+          });
+        });
+  }
 
   localDelete(wordType: string, word: string){
     for(const list of this.contextpack.wordlists){
