@@ -4,7 +4,7 @@ export class ContextpackListPage {
   }
 
   getContextpackCards() {
-    return cy.get('.contextpack-card').wait(2000);
+    return cy.get('.contextpack-card');
   }
 
   /**
