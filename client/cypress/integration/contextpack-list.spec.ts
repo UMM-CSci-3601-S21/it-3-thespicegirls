@@ -136,6 +136,22 @@ describe('Info Page Edit View', () => {
     cy.get('.mat-simple-snackbar').should('contain', 'Deleted moo from Word list: farm_animals');
     cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
   });
+  it('Should click the edit button and delete a wordlist if they are an admin', () => {
+    // login as admin
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().first());
+    page.enableEditDeleteMode();
+    // farm animals list should be present before deleting
+    cy.get('.wordlist-name').should('contain.text', 'farm_animals');
+    cy.get('.delete-wordlist-button').eq(0).should('be.visible');
+    cy.get('.delete-wordlist-button').eq(0).should('contain.text','delete');
+    page.clickDeleteWordlist(page.getContextpackCards().first());
+    // Farm animals list should be gone now
+    cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
+
+  });
 
   it('Should not see an edit button if not an admin', () => {
     cy.get('.wordlist-disable-button').should('not.exist');
@@ -151,7 +167,7 @@ describe('Info Page Edit View', () => {
     page.enableEditDeleteMode();
     cy.get('.wordlist-disable-button').should('be.visible');
     cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(1000);
+    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(5000);
     page.enableEditDeleteMode();
     cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled ');
   });

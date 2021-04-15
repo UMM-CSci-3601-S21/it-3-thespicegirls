@@ -4,7 +4,7 @@ export class ContextpackListPage {
   }
 
   getContextpackCards() {
-    return cy.get('.contextpack-card');
+    return cy.get('.contextpack-card').wait(2000);
   }
 
   /**
@@ -15,6 +15,9 @@ export class ContextpackListPage {
    */
   clickViewInfo(card: Cypress.Chainable<JQuery<HTMLElement>>) {
     return card.find<HTMLButtonElement>('[data-test=viewInfoButton]').click();
+  }
+  clickDeleteWordlist(card: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return card.find<HTMLButtonElement>('[data-test=deleteWordlistButton]').eq(0).click();
   }
 
   selectView(value: string) {
@@ -30,6 +33,7 @@ export class ContextpackListPage {
       // Select and click the desired value from the resulting menu
       .get(`mat-option[value="${value}"]`).click();
   }
+
 
   enableEditDeleteMode(){
     return cy.get('.editView').click({force: true});
