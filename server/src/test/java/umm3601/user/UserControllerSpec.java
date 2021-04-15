@@ -55,6 +55,7 @@ public class UserControllerSpec {
   MockHttpSession mockSession = new MockHttpSession();
 
   private UserController userController;
+  private ObjectId testID;
 
   static MongoClient mongoClient;
   static MongoDatabase db;
@@ -87,6 +88,7 @@ public class UserControllerSpec {
     MongoCollection<Document> userDocuments = db.getCollection("users");
     userDocuments.drop();
     List<Document> testUsers = new ArrayList<>();
+    testID = new ObjectId();
     testUsers.add(
       new Document()
         .append("name", "Chris")
@@ -98,7 +100,9 @@ public class UserControllerSpec {
         .append("sub", "thissubhasletters"));
         testUsers.add(
       new Document()
+        .append("_id", testID)
         .append("name", "Admin")
+        .append("givenName", "Admin")
         .append("email", "admin@mail.com")
         .append("admin", true)
         .append("sub", "54321"));
@@ -185,36 +189,37 @@ public class UserControllerSpec {
     header.set("alg", "RS256");
     Payload payload = new Payload();
     payload.set("name", "Thomas");
-    payload.set("email", "Thomas@mail");
+    payload.setEmail("Thomas@mail.com");
+    payload.set("email", "thomas@mail.com");
     payload.set("email_verified", true);
     payload.set("picture", "ThomasPicture");
     payload.set("locale", "EN");
     payload.set("family_name", "Joe");
     payload.set("given_name", "Thomas");
-    payload.set("sub", "12345");
+    payload.set("sub", "54321");
     byte[] signatureBytes = {1};
     byte[] signedContentBytes = {1};
     GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
 
     userController.userTokenChecker(idToken, ctx);
-    assertEquals("USER", mockSession.getAttribute("current-user").toString());
-
+    User user = (User) mockSession.getAttribute("current-user");
+    assertEquals("thomas@mail.com", user.email);
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
     String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
     assertNotEquals("", id);
-    assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(id))));
+    assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(user._id))));
 
-    Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(id))).first();
+    Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(user._id))).first();
     assertNotNull(addedUser);
     assertEquals("Thomas", addedUser.getString("name"));
-    assertEquals("Thomas@mail", addedUser.getString("email"));
+    assertEquals("thomas@mail.com", addedUser.getString("email"));
     assertTrue(addedUser.getBoolean("emailVerified"));
     assertEquals("ThomasPicture", addedUser.getString("pictureUrl"));
     assertEquals("EN", addedUser.getString("locale"));
     assertEquals("Joe", addedUser.getString("familyName"));
     assertEquals("Thomas", addedUser.getString("givenName"));
-    assertEquals("12345", addedUser.getString("sub"));
+    assertEquals("54321", addedUser.getString("sub"));
 
 
     //This test makes sure an already added user doesn't get added again
@@ -278,12 +283,35 @@ public class UserControllerSpec {
     GoogleIdToken idToken = new GoogleIdToken(header, payload, signatureBytes, signedContentBytes);
 
     userController.userTokenChecker(idToken, ctx);
-    assertEquals("ADMIN", mockSession.getAttribute("current-user").toString());
+    User user = (User) mockSession.getAttribute("current-user");
+    assertEquals(true, user.admin);
 
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
     String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
     assertEquals("true", id);
+
+    //This test makes sure an already added user doesn't get added again
+    mockReq.clearAttributes();
+    mockReq.setBodyContent(testToken);
+    mockReq.setMethod("POST");
+
+    Context ctx2 = ContextUtil.init(mockReq, mockRes, "api/users");
+    userController.userTokenChecker(idToken, ctx2);
+    assertEquals(201, mockRes.getStatus());
+    assertEquals(3, db.getCollection("users").countDocuments());
+
+    //And then asks if he is logged in
+    userController.loggedIn(ctx2);
+    String result2 = ctx2.resultString();
+    String name = jsonMapper.readValue(result2, ObjectNode.class).get("name").asText();
+    String admin = jsonMapper.readValue(result2, ObjectNode.class).get("admin").asText();
+    assertEquals("Admin", name);
+    assertEquals("true", admin);
+
+
+  }
+  public void GoodAdminWithLogin() throws GeneralSecurityException, IOException {
 
   }
 }
