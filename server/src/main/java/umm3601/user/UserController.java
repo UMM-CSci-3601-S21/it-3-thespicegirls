@@ -58,9 +58,9 @@ public class UserController {
    * @param user a user to be added to the database
    * @return
    */
-  public String addNewUser(User user) {
+  public User addNewUser(User user) {
     userCollection.insertOne(user);
-    return user._id;
+    return userCollection.find(eq("email", user.sub)).first();
   }
 
   GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
@@ -90,13 +90,13 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
 
   if (!(loggedUser == null)){
     if (loggedUser.admin == true){
-      ctx.sessionAttribute("current-user", "ADMIN");
+      ctx.sessionAttribute("current-user", loggedUser);
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", "true"));
     }
     else{
-      ctx.sessionAttribute("current-user", "USER");
+      ctx.sessionAttribute("current-user", loggedUser);
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", "false"));
@@ -115,28 +115,31 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
     user.sub = (String) payload.get("sub");
     user.admin = false;
 
-    String id = addNewUser(user);
-    ctx.sessionAttribute("current-user", "USER");
+    addNewUser(user);
+    User addedUser = getUser(payload.getEmail());
+    ctx.sessionAttribute("current-user", addedUser);
     ctx.sessionAttribute("user-name", (String) payload.get("given_name"));
     ctx.status(201);
-    ctx.json(ImmutableMap.of("id", id));
+    ctx.json(ImmutableMap.of("id", "false"));
   }
   return ctx;
 }
 public void loggedIn(Context ctx)  {
-  if(!(ctx.sessionAttribute("user-name")==null)){
+  if(!(ctx.sessionAttribute("current-user")==null)){
+    User user = ctx.sessionAttribute("current-user");
     boolean admin;
-    if(ctx.sessionAttribute("current-user")=="USER"){
+    if(user.admin == false){
       admin = false;
     }
     else{
       admin = true;
     }
-    User user = new User();
-    user.name = ctx.sessionAttribute("user-name").toString();
-    user.admin  = admin;
+    User userReturn = new User();
+    userReturn.name = user.givenName;
+    userReturn._id = user._id;
+    userReturn.admin  = admin;
 
-    ctx.json(user);
+    ctx.json(userReturn);
   }
   else{
     throw new BadRequestResponse("No user logged in");
