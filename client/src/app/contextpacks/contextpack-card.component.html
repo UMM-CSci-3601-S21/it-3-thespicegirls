@@ -29,6 +29,7 @@
         <div *ngIf="selected === 'true'; else templateWords">
           <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
             <h2 class="wordlist-name">{{this.wordlists.name}}</h2>
+
             <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
             <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
             <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div></h4>
@@ -354,7 +355,8 @@
         <h2><app-edit-contextpack class="wordlist-name" [value]="this.contextpack.wordlists[index].name" (valueChangeEvents)="saveWordlist(contextpack.wordlists[index],'name',$event)"></app-edit-contextpack></h2>
         <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
         <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
-        <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div></h4>
+        <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div>
+        <button class="delete-wordlist-button" mat-icon-button matTooltip="delete wordlist" data-test="deleteWordlistButton" (click)="deleteWordlist(this.contextpack.wordlists[index])"><mat-icon *ngIf="removable">delete</mat-icon></button></h4>
 
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">
