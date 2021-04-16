@@ -19,6 +19,10 @@ export class ContextpackListPage {
   clickDeleteWordlist(card: Cypress.Chainable<JQuery<HTMLElement>>) {
     return card.find<HTMLButtonElement>('[data-test=deleteWordlistButton]').eq(0).click();
   }
+  clickConfirmDeleteWordlist(card: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return card.find<HTMLButtonElement>('[data-test=deleteConfirmationButton]').eq(0).click();
+  }
+
 
   selectView(value: string) {
     // Find and click the drop down

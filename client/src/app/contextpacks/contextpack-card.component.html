@@ -356,7 +356,16 @@
         <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
         <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
         <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div>
-        <button class="delete-wordlist-button" mat-icon-button matTooltip="delete wordlist" data-test="deleteWordlistButton" (click)="deleteWordlist(this.contextpack.wordlists[index])"><mat-icon *ngIf="removable">delete</mat-icon></button></h4>
+        <button class="delete-wordlist-button" mat-icon-button matTooltip="delete wordlist" data-test="deleteWordlistButton" (click)="toggleDeleted()"><mat-icon *ngIf="removable">delete</mat-icon></button>
+    <mat-card class="confirmation" *ngIf="deleteClicked">
+    <h3>Are you sure you want to delete this wordlist?</h3>
+    <button data-test="deleteConfirmationButton" style="margin-bottom: 5px;" mat-raised-button  (click)="deleteWordlist(this.contextpack.wordlists[index])"
+      color="accent">Delete</button>
+    <button data-test="cancel-delete" mat-raised-button class="cancel" (click)="toggleDeleted()"
+      color="link">Cancel</button>
+          </mat-card>
+      </h4>
+
 
         <span class="contextpack-card-nouns">
           <div style="white-space: pre-line">

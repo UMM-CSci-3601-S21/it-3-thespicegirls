@@ -26,7 +26,7 @@ describe('Contextpack List View', () => {
   });
 
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
-    cy.get('[data-test=contextpackNameInput]').type('j');
+    cy.get('[data-test=contextpackNameInput]').type('j').wait(1000);
 
     page.getContextpackCards().should('have.lengthOf.above', 0);
 
@@ -88,7 +88,7 @@ describe('Contextpack Info View', () => {
   });
 
   it('Should click view info, select a view words, and see all the words', () => {
-    page.clickViewInfo(page.getContextpackCards().first());
+    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
     page.selectView('false');
 
     cy.get('.contextpack-card-name').should('contain.text', 'farm');
@@ -149,6 +149,8 @@ describe('Info Page Edit View', () => {
     cy.get('.delete-wordlist-button').eq(0).should('contain.text','delete');
     page.clickDeleteWordlist(page.getContextpackCards().first());
     // Farm animals list should be gone now
+    cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
+    page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
     cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
 
   });
@@ -167,7 +169,7 @@ describe('Info Page Edit View', () => {
     page.enableEditDeleteMode();
     cy.get('.wordlist-disable-button').should('be.visible');
     cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(5000);
+    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(1000);
     page.enableEditDeleteMode();
     cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled ');
   });
@@ -197,7 +199,7 @@ describe('Info Page Add View', () => {
     cy.reload();
     pageLogin.googleAdminLogin();
     cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first());
+    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
 
     page.enableAddMode();
     cy.get('.addNouns').click();
