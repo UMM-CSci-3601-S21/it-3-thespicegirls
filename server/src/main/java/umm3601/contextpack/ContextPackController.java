@@ -18,6 +18,8 @@ import org.mongojack.JacksonMongoCollection;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import umm3601.user.User;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class ContextPackController {
@@ -76,7 +78,9 @@ public class ContextPackController {
       .check(pack -> String.valueOf(pack.enabled).matches(statusRegex))
 
       .get();
-
+      User user = ctx.sessionAttribute("current-user");
+      newPack.userId = user._id;
+      newPack.userName = user.name;
       contextPackCollection.insertOne(newPack);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newPack._id));
