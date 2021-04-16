@@ -115,6 +115,13 @@ export class ContextPackService {
       params: httpParams
    });
   }
+  addWordlist(contextpack: ContextPack, listname: string){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('addwordlist', listname);
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
 
   updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack> {
 
