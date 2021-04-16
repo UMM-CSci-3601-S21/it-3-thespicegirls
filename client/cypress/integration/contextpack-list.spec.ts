@@ -168,8 +168,7 @@ describe('Info Page Edit View', () => {
 
     page.enableEditDeleteMode();
     cy.get('.wordlist-disable-button').should('be.visible');
-    cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(1000);
+    cy.get('.wordlist-disable-button').eq(0).click().wait(1000);
     page.enableEditDeleteMode();
     cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled ');
   });

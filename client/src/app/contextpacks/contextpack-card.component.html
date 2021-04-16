@@ -356,15 +356,16 @@
         <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
         <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
         <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div>
-        <button class="delete-wordlist-button" mat-icon-button matTooltip="delete wordlist" data-test="deleteWordlistButton" (click)="toggleDeleted()"><mat-icon *ngIf="removable">delete</mat-icon></button>
-    <mat-card class="confirmation" *ngIf="deleteClicked">
-    <h3>Are you sure you want to delete this wordlist?</h3>
-    <button data-test="deleteConfirmationButton" style="margin-bottom: 5px;" mat-raised-button  (click)="deleteWordlist(this.contextpack.wordlists[index])"
-      color="accent">Delete</button>
-    <button data-test="cancel-delete" mat-raised-button class="cancel" (click)="toggleDeleted()"
-      color="link">Cancel</button>
-          </mat-card>
+        <!--credit to https://github.com/UMM-CSci-3601-S21/it-2-it-2-chicken/ for confirmation logic here -->
+        <button class="delete-wordlist-button" mat-icon-button matTooltip="Delete wordlist" data-test="deleteWordlistButton" (click)="toggleDeleted(index)"><mat-icon *ngIf="removable">delete</mat-icon></button>
       </h4>
+      <mat-card class="confirmation" *ngIf="deleteClicked && index===this.deleteIndex" style="width:200px">
+        <mat-card-subtitle>Are you sure you want to delete this wordlist?</mat-card-subtitle>
+        <button class="confirm" data-test="deleteConfirmationButton" style="margin-bottom: 5px;" mat-raised-button  (click)="deleteWordlist(this.contextpack.wordlists[index])"
+          color="accent">Delete</button>
+        <button data-test="cancel-delete" mat-raised-button class="cancel" (click)="toggleDeleted(index)"
+          color="link">Cancel</button>
+        </mat-card>
 
 
         <span class="contextpack-card-nouns">

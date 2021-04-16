@@ -24,6 +24,7 @@ export class ContextPackCardComponent implements OnInit {
   enabled = 'true';
   isAdmin: boolean;
   deleteClicked: boolean;
+  deleteIndex=0;
 
   validationMessages = {
     word: [
@@ -58,8 +59,9 @@ export class ContextPackCardComponent implements OnInit {
       return 'Enabled';
     }
   }
-  toggleDeleted(){
+  toggleDeleted(index: number){
     this.deleteClicked = !this.deleteClicked;
+    this.deleteIndex = index;
   }
 
   save(field: string, newData: string) {
@@ -104,7 +106,7 @@ export class ContextPackCardComponent implements OnInit {
                 this.contextpack.wordlists.splice(i,1);
               }
           }
-          this.toggleDeleted();
+          this.toggleDeleted(0);
         }, err => {
           this.snackBar.open('Failed to delete ' + list.name + ' from Word list: ' + this.contextpack.name, 'OK', {
             duration: 5000,
