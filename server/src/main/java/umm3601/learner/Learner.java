@@ -6,8 +6,6 @@ import javax.persistence.Id;
 
 import org.mongojack.ObjectId;
 
-import umm3601.contextpack.ContextPack;
-
 public class Learner {
 
   @Id @ObjectId
@@ -17,5 +15,5 @@ public class Learner {
   public String creator;
 
   public String name;
-  public ArrayList<ContextPack> assignedContextPacks;
+  public ArrayList<String> assignedContextPacks;
 }
