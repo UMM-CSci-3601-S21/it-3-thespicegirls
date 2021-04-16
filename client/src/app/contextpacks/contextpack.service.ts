@@ -106,6 +106,16 @@ export class ContextPackService {
    });
   }
 
+  deleteWordlist(contextpack: ContextPack, listname: string){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('listname', listname);
+    httpParams = httpParams.set('delwordlist', 'true');
+
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
+
   updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack> {
 
     let httpParams: HttpParams = new HttpParams();

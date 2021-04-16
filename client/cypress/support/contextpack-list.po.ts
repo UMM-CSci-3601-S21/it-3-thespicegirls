@@ -16,6 +16,13 @@ export class ContextpackListPage {
   clickViewInfo(card: Cypress.Chainable<JQuery<HTMLElement>>) {
     return card.find<HTMLButtonElement>('[data-test=viewInfoButton]').click();
   }
+  clickDeleteWordlist(card: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return card.find<HTMLButtonElement>('[data-test=deleteWordlistButton]').eq(0).click();
+  }
+  clickConfirmDeleteWordlist(card: Cypress.Chainable<JQuery<HTMLElement>>) {
+    return card.find<HTMLButtonElement>('[data-test=deleteConfirmationButton]').eq(0).click();
+  }
+
 
   selectView(value: string) {
     // Find and click the drop down
@@ -30,6 +37,7 @@ export class ContextpackListPage {
       // Select and click the desired value from the resulting menu
       .get(`mat-option[value="${value}"]`).click();
   }
+
 
   enableEditDeleteMode(){
     return cy.get('.editView').click({force: true});

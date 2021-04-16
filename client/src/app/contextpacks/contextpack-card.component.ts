@@ -23,6 +23,8 @@ export class ContextPackCardComponent implements OnInit {
   removable = false;
   enabled = 'true';
   isAdmin: boolean;
+  deleteClicked: boolean;
+  deleteIndex=0;
 
   validationMessages = {
     word: [
@@ -57,6 +59,10 @@ export class ContextPackCardComponent implements OnInit {
       return 'Enabled';
     }
   }
+  toggleDeleted(index: number){
+    this.deleteClicked = !this.deleteClicked;
+    this.deleteIndex = index;
+  }
 
   save(field: string, newData: string) {
 		this.valueChangeEvents.emit( [newData, field] );
@@ -84,6 +90,25 @@ export class ContextPackCardComponent implements OnInit {
           this.localDelete(wordType, word);
         }, err => {
           this.snackBar.open('Failed to delete ' + word + ' from Word list: ' + list.name, 'OK', {
+            duration: 5000,
+          });
+        });
+  }
+  deleteWordlist(list: Wordlist) {
+          this.contextpackservice.deleteWordlist(this.contextpack, list.name).subscribe(existingID => {
+            this.snackBar.open('Deleted ' + list.name + ' from Context Pack: ' + this.contextpack.name, null, {
+            duration: 3000,
+          });
+            // delete wordlist locally
+          let i=0;
+          for(i=0; i<this.contextpack.wordlists.length; i++){
+              if (this.contextpack.wordlists[i].name === list.name){
+                this.contextpack.wordlists.splice(i,1);
+              }
+          }
+          this.toggleDeleted(0);
+        }, err => {
+          this.snackBar.open('Failed to delete ' + list.name + ' from Word list: ' + this.contextpack.name, 'OK', {
             duration: 5000,
           });
         });

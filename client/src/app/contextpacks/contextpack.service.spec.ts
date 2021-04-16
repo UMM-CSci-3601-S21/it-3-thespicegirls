@@ -143,6 +143,7 @@ describe('Context Pack service: ', () => {
     req.flush({id: 'testid'});
   });
 
+
   it('updateContextPack() posts to api/contextpack/:id/editpack', () => {
 
     contextpackService.updateContextPack(testContextPacks[1], {name: 'Birthday'}).subscribe(
@@ -232,6 +233,15 @@ describe('Context Pack service: ', () => {
       contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name,{adjective: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].adjectives[0].forms));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&deladj=teachers');
+      expect(req.request.method).toEqual('POST');
+    });
+  });
+
+  describe('Deleting a wordlist',()=>{
+    it('Makes a post request to the correct url', ()=>{
+      contextpackService.deleteWordlist(testContextPacks[0], testContextPacks[0].wordlists[0].name)
+      .subscribe(contextPack => expect(contextPack.wordlists[0]));
+      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delwordlist=true');
       expect(req.request.method).toEqual('POST');
     });
   });

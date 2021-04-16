@@ -19,6 +19,11 @@ public class ContextPack {
   public boolean enabled;
   public ArrayList<Wordlist> wordlists;
 
+  public void deleteWordlist(String name) {
+    this.wordlists.removeIf(wordlist -> (wordlist.name.equals(name)));
+
+  }
+
 }
 
 

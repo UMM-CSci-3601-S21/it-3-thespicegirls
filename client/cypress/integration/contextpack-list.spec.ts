@@ -26,7 +26,7 @@ describe('Contextpack List View', () => {
   });
 
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
-    cy.get('[data-test=contextpackNameInput]').type('j');
+    cy.get('[data-test=contextpackNameInput]').type('j').wait(1000);
 
     page.getContextpackCards().should('have.lengthOf.above', 0);
 
@@ -88,7 +88,7 @@ describe('Contextpack Info View', () => {
   });
 
   it('Should click view info, select a view words, and see all the words', () => {
-    page.clickViewInfo(page.getContextpackCards().first());
+    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
     page.selectView('false');
 
     cy.get('.contextpack-card-name').should('contain.text', 'farm');
@@ -136,6 +136,24 @@ describe('Info Page Edit View', () => {
     cy.get('.mat-simple-snackbar').should('contain', 'Deleted moo from Word list: farm_animals');
     cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
   });
+  it('Should click the edit button and delete a wordlist if they are an admin', () => {
+    // login as admin
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().first());
+    page.enableEditDeleteMode();
+    // farm animals list should be present before deleting
+    cy.get('.wordlist-name').should('contain.text', 'farm_animals');
+    cy.get('.delete-wordlist-button').eq(0).should('be.visible');
+    cy.get('.delete-wordlist-button').eq(0).should('contain.text','delete');
+    page.clickDeleteWordlist(page.getContextpackCards().first());
+    // Farm animals list should be gone now
+    cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
+    page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
+    cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
+
+  });
 
   it('Should not see an edit button if not an admin', () => {
     cy.get('.wordlist-disable-button').should('not.exist');
@@ -150,8 +168,7 @@ describe('Info Page Edit View', () => {
 
     page.enableEditDeleteMode();
     cy.get('.wordlist-disable-button').should('be.visible');
-    cy.get('.wordlist-disable-button').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Updated enabled status of Word list: farm_animals').wait(1000);
+    cy.get('.wordlist-disable-button').eq(0).click().wait(1000);
     page.enableEditDeleteMode();
     cy.get('.wordlist-enabled').eq(0).should('contain.text','Disabled ');
   });
@@ -181,7 +198,7 @@ describe('Info Page Add View', () => {
     cy.reload();
     pageLogin.googleAdminLogin();
     cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first());
+    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
 
     page.enableAddMode();
     cy.get('.addNouns').click();

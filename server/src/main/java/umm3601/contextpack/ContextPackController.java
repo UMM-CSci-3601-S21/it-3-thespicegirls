@@ -25,6 +25,7 @@ public class ContextPackController {
   private static final String NAME_KEY = "name";
   private static final String ENABLED_KEY = "enabled";
   private static final String ICON_KEY = "icon";
+  private static final String WORDLIST_DEL_KEY = "delwordlist";
   private static final String NOUN_DEL_KEY = "delnoun";
   private static final String VERB_DEL_KEY ="delverb";
   private static final String MISC_DEL_KEY ="delmisc";
@@ -113,6 +114,9 @@ public class ContextPackController {
 
     Wordlist list = pack.wordlists.get(index);
 
+    if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
+      pack.deleteWordlist(ctx.queryParam("listname"));
+    }
     if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
       boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
       list.setEnabled(enabled);

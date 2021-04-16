@@ -27,7 +27,7 @@ describe('ContextPackCardComponent', () => {
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList', 'checkIfAdmin']);
+    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList', 'checkIfAdmin', 'deleteWordlist']);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -202,6 +202,22 @@ describe('ContextPackCardComponent', () => {
       spy.deleteWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
       component.deleteWord(component.contextpack.wordlists[0],'test','noun');
       expect(spy.deleteWord).toHaveBeenCalledTimes(1);
+    });
+    it('deletes a word locally when a word is deleted from the server', () => {
+      spy.deleteWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.localDelete(`nouns`, `goat`);
+      expect(component.contextpack.wordlists[0].nouns[0].word).not.toContain('goat');
+    });
+
+    it('deleteWord calls correct snackbar message when word is added', () => {});
+
+  });
+  describe('delete Wordlist', () => {
+    it('calls contextpackservice.deleteWordlist with correct parameters', () => {
+      expect(spy.deleteWordlist).toHaveBeenCalledTimes(0);
+      spy.deleteWordlist.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.deleteWordlist(component.contextpack.wordlists[0]);
+      expect(spy.deleteWordlist).toHaveBeenCalledTimes(1);
     });
     it('deletes a word locally when a word is deleted from the server', () => {
       spy.deleteWord.and.returnValue(of(MockContextPackService.testContextPacks[0]));
