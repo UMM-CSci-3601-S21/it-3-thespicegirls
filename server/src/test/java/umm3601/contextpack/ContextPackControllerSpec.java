@@ -407,6 +407,25 @@ public class ContextPackControllerSpec {
 
   }
   @Test
+  public void addWordlist(){
+    String id = testID.toHexString();
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addwordlist=pumpkin");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(0).name, "dogs");
+    assertEquals(resultPack.wordlists.get(2).name, "pumpkin");
+    assertEquals(resultPack.wordlists.size(), 3);
+    assertEquals(resultPack.wordlists.get(2).nouns.size(), 0);
+
+  }
+  @Test
   public void deleteNoun(){
     String id = testID.toHexString();
 

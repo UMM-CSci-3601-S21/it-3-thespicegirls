@@ -22,6 +22,18 @@ public class ContextPack {
     this.wordlists.removeIf(wordlist -> (wordlist.name.equals(name)));
 
   }
+  public void addWordlist(String listname) {
+    Wordlist list =  new Wordlist();
+    list.name = listname;
+    list.enabled =true;
+    list.nouns = new ArrayList<Word>();
+    list.misc =  new ArrayList<Word>();
+    list.verbs =  new ArrayList<Word>();
+    list.adjectives =  new ArrayList<Word>();
+    this.wordlists.add(list);
+  }
+
+
 
 }
 
