@@ -121,22 +121,6 @@ public class ContextPackControllerSpec {
 
     );
     contextPackDocuments.insertOne(testPackID);
-
-    MongoCollection<Document> wordlistDocuments = db.getCollection("wordlists");
-
-    Document testListID = new Document()
-          .append("_id", testID)
-          .append("name", "MountainDew")
-          .append("enabled", true)
-          .append("nouns",
-                Arrays.asList(new Document("word", "horse").append("forms", Arrays.asList("horsie", "horse"))))
-          .append("adjectives",
-                Arrays.asList(new Document("word", "Bob").append("forms", Arrays.asList("Bob"))))
-          .append("verbs",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))))
-          .append("misc",
-                Arrays.asList(new Document("word", "run").append("forms", Arrays.asList("ran", "runs"))));
-    wordlistDocuments.insertOne(testListID);
     contextPackController = new ContextPackController(db);
   }
 
