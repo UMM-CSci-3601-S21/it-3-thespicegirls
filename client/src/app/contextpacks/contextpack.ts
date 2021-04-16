@@ -16,6 +16,7 @@ export interface Wordlist{
 export interface ContextPack {
   _id: string;
   name: string;
+  userName: string;
   icon?: string;
   enabled: boolean;
   wordlists?: Wordlist[];

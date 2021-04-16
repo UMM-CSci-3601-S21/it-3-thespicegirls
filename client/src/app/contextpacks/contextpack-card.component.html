@@ -7,6 +7,7 @@
           <div class="contextpack-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
           <div class="contextpack-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
         <mat-card-subtitle class="contextpack-card-icon">{{this.contextpack.icon}}</mat-card-subtitle>
+        <mat-card-subtitle class="contextpack-card-icon">Created by: {{this.contextpack.userName}}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content *ngIf="!this.simple">

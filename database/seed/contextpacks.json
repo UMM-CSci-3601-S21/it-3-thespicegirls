@@ -3,6 +3,7 @@
     "$oid": "588935f57546a2daea44de7c"
   },
   "name": "farm",
+  "userName": "Thomas",
   "icon": "barn.jpg",
   "enabled": true,
   "wordlists": [
@@ -101,6 +102,7 @@
     "$oid": "588935f55b432bb2ff322169"
   },
   "name": "Birthday Pack",
+  "userName": "Thomas",
   "icon": "birthday.png",
   "enabled": true,
 
@@ -192,6 +194,7 @@
   },
 
   "name": "Extra Cool Pack That Makes The Text Tiny",
+  "userName": "Thomas",
   "icon": "c:/path",
   "enabled": true,
 
@@ -246,6 +249,7 @@
     "$oid": "588935f55b432bb2ff322160"
   },"name": "Batman",
   "icon": "bat_signal.jpg",
+  "userName": "Thomas",
   "enabled": true,
 
   "wordlists": [
@@ -299,6 +303,7 @@
   },
   "name": "sight words",
   "icon": "eye.png",
+  "userName": "Thomas",
   "enabled": true,
   "wordlists": [
     {
@@ -436,6 +441,7 @@
   },
   "name": "Jojo Siwa",
   "icon": "jojo.png",
+  "userName": "Thomas",
   "enabled": true,
   "wordlists": [
     {
