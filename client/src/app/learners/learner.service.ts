@@ -9,8 +9,31 @@ import { Learner } from './learner';
 })
 export class LearnerService {
   readonly learnerUrl: string = environment.apiUrl + 'learners';
+  readonly idTokenUrl: string = environment.apiUrl + 'users';
 
   constructor(private httpClient: HttpClient) { }
+
+  checkIfLoggedIn(log: string){
+    let isSignedIn: boolean;
+    if (log === 'true'){
+      isSignedIn = true;
+    }
+    else{
+      isSignedIn = false;
+    }
+    return isSignedIn;
+  }
+
+  checkIfAdmin(log: string){
+    let isAdmin: boolean;
+    if (log === 'true'){
+      isAdmin = true;
+    }
+    else{
+      isAdmin = false;
+    }
+    return isAdmin;
+  }
 
   getLearners(): Observable<Learner[]> {
     const httpParams: HttpParams = new HttpParams();

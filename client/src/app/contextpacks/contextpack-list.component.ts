@@ -33,28 +33,31 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
     private snackBar: MatSnackBar, private router: Router) {}
 
   getContextpacksFromServer(): void {
-    this.unsub();
+    this.unsubContextpack();
     this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
       this.serverFilteredContextpacks = returnedContextpacks;
-      this.updateFilter();
+      this.updateContextpackFilter();
     }, err => {
       console.log(err);
     });
   }
 
   getLearnersFromServer(): void {
-    this.unsub();
+    this.unsubLearner();
     this.getLearnersSub = this.learnerService.getLearners().subscribe(returnedLearners => {
       this.serverFilteredLearners = returnedLearners;
-      this.updateFilter();
+      this.updateLearnerFilter();
     }, err => {
       console.log(err);
     });
   }
 
-  public updateFilter(): void {
+  public updateContextpackFilter(): void {
     this.filteredContextpacks = this.contextpackService.filterContextPacks(
       this.serverFilteredContextpacks, { name: this.contextpackName });
+  }
+
+  public updateLearnerFilter(): void {
     this.filteredLearners = this.learnerService.filterLearners(
       this.serverFilteredLearners, { name: this.learnerName });
   }
@@ -65,13 +68,17 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy(): void {
-    this.unsub();
+    this.unsubContextpack();
+    this.unsubLearner();
   }
 
-  unsub(): void {
+  unsubContextpack(): void {
     if (this.getContextpacksSub) {
       this.getContextpacksSub.unsubscribe();
     }
+  }
+
+  unsubLearner(): void {
     if (this.getLearnersSub) {
       this.getLearnersSub.unsubscribe();
     }
