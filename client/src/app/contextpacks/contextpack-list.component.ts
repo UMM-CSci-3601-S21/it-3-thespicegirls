@@ -4,6 +4,7 @@ import { ContextPackService} from './contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { LearnerService } from '../learners/learner.service';
 
 @Component({
   selector: 'app-contextpack-list-component',
@@ -21,8 +22,11 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   public contextpackName: string;
 
   getContextpacksSub: Subscription;
+  getLearnersSub: Subscription;
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private learnerService: LearnerService, private contextpackService: ContextPackService,
+    private snackBar: MatSnackBar, private router: Router) {}
 
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
