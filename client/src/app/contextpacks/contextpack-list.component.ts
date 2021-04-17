@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LearnerService } from '../learners/learner.service';
+import { Learner } from '../learners/learner';
 
 @Component({
   selector: 'app-contextpack-list-component',
@@ -17,9 +18,12 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredContextpacks: ContextPack[];
   public filteredContextpacks: ContextPack[];
+  public serverFilteredLearners: Learner[];
+  public filteredLearners: Learner[];
 
   public contextpack: ContextPack;
   public contextpackName: string;
+  public learnerName: string;
 
   getContextpacksSub: Subscription;
   getLearnersSub: Subscription;
@@ -27,6 +31,51 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   constructor(
     private learnerService: LearnerService, private contextpackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) {}
+
+  getContextpacksFromServer(): void {
+    this.unsub();
+    this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
+      this.serverFilteredContextpacks = returnedContextpacks;
+      this.updateFilter();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  getLearnersFromServer(): void {
+    this.unsub();
+    this.getLearnersSub = this.learnerService.getLearners().subscribe(returnedLearners => {
+      this.serverFilteredLearners = returnedLearners;
+      this.updateFilter();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public updateFilter(): void {
+    this.filteredContextpacks = this.contextpackService.filterContextPacks(
+      this.serverFilteredContextpacks, { name: this.contextpackName });
+    this.filteredLearners = this.learnerService.filterLearners(
+      this.serverFilteredLearners, { name: this.learnerName });
+  }
+
+  ngOnInit(): void {
+    this.getContextpacksFromServer();
+    this.getLearnersFromServer();
+  }
+
+  ngOnDestroy(): void {
+    this.unsub();
+  }
+
+  unsub(): void {
+    if (this.getContextpacksSub) {
+      this.getContextpacksSub.unsubscribe();
+    }
+    if (this.getLearnersSub) {
+      this.getLearnersSub.unsubscribe();
+    }
+  }
 
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
@@ -62,34 +111,5 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       contextpack.icon = obj.icon;
     }
     this.ngOnInit();
-  }
-
-  getContextpacksFromServer(): void {
-    this.unsub();
-    this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
-      this.serverFilteredContextpacks = returnedContextpacks;
-      this.updateFilter();
-    }, err => {
-      console.log(err);
-    });
-  }
-
-  public updateFilter(): void {
-    this.filteredContextpacks = this.contextpackService.filterContextPacks(
-      this.serverFilteredContextpacks, { name: this.contextpackName });
-  }
-
-  ngOnInit(): void {
-    this.getContextpacksFromServer();
-  }
-
-  ngOnDestroy(): void {
-    this.unsub();
-  }
-
-  unsub(): void {
-    if (this.getContextpacksSub) {
-      this.getContextpacksSub.unsubscribe();
-    }
   }
 }

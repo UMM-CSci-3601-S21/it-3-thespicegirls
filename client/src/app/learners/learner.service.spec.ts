@@ -72,4 +72,10 @@ describe('LearnerService', () => {
       expect(req.request.method).toEqual('GET');
       req.flush(targetLearner);
     });
+
+    it('filterLearners() filters by name', () => {
+      expect(testLearners.length).toBe(2);
+      const learnerName = 'one';
+      expect(service.filterLearners(testLearners, { name: learnerName }).length).toBe(1);
+    });
 });

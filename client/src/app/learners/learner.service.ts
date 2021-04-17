@@ -22,4 +22,18 @@ export class LearnerService {
   getLearnerById(id: string): Observable<Learner> {
     return this.httpClient.get<Learner>(this.learnerUrl + '/' + id);
   }
+
+  filterLearners(learners: Learner[], filters: { name?: string }): Learner[] {
+
+    let filteredLearners = learners;
+
+    // Filter by topic
+    if (filters.name) {
+      filters.name = filters.name.toLowerCase();
+
+      filteredLearners = filteredLearners.filter(learner => learner.name.toLowerCase().indexOf(filters.name) !== -1);
+    }
+
+    return filteredLearners;
+  }
 }
