@@ -189,7 +189,7 @@
  <br>
 
   <mat-accordion class="example-headers-align" *ngIf="this.editing">
-    <mat-expansion-panel class='addNouns'>
+    <mat-expansion-panel class='addWordlist'>
       <mat-expansion-panel-header>
         <mat-panel-title>
           Add Wordlist
@@ -198,14 +198,14 @@
 
       <mat-form-field>
         <mat-label>Name</mat-label>
-       <input matInput class="addWordlist" required autocomplete="off" #wordlistInput>
+       <input matInput class="addWordlistInput" required autocomplete="off" #wordlistInput>
        <mat-error class="error-message" data-test="nameError"
        *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
       {{validationMessages.word[0].message}}
       </mat-error>
        <mat-hint>List Name</mat-hint>
       </mat-form-field>
-      <button mat-icon-button class="addNounButton" (click)="addWordlist(wordlistInput.value)"><mat-icon>add</mat-icon></button>
+      <button mat-icon-button class="addWordlistButton" (click)="addWordlist(wordlistInput.value)"><mat-icon>add</mat-icon></button>
 
     </mat-expansion-panel>
 

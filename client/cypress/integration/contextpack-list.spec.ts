@@ -211,6 +211,19 @@ describe('Info Page Add View', () => {
       + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
       + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
   });
+  it('should click on the add button and add a wordlist',()=>{
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
+    pageLogin.googleAdminLogin();
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
+
+    page.enableAddMode();
+    cy.get('.addWordlist').click();
+    cy.get('.addWordlistInput').type('test');
+    cy.get('.addWordlistButton').click();
+
+  });
 
 });
 
