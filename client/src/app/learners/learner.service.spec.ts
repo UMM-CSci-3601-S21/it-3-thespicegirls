@@ -78,4 +78,13 @@ describe('LearnerService', () => {
       const learnerName = 'one';
       expect(service.filterLearners(testLearners, { name: learnerName }).length).toBe(1);
     });
+
+    it('should check some strings with admin checker', () => {
+      expect(service.checkIfAdmin('true')).toEqual(true);
+      expect(service.checkIfAdmin('false')).toEqual(false);
+    });
+    it('should check some strings with login checker', () => {
+      expect(service.checkIfLoggedIn('true')).toEqual(true);
+      expect(service.checkIfLoggedIn('false')).toEqual(false);
+    });
 });

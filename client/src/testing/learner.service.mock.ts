@@ -31,11 +31,11 @@ export class MockLearnerService extends LearnerService {
     return of(MockLearnerService.testLearners);
   }
 
-  getLearnerById(id: string): Observable<Learner> {
-    if (id === MockLearnerService.testLearners[0]._id) {
-      return of(MockLearnerService.testLearners[0]);
-    } else {
-      return of(null);
-    }
-  }
+  // getLearnerById(id: string): Observable<Learner> {
+  //   if (id === MockLearnerService.testLearners[0]._id) {
+  //     return of(MockLearnerService.testLearners[0]);
+  //   } else {
+  //     return of(null);
+  //   }
+  // }
 }
