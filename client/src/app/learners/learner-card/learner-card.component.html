@@ -1,10 +1,15 @@
-<mat-card>
-  <mat-card-title>{{this.learner.name}}</mat-card-title>
-<mat-card-content>
-  <mat-action-list *ngFor="let assignedPacks of this.assignedPacks">
-    {{assignedPacks.name}}
-  </mat-action-list>
-  <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary'
-  (click)='this.downloadAll(this.assignedPacks)'><mat-icon>save_alt</mat-icon></button>
-</mat-card-content>
-</mat-card>
+
+  <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card-title>{{this.learner.name}}</mat-card-title>
+  <mat-card-content >
+    <mat-list *ngFor="let assignedPacks of this.assignedPacks">
+      {{assignedPacks.name}}
+    </mat-list>
+      <mat-card-actions > <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary'
+        (click)='this.downloadAll(this.assignedPacks)'><mat-icon>save_alt</mat-icon></button>
+      </mat-card-actions>
+
+  </mat-card-content>
+
+  </mat-card>
+
