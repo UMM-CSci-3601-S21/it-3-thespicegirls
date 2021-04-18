@@ -1,0 +1,8 @@
+<mat-card>
+  <mat-card-title>{{this.learner.name}}</mat-card-title>
+<mat-card-content>
+  <mat-action-list *ngFor="let assignedPacks of this.assignedPacks">
+    {{assignedPacks.name}}
+  </mat-action-list>
+</mat-card-content>
+</mat-card>
