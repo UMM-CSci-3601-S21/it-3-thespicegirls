@@ -1,1 +1,17 @@
 <h1>{{this.learner.name}}</h1>
+<mat-list>
+  <mat-label>
+    Assigned Packs
+  </mat-label>
+  <mat-list-item *ngFor="let pack of this.assignedPacks">
+    {{pack.name}}
+  </mat-list-item>
+</mat-list>
+<div class="word-chip-container">
+  <mat-chip-list>
+    <mat-chip *ngFor="let word of this.assignedWords">
+      {{word.word}}
+    </mat-chip>
+  </mat-chip-list>
+</div>
+

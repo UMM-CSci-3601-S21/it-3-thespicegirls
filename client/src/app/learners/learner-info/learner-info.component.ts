@@ -1,22 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ContextPack, Word } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-learner-info',
   templateUrl: './learner-info.component.html',
-  styleUrls: ['./learner-info.component.scss']
+  styleUrls: ['./learner-info.component.scss'],
+  providers :[]
 })
-export class LearnerInfoComponent implements OnInit {
+export class LearnerInfoComponent implements OnInit, OnDestroy {
 
   learner: Learner;
   id: string;
   getLearnerSub: Subscription;
-  constructor(private route: ActivatedRoute,
+  assignedPacks: ContextPack[] =[];
+  assignedWords: Word[]=[];
+
+  constructor(private route: ActivatedRoute, private contextPackService: ContextPackService,
     private learnerService: LearnerService, private router: Router) { }
 
   ngOnInit(): void {
@@ -28,8 +35,47 @@ export class LearnerInfoComponent implements OnInit {
       if (this.getLearnerSub) {
         this.getLearnerSub.unsubscribe();
       }
-      this.getLearnerSub = this.learnerService.getLearnerById(this.id).subscribe(learner => this.learner = learner);
+      this.getLearnerSub = this.learnerService.getLearnerById(this.id)
+      .subscribe(learner =>{this.learner = learner;
+        this.getAssignedContextPacks();
+        this.getAllWords();
+      });
     });
+
+  }
+  ngOnDestroy(): void {
+    if (this.getLearnerSub) {
+      this.getLearnerSub.unsubscribe();
+    }
+
+  }
+
+  getAssignedContextPacks(){
+    const packs: ContextPack[] =[];
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for(let i=0; i<this.learner.assignedContextPacks.length; i++){
+     this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
+      .subscribe(contextpack => {
+      this.assignedPacks.push(contextpack);
+      this.getAllWords();
+      }
+      );
+    }
+
+  }
+
+  getAllWords(){
+    const words: Word[]=[];
+    console.log(this.assignedPacks.length);
+    for(const pack of this.assignedPacks){
+      let i=0;
+      for(i;i<pack.wordlists.length; i++){
+        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].nouns);
+        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].misc);
+        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].verbs);
+        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].adjectives);
+      }
+    }
   }
 
 }
