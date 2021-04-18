@@ -4,5 +4,7 @@
   <mat-action-list *ngFor="let assignedPacks of this.assignedPacks">
     {{assignedPacks.name}}
   </mat-action-list>
+  <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary'
+  (click)='this.downloadAll(this.assignedPacks)'><mat-icon>save_alt</mat-icon></button>
 </mat-card-content>
 </mat-card>
