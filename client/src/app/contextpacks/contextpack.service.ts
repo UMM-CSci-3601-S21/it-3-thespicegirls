@@ -21,8 +21,8 @@ export class ContextPackService {
       isSignedIn = false;
     }
     return isSignedIn;
-
   }
+
   checkIfAdmin(log: string){
     let isAdmin: boolean;
     if (log === 'true'){
@@ -32,8 +32,8 @@ export class ContextPackService {
       isAdmin = false;
     }
     return isAdmin;
-
   }
+
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
@@ -111,6 +111,13 @@ export class ContextPackService {
     httpParams = httpParams.set('listname', listname);
     httpParams = httpParams.set('delwordlist', 'true');
 
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
+  addWordlist(contextpack: ContextPack, listname: string){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('addwordlist', listname);
     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
       params: httpParams
    });

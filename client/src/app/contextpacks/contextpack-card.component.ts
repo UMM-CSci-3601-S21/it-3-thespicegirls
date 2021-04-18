@@ -113,6 +113,19 @@ export class ContextPackCardComponent implements OnInit {
           });
         });
   }
+  addWordlist(listname: string) {
+    this.contextpackservice.addWordlist(this.contextpack, listname).subscribe(existingID => {
+      this.snackBar.open('Added ' + listname + ' from Context Pack: ' + this.contextpack.name, null, {
+      duration: 3000,
+    });
+    // delete wordlist locally
+    this.contextpack.wordlists.push({name:listname,enabled:true,nouns:[],verbs:[],misc:[],adjectives:[]});
+  }, err => {
+    this.snackBar.open('Failed to delete ' + listname + ' from Word list: ' + this.contextpack.name, 'OK', {
+      duration: 5000,
+    });
+  });
+}
 
   localDelete(wordType: string, word: string){
     for(const list of this.contextpack.wordlists){

@@ -4,18 +4,8 @@
   },
   "creator": "KK",
   "name": "Jimmy",
-  "assignedContextPacks": [
-    {
-    "_id": {
-      "$oid": "588935f57546a2daea44de7c"
-    }
-    },
-    {
-    "_id": {
-      "$oid": "588935f55b432bb2ff322169"
-    }
-    }
-  ]
+  "assignedContextPacks": [ "588935f57546a2daea44de7c", "588935f55b432bb2ff322169"],
+  "disabledWordlists": []
 },
 
 {
@@ -24,16 +14,6 @@
   },
   "creator": "KK",
   "name": "Daisy",
-  "assignedContextPacks": [
-    {
-    "_id": {
-      "$oid": "588935f55b432bb2ff322165"
-    }
-    },
-    {
-    "_id": {
-      "$oid": "588935f55b432bb2ff322160"
-    }
-    }
-  ]
+  "assignedContextPacks": [ "588935f55b432bb2ff322165", "588935f55b432bb2ff322160"],
+  "disabledWordlists": []
 }]

@@ -245,6 +245,14 @@ describe('Context Pack service: ', () => {
       expect(req.request.method).toEqual('POST');
     });
   });
+  describe('Adding a wordlist',()=>{
+    it('Makes a post request to the correct url', ()=>{
+      contextpackService.addWordlist(testContextPacks[0],'pumpkins')
+      .subscribe(contextPack => expect(contextPack.wordlists[0]));
+      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?addwordlist=pumpkins');
+      expect(req.request.method).toEqual('POST');
+    });
+  });
 
 });
 
