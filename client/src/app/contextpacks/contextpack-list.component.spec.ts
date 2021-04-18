@@ -21,6 +21,10 @@ import { ContextPackListComponent } from './contextpack-list.component';
 import { ContextPackService } from './contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LearnerService } from '../learners/learner.service';
+import { MockLearnerService } from 'src/testing/learner.service.mock';
+import { Learner } from '../learners/learner';
+import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
 
 
 const COMMON_IMPORTS: any[] = [
@@ -54,7 +58,8 @@ describe('ContextPack list', () => {
       imports: [COMMON_IMPORTS],
       declarations: [ContextPackListComponent, ContextPackCardComponent],
 
-      providers: [{ provide: ContextPackService, useValue: new MockContextPackService() }]
+      providers: [{provide: LearnerService, useValue: new MockLearnerService()},
+        { provide: ContextPackService, useValue: new MockContextPackService() }]
     });
   });
 
@@ -70,8 +75,16 @@ describe('ContextPack list', () => {
     expect(contextpackList.serverFilteredContextpacks.length).toBe(3);
   });
 
+  it('contains all the Learners', () => {
+    expect(contextpackList.serverFilteredLearners.length).toBe(2);
+  });
+
   it('contains a ContextPack named \'fun\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'fun')).toBe(true);
+  });
+
+  it('contains a Learner named \'one\'', () => {
+    expect(contextpackList.serverFilteredLearners.some((learner: Learner) => learner.name === 'one')).toBe(true);
   });
 
   it('contain a ContextPack named \'happy\'', () => {
@@ -80,6 +93,10 @@ describe('ContextPack list', () => {
 
   it('doesn\'t contain a contextpack named \'Santa\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'Santa')).toBe(false);
+  });
+
+  it('doesn\'t contain a Learner named \'three\'', () => {
+    expect(contextpackList.serverFilteredLearners.some((learner: Learner) => learner.name === 'three')).toBe(false);
   });
 });
 
@@ -90,6 +107,11 @@ describe('Misbehaving ContextPack List', () => {
   let getContextPacksSub: {
     getContextPacks: () => Observable<ContextPack[]>;
     getContextPacksFiltered: () => Observable<ContextPack[]>;
+  };
+
+  let getLearnersSub: {
+    getLearners: () => Observable<Learner[]>;
+    getLearnersFilter: () => Observable<Learner[]>;
   };
 
   beforeEach(() => {
@@ -103,12 +125,20 @@ describe('Misbehaving ContextPack List', () => {
       })
     };
 
+    getLearnersSub = {
+      getLearners: () => new Observable(observer => {
+        observer.error('Error-prone observable');
+      }),
+      getLearnersFilter: () => new Observable(observer => {
+        observer.error('Error-prone observable');
+      })
+    };
+
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
       declarations: [ContextPackListComponent],
-      // providers:    [ ContextPackService ]  // NO! Don't provide the real service!
-      // Provide a test-double instead
-      providers: [{ provide: ContextPackService, useValue: getContextPacksSub }]
+      providers: [{ provide: ContextPackService, useValue: getContextPacksSub },
+      {provide: LearnerService, useValue: getLearnersSub}]
     });
   });
 
@@ -120,16 +150,15 @@ describe('Misbehaving ContextPack List', () => {
     });
   }));
 
-  it('generates an error if we don\'t set up a WordlistListService', () => {
+  it('generates an error if we don\'t set up the services', () => {
     // Since the observer throws an error, we don't expect contextpacks to be defined.
     expect(contextpackList.serverFilteredContextpacks).toBeUndefined();
+    expect(contextpackList.serverFilteredLearners).toBeUndefined();
   });
 
 });
 describe('ContextPackListComponent', () => {
 
-  let contextpackService: ContextPackService;
-  let packServiceSpy: jasmine.SpyObj<MockContextPackService>;
   let component: ContextPackListComponent;
   let fixture: ComponentFixture<ContextPackListComponent>;
   let spy: jasmine.SpyObj<ContextPackService>;
@@ -143,13 +172,11 @@ describe('ContextPackListComponent', () => {
       ],
       declarations: [ ContextPackListComponent, ContextPackCardComponent ],
       providers: [{ provide: ContextPackService, useValue: spy },
-        ]
+      {provide: LearnerService, useValue: new MockLearnerService()}]
     })
     .compileComponents().catch(error => {
       expect(error).toBeNull();
     });
-    contextpackService = TestBed.inject(ContextPackService);
-    packServiceSpy = TestBed.inject(ContextPackService) as jasmine.SpyObj<ContextPackService>;
   }));
 
   beforeEach(() => {
@@ -170,9 +197,6 @@ describe('ContextPackListComponent', () => {
     component.updateField(MockContextPackService.testContextPacks[0],['test','icon']);
     expect(spy.updateContextPack).toHaveBeenCalledTimes(3);
   });
-
-
-
 
 });
 

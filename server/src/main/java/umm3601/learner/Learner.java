@@ -16,4 +16,5 @@ public class Learner {
 
   public String name;
   public ArrayList<String> assignedContextPacks;
+  public ArrayList<String> disabledWordlists;
 }
