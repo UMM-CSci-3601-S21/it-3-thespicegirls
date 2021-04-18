@@ -97,9 +97,7 @@ public class LearnerControllerSpec {
     assertTrue(JavalinJson.fromJson(result, Learner[].class).length >= 1);
     assertEquals(db.getCollection("learners").countDocuments(),
         JavalinJson.fromJson(result, Learner[].class).length);
-
   }
-
   @Test
   public void GetLearner(){
     String testLearnerID = testID.toHexString();
