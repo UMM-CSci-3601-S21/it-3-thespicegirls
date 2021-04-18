@@ -116,11 +116,24 @@ describe('Context Pack service: ', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(targetContextPack);
   });
+
   it('should check some strings with admin checker', () => {
     expect(contextpackService.checkIfAdmin('true')).toEqual(true);
   });
   it('should check some strings with login checker', () => {
     expect(contextpackService.checkIfLoggedIn('true')).toEqual(true);
+  });
+
+  it('should create a download element when given a json', () => {
+    const targetContextPack: ContextPack = testContextPacks[0];
+    expect(contextpackService.downloadJson(targetContextPack, targetContextPack.name).toString()).toContain('fun');
+  });
+
+  it('should convert a json into a correctly formatted json', () => {
+    const targetContextPack: ContextPack = testContextPacks[0];
+    expect(contextpackService.convertToBetterJson(targetContextPack).$schema).
+    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
+    expect(contextpackService.convertToBetterJson(targetContextPack).id).toBeUndefined();
   });
 
   it('filterContextPack() filters by name', () => {

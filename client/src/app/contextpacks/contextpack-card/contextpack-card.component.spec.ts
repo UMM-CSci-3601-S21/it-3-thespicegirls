@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
-import { ContextPack, Word, Wordlist } from './contextpack';
+import { ContextPack, Word, Wordlist } from '../contextpack';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import { HttpClient} from '@angular/common/http';
 import { of } from 'rxjs';
@@ -138,18 +138,6 @@ describe('ContextPackCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-
-
-  it('should create a download element when given a json', () => {
-    expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
-
-  });
-  it('should convert a json into a correctly formatted json', () => {
-    expect(component.convertToBetterJson(component.contextpack).$schema).
-    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
-    expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
   });
 
   describe('set object Param', () => {

@@ -1,9 +1,16 @@
 .contextpack-cards-container {
   width: 100%;
   position: relative;
-  align-items: center;
+  justify-content: center;
 }
 
+.myLearnersButton {
+ float: right;
+}
+
+.input-field {
+  display: inline-block;
+}
 
 .contextpack-card {
   padding: 5px;

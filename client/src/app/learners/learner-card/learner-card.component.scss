@@ -1,0 +1,23 @@
+mat-card{
+  background-color:white;
+  text-transform: capitalize;
+  box-sizing: border-box;
+  height: 100%;
+  margin:10px;
+}
+
+mat-list,  mat-card-title, mat-card-subtitle{
+  text-transform: capitalize;
+  color:#01596e;
+  margin: 10px;
+}
+
+mat-card-header {
+  text-align: left;
+}
+
+mat-card-actions {
+  float: right;
+}
+
+

@@ -19,7 +19,7 @@
           </mat-select>
         </mat-form-field>
 
-      <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>
+      <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='this.contextpackservice.downloadJson(contextpack, contextpack.name).click()'>
         <mat-icon>download</mat-icon>
         </button>
 
@@ -176,7 +176,7 @@
       </mat-select>
     </mat-form-field>
 
-  <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='downloadJson(contextpack, contextpack.name).click()'>
+  <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='this.contextpackservice.downloadJson(contextpack, contextpack.name).click()'>
     <mat-icon>download</mat-icon>
     </button>
   <button mat-icon-button matTooltip="Edit and Delete" matTooltipPosition="above" color="accent" class="editView" (click)="this.removable = !this.removable">

@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContextPack } from './contextpack';
-import { ContextPackService} from './contextpack.service';
+import { ContextPack } from '../contextpack';
+import { ContextPackService} from '../contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LearnerService } from '../learners/learner.service';
-import { Learner } from '../learners/learner';
+import { LearnerService } from '../../learners/learner.service';
+import { Learner } from '../../learners/learner';
 
 @Component({
   selector: 'app-contextpack-list-component',
@@ -18,18 +18,16 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   // These are public so that tests can reference them (.spec.ts)
   public serverFilteredContextpacks: ContextPack[];
   public filteredContextpacks: ContextPack[];
-  public serverFilteredLearners: Learner[];
-  public filteredLearners: Learner[];
 
   public contextpack: ContextPack;
   public contextpackName: string;
-  public learnerName: string;
+
+  public viewType: 'learner' | 'card' = 'card';
 
   getContextpacksSub: Subscription;
-  getLearnersSub: Subscription;
 
   constructor(
-    private learnerService: LearnerService, private contextpackService: ContextPackService,
+    private contextpackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) {}
 
   getContextpacksFromServer(): void {
@@ -42,45 +40,22 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
     });
   }
 
-  getLearnersFromServer(): void {
-    this.unsubLearner();
-    this.getLearnersSub = this.learnerService.getLearners().subscribe(returnedLearners => {
-      this.serverFilteredLearners = returnedLearners;
-      this.updateLearnerFilter();
-    }, err => {
-      console.log(err);
-    });
-  }
-
   public updateContextpackFilter(): void {
     this.filteredContextpacks = this.contextpackService.filterContextPacks(
       this.serverFilteredContextpacks, { name: this.contextpackName });
   }
 
-  public updateLearnerFilter(): void {
-    this.filteredLearners = this.learnerService.filterLearners(
-      this.serverFilteredLearners, { name: this.learnerName });
-  }
-
   ngOnInit(): void {
     this.getContextpacksFromServer();
-    this.getLearnersFromServer();
   }
 
   ngOnDestroy(): void {
     this.unsubContextpack();
-    this.unsubLearner();
   }
 
   unsubContextpack(): void {
     if (this.getContextpacksSub) {
       this.getContextpacksSub.unsubscribe();
-    }
-  }
-
-  unsubLearner(): void {
-    if (this.getLearnersSub) {
-      this.getLearnersSub.unsubscribe();
     }
   }
 
