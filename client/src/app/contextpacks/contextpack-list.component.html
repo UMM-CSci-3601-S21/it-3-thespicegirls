@@ -29,26 +29,35 @@
 <div fxLayout="row">
   <div class="test" fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredContextpacks; else contextpackError" >
 
-      <div fxLayout="row wrap" fxLayoutGap="10px" class="contextpack-cards-container">
+    <div [ngSwitch]="viewType">
+
+      <!--Contextpack view-->
+      <div  *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="contextpack-cards-container">
         <app-contextpack-card simple="true" *ngFor="let contextpack of filteredContextpacks" class="contextpack-card" [contextpack]="contextpack"  (valueChangeEvents)="updateField(contextpack,$event)" fxFlex="1 1 280px"></app-contextpack-card>
       </div>
 
   </div>
 
-  <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
-  <ng-template #contextpackError>
-    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="contextpack-error">
-      <mat-error>
-        There was a problem loading the contextpacks. Possibly the server is down or perhaps there are network
-        issues.
-      </mat-error>
-      <mat-error>
-        Please wait a bit and try again or start the server.
-      </mat-error>
-    </div>
-  </ng-template>
 
 </div>
+
+<div *ngSwitchCase="'learner'" fxLayout="row wrap" fxLayoutGap="10px" class="learner-cards-container">
+  <app-learner-card simple="true" *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  (valueChangeEvents)="updateField(learner,$event)" fxFlex="1 1 280px"></app-learner-card>
+</div>
+
+ <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+ <ng-template #contextpackError>
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="contextpack-error">
+    <mat-error>
+      There was a problem loading the contextpacks. Possibly the server is down or perhaps there are network
+      issues.
+    </mat-error>
+    <mat-error>
+      Please wait a bit and try again or start the server.
+    </mat-error>
+  </div>
+</ng-template>
+
 
 <button mat-fab class="add-contextpack-fab" matTooltip="Add New Context Pack" matTooltipPosition="above" routerLink="/edit" data-test="addContextPackButton">
   <mat-icon class="md-24" aria-label="Add Context Pack">add</mat-icon>

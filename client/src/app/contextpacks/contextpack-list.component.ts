@@ -20,6 +20,8 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   public contextpack: ContextPack;
   public contextpackName: string;
 
+  public viewType: 'learner' | 'card' = 'card';
+
   getContextpacksSub: Subscription;
 
   constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {}
