@@ -39,6 +39,8 @@ import { AddContextpacksComponent } from './contextpacks/add-contextpacks.compon
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
 import { EditContextpackComponent } from './contextpacks/edit-contextpack.component';
+import { LearnerCardComponent } from './learners/learner-card/learner-card.component';
+import { LearnerListComponent } from './learners/learner-list/learner-list.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -73,6 +75,8 @@ const MATERIAL_MODULES: any[] = [
     ContextPackInfoComponent,
     AddContextpacksComponent,
     EditContextpackComponent,
+    LearnerCardComponent,
+    LearnerListComponent,
   ],
   imports: [
     BrowserModule,
