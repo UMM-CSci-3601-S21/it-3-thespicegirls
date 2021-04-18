@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ContextPack } from './contextpack';
-import { ContextPackService } from './contextpack.service';
+import { ContextPack } from '../contextpack';
+import { ContextPackService } from '../contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar} from '@angular/material/snack-bar';
 

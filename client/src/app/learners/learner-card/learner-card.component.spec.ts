@@ -58,9 +58,6 @@ describe('LearnerCardComponent', () => {
     fixture.detectChanges();
   });
   beforeEach(() => {
-
-
-
     fixture.detectChanges();
   });
 

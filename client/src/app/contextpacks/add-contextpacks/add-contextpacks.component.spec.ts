@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 
 import { AddContextpacksComponent } from './add-contextpacks.component';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 
 describe('AddContextpacksComponent', () => {
   let component: AddContextpacksComponent;

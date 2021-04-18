@@ -6,12 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ActivatedRouteStub } from '../../testing/activated-route-stub';
-import { MockContextPackService } from '../../testing/contextpack.service.mock';
-import { ContextPack, Word, Wordlist } from './contextpack';
+import { ActivatedRouteStub } from '../../../testing/activated-route-stub';
+import { MockContextPackService } from '../../../testing/contextpack.service.mock';
+import { ContextPack, Word, Wordlist } from '../contextpack';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { ContextPackInfoComponent } from './contextpack-info.component';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 
 
 describe('ContextPackInfoComponent', () => {

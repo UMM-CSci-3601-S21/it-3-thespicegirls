@@ -14,16 +14,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
-import { MockContextPackService } from '../../testing/contextpack.service.mock';
-import { ContextPack } from './contextpack';
-import { ContextPackCardComponent } from './contextpack-card.component';
+import { MockContextPackService } from '../../../testing/contextpack.service.mock';
+import { ContextPack } from '../contextpack';
+import { ContextPackCardComponent } from '../contextpack-card/contextpack-card.component';
 import { ContextPackListComponent } from './contextpack-list.component';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { LearnerService } from '../learners/learner.service';
+import { LearnerService } from '../../learners/learner.service';
 import { MockLearnerService } from 'src/testing/learner.service.mock';
-import { Learner } from '../learners/learner';
+import { Learner } from '../../learners/learner';
 import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
 
 
@@ -75,16 +75,8 @@ describe('ContextPack list', () => {
     expect(contextpackList.serverFilteredContextpacks.length).toBe(3);
   });
 
-  it('contains all the Learners', () => {
-    expect(contextpackList.serverFilteredLearners.length).toBe(2);
-  });
-
   it('contains a ContextPack named \'fun\'', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'fun')).toBe(true);
-  });
-
-  it('contains a Learner named \'one\'', () => {
-    expect(contextpackList.serverFilteredLearners.some((learner: Learner) => learner.name === 'one')).toBe(true);
   });
 
   it('contain a ContextPack named \'happy\'', () => {
@@ -95,9 +87,6 @@ describe('ContextPack list', () => {
     expect(contextpackList.serverFilteredContextpacks.some((contextpack: ContextPack) => contextpack.name === 'Santa')).toBe(false);
   });
 
-  it('doesn\'t contain a Learner named \'three\'', () => {
-    expect(contextpackList.serverFilteredLearners.some((learner: Learner) => learner.name === 'three')).toBe(false);
-  });
 });
 
 describe('Misbehaving ContextPack List', () => {
@@ -107,11 +96,6 @@ describe('Misbehaving ContextPack List', () => {
   let getContextPacksSub: {
     getContextPacks: () => Observable<ContextPack[]>;
     getContextPacksFiltered: () => Observable<ContextPack[]>;
-  };
-
-  let getLearnersSub: {
-    getLearners: () => Observable<Learner[]>;
-    getLearnersFilter: () => Observable<Learner[]>;
   };
 
   beforeEach(() => {
@@ -125,20 +109,10 @@ describe('Misbehaving ContextPack List', () => {
       })
     };
 
-    getLearnersSub = {
-      getLearners: () => new Observable(observer => {
-        observer.error('Error-prone observable');
-      }),
-      getLearnersFilter: () => new Observable(observer => {
-        observer.error('Error-prone observable');
-      })
-    };
-
     TestBed.configureTestingModule({
       imports: [COMMON_IMPORTS],
       declarations: [ContextPackListComponent],
-      providers: [{ provide: ContextPackService, useValue: getContextPacksSub },
-      {provide: LearnerService, useValue: getLearnersSub}]
+      providers: [{ provide: ContextPackService, useValue: getContextPacksSub }]
     });
   });
 
@@ -153,7 +127,6 @@ describe('Misbehaving ContextPack List', () => {
   it('generates an error if we don\'t set up the services', () => {
     // Since the observer throws an error, we don't expect contextpacks to be defined.
     expect(contextpackList.serverFilteredContextpacks).toBeUndefined();
-    expect(contextpackList.serverFilteredLearners).toBeUndefined();
   });
 
 });

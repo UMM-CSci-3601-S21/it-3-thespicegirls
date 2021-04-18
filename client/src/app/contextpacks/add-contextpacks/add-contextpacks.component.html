@@ -313,7 +313,7 @@
 <mat-tab label="JSON-Preview">
   <pre class="form-value" style="font-size:15px">{{ contextPackForm.value | json }}</pre>
   <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" color='primary' [disabled]="!contextPackForm.valid"
-(click)='contextpackcard.downloadJson(contextPackForm.value , contextPackForm.value.name).click()'><mat-icon>save_alt</mat-icon></button>
+(click)='this.contextPackService.downloadJson(contextPackForm.value , contextPackForm.value.name).click()'><mat-icon>save_alt</mat-icon></button>
 </mat-tab>
 </mat-tab-group>
 </div>

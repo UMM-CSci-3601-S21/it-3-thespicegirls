@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ContextPack, Word, Wordlist} from './contextpack';
-import { ContextPackService } from './contextpack.service';
+import { ContextPack, Word, Wordlist} from '../contextpack';
+import { ContextPackService } from '../contextpack.service';
 
 
 @Component({
@@ -33,7 +33,7 @@ export class ContextPackCardComponent implements OnInit {
     wordlist: {type: 'required', message: 'Choose a Word List'}
   };
 
-  constructor(private fb: FormBuilder, public snackBar: MatSnackBar, private contextpackservice: ContextPackService)
+  constructor(private fb: FormBuilder, public snackBar: MatSnackBar, public contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
@@ -185,31 +185,6 @@ export class ContextPackCardComponent implements OnInit {
         break;
     }
     return obj;
-  }
-
-
-  downloadJson(myJson: ContextPack, topic: string){
-      myJson = this.convertToBetterJson(myJson);
-      const sJson = JSON.stringify(myJson, null, 2);
-      const element = document.createElement('a');
-      element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
-      element.setAttribute('download', topic + '.json');
-      element.style.display = 'none';
-      document.body.appendChild(element);
-      document.body.removeChild(element);
-      return element;
-}
-
-  convertToBetterJson(jsonBetter: ContextPack){
-    const obj: any =
-      {
-      $schema: 'https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json',
-      name: jsonBetter.name,
-      icon: jsonBetter.icon,
-      enabled: jsonBetter.enabled,
-      wordlists: jsonBetter.wordlists
-      };
-      return obj;
   }
 
 }
