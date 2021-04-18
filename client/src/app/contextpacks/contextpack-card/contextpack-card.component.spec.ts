@@ -140,18 +140,6 @@ describe('ContextPackCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-
-  it('should create a download element when given a json', () => {
-    expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
-
-  });
-  it('should convert a json into a correctly formatted json', () => {
-    expect(component.convertToBetterJson(component.contextpack).$schema).
-    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
-    expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
-  });
-
   describe('set object Param', () => {
 
     it('set the object param for nouns', () => {
