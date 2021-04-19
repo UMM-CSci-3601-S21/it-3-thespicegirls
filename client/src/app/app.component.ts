@@ -54,19 +54,23 @@ export class AppComponent implements OnInit {
     this.socialAuthState().subscribe((user) => {
       this.user = user;
       console.log(this.user);
-      this.addGoogleToken(this.user.idToken).subscribe(newID => {
+      this.addGoogleToken(this.user.idToken).subscribe(res => {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
-        console.log(newID);
-        if(newID === 'true'){
+        console.log(res);
+        const user2 = new SocialUser();
+        user2.firstName = res.name;
+        this.user = user2;
+        this.isSignedin = true;
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('userId', res.userId);
+        if(res.admin === true){
           localStorage.setItem('admin', 'true');
         }
         else{
           localStorage.setItem('admin', 'false');
         }
-        localStorage.setItem('loggedIn', 'true');
-        localStorage.setItem('userId', newID);
         this.reload();
       }, err => {
         this.snackBar.open('Failed login to server', 'OK', {
@@ -75,6 +79,7 @@ export class AppComponent implements OnInit {
         this.isSignedin = false;
         localStorage.setItem('loggedIn', 'false');
         localStorage.setItem('admin', 'false');
+        localStorage.setItem('userId', 'false');
         this.logout();
       });
     });
@@ -96,6 +101,7 @@ export class AppComponent implements OnInit {
       this.isSignedin = false;
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('admin');
+      localStorage.removeItem('userId');
       this.reload();
   });
   }
@@ -112,9 +118,9 @@ export class AppComponent implements OnInit {
     return 'Word River';
   }
 
-  addGoogleToken(token: string): Observable<string>{
+  addGoogleToken(token: string): Observable<User>{
     console.log(this.idTokenUrl);
-    return this.httpClient.post<{id: string}>(this.idTokenUrl, token).pipe(map(res => res.id));
+    return this.httpClient.post<User>(this.idTokenUrl, token).pipe(map(res => res));
   }
 
 }
