@@ -1,14 +1,14 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ContextPack, Word, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatGridListModule} from '@angular/material/grid-list';
-import { ThemePalette } from '@angular/material/core';
+
+
+
 
 @Component({
   selector: 'app-learner-info',
@@ -52,9 +52,8 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   }
 
   getAssignedContextPacks(){
-    const packs: ContextPack[] =[];
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for(let i=0; i<this.learner.assignedContextPacks.length; i++){
+    let i=0;
+    for(i; i<this.learner.assignedContextPacks.length; i++){
      this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
       .subscribe(contextpack => {
       this.assignedPacks.push(contextpack);
