@@ -23,6 +23,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getLearnerSub: Subscription;
   assignedPacks: ContextPack[] =[];
   assignedWords: Word[]=[];
+  assignedLists: Wordlist[]=[];
 
   constructor(private route: ActivatedRoute, private contextPackService: ContextPackService,
     private learnerService: LearnerService, private router: Router) { }
@@ -39,7 +40,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.getLearnerSub = this.learnerService.getLearnerById(this.id)
       .subscribe(learner =>{this.learner = learner;
         this.getAssignedContextPacks();
-        this.getAllWords();
       });
     });
 
@@ -57,7 +57,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
      this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
       .subscribe(contextpack => {
       this.assignedPacks.push(contextpack);
-      this.getAllWords();
+      this.getAllWords(contextpack);
       }
       );
     }
@@ -68,8 +68,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       word.wordlist=list.name;}
     }
   }
-  getAllWords(){
-    for(const pack of this.assignedPacks){
+  getAllWords(pack: ContextPack){
       let i=0;
       for(i;i<pack.wordlists.length; i++){
         this.setPos(pack.wordlists[i]);
@@ -77,7 +76,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         this.assignedWords = this.assignedWords.concat(pack.wordlists[i][`${pos}`]);
         }
       }
-    }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
@@ -85,7 +83,9 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     for(const pack of this.assignedPacks){
       let i=0;
       for(i; i<pack.wordlists.length; i++){
-        
+        if(!this.learner.disabledWordlists.includes(pack.wordlists[i].name)){
+          this.assignedLists.push((pack.wordlists[i]));
+        }
       }
     }
   }
