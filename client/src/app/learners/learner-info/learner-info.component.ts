@@ -61,14 +61,13 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       }
       );
     }
-
   }
   setPos(list: Wordlist){
     for(const pos of ['nouns','verbs','misc','adjectives']){
-      for(const word of list[`${pos}`]){word.pos =pos;}
+      for(const word of list[`${pos}`]){word.pos =pos;
+      word.wordlist=list.name;}
     }
   }
-
   getAllWords(){
     for(const pack of this.assignedPacks){
       let i=0;
@@ -77,6 +76,16 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         for(const pos of ['nouns','verbs','misc','adjectives']){
         this.assignedWords = this.assignedWords.concat(pack.wordlists[i][`${pos}`]);
         }
+      }
+    }
+    this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
+  }
+
+  getAssignedWordlists(){
+    for(const pack of this.assignedPacks){
+      let i=0;
+      for(i; i<pack.wordlists.length; i++){
+        
       }
     }
   }

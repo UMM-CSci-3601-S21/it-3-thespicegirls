@@ -11,7 +11,7 @@
   <mat-card-title>Assigned Words</mat-card-title>
   <mat-chip-list>
     <mat-chip *ngFor="let word of this.assignedWords"
-        matTooltip="{{word.forms.join(' ')}}"
+        matTooltip="{{word.wordlist.replace('_', ' ')}}"
         matTooltipClass="forms-tooltip"
         class="{{word.pos}}"
         >
