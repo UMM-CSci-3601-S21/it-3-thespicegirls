@@ -2,6 +2,9 @@
 export interface Word{
   word?: string;
   forms?: string[];
+  pos?: string;
+  pack?: string;
+  wordlist?: string;
 }
 export interface Wordlist{
   name?: string;

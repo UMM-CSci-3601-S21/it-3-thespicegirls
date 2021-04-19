@@ -7,13 +7,16 @@
     {{pack.name}}
   </mat-list-item>
 </mat-list>
-<div class="word-chip-container">
+<mat-card class="word-chip-container">
+  <mat-card-title>Assigned Words</mat-card-title>
   <mat-chip-list>
     <mat-chip *ngFor="let word of this.assignedWords"
         matTooltip="{{word.forms.join(' ')}}"
-        matTooltipClass="forms-tooltip" >
+        matTooltipClass="forms-tooltip"
+        class="{{word.pos}}"
+        >
       {{word.word}}
     </mat-chip>
   </mat-chip-list>
-</div>
+</mat-card>
 

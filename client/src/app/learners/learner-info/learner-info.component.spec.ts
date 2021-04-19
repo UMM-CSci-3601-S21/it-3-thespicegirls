@@ -68,11 +68,18 @@ describe('LearnerInfoComponent', () => {
     component.getAssignedContextPacks();
     expect(component.assignedPacks.length).toBeGreaterThan(0);
     expect(component.assignedPacks[0]._id).toEqual('chris_id');
+    expect(component.assignedPacks[0]._id).toEqual('chris_id');
   });
   it('should get all assigned words', () => {
     component.getAllWords();
     expect(component.assignedWords.length).toBeGreaterThan(0);
-    expect(component.assignedWords[0]).toEqual({ word: 'you', forms: [ 'you', 'yos' ] });
+    expect(component.assignedWords[0]).toEqual({ word: 'you', forms: [ 'you', 'yos' ], pos:'nouns'});
+    expect(component.assignedWords.length).toEqual(12);
+  });
+  it('should correctly assign the parts of speech', () => {
+    component.getAllWords();
+    expect(component.assignedWords[0]).toEqual({ word: 'you', forms: [ 'you', 'yos' ], pos:'nouns'});
+    expect(component.assignedWords[1]).toEqual({ word: 'ran', forms: [ 'ran', 'running' ], pos:'verbs'});
   });
 
 

@@ -2,12 +2,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ContextPack, Word } from 'src/app/contextpacks/contextpack';
+import { ContextPack, Word, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-learner-info',
@@ -63,17 +64,20 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
 
   }
+  setPos(list: Wordlist){
+    for(const pos of ['nouns','verbs','misc','adjectives']){
+      for(const word of list[`${pos}`]){word.pos =pos;}
+    }
+  }
 
   getAllWords(){
-    const words: Word[]=[];
-    console.log(this.assignedPacks.length);
     for(const pack of this.assignedPacks){
       let i=0;
       for(i;i<pack.wordlists.length; i++){
-        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].nouns);
-        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].misc);
-        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].verbs);
-        this.assignedWords = this.assignedWords.concat(pack.wordlists[i].adjectives);
+        this.setPos(pack.wordlists[i]);
+        for(const pos of ['nouns','verbs','misc','adjectives']){
+        this.assignedWords = this.assignedWords.concat(pack.wordlists[i][`${pos}`]);
+        }
       }
     }
   }
