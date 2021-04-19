@@ -73,9 +73,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getAllWords(pack: ContextPack){
       let i=0;
       for(i;i<pack.wordlists.length; i++){
-        this.setPos(pack.wordlists[i]);
-        for(const pos of ['nouns','verbs','misc','adjectives']){
-        this.assignedWords = this.assignedWords.concat(pack.wordlists[i][`${pos}`]);
+        if(!this.learner.disabledWordlists.includes(pack.wordlists[i].name)){
+          this.setPos(pack.wordlists[i]);
+          for(const pos of ['nouns','verbs','misc','adjectives']){
+          this.assignedWords = this.assignedWords.concat(pack.wordlists[i][`${pos}`]);
+          }
         }
       }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
