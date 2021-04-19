@@ -1,6 +1,6 @@
 
 <mat-card class="contextpack-card" *ngIf="this.contextpack">
-  <div *ngIf="isAdmin === false || isAdmin === undefined; else templateCard">
+  <div *ngIf="isAdmin === undefined; else templateCard">
     <mat-card-header>
       <mat-card-title class="contextpack-card-name">{{this.contextpack.name}}</mat-card-title>
         <mat-card-subtitle class="contextpack-card-enabled">{{displayEnabled(this.contextpack.enabled)}}
@@ -164,6 +164,7 @@
       <div class="contextpack-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
       <div class="contextpack-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
     <mat-card-subtitle><app-edit-contextpack class="contextpack-card-icon" [value]="this.contextpack.icon" (valueChangeEvents)="save('icon',$event)"></app-edit-contextpack></mat-card-subtitle>
+    <mat-card-subtitle class="contextpack-card-icon">Created by: {{this.contextpack.userName}}</mat-card-subtitle>
   </mat-card-header>
 
 

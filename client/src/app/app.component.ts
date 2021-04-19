@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
         user2.firstName = res.name;
         this.user = user2;
         this.isSignedin = true;
+        localStorage.setItem('userId', res.userId);
         localStorage.setItem('loggedIn', 'true');
         if(res.admin === true){
           localStorage.setItem('admin', 'true');
@@ -65,6 +66,7 @@ export class AppComponent implements OnInit {
           localStorage.setItem('admin', 'false');
         }
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('userId', newID);
         this.reload();
       }, err => {
         this.snackBar.open('Failed login to server', 'OK', {
