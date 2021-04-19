@@ -11,14 +11,14 @@ export class MockLearnerService extends LearnerService {
       _id: 'testLearner1',
       creator: 'KK',
       name: 'one',
-      assignedContextPacks: ['oneId','twoId','threeId'],
+      assignedContextPacks: ['chris_id'],
       disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
     },
     {
       _id: 'testLearner2',
       creator: 'KK',
       name: 'two',
-      assignedContextPacks: ['oneId','twoId','threeId'],
+      assignedContextPacks: ['chris_id','bob_id','mary_id'],
       disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
     }
   ];
@@ -31,11 +31,11 @@ export class MockLearnerService extends LearnerService {
     return of(MockLearnerService.testLearners);
   }
 
-  // getLearnerById(id: string): Observable<Learner> {
-  //   if (id === MockLearnerService.testLearners[0]._id) {
-  //     return of(MockLearnerService.testLearners[0]);
-  //   } else {
-  //     return of(null);
-  //   }
-  // }
+  getLearnerById(id: string): Observable<Learner> {
+    if (id === MockLearnerService.testLearners[0]._id) {
+      return of(MockLearnerService.testLearners[0]);
+    } else {
+      return of(null);
+    }
+  }
 }

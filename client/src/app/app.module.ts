@@ -27,6 +27,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -40,6 +41,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
 import { EditContextpackComponent } from './contextpacks/edit-contextpacks/edit-contextpack.component';
 import { LearnerCardComponent } from './learners/learner-card/learner-card.component';
 import { LearnerListComponent } from './learners/learner-list/learner-list.component';
+import { LearnerInfoComponent } from './learners/learner-info/learner-info.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -62,7 +64,8 @@ const MATERIAL_MODULES: any[] = [
   MatDialogModule,
   MatExpansionModule,
   MatCheckboxModule,
-  MatTabsModule
+  MatTabsModule,
+  MatGridListModule
 ];
 
 @NgModule({
@@ -75,6 +78,7 @@ const MATERIAL_MODULES: any[] = [
     EditContextpackComponent,
     LearnerCardComponent,
     LearnerListComponent,
+    LearnerInfoComponent,
   ],
   imports: [
     BrowserModule,

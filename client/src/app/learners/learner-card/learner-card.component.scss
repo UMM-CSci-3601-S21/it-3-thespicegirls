@@ -9,15 +9,15 @@ mat-card{
 mat-list,  mat-card-title, mat-card-subtitle{
   text-transform: capitalize;
   color:#01596e;
-  margin: 10px;
 }
 
 mat-card-header {
   text-align: left;
 }
 
-mat-card-actions {
+mat-card-actions, mat-icon {
   float: right;
+  margin-bottom:5px;
 }
 
 

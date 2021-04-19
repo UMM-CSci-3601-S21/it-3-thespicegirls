@@ -1,0 +1,22 @@
+<h1>{{this.learner.name}}</h1>
+<mat-list>
+  <mat-label>
+    Assigned Packs
+  </mat-label>
+  <mat-list-item *ngFor="let pack of this.assignedPacks">
+    {{pack.name}}
+  </mat-list-item>
+</mat-list>
+<mat-card class="word-chip-container">
+  <mat-card-title>Assigned Words</mat-card-title>
+  <mat-chip-list>
+    <mat-chip *ngFor="let word of this.assignedWords"
+        matTooltip="{{word.forms.join(' ')}}"
+        matTooltipClass="forms-tooltip"
+        class="{{word.pos}}"
+        >
+      {{word.word}}
+    </mat-chip>
+  </mat-chip-list>
+</mat-card>
+
