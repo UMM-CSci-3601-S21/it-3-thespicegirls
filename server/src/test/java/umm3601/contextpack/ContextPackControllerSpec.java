@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
+import com.mockrunner.mock.web.MockHttpSession;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 
@@ -40,6 +41,7 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
 import umm3601.contextpack.ContextPackControllerSpec;
+import umm3601.user.User;
 
 public class ContextPackControllerSpec {
 
@@ -52,6 +54,7 @@ public class ContextPackControllerSpec {
 
   static MongoClient mongoClient;
   static MongoDatabase db;
+  MockHttpSession mockSession = new MockHttpSession();
 
   static ObjectMapper jsonMapper = new ObjectMapper();
 
@@ -79,6 +82,7 @@ public class ContextPackControllerSpec {
     Document testPackID = new Document()
     .append("_id", testID)
     .append("name", "baskets")
+    .append("userId", "12345")
     .append("icon", "dog.png")
     .append("enabled", true)
     .append("wordlists", Arrays.asList(
@@ -134,8 +138,10 @@ public class ContextPackControllerSpec {
   public void GetAllContextPacks() throws IOException {
 
     // Create our fake Javalin context
+
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
     contextPackController.getContextPacks(ctx);
+
 
     assertEquals(200, mockRes.getStatus());
 
@@ -245,8 +251,13 @@ public class ContextPackControllerSpec {
       + "}}"
     ;
 
+    mockReq.setSession(mockSession);
     mockReq.setBodyContent(test);
     mockReq.setMethod("POST");
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks");
 
@@ -308,6 +319,11 @@ public class ContextPackControllerSpec {
   public void editPackName() throws IOException {
 
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "/api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
 
@@ -348,10 +364,146 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(0).enabled, true);
     assertEquals(resultPack.wordlists.get(1).enabled, false);
   }
+  @Test
+  public void editPackNameAsAdmin() throws IOException {
+
+    String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "123";
+    user.name = "me";
+    user.admin = true;
+    mockSession.setAttribute("current-user", user);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "/api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
+
+    // Test editing name and enabled together
+    mockReq.setQueryString("name=frank&enabled=false");
+    contextPackController.editContextPack(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.enabled, false);
+    assertEquals("frank", resultPack.name);
+
+    // Test editing name
+    mockReq.setQueryString("name=coconuts");
+    contextPackController.editContextPack(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.enabled, false);
+    assertEquals("coconuts", resultPack.name);
+
+    //Test editing enabled
+    mockReq.setQueryString("enabled=true");
+    contextPackController.editContextPack(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.enabled, true);
+    assertEquals(resultPack.wordlists.get(0).enabled, true);
+    assertEquals(resultPack.wordlists.get(1).enabled, false);
+  }
+  @Test
+  public void cantEditPackNameWithBadId() throws IOException {
+
+    String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "1234";
+    user.name = "me";
+    user.admin = false;
+    mockSession.setAttribute("current-user", user);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "/api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
+
+    // Test editing name and enabled together
+    mockReq.setQueryString("name=frank&enabled=false");
+    boolean result = false;
+    try{
+      contextPackController.editContextPack(ctx);
+      }catch(IllegalAccessError ref){result = true;}
+
+    assertTrue(result);
+
+  }
+  @Test
+  public void cantEditWordListWithBadId() throws IOException {
+
+    String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "1234";
+    user.name = "me";
+    user.admin = false;
+    mockSession.setAttribute("current-user", user);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "/api/contextpacks/:id/editpack", ImmutableMap.of("id", id));
+
+    // Test editing name and enabled together
+    mockReq.setQueryString("name=frank&enabled=false");
+    boolean result = false;
+    try{
+      contextPackController.editWordlist(ctx);
+      }catch(IllegalAccessError ref){result = true;}
+
+    assertTrue(result);
+
+  }
 
   @Test
   public void editListName() throws IOException {
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("listname=dogs&enabled=false&name=donkeys");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+    assertEquals(resultPack.wordlists.get(0).enabled, false);
+    assertEquals(resultPack.wordlists.get(1).enabled, false);
+    assertEquals(resultPack.wordlists.get(0).name, "donkeys");
+    assertEquals(resultPack.wordlists.get(1).name, "cats");
+
+    mockReq.setQueryString("listname=donkeys&enabled=true");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    result = ctx.resultString();
+    resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID.toHexString());
+
+
+  }
+  @Test
+  public void editListNameAsAdmin() throws IOException {
+    String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "123";
+    user.name = "me";
+    user.admin = true;
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("listname=dogs&enabled=false&name=donkeys");
@@ -381,6 +533,11 @@ public class ContextPackControllerSpec {
   @Test
   public void deleteWordlist(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delwordlist=goat&listname=cats");
@@ -409,6 +566,11 @@ public class ContextPackControllerSpec {
   @Test
   public void deleteNoun(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delnoun=goat&listname=cats");
@@ -426,6 +588,11 @@ public class ContextPackControllerSpec {
   @Test
   public void deleteVerb(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delverb=run&listname=cats");
@@ -443,6 +610,11 @@ public class ContextPackControllerSpec {
   @Test
   public void deleteAdj(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("deladj=red&listname=cats");
@@ -460,6 +632,11 @@ public class ContextPackControllerSpec {
   @Test
   public void deleteMisc(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delmisc=bark&listname=cats");
@@ -477,6 +654,11 @@ public class ContextPackControllerSpec {
   @Test
   public void editWordlistNonExistentWordlistName(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("delverb=run&listname=hamburger");
@@ -490,6 +672,11 @@ public class ContextPackControllerSpec {
   @Test
   public void addVerb(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("addverb=fall,falls&listname=cats");
@@ -507,6 +694,11 @@ public class ContextPackControllerSpec {
   @Test
   public void addMisc(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     // adding word with forms
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
@@ -543,6 +735,11 @@ public class ContextPackControllerSpec {
   @Test
   public void addAdj(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("addadj=purple,purples&listname=cats");
@@ -562,6 +759,11 @@ public class ContextPackControllerSpec {
   @Test
   public void addNoun(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("addnoun=jeep,jeeps,jeeper,jeepy&listname=cats");

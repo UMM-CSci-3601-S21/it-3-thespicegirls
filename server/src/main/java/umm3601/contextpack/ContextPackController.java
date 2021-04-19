@@ -93,9 +93,6 @@ public class ContextPackController {
     Bson filter = eq("_id", id);
     User user = ctx.sessionAttribute("current-user");
     ContextPack pack = contextPackCollection.find(filter).first();
-    System.out.println("user id" + user._id);
-    System.out.println(pack.userId);
-
     if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
       List<Bson> updateOperations = new ArrayList<>();
 
@@ -126,8 +123,6 @@ public class ContextPackController {
     Bson filter = and(eq("_id", ctx.pathParam("id")));
     ContextPack pack = contextPackCollection.find(filter).first();
     User user = ctx.sessionAttribute("current-user");
-    System.out.println(user._id);
-    System.out.println(pack.userId);
     if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
       int index = getListIndex(pack,ctx.queryParam("listname"));
       Wordlist list = pack.wordlists.get(index);
