@@ -9,7 +9,9 @@
 </mat-list>
 <div class="word-chip-container">
   <mat-chip-list>
-    <mat-chip *ngFor="let word of this.assignedWords">
+    <mat-chip *ngFor="let word of this.assignedWords"
+        matTooltip="{{word.forms.join(' ')}}"
+        matTooltipClass="forms-tooltip" >
       {{word.word}}
     </mat-chip>
   </mat-chip-list>
