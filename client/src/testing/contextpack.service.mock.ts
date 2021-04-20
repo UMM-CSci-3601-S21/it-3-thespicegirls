@@ -35,7 +35,7 @@ export class MockContextPackService extends ContextPackService {
     [
       {
         name: 'happy',
-        enabled: false,
+        enabled: true,
         nouns: MockContextPackService.testNouns,
         adjectives: MockContextPackService.testAdjectives,
         verbs: MockContextPackService.testVerbs,
@@ -82,6 +82,10 @@ export class MockContextPackService extends ContextPackService {
     } else {
       return of(null);
     }
+  }
+
+  updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack>{
+    return of(MockContextPackService.testContextPacks[0]);
   }
 
 

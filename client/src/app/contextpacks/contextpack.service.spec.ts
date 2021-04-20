@@ -224,7 +224,6 @@ describe('Context Pack service: ', () => {
 
   describe('Deleting Words from a wordlist', ()=>{
     it('Deleting a noun posts to the correct url', () => {
-      console.log(testContextPacks[0].wordlists[0].name);
       contextpackService.deleteWord(testContextPacks[0], testContextPacks[0].wordlists[0].name, {noun: 'teachers'})
       .subscribe(contextPack => expect(contextPack.wordlists[0].nouns[0].word));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delnoun=teachers');

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { componentFactoryName } from '@angular/compiler';
 import { TestBed } from '@angular/core/testing';
 import { Learner } from './learner';
 
@@ -71,6 +72,13 @@ describe('LearnerService', () => {
       const req = httpTestingController.expectOne(expectedUrl);
       expect(req.request.method).toEqual('GET');
       req.flush(targetLearner);
+    });
+    it('should make a correctly composed post request to the api', () => {
+      const targetLearner: Learner = testLearners[0];
+      service.assignWordlist('dogs', targetLearner).subscribe(
+        learner => expect(learner).toBe(targetLearner)
+      );
+      const req = httpTestingController.expectOne('/api/learners/testLearner1/assign?assign=dogs');
     });
 
     it('filterLearners() filters by name', () => {
