@@ -73,7 +73,7 @@ public class LearnerControllerSpec {
     .append("creator","KK")
     .append("name","Starla")
     .append("assignedContextPacks", Arrays.asList())
-    .append("disabledWordlists", Arrays.asList());
+    .append("disabledWordlists", Arrays.asList("cats","dogs","milk"));
     learnerDocuments.insertOne(testLearnerID);
     learnerController = new LearnerController(db);
   }
@@ -130,6 +130,30 @@ public class LearnerControllerSpec {
     assertThrows(NotFoundResponse.class, ()->{
       learnerController.getLearner(ctx);
     });
+
+  }
+  @Test
+  public void assignWordlist(){
+    String testLearnerID = testID.toHexString();
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("assign=cats");
+    learnerController.assignWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), true);
+
+    ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("assign=dogs");
+    learnerController.assignWordlist(ctx);
+    result = ctx.resultString();
+
+    assertEquals(200, mockRes.getStatus());
+    resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), false);
 
   }
 }
