@@ -40,7 +40,7 @@ const observableString = new Observable<string>((observer) => {
 });
 const userTest: User = {
   name: 'Thomas',
-  userId: '12345',
+  _id: '12345',
   admin: true
 };
 
