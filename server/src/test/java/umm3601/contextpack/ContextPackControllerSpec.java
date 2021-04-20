@@ -566,6 +566,12 @@ public class ContextPackControllerSpec {
   @Test
   public void addWordlist(){
     String id = testID.toHexString();
+    mockReq.setSession(mockSession);
+    mockReq.setMethod("POST");
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
 
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
     mockReq.setQueryString("addwordlist=pumpkin");
