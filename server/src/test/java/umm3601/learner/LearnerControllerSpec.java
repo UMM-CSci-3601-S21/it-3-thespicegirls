@@ -155,5 +155,15 @@ public class LearnerControllerSpec {
     assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
     assertEquals(resultLearner.disabledWordlists.contains("dogs"), false);
 
+    ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("nothing=milk");
+    learnerController.assignWordlist(ctx);
+    result = ctx.resultString();
+    // no changes are made if the query string is incorrectly constructed
+    assertEquals(200, mockRes.getStatus());
+    resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), false);
+
   }
 }
