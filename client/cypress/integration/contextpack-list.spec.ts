@@ -136,23 +136,21 @@ describe('Info Page Edit View', () => {
     cy.get('.mat-simple-snackbar').should('contain', 'Deleted moo from Word list: farm_animals');
     cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
   });
-  it('Should click the edit button and delete a wordlist if they are an admin', () => {
-    // login as admin
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
-    cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first());
-    page.enableEditDeleteMode();
-    // farm animals list should be present before deleting
-    cy.get('.wordlist-name').should('contain.text', 'farm_animals');
-    cy.get('.delete-wordlist-button').eq(0).should('be.visible');
-    cy.get('.delete-wordlist-button').eq(0).should('contain.text','delete');
-    page.clickDeleteWordlist(page.getContextpackCards().first());
-    // Farm animals list should be gone now
-    cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
-    page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
-    cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
 
+  it('Should click the edit button and delete a word if they are the creator', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().eq(2));
+
+    page.enableEditDeleteMode();
+    cy.get('.wordlist-removeVerb').should('be.visible');
+
+    cy.get('.wordlist-verbChip').eq(0).should('contain.text','blow');
+    cy.get('.wordlist-removeVerb').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain', 'Deleted blow from Word list: birthday');
+    cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','blow');
   });
 
   it('Should not see an edit button if not an admin', () => {
@@ -210,6 +208,22 @@ describe('Info Page Add View', () => {
     cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
       + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
       + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+  });
+  it('Should click the add button and then add a noun if you are creator', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().eq(2)).wait(1000);
+
+    page.enableAddMode();
+    cy.get('.addNouns').click();
+    cy.get('.nounWord').type('test');
+    cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
+    cy.get('.addNounButton').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: birthday').wait(1000);
+
+    cy.get('.wordlist-nounChip').should('contain.text', 'test');
   });
 
 });
