@@ -19,7 +19,6 @@ export class LearnerListComponent implements OnInit, OnDestroy {
 
   isSignedIn: boolean;
 
-
   constructor(private learnerService: LearnerService) { }
 
   ngOnInit(): void {
