@@ -14,7 +14,7 @@
     <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
       <mat-label>Disabed Lists:</mat-label>
       {{this.learner.disabledWordlists.join(', ')}}
-      <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" formControlName="enabled">
+      <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" >
         <mat-label>Assign Wordlists</mat-label>
         <mat-select >
           <mat-option *ngFor="let list of this.possibleWordlists" >

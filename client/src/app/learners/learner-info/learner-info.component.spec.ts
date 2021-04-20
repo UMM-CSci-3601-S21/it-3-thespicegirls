@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
@@ -27,6 +28,7 @@ describe('LearnerInfoComponent', () => {
         MatSnackBarModule,
         FormsModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule
       ],
       declarations: [ LearnerInfoComponent ],
       providers: [
@@ -48,7 +50,7 @@ describe('LearnerInfoComponent', () => {
       creator: 'string',
       name: 'string',
       assignedContextPacks: ['chris_id','chris_id'],
-      disabledWordlists: []
+      disabledWordlists: ['happy']
     };
     activatedRoute.setParamMap({ id: 'testLearner1' });
     fixture.detectChanges();
@@ -60,9 +62,6 @@ describe('LearnerInfoComponent', () => {
   it('should navigate to a specific Learner\'s info page', () => {
     activatedRoute.setParamMap({ id: 'testLearner1' });
     expect(component.id).toEqual('testLearner1');
-
-
-
   });
   it('should get assigned context packs', () => {
     component.getAssignedContextPacks();
@@ -81,6 +80,11 @@ describe('LearnerInfoComponent', () => {
     expect(component.assignedWords[0]).toEqual({ word: 'green', forms: [ 'green', 'greener' ], pos:'adjectives', wordlist:'happy'});
     expect(component.assignedWords[2]).toEqual({ word: 'langerhans', forms: [ 'langerhans' ], pos:'misc', wordlist:'happy'});
     expect(component.assignedWords.length).toEqual(8);
+  });
+  it('should assign wordlists', () => {
+    component.getAssignedWordlists(MockContextPackService.testContextPacks[1]);
+    component.setWordlists(MockContextPackService.testContextPacks[1]);
+    expect(component.possibleWordlists.includes(MockContextPackService.testContextPacks[1].wordlists[0]));
   });
 
 
