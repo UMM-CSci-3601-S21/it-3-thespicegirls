@@ -1,16 +1,38 @@
 <div>
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
 
-  <mat-card>
-    <mat-card-title>My Learners</mat-card-title>
-  <mat-card-content fxLayout="row">
-     <mat-form-field class="input-field">
-        <mat-label>Filter By Name</mat-label>
-        <input matInput data-test="learnerNameInput" placeholder="Filter by name"
-        [(ngModel)]="learnerName" (input)="updateLearnerFilter()">
-      </mat-form-field>
-  </mat-card-content>
-</mat-card>
+    <mat-card class="headerContent">
+      <mat-card-title>My Learners</mat-card-title>
+
+      <mat-card-content>
+
+      <mat-card fxFlex class="filter">
+        <mat-card-title><h2>Filter Learners:</h2></mat-card-title>
+      <mat-card-content>
+        <mat-form-field class="input-field">
+         <mat-label>Filter By Name</mat-label>
+         <input matInput data-test="learnerNameInput" placeholder="Filter by name"
+         [(ngModel)]="learnerName" (input)="updateLearnerFilter()">
+        </mat-form-field>
+      </mat-card-content>
+      </mat-card>
+
+      <mat-card fxFlex class="add">
+        <mat-card-title><h2>Add A New Learner:</h2></mat-card-title>
+        <mat-card-content class="newLearner">
+          <form class="newLearnerForm">
+            <mat-form-field class="learnerName-field">
+              <mat-label>Enter New Learner's Name</mat-label>
+              <input matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+           </mat-form-field>
+          </form>
+          <button mat-icon-button class="addLearnerButton"><mat-icon>add</mat-icon></button>
+        </mat-card-content>
+      </mat-card>
+
+      </mat-card-content>
+
+    </mat-card>
 
   <div class="learnerContainer" fxLayout="column">
     <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
