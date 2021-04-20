@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Wordlist } from '../contextpacks/contextpack';
 import { Learner } from './learner';
 
 @Injectable({
@@ -58,6 +59,14 @@ export class LearnerService {
     }
 
     return filteredLearners;
+  }
+  assignWordlist(listname: string ,learner: Learner){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('assign',listname);
+
+    return this.httpClient.post<Learner>(this.learnerUrl + '/' + learner._id +'/assign', null , {
+      params: httpParams
+   });
   }
 
 }

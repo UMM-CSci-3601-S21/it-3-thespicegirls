@@ -1,8 +1,10 @@
+import { getLocaleDirection } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ContextPack, Word, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { Learner } from '../learner';
@@ -30,7 +32,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   possibleWordlists: Wordlist[]=[];
 
 
-  constructor(private route: ActivatedRoute, private contextPackService: ContextPackService,
+  constructor( public snackBar: MatSnackBar, private route: ActivatedRoute, private contextPackService: ContextPackService,
     private learnerService: LearnerService, private router: Router) { }
 
 
@@ -48,7 +50,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         this.getAssignedContextPacks();
       });
     });
-
   }
   ngOnDestroy(): void {
     if (this.getLearnerSub) {
@@ -65,10 +66,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.assignedPacks.push(contextpack);
       this.getAllWords(contextpack);
       this.getAssignedWordlists(contextpack);
-      this.setWordlists(contextpack)
+      this.setWordlists(contextpack);
       }
       );
     }
+
   }
   setPos(list: Wordlist){
     for(const pos of ['nouns','verbs','misc','adjectives']){
@@ -102,7 +104,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         assignedWordlists: assignedLists
       };
       this.assignedPacksTest.push(assignedPackInfo);
-
   }
   getListNames(assignedPacksTest){
     const names = assignedPacksTest.assignedWordlists.map(list => list.name.replace('_', ' '));
@@ -110,11 +111,40 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   }
 
   setWordlists(pack: ContextPack){
+    for(const list of pack.wordlists){
+      if(this.learner.disabledWordlists.includes(list.name)){
+        this.editField(list.name, 'false', pack);
+      } else{
+        this.editField(list.name, 'true', pack);
+      }
+    }
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
-    console.log(this.possibleWordlists);
+  }
+  enableWordlist(){
+    // to be implemnted
   }
 
+  editField(list: string, newData: string, pack: ContextPack){
+    const obj =  { enabled: newData };
+    this.contextPackService.updateWordList(pack, list, obj).subscribe(existingID => {
+    this.localEdit(pack, list, newData==='true');
+    }, err => {
+      this.snackBar.open('Failed to update enabled status of Word list: ' + list, 'OK', {
+        duration: 5000,
+        });
+      });;
+  }
+  localEdit(pack: ContextPack, listname: string, enabled: boolean){
+    for(const list of pack.wordlists){
+      if(list.name === listname ){
+        list.enabled = enabled;
+      }
+    }
+  }
 }
+
+
+
 export interface AssignedPack {
   contextpack: ContextPack;
   assignedWordlists: Wordlist[];
