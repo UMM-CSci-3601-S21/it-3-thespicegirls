@@ -205,11 +205,15 @@ describe('Info Page Add View', () => {
     cy.get('.nounWord').type('test');
     cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
     cy.get('.addNounButton').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_animals').wait(1000);
+    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_equipment').wait(1000);
 
-    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
-      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
-      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.wordlist-nounChip').should('contain.text',
+      ' harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel  test ');
+    //This is originally what passed the first test.
+    // cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+    //   + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+    //   + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
   });
   it('should click on the add button and add a wordlist',()=>{
     window.localStorage.setItem('admin', 'true');
