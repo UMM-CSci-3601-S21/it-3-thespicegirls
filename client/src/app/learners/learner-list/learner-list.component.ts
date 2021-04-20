@@ -17,12 +17,16 @@ export class LearnerListComponent implements OnInit, OnDestroy {
 
   getLearnersSub: Subscription;
 
+  isSignedIn: boolean;
+
 
   constructor(private learnerService: LearnerService) { }
 
   ngOnInit(): void {
     this.getLearnersFromServer();
+    this.isSignedIn = this.learnerService.checkIfLoggedIn(localStorage.getItem('loggedIn'));
   }
+
   ngOnDestroy(): void {
     this.unsubLearner();
   }
