@@ -123,17 +123,15 @@ public class ContextPackController {
   public void editWordlist(Context ctx){
     Bson filter = and(eq("_id", ctx.pathParam("id")));
     ContextPack pack = contextPackCollection.find(filter).first();
-    Wordlist list=pack.wordlists.get(0);
-    if(ctx.queryParamMap().containsKey("listname")){int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
-    if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
-      pack.deleteWordlist(ctx.queryParam("listname"));
     User user = ctx.sessionAttribute("current-user");
     if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
-      int index = getListIndex(pack,ctx.queryParam("listname"));
-      Wordlist list = pack.wordlists.get(index);
-
+      Wordlist list=pack.wordlists.get(0);
+      if(ctx.queryParamMap().containsKey("listname")){int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
       if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
         pack.deleteWordlist(ctx.queryParam("listname"));
+      }
+      if(ctx.queryParamMap().containsKey(ADD_WORDLIST_KEY)) {
+        pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));
       }
       if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
         boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
@@ -174,20 +172,12 @@ public class ContextPackController {
 
       pack = contextPackCollection.find(filter).first();
       ctx.json(pack);
-    }
-    if(ctx.queryParamMap().containsKey(ADD_WORDLIST_KEY)) {
-      pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));
-    }
-    if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
-      boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
-      list.setEnabled(enabled);
-    else{
-      throw new IllegalAccessError();
-    }
+      }
+      else{
+        throw new IllegalAccessError();
+      }
 
 
-    pack = contextPackCollection.find(filter).first();
-    ctx.json(pack);
   }
 
   public int getListIndex(ContextPack pack, String listname){
@@ -204,3 +194,4 @@ public class ContextPackController {
   }
 
 }
+
