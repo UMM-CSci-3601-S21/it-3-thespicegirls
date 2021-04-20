@@ -63,6 +63,7 @@ describe('LearnerInfoComponent', () => {
     activatedRoute.setParamMap({ id: 'testLearner1' });
     expect(component.id).toEqual('testLearner1');
   });
+
   it('should get assigned context packs', () => {
     component.getAssignedContextPacks();
     expect(component.assignedPacks.length).toBeGreaterThan(0);

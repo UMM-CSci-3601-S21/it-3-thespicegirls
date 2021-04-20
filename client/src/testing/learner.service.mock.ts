@@ -38,8 +38,6 @@ export class MockLearnerService extends LearnerService {
       return of(null);
     }
   }
-  assignWordlist(listname: string ,learner: Learner): Observable<Learner>{
-    return of(MockLearnerService.testLearners[0]);
-  }
+
 
 }
