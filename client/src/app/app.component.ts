@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
         user2.firstName = res.name;
         this.user = user2;
         this.isSignedin = true;
-        localStorage.setItem('userId', res.userId);
+        localStorage.setItem('userId', res._id);
         localStorage.setItem('loggedIn', 'true');
         if(res.admin === true){
           localStorage.setItem('admin', 'true');
@@ -53,18 +53,16 @@ export class AppComponent implements OnInit {
   sendToServer() {
     this.socialAuthState().subscribe((user) => {
       this.user = user;
-      console.log(this.user);
       this.addGoogleToken(this.user.idToken).subscribe(res => {
         this.snackBar.open('Logged into server', null, {
           duration: 2000,
         });
-        console.log(res);
         const user2 = new SocialUser();
         user2.firstName = res.name;
         this.user = user2;
         this.isSignedin = true;
         localStorage.setItem('loggedIn', 'true');
-        localStorage.setItem('userId', res.userId);
+        localStorage.setItem('userId', res._id);
         if(res.admin === true){
           localStorage.setItem('admin', 'true');
         }

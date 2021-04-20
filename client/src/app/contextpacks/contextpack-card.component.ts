@@ -25,6 +25,7 @@ export class ContextPackCardComponent implements OnInit {
   isAdmin: boolean;
   deleteClicked: boolean;
   deleteIndex=0;
+  userId: string;
 
   validationMessages = {
     word: [
@@ -49,6 +50,7 @@ export class ContextPackCardComponent implements OnInit {
       ]))
     });
     this.isAdmin = this.contextpackservice.checkIfAdmin(localStorage.getItem('admin'));
+    this.userId = localStorage.getItem('userId');
   }
 
   displayEnabled(status: boolean){
