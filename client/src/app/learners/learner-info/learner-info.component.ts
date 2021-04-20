@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -26,8 +27,12 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   assignedWords: Word[]=[];
   assignedPacksTest: AssignedPack[]=[];
 
+  possibleWordlists: Wordlist[]=[];
+
+
   constructor(private route: ActivatedRoute, private contextPackService: ContextPackService,
     private learnerService: LearnerService, private router: Router) { }
+
 
   ngOnInit(): void {
     // We subscribe to the parameter map here so we'll be notified whenever
@@ -60,6 +65,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.assignedPacks.push(contextpack);
       this.getAllWords(contextpack);
       this.getAssignedWordlists(contextpack);
+      this.setWordlists(contextpack)
       }
       );
     }
@@ -101,6 +107,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getListNames(assignedPacksTest){
     const names = assignedPacksTest.assignedWordlists.map(list => list.name.replace('_', ' '));
     return names;
+  }
+
+  setWordlists(pack: ContextPack){
+    this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
+    console.log(this.possibleWordlists);
   }
 
 }

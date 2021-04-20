@@ -7,12 +7,24 @@
     <h1 *ngFor="let pack of this.assignedPacksTest">
       {{pack.contextpack.name + ':'}}
     <mat-list-item>
-      {{this.getListNames(pack).join(', ')
-      }}
+      {{this.getListNames(pack).join(', ')}}
     </mat-list-item>
     <mat-divider></mat-divider>
     </h1>
+    <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
+      <mat-label>Disabed Lists:</mat-label>
+      {{this.learner.disabledWordlists.join(', ')}}
+      <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" formControlName="enabled">
+        <mat-label>Assign Wordlists</mat-label>
+        <mat-select >
+          <mat-option *ngFor="let list of this.possibleWordlists" >
+            <mat-checkbox (click)="$event.stopPropagation()" [checked]="list.enabled"> {{list.name}}</mat-checkbox>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-subtitle>
     </mat-list>
+
 </mat-card>
 
 <mat-card class="word-chip-container">
