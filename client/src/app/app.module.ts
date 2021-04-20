@@ -27,18 +27,21 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatGridListModule} from '@angular/material/grid-list';
 
-import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
-import { ContextPackListComponent } from './contextpacks/contextpack-list.component';
+import { ContextPackListComponent } from './contextpacks/contextpack-list/contextpack-list.component';
 import { ContextPackService } from './contextpacks/contextpack.service';
-import { ContextPackCardComponent } from './contextpacks/contextpack-card.component';
-import { ContextPackInfoComponent } from './contextpacks/contextpack-info.component';
-import { AddContextpacksComponent } from './contextpacks/add-contextpacks.component';
+import { ContextPackCardComponent } from './contextpacks/contextpack-card/contextpack-card.component';
+import { ContextPackInfoComponent } from './contextpacks/contextpack-card/contextpack-info.component';
+import { AddContextpacksComponent } from './contextpacks/add-contextpacks/add-contextpacks.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
-import { EditContextpackComponent } from './contextpacks/edit-contextpack.component';
+import { EditContextpackComponent } from './contextpacks/edit-contextpacks/edit-contextpack.component';
+import { LearnerCardComponent } from './learners/learner-card/learner-card.component';
+import { LearnerListComponent } from './learners/learner-list/learner-list.component';
+import { LearnerInfoComponent } from './learners/learner-info/learner-info.component';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -61,18 +64,21 @@ const MATERIAL_MODULES: any[] = [
   MatDialogModule,
   MatExpansionModule,
   MatCheckboxModule,
-  MatTabsModule
+  MatTabsModule,
+  MatGridListModule
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     ContextPackCardComponent,
     ContextPackListComponent,
     ContextPackInfoComponent,
     AddContextpacksComponent,
     EditContextpackComponent,
+    LearnerCardComponent,
+    LearnerListComponent,
+    LearnerInfoComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ContextPack } from './contextpack';
-import { ContextPackService} from './contextpack.service';
+import { ContextPack } from '../contextpack';
+import { ContextPackService} from '../contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { LearnerService } from '../../learners/learner.service';
+import { Learner } from '../../learners/learner';
 
 @Component({
   selector: 'app-contextpack-list-component',
@@ -20,9 +22,42 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
   public contextpack: ContextPack;
   public contextpackName: string;
 
+  public viewType: 'learner' | 'card' = 'card';
+
   getContextpacksSub: Subscription;
 
-  constructor(private contextpackService: ContextPackService, private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private contextpackService: ContextPackService,
+    private snackBar: MatSnackBar, private router: Router) {}
+
+  getContextpacksFromServer(): void {
+    this.unsubContextpack();
+    this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
+      this.serverFilteredContextpacks = returnedContextpacks;
+      this.updateContextpackFilter();
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  public updateContextpackFilter(): void {
+    this.filteredContextpacks = this.contextpackService.filterContextPacks(
+      this.serverFilteredContextpacks, { name: this.contextpackName });
+  }
+
+  ngOnInit(): void {
+    this.getContextpacksFromServer();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubContextpack();
+  }
+
+  unsubContextpack(): void {
+    if (this.getContextpacksSub) {
+      this.getContextpacksSub.unsubscribe();
+    }
+  }
 
   updateField(contextPack: ContextPack, event: string[]): void {
     //to figure out what field is being changed so the correct http param can be sent
@@ -58,34 +93,5 @@ export class ContextPackListComponent implements OnInit, OnDestroy  {
       contextpack.icon = obj.icon;
     }
     this.ngOnInit();
-  }
-
-  getContextpacksFromServer(): void {
-    this.unsub();
-    this.getContextpacksSub = this.contextpackService.getContextPacks().subscribe(returnedContextpacks => {
-      this.serverFilteredContextpacks = returnedContextpacks;
-      this.updateFilter();
-    }, err => {
-      console.log(err);
-    });
-  }
-
-  public updateFilter(): void {
-    this.filteredContextpacks = this.contextpackService.filterContextPacks(
-      this.serverFilteredContextpacks, { name: this.contextpackName });
-  }
-
-  ngOnInit(): void {
-    this.getContextpacksFromServer();
-  }
-
-  ngOnDestroy(): void {
-    this.unsub();
-  }
-
-  unsub(): void {
-    if (this.getContextpacksSub) {
-      this.getContextpacksSub.unsubscribe();
-    }
   }
 }

@@ -116,11 +116,24 @@ describe('Context Pack service: ', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(targetContextPack);
   });
+
   it('should check some strings with admin checker', () => {
     expect(contextpackService.checkIfAdmin('true')).toEqual(true);
   });
   it('should check some strings with login checker', () => {
     expect(contextpackService.checkIfLoggedIn('true')).toEqual(true);
+  });
+
+  it('should create a download element when given a json', () => {
+    const targetContextPack: ContextPack = testContextPacks[0];
+    expect(contextpackService.downloadJson(targetContextPack, targetContextPack.name).toString()).toContain('fun');
+  });
+
+  it('should convert a json into a correctly formatted json', () => {
+    const targetContextPack: ContextPack = testContextPacks[0];
+    expect(contextpackService.convertToBetterJson(targetContextPack).$schema).
+    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
+    expect(contextpackService.convertToBetterJson(targetContextPack).id).toBeUndefined();
   });
 
   it('filterContextPack() filters by name', () => {
@@ -242,6 +255,14 @@ describe('Context Pack service: ', () => {
       contextpackService.deleteWordlist(testContextPacks[0], testContextPacks[0].wordlists[0].name)
       .subscribe(contextPack => expect(contextPack.wordlists[0]));
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?listname=happy&delwordlist=true');
+      expect(req.request.method).toEqual('POST');
+    });
+  });
+  describe('Adding a wordlist',()=>{
+    it('Makes a post request to the correct url', ()=>{
+      contextpackService.addWordlist(testContextPacks[0],'pumpkins')
+      .subscribe(contextPack => expect(contextPack.wordlists[0]));
+      const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editlist?addwordlist=pumpkins');
       expect(req.request.method).toEqual('POST');
     });
   });

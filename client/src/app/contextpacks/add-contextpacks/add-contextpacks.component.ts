@@ -2,9 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 import { Router } from '@angular/router';
-import { ContextPackCardComponent } from './contextpack-card.component';
+import { ContextPackCardComponent } from '../contextpack-card/contextpack-card.component';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -61,7 +61,7 @@ export class AddContextpacksComponent implements OnInit {
   };
   isSignedIn: boolean;
 
-  constructor(private fb: FormBuilder, private contextPackService: ContextPackService,
+  constructor(private fb: FormBuilder, public contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit() {

@@ -1,0 +1,513 @@
+
+<mat-card class="contextpack-card" *ngIf="this.contextpack">
+  <div *ngIf="isAdmin === false || isAdmin === undefined; else templateCard">
+    <mat-card-header>
+      <mat-card-title class="contextpack-card-name">{{this.contextpack.name}}</mat-card-title>
+        <mat-card-subtitle class="contextpack-card-enabled">{{displayEnabled(this.contextpack.enabled)}}
+          <div class="contextpack-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
+          <div class="contextpack-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
+        <mat-card-subtitle class="contextpack-card-icon">{{this.contextpack.icon}}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content *ngIf="!this.simple">
+
+        <mat-form-field>
+          <mat-label>View</mat-label>
+          <mat-select [(value)]="selected" data-test="contextpackWordSelect">
+            <mat-option value="true">All Word Lists</mat-option>
+            <mat-option value="false">Just Words</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='this.contextpackservice.downloadJson(contextpack, contextpack.name).click()'>
+        <mat-icon>download</mat-icon>
+        </button>
+
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    <br>
+
+        <div *ngIf="selected === 'true'; else templateWords">
+          <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
+            <h2 class="wordlist-name">{{this.wordlists.name}}</h2>
+
+            <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
+            <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
+            <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div></h4>
+
+            <span class="contextpack-card-nouns">
+              <div style="white-space: pre-line">
+                <h3>Nouns:</h3>
+                <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+                  [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
+                   {{word.word}}
+                     <mat-icon class="wordlist-removeNoun" matChipRemove *ngIf="removable">cancel</mat-icon>
+                 </mat-chip>
+                </mat-chip-list>
+              </div>
+            </span>
+
+              <span class="contextpack-card-verbs">
+                <div style="white-space: pre-line">
+                  <h3>Verbs:</h3>
+                  <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                    <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+                       [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
+                        {{word.word}}
+                          <mat-icon class="wordlist-removeVerb" matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </span>
+
+                <span class="contextpack-card-adjectives">
+                  <div style="white-space: pre-line">
+                    <h3>Adjectives:</h3>
+                    <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                      <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+                       [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
+                        {{word.word}}
+                          <mat-icon class="wordlist-removeAdjective" matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </span>
+
+                  <span class="contextpack-card-misc">
+                    <div style="white-space: pre-line">
+                      <h3>Misc:</h3>
+                      <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                        <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+                        [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
+                         {{word.word}}
+                           <mat-icon class="wordlist-removeMisc" matChipRemove *ngIf="removable">cancel</mat-icon>
+                       </mat-chip>
+                      </mat-chip-list>
+                    </div>
+                  </span>
+                  <br>
+         </div>
+        </div>
+
+        <ng-template #templateWords>
+
+            <span class="contextpack-card-nouns">
+              <div style="white-space: pre-line">
+                <h3>Nouns:</h3>
+                <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                  <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="noun" class="nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+                  [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
+                    {{word.word}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                  </div>
+                </mat-chip-list>
+              </div></span>
+
+            <span class="contextpack-card-verbs">
+            <div style="white-space: pre-line">
+              <h3>Verbs:</h3>
+              <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+                <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="verb" class="verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+                [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
+                  {{word.word}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                </div>
+              </mat-chip-list>
+            </div></span>
+
+            <span class="contextpack-card-adjectives">
+            <div style="white-space: pre-line">
+              <h3>Adjectives:</h3>
+              <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+                <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="adjective" class="adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+                [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
+                  {{word.word}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                </div>
+              </mat-chip-list>
+            </div></span>
+
+            <span class="contextpack-card-misc">
+              <div style="white-space: pre-line">
+                <h3>Misc:</h3>
+                <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+                  <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="misc" class="miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+                  [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
+                    {{word.word}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                  </div>
+                </mat-chip-list>
+              </div></span>
+
+      </ng-template>
+
+      </mat-card-content>
+
+      <mat-card-actions *ngIf="this.simple">
+        <button class="viewInfoButton" mat-icon-button matTooltip="View Contents" color="primary" data-test="viewInfoButton" [routerLink]="['/contextpacks', this.contextpack._id]"><mat-icon>info</mat-icon></button>
+      </mat-card-actions>
+  </div>
+
+  <ng-template #templateCard>
+  <mat-card-header>
+  <mat-card-title><app-edit-contextpack class="contextpack-card-name" [value]="this.contextpack.name" (valueChangeEvents)="save('name', $event )"></app-edit-contextpack></mat-card-title>
+    <mat-card-subtitle class="contextpack-card-enabled">{{displayEnabled(this.contextpack.enabled)}}
+      <div class="contextpack-enable-button" *ngIf="!this.contextpack.enabled && this.removable"><button (click)="save('enabled','true')">Enable</button></div>
+      <div class="contextpack-disable-button" *ngIf="this.contextpack.enabled && this.removable"><button (click)="save('enabled','false')">Disable</button></div></mat-card-subtitle>
+    <mat-card-subtitle><app-edit-contextpack class="contextpack-card-icon" [value]="this.contextpack.icon" (valueChangeEvents)="save('icon',$event)"></app-edit-contextpack></mat-card-subtitle>
+  </mat-card-header>
+
+
+  <mat-card-content *ngIf="!this.simple">
+
+    <mat-form-field>
+      <mat-label>View</mat-label>
+      <mat-select [(value)]="selected" data-test="contextpackWordSelect">
+        <mat-option value="true">All Word Lists</mat-option>
+        <mat-option value="false">Just Words</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  <button mat-icon-button matTooltip="Download as a JSON" matTooltipPosition="above" color="accent" class="contextpack-download-button" (click)='this.contextpackservice.downloadJson(contextpack, contextpack.name).click()'>
+    <mat-icon>download</mat-icon>
+    </button>
+  <button mat-icon-button matTooltip="Edit and Delete" matTooltipPosition="above" color="accent" class="editView" (click)="this.removable = !this.removable">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button matTooltip="Add to New and Existing" matTooltipPosition="above" color="accent" class="addView" (click)="this.editing = !this.editing">
+    <mat-icon>add</mat-icon>
+  </button>
+
+ <br>
+
+  <mat-accordion class="example-headers-align" *ngIf="this.editing">
+    <mat-expansion-panel class='addWordlist'>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Add Wordlist
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+       <input matInput class="addWordlistInput" required autocomplete="off" #wordlistInput>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
+       <mat-hint>List Name</mat-hint>
+      </mat-form-field>
+      <button mat-icon-button class="addWordlistButton" (click)="addWordlist(wordlistInput.value)"><mat-icon>add</mat-icon></button>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class='addNouns'>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Add Nouns
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="contextPackForm">
+      <mat-form-field>
+        <mat-label>Word</mat-label>
+       <input matInput class="nounWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
+       <mat-hint>One word only</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Forms</mat-label>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <mat-select data-test="nounDest" formControlName="wordlist" required>
+          <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
+        </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
+      </mat-form-field>
+
+      <button mat-icon-button class="addNounButton" (click)="submitForm('noun')"><mat-icon>add</mat-icon></button>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Add Verbs
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="contextPackForm">
+      <mat-form-field>
+        <mat-label>Word</mat-label>
+       <input matInput formcontrolname="verbWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
+       <mat-hint>One word only</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Forms</mat-label>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <mat-select formControlName="wordlist" required>
+          <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
+        </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
+      </mat-form-field>
+
+      <button mat-icon-button class="addNounButton" (click)="submitForm('verb')"><mat-icon>add</mat-icon></button>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Add Adjectives
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="contextPackForm">
+      <mat-form-field>
+        <mat-label>Word</mat-label>
+       <input matInput formcontrolname="adjWord" formControlName="word" required>
+       <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
+       <mat-hint>One word only</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Forms</mat-label>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <mat-select formControlName="wordlist" required>
+          <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
+        </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
+      </mat-form-field>
+
+      <button mat-icon-button class="addNounButton" (click)="submitForm('adjective')"><mat-icon>add</mat-icon></button>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Add Misc
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="contextPackForm">
+      <mat-form-field>
+        <mat-label>Word</mat-label>
+       <input matInput formcontrolname="miscWord" formControlName="word" required>
+      <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('word').hasError(validationMessages.word[0].type) && (contextPackForm.get('word').dirty || contextPackForm.get('word').touched)">
+      {{validationMessages.word[0].message}}
+      </mat-error>
+       <mat-hint>One word only</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Forms</mat-label>
+        <input matInput formControlName="forms">
+        <mat-hint>Don't include word with it's forms</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <mat-select formControlName="wordlist" required>
+          <mat-option *ngFor="let wordlist of this.contextpack.wordlists" value={{wordlist.name}}>{{wordlist.name}}</mat-option>
+        </mat-select>
+        <mat-error class="error-message" data-test="nameError"
+       *ngIf="contextPackForm.get('wordlist').hasError(validationMessages.wordlist.type) && (contextPackForm.get('wordlist').dirty || contextPackForm.get('wordlist').touched)">
+      {{validationMessages.wordlist[0].message}}
+      </mat-error>
+      </mat-form-field>
+
+      <button mat-icon-button class="addNounButton" (click)="submitForm('misc')"><mat-icon>add</mat-icon></button>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+<br>
+
+    <div *ngIf="selected === 'true'; else templateWords">
+      <div *ngFor="let wordlists of contextpack.wordlists; let index = index">
+        <h2><app-edit-contextpack class="wordlist-name" [value]="this.contextpack.wordlists[index].name" (valueChangeEvents)="saveWordlist(contextpack.wordlists[index],'name',$event)"></app-edit-contextpack></h2>
+        <h4 class="wordlist-enabled">{{displayEnabled(this.contextpack.wordlists[index].enabled)}}
+        <div class="wordlist-enable-button" *ngIf="!this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','true')">Enable</button></div>
+        <div class="wordlist-disable-button" *ngIf="this.contextpack.wordlists[index].enabled && this.removable"><button (click)="saveWordlist(this.contextpack.wordlists[index],'enabled','false')">Disable</button></div>
+        <!--credit to https://github.com/UMM-CSci-3601-S21/it-2-it-2-chicken/ for confirmation logic here -->
+        <button class="delete-wordlist-button" mat-icon-button matTooltip="Delete wordlist" data-test="deleteWordlistButton" (click)="toggleDeleted(index)"><mat-icon *ngIf="removable">delete</mat-icon></button>
+      </h4>
+      <mat-card class="confirmation" *ngIf="deleteClicked && index===this.deleteIndex" style="width:200px">
+        <mat-card-subtitle>Are you sure you want to delete this wordlist?</mat-card-subtitle>
+        <button class="confirm" data-test="deleteConfirmationButton" style="margin-bottom: 5px;" mat-raised-button  (click)="deleteWordlist(this.contextpack.wordlists[index])"
+          color="accent">Delete</button>
+        <button data-test="cancel-delete" mat-raised-button class="cancel" (click)="toggleDeleted(index)"
+          color="link">Cancel</button>
+        </mat-card>
+
+
+        <span class="contextpack-card-nouns">
+          <div style="white-space: pre-line">
+            <h3>Nouns:</h3>
+            <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
+               {{word.word}}
+                 <mat-icon class="wordlist-removeNoun" matChipRemove *ngIf="removable">cancel</mat-icon>
+             </mat-chip>
+            </mat-chip-list>
+          </div>
+        </span>
+
+          <span class="contextpack-card-verbs">
+            <div style="white-space: pre-line">
+              <h3>Verbs:</h3>
+              <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
+                    {{word.word}}
+                      <mat-icon class="wordlist-removeVerb" matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+              </mat-chip-list>
+            </div>
+          </span>
+
+            <span class="contextpack-card-adjectives">
+              <div style="white-space: pre-line">
+                <h3>Adjectives:</h3>
+                <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                  <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+                   [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
+                    {{word.word}}
+                      <mat-icon class="wordlist-removeAdjective" matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </span>
+
+              <span class="contextpack-card-misc">
+                <div style="white-space: pre-line">
+                  <h3>Misc:</h3>
+                  <mat-chip-list cdkDropList cdkDropListOrientation="horizontal" >
+                    <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" class="wordlist-miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+                    [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
+                     {{word.word}}
+                       <mat-icon class="wordlist-removeMisc" matChipRemove *ngIf="removable">cancel</mat-icon>
+                   </mat-chip>
+                  </mat-chip-list>
+                </div>
+              </span>
+              <br>
+     </div>
+    </div>
+
+    <ng-template #templateWords>
+
+        <span class="contextpack-card-nouns">
+          <div style="white-space: pre-line">
+            <h3>Nouns:</h3>
+            <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+              <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="noun" class="nounChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].nouns"
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'noun')">
+                {{word.word}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </div>
+            </mat-chip-list>
+          </div></span>
+
+        <span class="contextpack-card-verbs">
+        <div style="white-space: pre-line">
+          <h3>Verbs:</h3>
+          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+            <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+            <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="verb" class="verbChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].verbs"
+            [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'verb')">
+              {{word.word}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            </div>
+          </mat-chip-list>
+        </div></span>
+
+        <span class="contextpack-card-adjectives">
+        <div style="white-space: pre-line">
+          <h3>Adjectives:</h3>
+          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+            <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+            <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="adjective" class="adjectiveChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].adjectives"
+            [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'adjective')">
+              {{word.word}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            </div>
+          </mat-chip-list>
+        </div></span>
+
+        <span class="contextpack-card-misc">
+          <div style="white-space: pre-line">
+            <h3>Misc:</h3>
+            <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal" >
+              <div *ngFor="let wordlist of contextpack.wordlists; let index = index">
+              <mat-chip matTooltip="{{word.forms.join(' ')}}" matTooltipPosition="above" color="misc" class="miscChip" cdkDrag *ngFor="let word of this.contextpack.wordlists[index].misc"
+              [removable]="removable" (removed)="deleteWord(contextpack.wordlists[index],word.word,'misc')">
+                {{word.word}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              </div>
+            </mat-chip-list>
+          </div></span>
+
+  </ng-template>
+
+  </mat-card-content>
+
+  <mat-card-actions *ngIf="this.simple">
+    <button class="viewInfoButton" mat-icon-button matTooltip="View Contents" color="primary" data-test="viewInfoButton" [routerLink]="['/contextpacks', this.contextpack._id]"><mat-icon>info</mat-icon></button>
+  </mat-card-actions>
+</ng-template>
+
+</mat-card>
+

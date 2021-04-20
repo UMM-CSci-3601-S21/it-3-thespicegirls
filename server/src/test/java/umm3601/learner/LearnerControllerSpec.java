@@ -72,7 +72,8 @@ public class LearnerControllerSpec {
     .append("_id", testID)
     .append("creator","KK")
     .append("name","Starla")
-    .append("assignedContextPacks", Arrays.asList());
+    .append("assignedContextPacks", Arrays.asList())
+    .append("disabledWordlists", Arrays.asList());
     learnerDocuments.insertOne(testLearnerID);
     learnerController = new LearnerController(db);
   }
@@ -96,9 +97,7 @@ public class LearnerControllerSpec {
     assertTrue(JavalinJson.fromJson(result, Learner[].class).length >= 1);
     assertEquals(db.getCollection("learners").countDocuments(),
         JavalinJson.fromJson(result, Learner[].class).length);
-
   }
-
   @Test
   public void GetLearner(){
     String testLearnerID = testID.toHexString();

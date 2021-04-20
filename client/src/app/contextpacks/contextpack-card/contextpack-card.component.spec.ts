@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContextPackCardComponent } from './contextpack-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
-import { ContextPack, Word, Wordlist } from './contextpack';
+import { ContextPack, Word, Wordlist } from '../contextpack';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ContextPackService } from './contextpack.service';
+import { ContextPackService } from '../contextpack.service';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import { HttpClient} from '@angular/common/http';
 import { of } from 'rxjs';
@@ -27,7 +27,8 @@ describe('ContextPackCardComponent', () => {
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList', 'checkIfAdmin', 'deleteWordlist']);
+    spy = jasmine.createSpyObj('ContextPackService', ['deleteWord', 'addWord','updateWordList',
+    'checkIfAdmin', 'deleteWordlist','addWordlist']);
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -139,18 +140,6 @@ describe('ContextPackCardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-
-  it('should create a download element when given a json', () => {
-    expect(component.downloadJson(component.contextpack, component.contextpack.name).toString()).toContain('happy');
-
-  });
-  it('should convert a json into a correctly formatted json', () => {
-    expect(component.convertToBetterJson(component.contextpack).$schema).
-    toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
-    expect(component.convertToBetterJson(component.contextpack).id).toBeUndefined();
-  });
-
   describe('set object Param', () => {
 
     it('set the object param for nouns', () => {
@@ -192,9 +181,6 @@ describe('ContextPackCardComponent', () => {
       const addWord: Word = {word:'milk',forms:`milk,milks`.split(',') };
       expect(component.contextpack.wordlists[0].nouns).toContain(addWord);
     });
-
-    it('addWord calls correct snackbar message when word is added', () => {});
-    it('addWord calls correct snackbar message when word is not added', () => {});
   });
   describe('delete Word', () => {
     it('calls contextpackservice.addWord with correct parameters', () => {
@@ -224,6 +210,18 @@ describe('ContextPackCardComponent', () => {
       component.localDelete(`nouns`, `goat`);
       expect(component.contextpack.wordlists[0].nouns[0].word).not.toContain('goat');
     });
+
+    it('deleteWord calls correct snackbar message when word is added', () => {});
+
+  });
+  describe('adding a Wordlist', () => {
+    it('calls contextpackservice.addWordlist() with correct parameters', () => {
+      expect(spy.addWordlist).toHaveBeenCalledTimes(0);
+      spy.addWordlist.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+      component.addWordlist('pumpkins');
+      expect(spy.addWordlist).toHaveBeenCalledTimes(1);
+    });
+
 
     it('deleteWord calls correct snackbar message when word is added', () => {});
 

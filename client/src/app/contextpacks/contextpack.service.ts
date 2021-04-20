@@ -21,8 +21,8 @@ export class ContextPackService {
       isSignedIn = false;
     }
     return isSignedIn;
-
   }
+
   checkIfAdmin(log: string){
     let isAdmin: boolean;
     if (log === 'true'){
@@ -32,8 +32,8 @@ export class ContextPackService {
       isAdmin = false;
     }
     return isAdmin;
-
   }
+
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {
@@ -115,6 +115,13 @@ export class ContextPackService {
       params: httpParams
    });
   }
+  addWordlist(contextpack: ContextPack, listname: string){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('addwordlist', listname);
+    return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
+      params: httpParams
+   });
+  }
 
   updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack> {
 
@@ -127,6 +134,30 @@ export class ContextPackService {
     return this.httpClient.post<ContextPack>(this.contextpackUrl + '/' + contextpack._id +'/editlist', null , {
       params: httpParams
    });
+  }
+
+  downloadJson(myJson: ContextPack, topic: string){
+    myJson = this.convertToBetterJson(myJson);
+    const sJson = JSON.stringify(myJson, null, 2);
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+    element.setAttribute('download', topic + '.json');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    document.body.removeChild(element);
+    return element;
+  }
+
+  convertToBetterJson(jsonBetter: ContextPack){
+    const obj: any =
+      {
+      $schema: 'https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json',
+      name: jsonBetter.name,
+      icon: jsonBetter.icon,
+      enabled: jsonBetter.enabled,
+      wordlists: jsonBetter.wordlists
+      };
+      return obj;
   }
 
 }

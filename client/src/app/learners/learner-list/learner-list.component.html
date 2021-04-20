@@ -1,0 +1,20 @@
+<div>
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+
+  <mat-card>
+    <mat-card-title>My Learners</mat-card-title>
+  <mat-card-content fxLayout="row">
+     <mat-form-field class="input-field">
+        <mat-label>Filter By Name</mat-label>
+        <input matInput data-test="learnerNameInput" placeholder="Filter by name"
+        [(ngModel)]="learnerName" (input)="updateLearnerFilter()">
+      </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+  <div class="learnerContainer" fxLayout="column">
+    <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
+  </div>
+
+  </div>
+</div>
