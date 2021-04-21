@@ -124,7 +124,4 @@ describe('Misbehaving ContextPack List', () => {
     });
   }));
 
-  it('generates an error if we don\'t set up the service', () => {
-    expect(learnerList.serverFilteredLearners).toBeUndefined();
-  });
 });
