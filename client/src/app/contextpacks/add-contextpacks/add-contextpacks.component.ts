@@ -19,6 +19,7 @@ export class AddContextpacksComponent implements OnInit {
   activeTab = this.tabs[0];
   selected = new FormControl(0);
   panelOpenState= false;
+  isSignedIn: boolean;
 
 
   formErrors = {
@@ -59,7 +60,6 @@ export class AddContextpacksComponent implements OnInit {
       }
     }
   };
-  isSignedIn: boolean;
 
   constructor(private fb: FormBuilder, public contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }

@@ -4,8 +4,6 @@ import { ContextPackService} from '../contextpack.service';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LearnerService } from '../../learners/learner.service';
-import { Learner } from '../../learners/learner';
 
 @Component({
   selector: 'app-contextpack-list-component',
