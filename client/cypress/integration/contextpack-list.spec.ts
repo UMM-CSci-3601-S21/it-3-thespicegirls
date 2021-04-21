@@ -1,4 +1,3 @@
-import { eq } from 'cypress/types/lodash';
 import { ContextpackListPage } from '../support/contextpack-list.po';
 import { AddPackPage } from '../support/add-contextpack.po';
 
@@ -126,10 +125,10 @@ describe('Info Page Edit View', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
     cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first());
+    page.clickViewInfo(page.getContextpackCards().first()).wait(4000);
 
     page.enableEditDeleteMode();
-    cy.get('.wordlist-removeVerb').should('be.visible');
+    cy.get('.wordlist-removeNoun').should('be.visible');
 
     cy.get('.wordlist-verbChip').eq(0).should('contain.text','moo');
     cy.get('.wordlist-removeVerb').eq(0).click();
@@ -206,11 +205,14 @@ describe('Info Page Add View', () => {
     cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
     cy.get('.addNounButton').eq(0).click();
     cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_animals').wait(1000);
-
+    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
     cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
       + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
       + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
   });
+
   it('should click on the add button and add a wordlist',()=>{
     window.localStorage.setItem('admin', 'true');
     cy.reload();
