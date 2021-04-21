@@ -88,40 +88,6 @@ describe('LearnerListComponent', () => {
   it('doesn\'t contain a Learner named \'three\'', () => {
     expect(learnerList.serverFilteredLearners.some((learner: Learner) => learner.name === 'three')).toBe(false);
   });
-});
-
-describe('Misbehaving ContextPack List', () => {
-  let learnerList: LearnerListComponent;
-  let fixture: ComponentFixture<LearnerListComponent>;
-
-  let getLearnersSub: {
-    getLearners: () => Observable<Learner[]>;
-    getLearnersFilter: () => Observable<Learner[]>;
-  };
-
-  beforeEach(() => {
-    getLearnersSub = {
-      getLearners: () => new Observable(observer => {
-        observer.error('Error-prone observable');
-      }),
-      getLearnersFilter: () => new Observable(observer => {
-        observer.error('Error-prone observable');
-      })
-    };
-
-    TestBed.configureTestingModule({
-      imports: [COMMON_IMPORTS],
-      declarations: [LearnerListComponent],
-      providers: [{provide: LearnerService, useValue: getLearnersSub}]
-    });
-  });
-
-  beforeEach(waitForAsync(() => {
-    TestBed.compileComponents().then(() => {
-      fixture = TestBed.createComponent(LearnerListComponent);
-      learnerList = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-  }));
 
 });
+

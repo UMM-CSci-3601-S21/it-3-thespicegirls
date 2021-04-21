@@ -63,6 +63,7 @@ public class Server {
     server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 
     server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.USER));
+    server.post("/api/learners", learnerController::addLearner, roles(MyRole.USER));
     // editing information about contextpacks
     server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ADMIN));
     // editing information about wordlists

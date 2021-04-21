@@ -49,13 +49,13 @@
       <mat-card fxFlex class="add">
         <mat-card-title><h2>Add A New Learner:</h2></mat-card-title>
         <mat-card-content class="newLearner">
-          <form class="newLearnerForm">
+          <form [formGroup]="learnerForm" class="newLearnerForm">
             <mat-form-field class="learnerName-field">
               <mat-label>Enter New Learner's Name</mat-label>
-              <input matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <input formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
            </mat-form-field>
           </form>
-          <button mat-icon-button class="addLearnerButton" matTooltip="Submit New Learner" matTooltipPosition="above"><mat-icon>add</mat-icon></button>
+          <button mat-icon-button class="addLearnerButton" matTooltip="Submit New Learner" matTooltipPosition="above" (click)="submitForm()"><mat-icon>add</mat-icon></button>
         </mat-card-content>
       </mat-card>
 
