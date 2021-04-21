@@ -1,19 +1,19 @@
-<h1>{{this.learner.name}}</h1>
+<h1 class="learner-name">{{this.learner.name}}</h1>
 <mat-card>
     <mat-card-title>
       Assigned Packs
     </mat-card-title>
     <mat-list>
-    <h1 *ngFor="let pack of this.assignedPacksTest">
+    <h1 *ngFor="let pack of this.assignedPacksTest" class="assigned-pack-name">
       {{pack.contextpack.name + ':'}}
-    <mat-list-item>
+    <mat-list-item class="assigned-wordlists">
       {{this.getListNames(pack).join(', ')}}
     </mat-list-item>
     <mat-divider></mat-divider>
     </h1>
     <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
       <mat-label>Disabed Lists:</mat-label>
-      {{this.learner.disabledWordlists}}
+      <span class="disabled-wordlists">{{this.learner.disabledWordlists}}</span>
       <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" >
         <mat-label>Assign Wordlists</mat-label>
         <mat-select >

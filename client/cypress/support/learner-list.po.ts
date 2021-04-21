@@ -6,6 +6,12 @@ export class LearnerListPage {
   getLearnerCards() {
     return cy.get('.learner-card');
   }
+  getEnabledWordlists(){
+    return cy.get('.assigned-wordlists');
+  }
+  getDisabledWordlists(){
+    return cy.get('.disabled-wordlists');
+  }
 
   /**
    * Clicks the "view info" button for the given contextpack card.
