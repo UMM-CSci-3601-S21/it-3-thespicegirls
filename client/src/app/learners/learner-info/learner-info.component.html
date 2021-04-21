@@ -13,13 +13,16 @@
     </h1>
     <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
       <mat-label>Disabed Lists:</mat-label>
-      {{this.learner.disabledWordlists.join(', ')}}
+      {{this.learner.disabledWordlists}}
       <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" >
         <mat-label>Assign Wordlists</mat-label>
         <mat-select >
           <mat-option *ngFor="let list of this.possibleWordlists" >
-            <mat-checkbox (click)="$event.stopPropagation()" [checked]="list.enabled"> {{list.name}}</mat-checkbox>
-          </mat-option>
+            <mat-checkbox
+            (click)="$event.stopPropagation()" [checked]="list.enabled"
+            (change)="toggleWordlist(list,list.pack)"> {{list.name}}
+            </mat-checkbox>
+          </mat-option >
         </mat-select>
       </mat-form-field>
     </mat-card-subtitle>

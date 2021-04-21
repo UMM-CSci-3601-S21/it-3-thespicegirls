@@ -112,6 +112,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
   setWordlists(pack: ContextPack){
     for(const list of pack.wordlists){
+      list.pack = pack;
       if(this.learner.disabledWordlists.includes(list.name)){
         this.editField(list.name, 'false', pack);
       } else{
@@ -120,8 +121,28 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
   }
-  enableWordlist(){
-    // to be implemnted
+  toggleWordlist(list: Wordlist,  pack: ContextPack){
+    this.editField(list.name, list.enabled.toString(),pack);
+    this.learnerService.assignWordlist(list.name, this.learner).subscribe(existingID => {
+      this.updateAssignedView(list , pack );
+      }, err => {
+        this.snackBar.open('Failed to assign: ' + list.name, 'OK', {
+          duration: 5000,
+          });
+        });;
+  }
+  updateAssignedView(list: Wordlist,  pack: ContextPack){
+    for(const assignObj of this.assignedPacksTest){
+      if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
+        assignObj.assignedWordlists.push(list);
+        this.learner.disabledWordlists= this.learner.disabledWordlists.splice(this.learner.disabledWordlists.indexOf(list.name)+1,1);
+        this.setPos(list);
+        for(const pos of ['nouns','verbs','misc','adjectives']){
+        this.assignedWords = this.assignedWords.concat(list[`${pos}`]);
+        }
+      }
+    }
+    this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
   editField(list: string, newData: string, pack: ContextPack){
@@ -134,6 +155,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         });
       });;
   }
+
   localEdit(pack: ContextPack, listname: string, enabled: boolean){
     for(const list of pack.wordlists){
       if(list.name === listname ){

@@ -34,6 +34,7 @@ export class ContextPackService {
     return isAdmin;
   }
 
+
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<ContextPack[]>(this.contextpackUrl, {

@@ -64,8 +64,8 @@ export class LearnerService {
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('assign',listname);
 
-    return this.httpClient.post<Learner>(this.learnerUrl + '/' + learner._id +'/assign', null , {
-      params: httpParams
+    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assign', {
+      params: httpParams,
    });
   }
 

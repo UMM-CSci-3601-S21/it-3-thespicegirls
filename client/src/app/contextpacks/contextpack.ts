@@ -13,6 +13,7 @@ export interface Wordlist{
   adjectives?: Word[];
   verbs?: Word[];
   misc?: Word[];
+  pack?: ContextPack;
 
 }
 
