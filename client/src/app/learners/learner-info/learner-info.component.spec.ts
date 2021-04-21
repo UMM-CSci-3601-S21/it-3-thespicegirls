@@ -1,3 +1,4 @@
+import { compileNgModule } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -50,7 +51,7 @@ describe('LearnerInfoComponent', () => {
       creator: 'string',
       name: 'string',
       assignedContextPacks: ['chris_id','chris_id'],
-      disabledWordlists: ['happy']
+      disabledWordlists: ['happy','moooo','sun']
     };
     activatedRoute.setParamMap({ id: 'testLearner1' });
     fixture.detectChanges();
@@ -86,6 +87,29 @@ describe('LearnerInfoComponent', () => {
     component.getAssignedWordlists(MockContextPackService.testContextPacks[1]);
     component.setWordlists(MockContextPackService.testContextPacks[1]);
     expect(component.possibleWordlists.includes(MockContextPackService.testContextPacks[1].wordlists[0]));
+  });
+  it('should correctly update the view after a wordlist is assigned', () => {
+    component.learner.disabledWordlists =['sun'];
+    const assignedPackInfo = {
+      contextpack: MockContextPackService.testContextPacks2[1],
+      assignedWordlists: [{
+        name: 'happy',
+        enabled: true,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }
+    ]
+    };
+    component.assignedPacksTest.push(assignedPackInfo);
+    component.getAssignedContextPacks();
+    component.toggleWordlist(MockContextPackService.testContextPacks2[1].wordlists[0],MockContextPackService.testContextPacks2[1]);
+    expect(component.assignedPacksTest).toContain(assignedPackInfo);
+    expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
+    component.setWordlists(MockContextPackService.testContextPacks2[2]);
+    console.log(MockContextPackService.testContextPacks2[2]);
+
   });
 
 

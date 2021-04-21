@@ -40,7 +40,7 @@ export class MockContextPackService extends ContextPackService {
         adjectives: MockContextPackService.testAdjectives,
         verbs: MockContextPackService.testVerbs,
         misc: MockContextPackService.testMisc
-      }
+      },
   ];
 
   static testContextPacks: ContextPack[] = [
@@ -61,6 +61,49 @@ export class MockContextPackService extends ContextPackService {
       enabled: true,
       name: 'happy',
       wordlists: MockContextPackService.testWordlists
+    }
+  ];
+  static testContextPacks2: ContextPack[] = [
+    {
+      _id: 'chris_id',
+      enabled: true,
+      name: 'fun',
+      wordlists: [{
+        name: 'happy',
+        enabled: false,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      },
+      {
+        name: 'moooo',
+        enabled: false,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }
+    ]
+    },
+    {
+      _id: 'bob_id',
+      enabled: true,
+      name: 'sun',
+      wordlists: MockContextPackService.testWordlists
+    },
+    {
+      _id: 'mary_id',
+      enabled: true,
+      name: 'sun',
+      wordlists: [{
+        name: 'sun',
+        enabled: true,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }]
     }
   ];
 
