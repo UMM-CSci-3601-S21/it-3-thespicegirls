@@ -129,7 +129,7 @@ describe('Info Page Edit View', () => {
     page.clickViewInfo(page.getContextpackCards().first()).wait(4000);
 
     page.enableEditDeleteMode();
-    cy.get('.wordlist-removeVerb').eq(0).should('be.visible');
+    cy.get('.wordlist-removeNoun').should('be.visible');
 
     cy.get('.wordlist-verbChip').eq(0).should('contain.text','moo');
     cy.get('.wordlist-removeVerb').eq(0).click();
