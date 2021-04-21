@@ -40,5 +40,36 @@ describe('Learner List View', () => {
     });
   });
 
+  it('Should check that a user cannot add a new learner unless they are logged in', () => {
+    cy.get('.add').should('not.exist');
+
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    cy.get('.add').should('exist');
+  });
+
+  it('Should login and add a new learner', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    window.localStorage.setItem('User','TestUser');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    page.addLearner('Chris');
+
+    cy.get('.mat-simple-snackbar').should('contain.text','Added Chris');
+  });
+
+  it('Should login and fail to add a new learner', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
+
+    cy.get('.mat-simple-snackbar').should('contain.text','Failed to add a new Learner');
+  });
+
 });
 

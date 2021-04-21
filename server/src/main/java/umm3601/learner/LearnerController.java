@@ -2,6 +2,7 @@ package umm3601.learner;
 
 import java.util.ArrayList;
 
+import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
@@ -46,6 +47,13 @@ public class LearnerController {
   }
 
   public void addLearner(Context ctx){
+      Learner newLearner = ctx.bodyValidator(Learner.class)
+        .check(learner -> learner.name != null )
+        .check(learner -> learner.creator != null)
+        .get();
 
+        learnerCollection.insertOne(newLearner);
+        ctx.status(201);
+        ctx.json(ImmutableMap.of("id", newLearner._id));
   }
 }
