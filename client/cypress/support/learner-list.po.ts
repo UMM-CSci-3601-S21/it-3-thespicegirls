@@ -1,3 +1,4 @@
+import {Learner} from 'src/app/learners/learner';
 export class LearnerListPage {
   navigateTo() {
     return cy.visit('/learner');
@@ -39,6 +40,15 @@ export class LearnerListPage {
 
   enableAddMode(){
     return cy.get('.addView').click({force: true});
+  }
+
+  getFormField(fieldName: string) {
+    return cy.get(`mat-form-field [formcontrolname=${fieldName}]`);
+  }
+
+  addLearner(name: string){
+    this.getFormField('name').type(name);
+    cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
   }
 
 }

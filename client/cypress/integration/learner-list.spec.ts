@@ -24,6 +24,7 @@ describe('Learner list view',()=>{
       cy.wrap(e).find('.learner-name').should('contain.text', 'Jimmy');
     });
   });
+  
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
     cy.get('[data-test=learnerNameInput]').type('j').wait(1000);
 
@@ -37,6 +38,7 @@ describe('Learner list view',()=>{
       .should('not.contain.text', 'Mildred')
       .should('not.contain.text', 'Grace');
   });
+  
   it('Should click view info on a contextpack and go to the right URL', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
@@ -53,18 +55,26 @@ describe('Learner list view',()=>{
       // On this info page we were sent to, the topic and topic should be correct
       cy.get('.learner-name').first().should('have.text', firstLearnerName);
 
-    });
   });
+    
   it('Should correctly list enabled wordlists', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
     cy.reload();
-
     page.clickViewInfo(page.getLearnerCards().first());
 
     const disabledWordlists = page.getDisabledWordlists();
     const enabledWordlists = page.getEnabledWordlists();
+  });
+    
+  it('Should check that a user cannot add a new learner unless they are logged in', () => {
+    cy.get('.add').should('not.exist');
 
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    cy.get('.add').should('exist');
     page.getEnabledWordlists().each(e => {
       cy.wrap(e).should('not.contain.text', disabledWordlists);
     });
@@ -72,6 +82,28 @@ describe('Learner list view',()=>{
       cy.wrap(e).should('not.contain.text', enabledWordlists);
     });
   });
+    
+   it('Should login and add a new learner', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    window.localStorage.setItem('User','TestUser');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    page.addLearner('Chris');
+
+    cy.get('.mat-simple-snackbar').should('contain.text','Added Chris');
+  });
+
+  it('Should login and fail to add a new learner', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    pageLogin.googleLogin();
+
+    cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
+
+    cy.get('.mat-simple-snackbar').should('contain.text','Failed to add a new Learner');
+  });
+    
   it('Should list assigned words', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
@@ -87,6 +119,7 @@ describe('Learner list view',()=>{
     cy.get('.toggle-list-assign input').eq(0).click({force:true});
     cy.get('.toggle-list-assign input').eq(0).should('not.be.checked');
   });
+    
   it('Should correctly assign a wordlist', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
@@ -108,7 +141,5 @@ describe('Learner list view',()=>{
     disabledWordlists = page.getDisabledWordlists().should('not.contain.text','batman_villains');
     disabledWordlists = page.getDisabledWordlists().should('contain.text','k');
   });
-
-
 
 });

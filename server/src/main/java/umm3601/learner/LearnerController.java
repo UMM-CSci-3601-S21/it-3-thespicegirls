@@ -55,6 +55,7 @@ public class LearnerController {
     ctx.json(learnerCollection.find()
     .into(new ArrayList<>()));
   }
+  
   public void assignWordlist(Context ctx){
     Bson filter = (eq("_id", ctx.pathParam("id")));
     Learner  learner = learnerCollection.find(filter).first();
@@ -68,8 +69,8 @@ public class LearnerController {
     learner = learnerCollection.find(filter).first();
     ctx.json(learner);
   }
-  public void addLearner(Context ctx){
 
+  public void addLearner(Context ctx){
     Learner newLearner = ctx.bodyValidator(Learner.class)
       .check(learner -> learner.name != null )
       .check(learner -> learner.creator != null)
