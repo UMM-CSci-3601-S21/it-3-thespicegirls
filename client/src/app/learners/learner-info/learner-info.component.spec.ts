@@ -108,7 +108,7 @@ describe('LearnerInfoComponent', () => {
     expect(component.assignedPacksTest).toContain(assignedPackInfo);
     expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
     component.setWordlists(MockContextPackService.testContextPacks2[2]);
-    console.log(MockContextPackService.testContextPacks2[2]);
+
 
   });
 
