@@ -44,4 +44,8 @@ public class LearnerController {
     ctx.json(learnerCollection.find()
     .into(new ArrayList<>()));
   }
+
+  public void addLearner(Context ctx){
+
+  }
 }

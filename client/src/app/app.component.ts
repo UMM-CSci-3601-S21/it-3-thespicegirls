@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
         this.user = user2;
         this.isSignedin = true;
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('User', user2.firstName);
         if(res.admin === true){
           localStorage.setItem('admin', 'true');
         }

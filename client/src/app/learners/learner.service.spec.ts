@@ -87,4 +87,18 @@ describe('LearnerService', () => {
       expect(service.checkIfLoggedIn('true')).toEqual(true);
       expect(service.checkIfLoggedIn('false')).toEqual(false);
     });
+
+    it('addLeaner() posts to api/learners', () => {
+
+      service.addLearner(testLearners[1]).subscribe(
+        id => expect(id).toBe('testid')
+      );
+
+      const req = httpTestingController.expectOne(service.learnerUrl);
+
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(testLearners[1]);
+
+      req.flush({id: 'testid'});
+    });
 });
