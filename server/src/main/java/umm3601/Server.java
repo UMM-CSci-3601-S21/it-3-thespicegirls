@@ -59,6 +59,7 @@ public class Server {
 
     server.get("/api/learners", learnerController::getLearners, roles(MyRole.ANYONE));
     server.get("/api/learners/:id", learnerController::getLearner, roles(MyRole.ANYONE));
+    server.get("/api/learners/:id/assign", learnerController::assignWordlist, roles(MyRole.ANYONE));
 
     server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 

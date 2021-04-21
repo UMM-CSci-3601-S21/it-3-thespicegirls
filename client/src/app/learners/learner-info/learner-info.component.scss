@@ -1,19 +1,22 @@
-mat-list{
+mat-list, h1{
   text-transform:capitalize;
 }
 .nouns{
-  background-color: #538dd0;
+  background-color: rgb(238, 105, 105);
 }
 .verbs{
-  background-color: #F6F2C3;
+  background-color:rgba(82, 130, 181, 0.734);
 }
 .misc{
-  background-color: #EDB76A;
+  background-color:rgb(247, 247, 179);
 }
 .adjectives{
-  background-color: #7FA791;
+  background-color: rgb(91, 172, 91);
 }
 .word-chip-container{
   border-radius: 5px;
 
+}
+::ng-deep .mat-tooltip{
+  text-transform: capitalize;
 }

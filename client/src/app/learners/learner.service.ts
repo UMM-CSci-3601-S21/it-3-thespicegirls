@@ -60,6 +60,14 @@ export class LearnerService {
 
     return filteredLearners;
   }
+  assignWordlist(listname: string ,learner: Learner){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('assign',listname);
+
+    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assign', {
+      params: httpParams,
+   });
+  }
 
   addLearner(newLearner: Learner): Observable<string>{
     return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));

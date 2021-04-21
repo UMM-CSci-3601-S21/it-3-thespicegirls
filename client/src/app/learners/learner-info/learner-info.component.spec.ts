@@ -1,7 +1,9 @@
+import { compileNgModule } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
@@ -25,6 +27,7 @@ describe('LearnerInfoComponent', () => {
         MatSnackBarModule,
         FormsModule,
         ReactiveFormsModule,
+        BrowserAnimationsModule
       ],
       declarations: [ LearnerInfoComponent ],
       providers: [
@@ -46,7 +49,7 @@ describe('LearnerInfoComponent', () => {
       creator: 'string',
       name: 'string',
       assignedContextPacks: ['chris_id','chris_id'],
-      disabledWordlists: []
+      disabledWordlists: ['happy','moooo','sun']
     };
     activatedRoute.setParamMap({ id: 'testLearner1' });
     fixture.detectChanges();
@@ -58,10 +61,8 @@ describe('LearnerInfoComponent', () => {
   it('should navigate to a specific Learner\'s info page', () => {
     activatedRoute.setParamMap({ id: 'testLearner1' });
     expect(component.id).toEqual('testLearner1');
-
-
-
   });
+
   it('should get assigned context packs', () => {
     component.getAssignedContextPacks();
     expect(component.assignedPacks.length).toBeGreaterThan(0);
@@ -69,15 +70,44 @@ describe('LearnerInfoComponent', () => {
     expect(component.assignedPacks[0]._id).toEqual('chris_id');
   });
   it('should get all assigned words', () => {
-    component.getAllWords();
+    component.getAllWords(component.assignedPacks[0]);
     expect(component.assignedWords.length).toBeGreaterThan(0);
-    expect(component.assignedWords[0]).toEqual({ word: 'you', forms: [ 'you', 'yos' ], pos:'nouns'});
-    expect(component.assignedWords.length).toEqual(12);
+    expect(component.assignedWords[0]).toEqual({ word: 'green', forms: [ 'green', 'greener' ], pos:'adjectives', wordlist:'happy'});
+    expect(component.assignedWords.length).toEqual(8);
   });
   it('should correctly assign the parts of speech', () => {
-    component.getAllWords();
-    expect(component.assignedWords[0]).toEqual({ word: 'you', forms: [ 'you', 'yos' ], pos:'nouns'});
-    expect(component.assignedWords[1]).toEqual({ word: 'ran', forms: [ 'ran', 'running' ], pos:'verbs'});
+    component.getAllWords(component.assignedPacks[0]);
+    expect(component.assignedWords[0]).toEqual({ word: 'green', forms: [ 'green', 'greener' ], pos:'adjectives', wordlist:'happy'});
+    expect(component.assignedWords[2]).toEqual({ word: 'langerhans', forms: [ 'langerhans' ], pos:'misc', wordlist:'happy'});
+    expect(component.assignedWords.length).toEqual(8);
+  });
+  it('should assign wordlists', () => {
+    component.getAssignedWordlists(MockContextPackService.testContextPacks[1]);
+    component.setWordlists(MockContextPackService.testContextPacks[1]);
+    expect(component.possibleWordlists.includes(MockContextPackService.testContextPacks[1].wordlists[0]));
+  });
+  it('should correctly update the view after a wordlist is assigned', () => {
+    component.learner.disabledWordlists =['sun'];
+    const assignedPackInfo = {
+      contextpack: MockContextPackService.testContextPacks2[1],
+      assignedWordlists: [{
+        name: 'happy',
+        enabled: true,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }
+    ]
+    };
+    component.assignedPacksTest.push(assignedPackInfo);
+    component.getAssignedContextPacks();
+    component.toggleWordlist(MockContextPackService.testContextPacks2[1].wordlists[0],MockContextPackService.testContextPacks2[1]);
+    expect(component.assignedPacksTest).toContain(assignedPackInfo);
+    expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
+    component.setWordlists(MockContextPackService.testContextPacks2[2]);
+
+
   });
 
 
