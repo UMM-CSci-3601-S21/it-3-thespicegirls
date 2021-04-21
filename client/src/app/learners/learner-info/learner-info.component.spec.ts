@@ -8,8 +8,6 @@ import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { ActivatedRouteStub } from 'src/testing/activated-route-stub';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import { MockLearnerService } from 'src/testing/learner.service.mock';
-import { Learner } from '../learner';
-import { LearnerCardComponent } from '../learner-card/learner-card.component';
 import { LearnerService } from '../learner.service';
 
 import { LearnerInfoComponent } from './learner-info.component';

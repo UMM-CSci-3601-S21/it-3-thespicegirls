@@ -23,9 +23,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LearnerService } from '../../learners/learner.service';
 import { MockLearnerService } from 'src/testing/learner.service.mock';
-import { Learner } from '../../learners/learner';
-import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
-
 
 const COMMON_IMPORTS: any[] = [
   FormsModule,

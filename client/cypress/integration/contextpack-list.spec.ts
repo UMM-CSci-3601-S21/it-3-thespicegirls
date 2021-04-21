@@ -1,4 +1,3 @@
-import { eq } from 'cypress/types/lodash';
 import { ContextpackListPage } from '../support/contextpack-list.po';
 import { AddPackPage } from '../support/add-contextpack.po';
 
@@ -209,15 +208,11 @@ describe('Info Page Add View', () => {
     cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
       + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
       + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
-    // Version of test that passes on one computer and fails on other
-    // cy.get('.wordlist-nounChip').should('contain.text',
-    //   ' harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
-    //   + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel  test ');
-    //This is originally what passed the first test.
-    // cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
-    //   + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
-    //   + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
+    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
+      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
+      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
   });
+
   it('should click on the add button and add a wordlist',()=>{
     window.localStorage.setItem('admin', 'true');
     cy.reload();

@@ -59,7 +59,7 @@ export class AddPackPage {
       const arrayOptions = ['noun','verb','adjective','misc'];
       const inputOptions = ['.nounInput','.verbInput','.adjectiveInput','.miscInput'];
       const formOptions = ['.nounForm','.verbForm','.adjectiveForm','.miscForm'];
-    //const addWordButtons = ['.add-noun-button', 'add-verb-button', 'add-adjective-button', 'add-misc-button']
+
       cy.get(accordions[i]).eq(0).click({force:true});
       this.addPosArray(arrayOptions[i]);
       cy.get(inputOptions[i]).type(word.word, {force:true});

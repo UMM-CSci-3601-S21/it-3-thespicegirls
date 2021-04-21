@@ -18,8 +18,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs';
 import { ContextPackCardComponent } from 'src/app/contextpacks/contextpack-card/contextpack-card.component';
 import { ContextPackListComponent } from 'src/app/contextpacks/contextpack-list/contextpack-list.component';
-import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
-import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import { MockLearnerService } from 'src/testing/learner.service.mock';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
