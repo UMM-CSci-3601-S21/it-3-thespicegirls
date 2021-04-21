@@ -1,10 +1,7 @@
-import { getLocaleDirection } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ContextPack, Word, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { Learner } from '../learner';
