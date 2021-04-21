@@ -135,7 +135,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     for(const assignObj of this.assignedPacksTest){
       if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
         assignObj.assignedWordlists.push(list);
-        this.learner.disabledWordlists= this.learner.disabledWordlists.splice(this.learner.disabledWordlists.indexOf(list.name)+1,1);
+        this.learner.disabledWordlists= this.learner.disabledWordlists.splice(0,this.learner.disabledWordlists.indexOf(list.name));
         this.setPos(list);
         for(const pos of ['nouns','verbs','misc','adjectives']){
         this.assignedWords = this.assignedWords.concat(list[`${pos}`]);

@@ -12,6 +12,17 @@ export class LearnerListPage {
   getDisabledWordlists(){
     return cy.get('.disabled-wordlists');
   }
+  getAssignedWords(){
+    const assignedWords=[];
+    for(const pos of ['nouns','verbs','adjectives']){
+      assignedWords.push(cy.get(`.${pos}`));
+    }
+    return assignedWords;
+  }
+  assignWordlist(){
+    return cy.get('.wordlist-select').click();
+  }
+
 
   /**
    * Clicks the "view info" button for the given contextpack card.
@@ -22,12 +33,6 @@ export class LearnerListPage {
   clickViewInfo(card: Cypress.Chainable<JQuery<HTMLElement>>) {
     return card.find<HTMLButtonElement>('[data-test=viewInfoButton]').click();
   }
-
-
-
-
-
-
   enableEditDeleteMode(){
     return cy.get('.editView').click({force: true});
   }
