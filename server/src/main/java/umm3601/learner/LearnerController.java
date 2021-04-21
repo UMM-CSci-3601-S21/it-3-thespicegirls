@@ -3,6 +3,7 @@ package umm3601.learner;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
@@ -62,9 +63,20 @@ public class LearnerController {
       String listname = ctx.queryParam("assign");
       learner.disabledWordlists.removeIf(list -> list.equals(listname));
     }
-    
+
     learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
     learner = learnerCollection.find(filter).first();
     ctx.json(learner);
   }
+  public void addLearner(Context ctx){
+
+    Learner newLearner = ctx.bodyValidator(Learner.class)
+      .check(learner -> learner.name != null )
+      .check(learner -> learner.creator != null)
+      .get();
+
+      learnerCollection.insertOne(newLearner);
+      ctx.status(201);
+      ctx.json(ImmutableMap.of("id", newLearner._id));
+}
 }
