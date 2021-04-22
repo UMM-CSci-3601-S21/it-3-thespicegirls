@@ -29,6 +29,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import {MatGridListModule} from '@angular/material/grid-list';
 
+
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ContextPackListComponent } from './contextpacks/contextpack-list/contextpack-list.component';
@@ -65,7 +66,8 @@ const MATERIAL_MODULES: any[] = [
   MatExpansionModule,
   MatCheckboxModule,
   MatTabsModule,
-  MatGridListModule
+  MatGridListModule,
+  MatDividerModule
 ];
 
 @NgModule({

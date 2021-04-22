@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Learner } from './learner';
 
@@ -58,6 +59,18 @@ export class LearnerService {
     }
 
     return filteredLearners;
+  }
+  assignWordlist(listname: string ,learner: Learner){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set('assign',listname);
+
+    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assign', {
+      params: httpParams,
+   });
+  }
+
+  addLearner(newLearner: Learner): Observable<string>{
+    return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));
   }
 
 }

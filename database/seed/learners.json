@@ -10,10 +10,28 @@
 
 {
   "_id": {
-    "$oid": "6079d53cc6de3bafe3e92aaa"
+    "$oid": "588935f51c55b55c75a84848"
   },
   "creator": "KK",
   "name": "Daisy",
-  "assignedContextPacks": [ "588935f55b432bb2ff322165", "588935f55b432bb2ff322160"],
+  "assignedContextPacks": [ "588935f55b432bb2ff322165", "588935f55b432bb2ff322160","588935f51c55b55c75a84848"],
+  "disabledWordlists": ["k","batman_villains"]
+},
+{
+  "_id": {
+    "$oid": "588935f57546a2daea44de7c"
+  },
+  "creator": "KK",
+  "name": "Mildred",
+  "assignedContextPacks": [ "588935f55b432bb2ff322160", "588935f51c55b55c75a84848","588935f52787254123f71fed"],
+  "disabledWordlists": ["pre-k"]
+},
+{
+  "_id": {
+    "$oid": "588935f55b432bb2ff322169"
+  },
+  "creator": "KK",
+  "name": "Grace",
+  "assignedContextPacks": [ "588935f55b432bb2ff322160"],
   "disabledWordlists": []
 }]

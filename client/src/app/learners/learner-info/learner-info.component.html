@@ -1,17 +1,42 @@
-<h1>{{this.learner.name}}</h1>
-<mat-list>
-  <mat-label>
-    Assigned Packs
-  </mat-label>
-  <mat-list-item *ngFor="let pack of this.assignedPacks">
-    {{pack.name}}
-  </mat-list-item>
-</mat-list>
+<h1 class="learner-name">{{this.learner.name}}</h1>
+<mat-card>
+    <mat-card-title>
+      Assigned Packs
+    </mat-card-title>
+    <mat-list>
+    <h1 *ngFor="let pack of this.assignedPacksTest" class="assigned-pack-name">
+      {{pack.contextpack.name + ':'}}
+    <mat-list-item class="assigned-wordlists">
+      {{this.getListNames(pack).join(', ')}}
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    </h1>
+    <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
+      <mat-label>Disabed Lists:</mat-label>
+      <span class="disabled-wordlists">{{this.learner.disabledWordlists}}</span>
+      <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" class="wordlist-select">
+        <mat-label>Assign Wordlists</mat-label>
+        <mat-select >
+          <mat-option *ngFor="let list of this.possibleWordlists"
+          class="wordlist-check-box" >
+            <mat-checkbox
+            (click)="$event.stopPropagation()" [checked]="list.enabled"
+            (change)="toggleWordlist(list,list.pack)"
+            class="toggle-list-assign"> {{list.name}}
+            </mat-checkbox>
+          </mat-option >
+        </mat-select>
+      </mat-form-field>
+    </mat-card-subtitle>
+    </mat-list>
+
+</mat-card>
+
 <mat-card class="word-chip-container">
   <mat-card-title>Assigned Words</mat-card-title>
   <mat-chip-list>
     <mat-chip *ngFor="let word of this.assignedWords"
-        matTooltip="{{word.forms.join(' ')}}"
+        matTooltip="{{word.wordlist.replace('_', ' ')}}"
         matTooltipClass="forms-tooltip"
         class="{{word.pos}}"
         >

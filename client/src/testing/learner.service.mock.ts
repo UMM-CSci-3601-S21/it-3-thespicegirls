@@ -34,8 +34,11 @@ export class MockLearnerService extends LearnerService {
   getLearnerById(id: string): Observable<Learner> {
     if (id === MockLearnerService.testLearners[0]._id) {
       return of(MockLearnerService.testLearners[0]);
-    } else {
-      return of(null);
     }
   }
+  assignWordlist(listname: string ,learner: Learner){
+    return of(MockLearnerService.testLearners[0]);
+  }
+
+
 }

@@ -1,6 +1,9 @@
 package umm3601.learner;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +12,7 @@ import java.util.Arrays;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
@@ -73,7 +77,7 @@ public class LearnerControllerSpec {
     .append("creator","KK")
     .append("name","Starla")
     .append("assignedContextPacks", Arrays.asList())
-    .append("disabledWordlists", Arrays.asList());
+    .append("disabledWordlists", Arrays.asList("cats","dogs","milk"));
     learnerDocuments.insertOne(testLearnerID);
     learnerController = new LearnerController(db);
   }
@@ -98,6 +102,7 @@ public class LearnerControllerSpec {
     assertEquals(db.getCollection("learners").countDocuments(),
         JavalinJson.fromJson(result, Learner[].class).length);
   }
+  
   @Test
   public void GetLearner(){
     String testLearnerID = testID.toHexString();
@@ -114,22 +119,128 @@ public class LearnerControllerSpec {
   }
 
   @Test
-  public void getContextPackInvalidID(){
+  public void getLearnerInvalidID(){
      Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id" , ImmutableMap.of("id", "chickens"));
 
     assertThrows(BadRequestResponse.class, ()->{
       learnerController.getLearner(ctx);
     });
-
   }
 
   @Test
-  public void getContextPackNOID(){
+  public void getLearnerNOID(){
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id" , ImmutableMap.of("id", "58af3a600343927e48e87335"));
 
     assertThrows(NotFoundResponse.class, ()->{
       learnerController.getLearner(ctx);
     });
+  }
 
+  @Test
+  public void assignWordlist(){
+    String testLearnerID = testID.toHexString();
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("assign=cats");
+    learnerController.assignWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), true);
+
+    ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("assign=dogs");
+    learnerController.assignWordlist(ctx);
+    result = ctx.resultString();
+
+    assertEquals(200, mockRes.getStatus());
+    resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), false);
+
+    ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("nothing=milk");
+    learnerController.assignWordlist(ctx);
+    result = ctx.resultString();
+    // no changes are made if the query string is incorrectly constructed
+    assertEquals(200, mockRes.getStatus());
+    resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), false);
+    assertEquals(resultLearner.disabledWordlists.contains("dogs"), false);
+}
+
+  @Test
+  public void AddNewLearner() throws IOException {
+    String test = "{"
+    + "\"_id\": \"\" ,"
+    + "\"creator\": \"RandomAdult\","
+    + "\"name\": \"RandomKid\","
+    + "\"assignedContextPacks\": null,"
+    + "\"disabledWordlists\": null"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners");
+
+    learnerController.addLearner(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
+
+    assertNotEquals("", id);
+    assertEquals(1, db.getCollection("learners").countDocuments(eq("_id", new ObjectId(id))));
+
+
+    Document addedLearner = db.getCollection("learners").find(eq("_id", new ObjectId(id))).first();
+    assertNotNull(addedLearner);
+    assertEquals("RandomKid", addedLearner.getString("name"));
+    assertNotNull(addedLearner);
+
+  }
+
+  @Test
+  public void AddNewLearnerNoName() throws IOException {
+    String test = "{"
+    + "\"_id\": \"\" ,"
+    + "\"creator\": \"RandomAdult\","
+    + "\"assignedContextPacks\": null,"
+    + "\"disabledWordlists\": null"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      learnerController.addLearner(ctx);
+    });
+
+  }
+
+  @Test
+  public void AddNewLearnerNoCreator() throws IOException {
+    String test = "{"
+    + "\"_id\": \"\" ,"
+    + "\"name\": \"RandomKid\","
+    + "\"assignedContextPacks\": null,"
+    + "\"disabledWordlists\": null"
+    + "}"
+    ;
+
+    mockReq.setBodyContent(test);
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners");
+
+    assertThrows(BadRequestResponse.class, () -> {
+      learnerController.addLearner(ctx);
+    });
   }
 }

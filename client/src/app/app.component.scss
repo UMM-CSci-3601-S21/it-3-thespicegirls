@@ -1,9 +1,18 @@
 .mat-toolbar {
   background-color:  skyblue;
   color:#01596e;
-  position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  background-color:#f8f8f6;
+  font:#01596e;
+  width: 256px;
 }
 
 #space{
