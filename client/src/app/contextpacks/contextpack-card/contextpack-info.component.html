@@ -1,3 +1,7 @@
+<button mat-fab class="back-button" matTooltip="Back to Context Packs" matTooltipPosition="below" routerLink="/contextpacks" data-test="backButton">
+  <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
+</button>
+
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
     <app-contextpack-card [contextpack]="this.contextpack" (valueChangeEvents)="update(this.contextpack,$event)"></app-contextpack-card>
