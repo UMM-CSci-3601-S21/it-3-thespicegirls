@@ -228,16 +228,17 @@ describe('Info Page Add View', () => {
     window.localStorage.setItem('admin', 'true');
     cy.reload();
     pageLogin.googleAdminLogin();
-    cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
+    cy.reload().wait(5000);
+    page.clickViewInfo(page.getContextpackCards().eq(2)).wait(5000);
 
     page.enableAddMode();
     cy.get('.addNouns').click();
-    cy.get('.nounWord').type('test');
+    cy.get('.nounWord').type('test2');
     cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
     cy.get('.addNounButton').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_equipment').wait(1000);
-    cy.get('.wordlist-nounChip').should('contain.text', 'test');
+    cy.get('.mat-simple-snackbar').should('contain','Added test2, to Word list: birthday').wait(1000);
+
+    cy.get('.wordlist-nounChip').should('contain.text', 'test2');
   });
   it('Should click the add button and then add a noun if you are creator', () => {
     pageLogin.googleLogin();
