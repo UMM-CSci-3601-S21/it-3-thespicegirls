@@ -147,10 +147,10 @@ describe('Info Page Edit View', () => {
     page.enableEditDeleteMode();
     cy.get('.wordlist-removeNoun').should('be.visible');
 
-    cy.get('.wordlist-verbChip').eq(0).should('contain.text','moo');
-    cy.get('.wordlist-removeVerb').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Deleted moo from Word list: farm_animals');
-    cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
+    cy.get('.wordlist-nounChip').eq(0).should('contain.text','goat');
+    cy.get('.wordlist-removeNoun').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain', 'Deleted goat from Word list: farm_animals');
+    cy.get('.wordlist-nounChip').eq(0).should('not.contain.text','goat');
   });
 
   it('Should click the edit button and delete a word if they are the creator', () => {
