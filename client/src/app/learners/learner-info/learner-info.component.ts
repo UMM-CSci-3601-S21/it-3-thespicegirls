@@ -1,3 +1,4 @@
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -118,10 +119,14 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
   }
-  toggleWordlist(list: Wordlist,  pack: ContextPack){
+  toggleWordlist(list: Wordlist,  pack: ContextPack, enabled: boolean){
+    const action = enabled ? ('disable') : ('assign');
     this.editField(list.name, list.enabled.toString(),pack);
-    this.learnerService.assignWordlist(list.name, this.learner).subscribe(existingID => {
-      this.updateAssignedView(list , pack );
+    this.learnerService.assignWordlist(list.name, this.learner, action).subscribe(existingID => {
+      if(enabled){this.updatedisabledView(list , pack);
+      }else{
+        this.updateAssignedView(list , pack);
+      }
       }, err => {
         this.snackBar.open('Failed to assign: ' + list.name, 'OK', {
           duration: 5000,
@@ -129,6 +134,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         });;
   }
   updateAssignedView(list: Wordlist,  pack: ContextPack){
+    list.enabled = true;
     for(const assignObj of this.assignedPacksTest){
       if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
         assignObj.assignedWordlists.push(list);
@@ -141,6 +147,32 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
+
+
+  updatedisabledView(list: Wordlist,  pack: ContextPack){
+    list.enabled = false;
+    for(const assignObj of this.assignedPacksTest){
+      //remove from enabled list
+      (assignObj.assignedWordlists.forEach(assigned =>{
+      if(assigned.name === list.name){
+          assignObj.assignedWordlists.splice(assignObj.assignedWordlists.indexOf(assigned),1);
+          // add to disabled wordlist
+          this.learner.disabledWordlists = this.learner.disabledWordlists.concat(list.name);
+          this.setPos(list);
+      }}));
+    }
+    this.assignedWords.forEach((word) => {
+      if(word.wordlist === list.name){
+        if(this.assignedWords.indexOf(word) ===-1){}
+        else{
+          this.assignedWords.splice( this.assignedWords.indexOf(word),1);
+        }
+      }
+    });
+    this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
+  }
+
+
 
   editField(list: string, newData: string, pack: ContextPack){
     const obj =  { enabled: newData };
