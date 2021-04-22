@@ -73,12 +73,25 @@ describe('LearnerService', () => {
       expect(req.request.method).toEqual('GET');
       req.flush(targetLearner);
     });
+
     it('should make a correctly composed post request to the api', () => {
       const targetLearner: Learner = testLearners[0];
       service.assignWordlist('dogs', targetLearner).subscribe(
         learner => expect(learner).toBe(targetLearner)
       );
-      const req = httpTestingController.expectOne('/api/learners/testLearner1/assign?assign=dogs');
+      const req = httpTestingController.expectOne('/api/learners/testLearner1/assignWordlist?assign=dogs');
+      expect(req.request.method).toEqual('GET');
+      req.flush(targetLearner);
+    });
+
+    it('assignContextpack calls api/learners/:id/assignContextpack correctly', () => {
+      const targetLearner: Learner = testLearners[0];
+      service.assignContextpack(targetLearner, 'testContextpackId').subscribe(
+        learner => expect(learner).toBe(targetLearner)
+      );
+      const req = httpTestingController.expectOne('/api/learners/testLearner1/assignPack?assign=testContextpackId');
+      expect(req.request.method).toEqual('POST');
+      req.flush(targetLearner);
     });
 
     it('filterLearners() filters by name', () => {
@@ -91,12 +104,13 @@ describe('LearnerService', () => {
       expect(service.checkIfAdmin('true')).toEqual(true);
       expect(service.checkIfAdmin('false')).toEqual(false);
     });
+
     it('should check some strings with login checker', () => {
       expect(service.checkIfLoggedIn('true')).toEqual(true);
       expect(service.checkIfLoggedIn('false')).toEqual(false);
     });
 
-    it('addLeaner() posts to api/learners', () => {
+    it('addLearner() posts to api/learners', () => {
 
       service.addLearner(testLearners[1]).subscribe(
         id => expect(id).toBe('testid')

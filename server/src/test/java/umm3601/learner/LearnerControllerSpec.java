@@ -248,7 +248,7 @@ public class LearnerControllerSpec {
   public void AssignContextPack() throws IOException {
     mockReq.setMethod("POST");
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignContextpack", ImmutableMap.of("id", testID.toHexString()));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignPack", ImmutableMap.of("id", testID.toHexString()));
     mockReq.setQueryString("assign=testContextpackId3");
 
     learnerController.assignContextPack(ctx);
@@ -265,7 +265,7 @@ public class LearnerControllerSpec {
   public void UnassignContextPack() throws IOException{
     mockReq.setMethod("POST");
 
-    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignContextpack", ImmutableMap.of("id", testID.toHexString()));
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignPack", ImmutableMap.of("id", testID.toHexString()));
     mockReq.setQueryString("unassign=testContextpackId2");
 
     learnerController.assignContextPack(ctx);

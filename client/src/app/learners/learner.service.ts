@@ -70,6 +70,21 @@ export class LearnerService {
    });
   }
 
+  assignContextpack(learner: Learner, assign?: string, unassign?: string){
+    let httpParams: HttpParams = new HttpParams();
+
+    if(assign){
+      httpParams = httpParams.set('assign', assign);
+    }
+    if(unassign){
+      httpParams = httpParams.set('unassign',unassign);
+    }
+
+    return this.httpClient.post<Learner>(this.learnerUrl + '/' + learner._id + '/assignPack', null, {
+      params: httpParams,
+    });
+  }
+
   addLearner(newLearner: Learner): Observable<string>{
     return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));
   }
