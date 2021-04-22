@@ -160,15 +160,16 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
           this.learner.disabledWordlists = this.learner.disabledWordlists.concat(list.name);
           this.setPos(list);
       }}));
-    }
-    this.assignedWords.forEach((word) => {
-      if(word.wordlist === list.name){
-        if(this.assignedWords.indexOf(word) ===-1){}
-        else{
-          this.assignedWords.splice( this.assignedWords.indexOf(word),1);
+      this.assignedWords.forEach((word) => {
+        if(word.wordlist === list.name){
+          if(this.assignedWords.indexOf(word) ===-1){}
+          else{
+            this.assignedWords.splice(this.assignedWords.indexOf(word),1);
+          }
         }
-      }
-    });
+      });
+    }
+
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
