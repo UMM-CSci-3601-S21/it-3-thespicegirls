@@ -1,12 +1,10 @@
 package umm3601.learner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Updates;
 
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -15,24 +13,18 @@ import org.mongojack.JacksonMongoCollection;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
-import umm3601.contextpack.ContextPack;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class LearnerController {
 
   private final JacksonMongoCollection<Learner> learnerCollection;
-  private final JacksonMongoCollection<ContextPack> contextPackCollection;
-
-
 
   static MongoClient mongoClient;
   static MongoDatabase db;
 
-
   public LearnerController(MongoDatabase database){
     learnerCollection = JacksonMongoCollection.builder().build(database, "learners", Learner.class);
-    contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
   }
 
   public void getLearner(Context ctx) {
@@ -55,10 +47,10 @@ public class LearnerController {
     ctx.json(learnerCollection.find()
     .into(new ArrayList<>()));
   }
-  
+
   public void assignWordlist(Context ctx){
     Bson filter = (eq("_id", ctx.pathParam("id")));
-    Learner  learner = learnerCollection.find(filter).first();
+    Learner learner = learnerCollection.find(filter).first();
 
     if(ctx.queryParamMap().containsKey("assign")){
       String listname = ctx.queryParam("assign");
@@ -70,14 +62,34 @@ public class LearnerController {
     ctx.json(learner);
   }
 
+  public void assignContextPack(Context ctx){
+    Bson filter = eq("_id", ctx.pathParam("id"));
+    Learner learner = learnerCollection.find(filter).first();
+
+    if(ctx.queryParamMap().containsKey("assign")){
+      String packIdAdd = ctx.queryParam("assign");
+      learner.assignedContextPacks.add(packIdAdd);
+    }
+
+    if(ctx.queryParamMap().containsKey("unassign")){
+      String packIdRemove = ctx.queryParam("unassign");
+      learner.assignedContextPacks.removeIf(packs -> packs.equals(packIdRemove));
+    }
+
+    learnerCollection.replaceOne(filter, learner);
+    learner = learnerCollection.find(filter).first();
+    ctx.status(201);
+    ctx.json(learner);
+  }
+
   public void addLearner(Context ctx){
     Learner newLearner = ctx.bodyValidator(Learner.class)
-      .check(learner -> learner.name != null )
+      .check(learner -> learner.name != null && learner.name != " ")
       .check(learner -> learner.creator != null)
       .get();
 
       learnerCollection.insertOne(newLearner);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newLearner._id));
-}
+  }
 }

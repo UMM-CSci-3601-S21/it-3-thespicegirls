@@ -60,11 +60,12 @@ export class LearnerService {
 
     return filteredLearners;
   }
+
   assignWordlist(listname: string ,learner: Learner){
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set('assign',listname);
 
-    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assign', {
+    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assignWordlist', {
       params: httpParams,
    });
   }

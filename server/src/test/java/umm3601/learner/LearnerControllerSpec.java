@@ -76,7 +76,7 @@ public class LearnerControllerSpec {
     .append("_id", testID)
     .append("creator","KK")
     .append("name","Starla")
-    .append("assignedContextPacks", Arrays.asList())
+    .append("assignedContextPacks", Arrays.asList("testContextpackId1","testContextpackId2"))
     .append("disabledWordlists", Arrays.asList("cats","dogs","milk"));
     learnerDocuments.insertOne(testLearnerID);
     learnerController = new LearnerController(db);
@@ -102,7 +102,7 @@ public class LearnerControllerSpec {
     assertEquals(db.getCollection("learners").countDocuments(),
         JavalinJson.fromJson(result, Learner[].class).length);
   }
-  
+
   @Test
   public void GetLearner(){
     String testLearnerID = testID.toHexString();
@@ -242,5 +242,41 @@ public class LearnerControllerSpec {
     assertThrows(BadRequestResponse.class, () -> {
       learnerController.addLearner(ctx);
     });
+  }
+
+  @Test
+  public void AssignContextPack() throws IOException {
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignContextpack", ImmutableMap.of("id", testID.toHexString()));
+    mockReq.setQueryString("assign=testContextpackId3");
+
+    learnerController.assignContextPack(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    Learner resultLearner = jsonMapper.readValue(result, Learner.class);
+
+    assertEquals(testID.toHexString(), resultLearner._id);
+    assertEquals("testContextpackId3", resultLearner.assignedContextPacks.get(2));
+  }
+
+  @Test
+  public void UnassignContextPack() throws IOException{
+    mockReq.setMethod("POST");
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assignContextpack", ImmutableMap.of("id", testID.toHexString()));
+    mockReq.setQueryString("unassign=testContextpackId2");
+
+    learnerController.assignContextPack(ctx);
+    assertEquals(201, mockRes.getStatus());
+
+    String result = ctx.resultString();
+    Learner resultLearner = jsonMapper.readValue(result, Learner.class);
+
+    assertEquals(testID.toHexString(), resultLearner._id);
+    for(int index = 0; index<resultLearner.assignedContextPacks.size(); index++) {
+      assertNotEquals("testContextpackId2",resultLearner.assignedContextPacks.get(index));
+    }
   }
 }
