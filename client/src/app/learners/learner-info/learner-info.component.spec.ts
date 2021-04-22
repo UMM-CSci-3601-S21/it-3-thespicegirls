@@ -80,6 +80,7 @@ describe('LearnerInfoComponent', () => {
     component.setWordlists(MockContextPackService.testContextPacks[1]);
     expect(component.possibleWordlists.includes(MockContextPackService.testContextPacks[1].wordlists[0]));
   });
+
   it('should correctly update the view after a wordlist is assigned', () => {
     component.learner.disabledWordlists =['sun'];
     const assignedPackInfo = {
@@ -102,9 +103,32 @@ describe('LearnerInfoComponent', () => {
     expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
     expect(list.enabled).toBe(false);
     component.setWordlists(MockContextPackService.testContextPacks2[2]);
-
-
   });
+
+  it('should correctly update the view after a wordlist is assigned', () => {
+    component.learner.disabledWordlists =['sun'];
+    const assignedPackInfo = {
+      contextpack: MockContextPackService.testContextPacks2[1],
+      assignedWordlists: [{
+        name: 'happy',
+        enabled: false,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }
+    ]
+    };
+    component.assignedPacksTest.push(assignedPackInfo);
+    component.getAssignedContextPacks();
+    const list =MockContextPackService.testContextPacks2[1].wordlists[0];
+    component.toggleWordlist(list ,MockContextPackService.testContextPacks2[1],false);
+    expect(component.assignedPacksTest).toContain(assignedPackInfo);
+    expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
+    expect(list.enabled).toBe(true);
+    component.setWordlists(MockContextPackService.testContextPacks2[2]);
+  });
+  
 
 
 

@@ -21,7 +21,7 @@
           class="wordlist-check-box" >
             <mat-checkbox
             (click)="$event.stopPropagation()" [checked]="list.enabled"
-            (change)="toggleWordlist(list,list.pack)"
+            (change)="toggleWordlist(list,list.pack, list.enabled)"
             class="toggle-list-assign"> {{list.name}}
             </mat-checkbox>
           </mat-option >
