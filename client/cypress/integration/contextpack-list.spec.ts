@@ -120,6 +120,20 @@ describe('Info Page Edit View', () => {
   beforeEach(() => {
     page.navigateTo();
   });
+  it('Should click the edit button and delete a word if they are an admin', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().first()).wait(4000);
+
+    page.enableEditDeleteMode();
+    cy.get('.wordlist-removeNoun').should('be.visible');
+
+    cy.get('.wordlist-nounChip').eq(0).should('contain.text','goat');
+    cy.get('.wordlist-removeNoun').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain', 'Deleted goat from Word list: farm_animals');
+    cy.get('.wordlist-nounChip').eq(0).should('not.contain.text','goat');
+  });
   it('Should click the edit button and delete a wordlist if they are an admin', () => {
     // login as admin
     pageLogin.googleAdminLogin();
@@ -136,21 +150,6 @@ describe('Info Page Edit View', () => {
     cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
     page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
     cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
-  });
-
-  it('Should click the edit button and delete a word if they are an admin', () => {
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
-    cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first()).wait(4000);
-
-    page.enableEditDeleteMode();
-    cy.get('.wordlist-removeNoun').should('be.visible');
-
-    cy.get('.wordlist-nounChip').eq(0).should('contain.text','goat');
-    cy.get('.wordlist-removeNoun').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Deleted goat from Word list: farm_animals');
-    cy.get('.wordlist-nounChip').eq(0).should('not.contain.text','goat');
   });
 
   it('Should click the edit button and delete a word if they are the creator', () => {
