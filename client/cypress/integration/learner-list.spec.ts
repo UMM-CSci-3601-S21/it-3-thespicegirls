@@ -141,7 +141,7 @@ describe('Learner list view',()=>{
     cy.get('.toggle-list-assign input').eq(1).should('be.checked');
     // only the correct wordlist should be reomved from the list
     disabledWordlists = page.getDisabledWordlists().should('not.contain.text','batman_villains');
-    disabledWordlists = page.getDisabledWordlists().should('contain.text','k');
+    disabledWordlists.should('contain.text','k');
   });
 
 });
