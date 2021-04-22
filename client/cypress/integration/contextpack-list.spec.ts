@@ -1,5 +1,6 @@
 import { ContextpackListPage } from '../support/contextpack-list.po';
 import { AddPackPage } from '../support/add-contextpack.po';
+import { createPublicKey } from 'crypto';
 
 const page = new ContextpackListPage();
 const pageLogin = new AddPackPage();
@@ -106,7 +107,13 @@ describe('Contextpack Info View', () => {
     pageLogin.googleAdminLogin();
 
     cy.get('.contextpack-card-icon').should('have.text',' barn.jpg\n');
+  });
 
+  it('Should view a context pack info page, and use the back button', () => {
+    page.clickViewInfo(page.getContextpackCards().first());
+    cy.get('.back-button').should('be.visible');
+    cy.get('.back-button').click();
+    cy.get('.contextpack-list-title').should('contain.text','Context Packs');
   });
 
 });
