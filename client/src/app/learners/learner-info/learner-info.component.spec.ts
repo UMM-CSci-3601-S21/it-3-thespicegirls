@@ -75,12 +75,6 @@ describe('LearnerInfoComponent', () => {
     expect(component.assignedWords[0]).toEqual({ word: 'green', forms: [ 'green', 'greener' ], pos:'adjectives', wordlist:'happy'});
     expect(component.assignedWords.length).toEqual(8);
   });
-  it('should correctly assign the parts of speech', () => {
-    component.getAllWords(component.assignedPacks[0]);
-    expect(component.assignedWords[0]).toEqual({ word: 'green', forms: [ 'green', 'greener' ], pos:'adjectives', wordlist:'happy'});
-    expect(component.assignedWords[2]).toEqual({ word: 'langerhans', forms: [ 'langerhans' ], pos:'misc', wordlist:'happy'});
-    expect(component.assignedWords.length).toEqual(8);
-  });
   it('should assign wordlists', () => {
     component.getAssignedWordlists(MockContextPackService.testContextPacks[1]);
     component.setWordlists(MockContextPackService.testContextPacks[1]);
@@ -102,9 +96,11 @@ describe('LearnerInfoComponent', () => {
     };
     component.assignedPacksTest.push(assignedPackInfo);
     component.getAssignedContextPacks();
-    component.toggleWordlist(MockContextPackService.testContextPacks2[1].wordlists[0],MockContextPackService.testContextPacks2[1]);
+    const list =MockContextPackService.testContextPacks2[1].wordlists[0];
+    component.toggleWordlist(list ,MockContextPackService.testContextPacks2[1],list.enabled);
     expect(component.assignedPacksTest).toContain(assignedPackInfo);
     expect(component.assignedWords).toContain(MockContextPackService.testNouns[0]);
+    expect(list.enabled).toBe(false);
     component.setWordlists(MockContextPackService.testContextPacks2[2]);
 
 
