@@ -53,6 +53,7 @@
             <mat-form-field class="learnerName-field">
               <mat-label>Enter New Learner's Name</mat-label>
               <input formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <mat-error class="error-message" data-test="nameError">Please enter a valid name</mat-error>
            </mat-form-field>
           </form>
           <button mat-icon-button data-test="addLearnerButton" class="addLearnerButton" matTooltip="Submit New Learner" matTooltipPosition="above" (click)="submitForm()"><mat-icon>add</mat-icon></button>
