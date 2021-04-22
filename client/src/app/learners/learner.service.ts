@@ -70,10 +70,11 @@ export class LearnerService {
   }
 
   addLearner(newLearner: Learner): Observable<string>{
-    if (newLearner.name.length > 0)
+    const learnerName = newLearner.name.trim();
+    if (learnerName.length > 0)
     {return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));}
     else
-    {alert('Unable to add learner with an empty name'); };
+    {alert('Unable to add learner without a valid name'); };
   }
 
 }

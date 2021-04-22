@@ -52,7 +52,7 @@
           <form [formGroup]="learnerForm" class="newLearnerForm">
             <mat-form-field class="learnerName-field">
               <mat-label>Enter New Learner's Name</mat-label>
-              <input formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <input autocomplete="off" formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
               <mat-error class="error-message" data-test="nameError">Please enter a valid name</mat-error>
            </mat-form-field>
           </form>
