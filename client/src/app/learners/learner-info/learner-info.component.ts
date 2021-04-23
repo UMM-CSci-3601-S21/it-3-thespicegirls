@@ -68,7 +68,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       }
       );
     }
-
   }
   setPos(list: Wordlist){
     for(const pos of ['nouns','verbs','misc','adjectives']){
@@ -87,7 +86,12 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         }
       }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
+
   }
+
+
+
+
 
   getAssignedWordlists(pack: ContextPack){
       let i=0;
@@ -135,38 +139,41 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         });;
   }
   updateAssignedView(list: Wordlist,  pack: ContextPack){
+    this.assignedWords =[];
     for(const assignObj of this.assignedPacksTest){
       if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
         assignObj.assignedWordlists.push(list);
         this.learner.disabledWordlists= this.learner.disabledWordlists.splice(0,this.learner.disabledWordlists.indexOf(list.name));
         this.setPos(list);
-        for(const pos of ['nouns','verbs','misc','adjectives']){
-        this.assignedWords = this.assignedWords.concat(list[`${pos}`]);
-        }
       }
+    }
+    for(let i=0; i<this.assignedPacks.length; i++){
+      console.log(this.assignedPacks);
+      this.getAllWords(this.assignedPacks[i]);
+
     }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
 
   updatedisabledView(list: Wordlist,  pack: ContextPack){
+    this.assignedWords =[];
     for(const assignObj of this.assignedPacksTest){
       //remove from enabled list
-      (assignObj.assignedWordlists.forEach(assigned =>{
-      if(assigned.name === list.name){
-          assignObj.assignedWordlists.splice(assignObj.assignedWordlists.indexOf(assigned),1);
-          // add to disabled wordlist
-          this.learner.disabledWordlists = this.learner.disabledWordlists.concat(list.name);
-          this.setPos(list);
-      }}));
-      this.assignedWords.forEach((word) => {
-        if(word.wordlist === list.name){
-          if(this.assignedWords.indexOf(word) ===-1){}
-          else{
-            this.assignedWords.splice(this.assignedWords.indexOf(word),1);
-          }
+        (assignObj.assignedWordlists.forEach(assigned =>{
+        if(assigned.name === list.name){
+            assignObj.assignedWordlists.splice(assignObj.assignedWordlists.indexOf(assigned),1);
+            // add to disabled wordlist
+            this.learner.disabledWordlists = this.learner.disabledWordlists.concat(list.name);
+            this.setPos(list);
         }
-      });
+        }));
+    }
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for(let i=0; i<this.assignedPacks.length; i++){
+      console.log(this.assignedPacks);
+      this.getAllWords(this.assignedPacks[i]);
+
     }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
