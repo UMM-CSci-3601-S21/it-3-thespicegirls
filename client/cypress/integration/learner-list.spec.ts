@@ -15,6 +15,10 @@ describe('Learner list view',()=>{
   });
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+
     cy.get('[data-test=learnerNameInput]').clear();
     cy.get('[data-test=learnerNameInput]').type('jimmy');
 
@@ -26,6 +30,9 @@ describe('Learner list view',()=>{
   });
 
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     cy.get('[data-test=learnerNameInput]').type('j').wait(1000);
 
     page.getLearnerCards().should('have.lengthOf.above', 0);
@@ -41,7 +48,7 @@ describe('Learner list view',()=>{
 
   it('Should click view info on a contextpack and go to the right URL', () => {
     pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.getLearnerCards().first().then((card) => {
       const firstLearnerName = card.find('.learner-name').text();
@@ -60,7 +67,7 @@ describe('Learner list view',()=>{
 
   it('Should correctly list enabled wordlists', () => {
     pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.clickViewInfo(page.getLearnerCards().first());
 
@@ -111,7 +118,7 @@ describe('Learner list view',()=>{
 
   it('Should list assigned words', () => {
     pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     //page should start with assigned words
     page.clickViewInfo(page.getLearnerCards().first());
@@ -127,7 +134,8 @@ describe('Learner list view',()=>{
 
   it('Should correctly assign a wordlist', () => {
     pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
 
     //page should start with assigned words
     page.clickViewInfo(page.getLearnerCards().eq(2)).wait(1000);
