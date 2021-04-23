@@ -103,7 +103,10 @@ describe('Learner list view',()=>{
 
     cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
 
-    cy.get('.mat-simple-snackbar').should('contain.text','Failed to add a new Learner');
+    it('should have an error message for an empty name', () => {
+      expect(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
+    });
+    // cy.get(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
   });
 
   it('Should list assigned words', () => {
