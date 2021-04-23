@@ -40,6 +40,7 @@ const observableString = new Observable<string>((observer) => {
 });
 const userTest: User = {
   name: 'Thomas',
+  _id: '12345',
   admin: true
 };
 
@@ -105,13 +106,12 @@ const userTest: User = {
 
   it(`should spy on sendToServer()`, () => {
     spy = spyOn(appService, 'socialAuthState').and.returnValue(goodUser);
-    spy2 = spyOn(appService, 'addGoogleToken').and.returnValue(observableString);
+    spy2 = spyOn(appService, 'addGoogleToken').and.returnValue(goodUser);
     spyOn(localStorage.__proto__, 'setItem').and.returnValue('true');
     spy3 = spyOn(appService, 'reload').and.returnValue();
     appService.sendToServer();
 
-    expect(appService.user).toEqual(userSmall);
-    expect(appService.user.name).toEqual('joe');
+    expect(appService.user.firstName).toEqual('joe');
     expect(localStorage.__proto__.setItem).toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
@@ -168,9 +168,9 @@ const userTest: User = {
     expect(req.request.body).toEqual('me');
 
     //Now we spy and make sure that it does something with the response
-    spy2 = spyOn(appService, 'addGoogleToken').and.callFake(() => of( 'Hello' ));
+    spy2 = spyOn(appService, 'addGoogleToken').and.callFake(() => of( userTest ));
     appService.addGoogleToken('bobby').subscribe(
-      user => expect(user).toBe('Hello'),
+      user => expect(user.name).toBe('Thomas'),
     );
     req.flush({id: 'Happy'});
   });

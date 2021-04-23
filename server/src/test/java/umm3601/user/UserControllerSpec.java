@@ -206,8 +206,8 @@ public class UserControllerSpec {
     assertEquals("thomas@mail.com", user.email);
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
-    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    assertNotEquals("", id);
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("name").asText();
+    assertEquals("Thomas", id);
     assertEquals(1, db.getCollection("users").countDocuments(eq("_id", new ObjectId(user._id))));
 
     Document addedUser = db.getCollection("users").find(eq("_id", new ObjectId(user._id))).first();
@@ -288,8 +288,8 @@ public class UserControllerSpec {
 
     assertEquals(201, mockRes.getStatus());
     String result = ctx.resultString();
-    String id = jsonMapper.readValue(result, ObjectNode.class).get("id").asText();
-    assertEquals("true", id);
+    String id = jsonMapper.readValue(result, ObjectNode.class).get("name").asText();
+    assertEquals("Admin", id);
 
     //This test makes sure an already added user doesn't get added again
     mockReq.clearAttributes();

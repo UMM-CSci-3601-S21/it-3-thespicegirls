@@ -1,5 +1,6 @@
 import { ContextpackListPage } from '../support/contextpack-list.po';
 import { AddPackPage } from '../support/add-contextpack.po';
+import { createPublicKey } from 'crypto';
 
 const page = new ContextpackListPage();
 const pageLogin = new AddPackPage();
@@ -106,7 +107,13 @@ describe('Contextpack Info View', () => {
     pageLogin.googleAdminLogin();
 
     cy.get('.contextpack-card-icon').should('have.text',' barn.jpg\n');
+  });
 
+  it('Should view a context pack info page, and use the back button', () => {
+    page.clickViewInfo(page.getContextpackCards().first());
+    cy.get('.back-button').should('be.visible');
+    cy.get('.back-button').click();
+    cy.get('.contextpack-list-title').should('contain.text','Context Packs');
   });
 
 });
@@ -120,7 +127,6 @@ describe('Info Page Edit View', () => {
   beforeEach(() => {
     page.navigateTo();
   });
-
   it('Should click the edit button and delete a word if they are an admin', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
@@ -130,10 +136,10 @@ describe('Info Page Edit View', () => {
     page.enableEditDeleteMode();
     cy.get('.wordlist-removeNoun').should('be.visible');
 
-    cy.get('.wordlist-verbChip').eq(0).should('contain.text','moo');
-    cy.get('.wordlist-removeVerb').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain', 'Deleted moo from Word list: farm_animals');
-    cy.get('.wordlist-verbChip').eq(0).should('not.contain.text','moo');
+    cy.get('.wordlist-nounChip').eq(0).should('contain.text','goat');
+    cy.get('.wordlist-removeNoun').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain', 'Deleted goat from Word list: farm_animals');
+    cy.get('.wordlist-nounChip').eq(0).should('not.contain.text','goat');
   });
   it('Should click the edit button and delete a wordlist if they are an admin', () => {
     // login as admin
@@ -151,7 +157,40 @@ describe('Info Page Edit View', () => {
     cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
     page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
     cy.get('.wordlist-name').should('not.contain.text', 'farm_animals');
+  });
 
+  it('Should click the edit button and delete a word if they are the creator', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().eq(2));
+
+    page.enableEditDeleteMode();
+    cy.get('.wordlist-removeNoun').should('be.visible').wait(1000);
+
+    cy.get('.wordlist-nounChip').eq(0).should('contain.text','cake');
+    cy.get('.wordlist-removeNoun').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain', 'Deleted cake from Word list: birthday');
+    cy.get('.wordlist-nounChip').eq(0).should('not.contain.text','cake');
+  });
+  it('Should click the edit button and delete a wordlist if they are an creator', () => {
+    // login as admin
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().eq(2));
+    page.enableEditDeleteMode();
+    // farm animals list should be present before deleting
+    cy.get('.wordlist-name').should('contain.text', 'birthday');
+    cy.get('.delete-wordlist-button').eq(0).should('be.visible');
+    cy.get('.delete-wordlist-button').eq(0).should('contain.text','delete');
+    page.clickDeleteWordlist(page.getContextpackCards().first());
+    // Farm animals list should be gone now
+    cy.get('.confirmation').should('contain.text', 'Are you sure you want to delete this wordlist?');
+    page.clickConfirmDeleteWordlist(page.getContextpackCards().first());
+    cy.get('.wordlist-name').should('not.exist');
   });
 
   it('Should not see an edit button if not an admin', () => {
@@ -196,29 +235,53 @@ describe('Info Page Add View', () => {
     window.localStorage.setItem('admin', 'true');
     cy.reload();
     pageLogin.googleAdminLogin();
+    cy.reload().wait(5000);
+    page.clickViewInfo(page.getContextpackCards().eq(2)).wait(5000);
+
+    page.enableAddMode();
+    cy.get('.addNouns').click();
+    cy.get('.nounWord').type('test2');
+    cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
+    cy.get('.addNounButton').eq(0).click();
+    cy.get('.mat-simple-snackbar').should('contain','Added test2, to Word list: birthday').wait(1000);
+
+    cy.get('.wordlist-nounChip').should('contain.text', 'test2');
+  });
+  it('Should click the add button and then add a noun if you are creator', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     cy.reload();
-    page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
+    page.clickViewInfo(page.getContextpackCards().eq(2)).wait(1000);
 
     page.enableAddMode();
     cy.get('.addNouns').click();
     cy.get('.nounWord').type('test');
     cy.get('[data-test=nounDest]').click().get(`mat-option`).eq(0).click();
     cy.get('.addNounButton').eq(0).click();
-    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: farm_animals').wait(1000);
-    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
-      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
-      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
-    cy.get('.wordlist-nounChip').should('contain.text', ' goat  sheep  cat  dog  cow  pig  chicken '
-      + ' duck  llama  test  harrow  tractor  manure spreader  seed drill  baler  mower  cultivator  plow  backhoe '
-      + ' loader  sprayer  sickle  rake  wagon  trailer  farm truck  hoe  shovel ');
-  });
+    cy.get('.mat-simple-snackbar').should('contain','Added test, to Word list: birthday').wait(1000);
 
-  it('should click on the add button and add a wordlist',()=>{
+    cy.get('.wordlist-nounChip').should('contain.text', 'test');
+  });
+  it('should click on the add button and add a wordlist if admin',()=>{
     window.localStorage.setItem('admin', 'true');
     cy.reload();
     pageLogin.googleAdminLogin();
     cy.reload();
     page.clickViewInfo(page.getContextpackCards().first()).wait(1000);
+
+    page.enableAddMode();
+    cy.get('.addWordlist').click();
+    cy.get('.addWordlistInput').type('test');
+    cy.get('.addWordlistButton').click();
+
+  });
+  it('should click on the add button and add a wordlist if creator',()=>{
+    pageLogin.googleLogin();
+    window.localStorage.setItem('admin', 'false');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.clickViewInfo(page.getContextpackCards().eq(2)).wait(1000);
 
     page.enableAddMode();
     cy.get('.addWordlist').click();
