@@ -136,7 +136,7 @@ describe('Learner list view',()=>{
     disabledWordlists.should('contain.text','k');
     // checking the box should add the wordlist to enabled list
     // and remove from disabled
-    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
+    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked').wait(1000);
     cy.get('.toggle-list-assign input').eq(1).click({force:true});
     cy.get('.toggle-list-assign input').eq(1).should('be.checked');
     // only the correct wordlist should be reomved from the list
