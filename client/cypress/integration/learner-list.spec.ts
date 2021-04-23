@@ -144,4 +144,11 @@ describe('Learner list view',()=>{
     page.getDisabledWordlists().should('contain.text','k');
   });
 
+  it('Should view a learner info page, and use the back button', () => {
+    page.clickViewInfo(page.getLearnerCards().first());
+    cy.get('.back-button').should('be.visible');
+    cy.get('.back-button').click();
+    cy.get('.learner-list-title').should('contain.text','My Learners');
+  });
+
 });
