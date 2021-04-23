@@ -4,7 +4,7 @@
       Assigned Packs
     </mat-card-title>
     <mat-list>
-    <h1 *ngFor="let pack of this.assignedPacksTest" class="assigned-pack-name">
+    <h1 *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
       {{pack.contextpack.name + ':'}}
     <mat-list-item class="assigned-wordlists">
       {{this.getListNames(pack).join(', ')}}
