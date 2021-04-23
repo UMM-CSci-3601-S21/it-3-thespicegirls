@@ -24,8 +24,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getLearnerSub: Subscription;
   assignedPacks: ContextPack[] =[];
   assignedWords: Word[]=[];
-  assignedPacksTest: AssignedPack[]=[];
-
+  assignedPacksObj: AssignedPack[]=[];
   possibleWordlists: Wordlist[]=[];
 
 
@@ -99,11 +98,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         contextpack: pack,
         assignedWordlists: assignedLists
       };
-      this.assignedPacksTest.push(assignedPackInfo);
+      this.assignedPacksObj.push(assignedPackInfo);
   }
 
-  getListNames(assignedPacksTest){
-    const names = assignedPacksTest.assignedWordlists.map(list => list.name.replace('_', ' '));
+  getListNames(assignedPacksObj){
+    const names = assignedPacksObj.assignedWordlists.map(list => list.name.replace('_', ' '));
     return names;
   }
 
@@ -137,7 +136,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
   updateAssignedView(list: Wordlist,  pack: ContextPack){
     this.assignedWords =[];
-    for(const assignObj of this.assignedPacksTest){
+    for(const assignObj of this.assignedPacksObj){
       if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
         assignObj.assignedWordlists.push(list);
         this.learner.disabledWordlists= this.learner.disabledWordlists.splice(0,this.learner.disabledWordlists.indexOf(list.name));
@@ -151,7 +150,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
   updatedisabledView(list: Wordlist,  pack: ContextPack){
     this.assignedWords =[];
-    for(const assignObj of this.assignedPacksTest){
+    for(const assignObj of this.assignedPacksObj){
       //remove from enabled list
         (assignObj.assignedWordlists.forEach(assigned =>{
         if(assigned.name === list.name){
