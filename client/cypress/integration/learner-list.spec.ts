@@ -14,6 +14,15 @@ describe('Learner list view',()=>{
     page.navigateTo();
   });
 
+  it('Should type something in the name filter and get nothing', () => {
+    (cy.get('[data-test=learnerNameInput]').clear()).should('not.contain.text');
+    (cy.get('[data-test=learnerNameInput]').type('jimmy')).should('not.contain.text', 'Jimmy');
+  });
+
+  it('Should have a message asking users to log in to view learners', () => {
+    cy.get('.sign-in-view-learners').should('have.text','Please sign in to view learners');
+  });
+
   it('Should type something in the name filter and check that it returned correct elements', () => {
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('loggedIn', 'true');
@@ -113,7 +122,6 @@ describe('Learner list view',()=>{
     it('should have an error message for an empty name', () => {
       expect(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
     });
-    // cy.get(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
   });
 
   it('Should list assigned words', () => {
@@ -156,10 +164,15 @@ describe('Learner list view',()=>{
   });
 
   it('Should view a learner info page, and use the back button', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     page.clickViewInfo(page.getLearnerCards().first());
     cy.get('.back-button').should('be.visible');
     cy.get('.back-button').click();
-    cy.get('.learner-list-title').should('contain.text','My Learners');
+  });
+  it('Should have the correct title', () => {
+    cy.get('.learner-list-title').should('have.text','My Learners');
   });
 
 });
