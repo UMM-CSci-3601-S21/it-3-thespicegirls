@@ -40,7 +40,6 @@ export class LearnerListComponent implements OnInit, OnDestroy {
     const newLearner = {
       _id: null,
       name: this.learnerForm.controls.name.value,
-      creator: localStorage.getItem('User'),
       assignedContextPacks: [],
       disabledWordlists: []
     };
