@@ -120,6 +120,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
   }
   toggleWordlist(list: Wordlist,  pack: ContextPack, enabled: boolean){
+    list.enabled = !list.enabled;
     const action = enabled ? ('disable') : ('assign');
     this.editField(list.name, list.enabled.toString(),pack);
     this.learnerService.assignWordlist(list.name, this.learner, action).subscribe(existingID => {
@@ -134,7 +135,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         });;
   }
   updateAssignedView(list: Wordlist,  pack: ContextPack){
-    list.enabled = true;
     for(const assignObj of this.assignedPacksTest){
       if(assignObj.contextpack === pack && !assignObj.assignedWordlists.includes(list) ){
         assignObj.assignedWordlists.push(list);
@@ -150,7 +150,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
 
   updatedisabledView(list: Wordlist,  pack: ContextPack){
-    list.enabled = false;
     for(const assignObj of this.assignedPacksTest){
       //remove from enabled list
       (assignObj.assignedWordlists.forEach(assigned =>{
@@ -169,7 +168,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         }
       });
     }
-
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
