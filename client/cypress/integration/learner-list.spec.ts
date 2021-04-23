@@ -128,12 +128,12 @@ describe('Learner list view',()=>{
 
     //page should start with assigned words
     page.clickViewInfo(page.getLearnerCards().eq(2)).wait(1000);
-    const dropdown = page.assignWordlist();
+    page.assignWordlist();
     const assignedWords = page.getAssignedWords();
     expect(assignedWords).to.not.contain('villain');
     let disabledWordlists = page.getDisabledWordlists();
     disabledWordlists.should('contain.text','batman_villains');
-    disabledWordlists.should('contain.text','k');
+    page.getDisabledWordlists().should('contain.text','k');
     // checking the box should add the wordlist to enabled list
     // and remove from disabled
     cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
@@ -141,7 +141,7 @@ describe('Learner list view',()=>{
     cy.get('.toggle-list-assign input').eq(1).should('be.checked');
     // only the correct wordlist should be reomved from the list
     disabledWordlists = page.getDisabledWordlists().should('not.contain.text','batman_villains');
-    disabledWordlists = page.getDisabledWordlists().should('contain.text','k');
+    page.getDisabledWordlists().should('contain.text','k');
   });
 
 });

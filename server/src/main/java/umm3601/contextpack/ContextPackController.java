@@ -18,6 +18,8 @@ import org.mongojack.JacksonMongoCollection;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import umm3601.user.User;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class ContextPackController {
@@ -77,7 +79,9 @@ public class ContextPackController {
       .check(pack -> String.valueOf(pack.enabled).matches(statusRegex))
 
       .get();
-
+      User user = ctx.sessionAttribute("current-user");
+      newPack.userId = user._id;
+      newPack.userName = user.name;
       contextPackCollection.insertOne(newPack);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newPack._id));
@@ -88,22 +92,30 @@ public class ContextPackController {
   public void editContextPack(Context ctx){
     String id = ctx.pathParam("id");
     Bson filter = eq("_id", id);
-    List<Bson> updateOperations = new ArrayList<>();
-
-    if (ctx.queryParamMap().containsKey(NAME_KEY)) {
-     updateOperations.add(Updates.set("name", ctx.queryParam(NAME_KEY)));
-    }
-    if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
-     updateOperations.add(Updates.set("enabled", ctx.queryParam(ENABLED_KEY)));
-    }
-    if (ctx.queryParamMap().containsKey(ICON_KEY)) {
-      updateOperations.add(Updates.set("icon", ctx.queryParam(ICON_KEY)));
-    }
-    System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
-
-    contextPackCollection.updateOne(filter, updateOperations);
+    User user = ctx.sessionAttribute("current-user");
     ContextPack pack = contextPackCollection.find(filter).first();
-    ctx.json(pack);
+    if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
+      List<Bson> updateOperations = new ArrayList<>();
+
+      if (ctx.queryParamMap().containsKey(NAME_KEY)) {
+      updateOperations.add(Updates.set("name", ctx.queryParam(NAME_KEY)));
+      }
+      if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
+      updateOperations.add(Updates.set("enabled", ctx.queryParam(ENABLED_KEY)));
+      }
+      if (ctx.queryParamMap().containsKey(ICON_KEY)) {
+        updateOperations.add(Updates.set("icon", ctx.queryParam(ICON_KEY)));
+      }
+      System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
+
+      contextPackCollection.updateOne(filter, updateOperations);
+      pack = contextPackCollection.find(filter).first();
+      ctx.json(pack);
+    }
+    else{
+      throw new IllegalAccessError();
+    }
+
 
   }
 
@@ -111,53 +123,61 @@ public class ContextPackController {
   public void editWordlist(Context ctx){
     Bson filter = and(eq("_id", ctx.pathParam("id")));
     ContextPack pack = contextPackCollection.find(filter).first();
-    Wordlist list=pack.wordlists.get(0);
-    if(ctx.queryParamMap().containsKey("listname")){int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
-    if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
-      pack.deleteWordlist(ctx.queryParam("listname"));
-    }
-    if(ctx.queryParamMap().containsKey(ADD_WORDLIST_KEY)) {
-      pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));
-    }
-    if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
-      boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
-      list.setEnabled(enabled);
-    }
-    if(ctx.queryParamMap().containsKey(NAME_KEY)){
-      list.setName(ctx.queryParam(NAME_KEY));
-    }
-    if(ctx.queryParamMap().containsKey(NOUN_DEL_KEY)){
-      list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));
-    }
-    if(ctx.queryParamMap().containsKey(VERB_DEL_KEY)){
-      list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));
-    }
-    if(ctx.queryParamMap().containsKey(ADJ_DEL_KEY)){
-      list.deleteAdj(ctx.queryParam(ADJ_DEL_KEY));
-    }
-    if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
-      list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
-    }
-    if(ctx.queryParamMap().containsKey(ADD_ADJ_KEY)){
-      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_ADJ_KEY).split(","))));
-      list.addWord(posArray, "adj");
-    }
-    if(ctx.queryParamMap().containsKey(ADD_NOUN_KEY)){
-      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_NOUN_KEY).split(","))));
-      list.addWord(posArray, "noun");
-    }
-    if(ctx.queryParamMap().containsKey(ADD_VERB_KEY)){
-      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_VERB_KEY).split(","))));
-      list.addWord(posArray, "verb");
-    }
-    if(ctx.queryParamMap().containsKey(ADD_MISC_KEY)){
-      ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
-      list.addWord(posArray, "misc");
-    }
-    contextPackCollection.replaceOne(eq("_id", ctx.pathParam("id")), pack);
+    User user = ctx.sessionAttribute("current-user");
+    if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
+      Wordlist list=pack.wordlists.get(0);
+      if(ctx.queryParamMap().containsKey("listname")){int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
+      if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
+        pack.deleteWordlist(ctx.queryParam("listname"));
+      }
+      if(ctx.queryParamMap().containsKey(ADD_WORDLIST_KEY)) {
+        pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));
+      }
+      if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
+        boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
+        list.setEnabled(enabled);
+      }
+      if(ctx.queryParamMap().containsKey(NAME_KEY)){
+        list.setName(ctx.queryParam(NAME_KEY));
+      }
+      if(ctx.queryParamMap().containsKey(NOUN_DEL_KEY)){
+        list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));
+      }
+      if(ctx.queryParamMap().containsKey(VERB_DEL_KEY)){
+        list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));
+      }
+      if(ctx.queryParamMap().containsKey(ADJ_DEL_KEY)){
+        list.deleteAdj(ctx.queryParam(ADJ_DEL_KEY));
+      }
+      if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
+        list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
+      }
+      if(ctx.queryParamMap().containsKey(ADD_ADJ_KEY)){
+        ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_ADJ_KEY).split(","))));
+        list.addWord(posArray, "adj");
+      }
+      if(ctx.queryParamMap().containsKey(ADD_NOUN_KEY)){
+        ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_NOUN_KEY).split(","))));
+        list.addWord(posArray, "noun");
+      }
+      if(ctx.queryParamMap().containsKey(ADD_VERB_KEY)){
+        ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_VERB_KEY).split(","))));
+        list.addWord(posArray, "verb");
+      }
+      if(ctx.queryParamMap().containsKey(ADD_MISC_KEY)){
+        ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
+        list.addWord(posArray, "misc");
+      }
+      contextPackCollection.replaceOne(eq("_id", ctx.pathParam("id")), pack);
 
-    pack = contextPackCollection.find(filter).first();
-    ctx.json(pack);
+      pack = contextPackCollection.find(filter).first();
+      ctx.json(pack);
+      }
+      else{
+        throw new IllegalAccessError();
+      }
+
+
   }
 
   public int getListIndex(ContextPack pack, String listname){
@@ -174,3 +194,4 @@ public class ContextPackController {
   }
 
 }
+

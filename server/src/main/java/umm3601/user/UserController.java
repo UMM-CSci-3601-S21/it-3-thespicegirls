@@ -93,13 +93,23 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
       ctx.sessionAttribute("current-user", loggedUser);
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
-      ctx.json(ImmutableMap.of("id", "true"));
+      User userReturn = new User();
+      userReturn.name = loggedUser.givenName;
+      userReturn._id = loggedUser._id;
+      userReturn.admin  = loggedUser.admin;
+
+      ctx.json(userReturn);
     }
     else{
       ctx.sessionAttribute("current-user", loggedUser);
       ctx.sessionAttribute("user-name", loggedUser.givenName);
       ctx.status(201);
-      ctx.json(ImmutableMap.of("id", "false"));
+      User userReturn = new User();
+      userReturn.name = loggedUser.givenName;
+      userReturn._id = loggedUser._id;
+      userReturn.admin  = loggedUser.admin;
+
+      ctx.json(userReturn);
     }
 
   }
@@ -120,7 +130,11 @@ public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
     ctx.sessionAttribute("current-user", addedUser);
     ctx.sessionAttribute("user-name", (String) payload.get("given_name"));
     ctx.status(201);
-    ctx.json(ImmutableMap.of("id", "false"));
+    User userReturn = new User();
+      userReturn.name = addedUser.givenName;
+      userReturn._id = addedUser._id;
+      userReturn.admin  = addedUser.admin;
+      ctx.json(userReturn);
   }
   return ctx;
 }
