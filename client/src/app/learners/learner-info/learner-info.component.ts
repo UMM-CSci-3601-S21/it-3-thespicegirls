@@ -35,9 +35,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    // We subscribe to the parameter map here so we'll be notified whenever
-    // that changes (i.e., when the URL changes) so this component will update
-    // to display the newly requested contextpack.
     this.route.paramMap.subscribe((pmap) => {
       this.id = pmap.get('id');
       if (this.getLearnerSub) {
@@ -49,6 +46,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       });
     });
   }
+
   ngOnDestroy(): void {
     if (this.getLearnerSub) {
       this.getLearnerSub.unsubscribe();
@@ -59,7 +57,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getAssignedContextPacks(){
     let i=0;
     for(i; i<this.learner.assignedContextPacks.length; i++){
-     this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
+      this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
       .subscribe(contextpack => {
       this.assignedPacks.push(contextpack);
       this.getAllWords(contextpack);
@@ -69,12 +67,14 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       );
     }
   }
+
   setPos(list: Wordlist){
     for(const pos of ['nouns','verbs','misc','adjectives']){
       for(const word of list[`${pos}`]){word.pos =pos;
       word.wordlist=list.name;}
     }
   }
+
   getAllWords(pack: ContextPack){
       let i=0;
       for(i;i<pack.wordlists.length; i++){
@@ -86,12 +86,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         }
       }
     this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
-
   }
-
-
-
-
 
   getAssignedWordlists(pack: ContextPack){
       let i=0;
@@ -107,6 +102,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       };
       this.assignedPacksTest.push(assignedPackInfo);
   }
+
   getListNames(assignedPacksTest){
     const names = assignedPacksTest.assignedWordlists.map(list => list.name.replace('_', ' '));
     return names;
@@ -123,6 +119,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
   }
+
   toggleWordlist(list: Wordlist,  pack: ContextPack, enabled: boolean){
     list.enabled = !list.enabled;
     const action = enabled ? ('disable') : ('assign');
@@ -138,6 +135,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
           });
         });;
   }
+
   updateAssignedView(list: Wordlist,  pack: ContextPack){
     this.assignedWords =[];
     for(const assignObj of this.assignedPacksTest){
@@ -147,14 +145,10 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         this.setPos(list);
       }
     }
-    for(let i=0; i<this.assignedPacks.length; i++){
-      console.log(this.assignedPacks);
-      this.getAllWords(this.assignedPacks[i]);
-
+    for(const cpack of this.assignedPacks){
+      this.getAllWords(cpack);
     }
-    this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
-
 
   updatedisabledView(list: Wordlist,  pack: ContextPack){
     this.assignedWords =[];
@@ -169,13 +163,9 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         }
         }));
     }
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for(let i=0; i<this.assignedPacks.length; i++){
-      console.log(this.assignedPacks);
-      this.getAllWords(this.assignedPacks[i]);
-
+    for(const cpack of this.assignedPacks){
+      this.getAllWords(cpack);
     }
-    this.assignedWords.sort((a, b) => a.word.localeCompare(b.word));
   }
 
 
