@@ -16,6 +16,7 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import umm3601.contextpack.ContextPack;
+import umm3601.user.User;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -52,10 +53,11 @@ public class LearnerController {
   }
 
   public void getLearners(Context ctx){
-    ctx.json(learnerCollection.find()
+    User user = ctx.sessionAttribute("current-user");
+    ctx.json(learnerCollection.find(eq("userId", user._id.toString()))
     .into(new ArrayList<>()));
   }
-  
+
   public void assignWordlist(Context ctx){
     Bson filter = (eq("_id", ctx.pathParam("id")));
     Learner  learner = learnerCollection.find(filter).first();
@@ -73,8 +75,10 @@ public class LearnerController {
   public void addLearner(Context ctx){
     Learner newLearner = ctx.bodyValidator(Learner.class)
       .check(learner -> learner.name != null )
-      .check(learner -> learner.creator != null)
       .get();
+      User user = ctx.sessionAttribute("current-user");
+      newLearner.userId = user._id;
+      newLearner.userName = user.name;
 
       learnerCollection.insertOne(newLearner);
       ctx.status(201);
