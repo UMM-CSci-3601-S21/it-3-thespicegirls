@@ -103,7 +103,10 @@ describe('Learner list view',()=>{
 
     cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
 
-    cy.get('.mat-simple-snackbar').should('contain.text','Failed to add a new Learner');
+    it('should have an error message for an empty name', () => {
+      expect(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
+    });
+    // cy.get(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
   });
 
   it('Should list assigned words', () => {
@@ -136,7 +139,7 @@ describe('Learner list view',()=>{
     page.getDisabledWordlists().should('contain.text','k');
     // checking the box should add the wordlist to enabled list
     // and remove from disabled
-    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
+    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked').wait(1000);
     cy.get('.toggle-list-assign input').eq(1).click({force:true});
     cy.get('.toggle-list-assign input').eq(1).should('be.checked');
     // only the correct wordlist should be reomved from the list
