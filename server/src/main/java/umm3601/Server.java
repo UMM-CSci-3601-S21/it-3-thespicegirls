@@ -57,16 +57,16 @@ public class Server {
     server.get("/api/contextpacks", contextPackController::getContextPacks, roles(MyRole.ANYONE));
     server.get("/api/contextpacks/:id", contextPackController::getContextPack, roles(MyRole.ANYONE));
 
-    server.get("/api/learners", learnerController::getLearners, roles(MyRole.ANYONE));
-    server.get("/api/learners/:id", learnerController::getLearner, roles(MyRole.ANYONE));
-    server.get("/api/learners/:id/assign", learnerController::assignWordlist, roles(MyRole.ANYONE));
+    server.get("/api/learners", learnerController::getLearners, roles(MyRole.USER));
+    server.get("/api/learners/:id", learnerController::getLearner, roles(MyRole.USER));
+    server.get("/api/learners/:id/assign", learnerController::assignWordlist, roles(MyRole.USER));
 
     server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 
     server.post("/api/contextpacks", contextPackController::addNewContextPack, roles(MyRole.USER));
     server.post("/api/learners", learnerController::addLearner, roles(MyRole.USER));
 
-    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.ADMIN));
+    server.post("/api/contextpacks/:id/editpack", contextPackController::editContextPack, roles(MyRole.USER));
     // editing information about wordlists
     server.post("/api/contextpacks/:id/editlist", contextPackController::editWordlist, roles(MyRole.USER));
 
