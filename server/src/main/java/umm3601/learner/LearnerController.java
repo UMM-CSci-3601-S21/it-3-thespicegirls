@@ -47,8 +47,12 @@ public class LearnerController {
     }
     if (learner == null) {
       throw new NotFoundResponse("The requested learner was not found");
-    } else {
+    }
+    else if(learner.userId.equals(user._id.toString())) {
       ctx.json(learner);
+    }
+    else{
+      throw new IllegalAccessError("This is not your student");
     }
   }
 

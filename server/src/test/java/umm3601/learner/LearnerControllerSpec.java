@@ -74,7 +74,8 @@ public class LearnerControllerSpec {
     testID = new ObjectId();
     Document testLearnerID = new Document()
     .append("_id", testID)
-    .append("creator","KK")
+    .append("userName","KK")
+    .append("userID", "12345")
     .append("name","Starla")
     .append("assignedContextPacks", Arrays.asList())
     .append("disabledWordlists", Arrays.asList("cats","dogs","milk"));
@@ -91,6 +92,12 @@ public class LearnerControllerSpec {
   @Test
   public void GetAllLearners() throws IOException {
 
+    mockReq.setSession(mockSession);
+    mockReq.setMethod("POST");
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    mockSession.setAttribute("current-user", user);
     // Create our fake Javalin context
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners");
     learnerController.getLearners(ctx);
@@ -102,7 +109,7 @@ public class LearnerControllerSpec {
     assertEquals(db.getCollection("learners").countDocuments(),
         JavalinJson.fromJson(result, Learner[].class).length);
   }
-  
+
   @Test
   public void GetLearner(){
     String testLearnerID = testID.toHexString();
