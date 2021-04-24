@@ -1,12 +1,10 @@
 package umm3601.learner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Updates;
 
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -39,6 +37,7 @@ public class LearnerController {
   public void getLearner(Context ctx) {
     String id = ctx.pathParam("id");
     Learner learner;
+    User user = ctx.sessionAttribute("current-user");
 
     try {
       learner = learnerCollection.find(eq("_id", new ObjectId(id))).first();

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableMap;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
+import com.mockrunner.mock.web.MockHttpSession;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 
@@ -37,6 +38,7 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJson;
+import umm3601.user.User;
 
 public class LearnerControllerSpec {
   MockHttpServletRequest mockReq = new MockHttpServletRequest();
@@ -48,6 +50,7 @@ public class LearnerControllerSpec {
 
   static MongoClient mongoClient;
   static MongoDatabase db;
+  MockHttpSession mockSession = new MockHttpSession();
 
   static ObjectMapper jsonMapper = new ObjectMapper();
 
