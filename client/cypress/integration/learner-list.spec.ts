@@ -15,6 +15,10 @@ describe('Learner list view',()=>{
   });
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     cy.get('[data-test=learnerNameInput]').clear();
     cy.get('[data-test=learnerNameInput]').type('jimmy');
 
@@ -26,6 +30,10 @@ describe('Learner list view',()=>{
   });
 
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     cy.get('[data-test=learnerNameInput]').type('j').wait(1000);
 
     page.getLearnerCards().should('have.lengthOf.above', 0);
@@ -40,8 +48,9 @@ describe('Learner list view',()=>{
   });
 
   it('Should click view info on a contextpack and go to the right URL', () => {
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.getLearnerCards().first().then((card) => {
       const firstLearnerName = card.find('.learner-name').text();
@@ -59,8 +68,9 @@ describe('Learner list view',()=>{
 });
 
   it('Should correctly list enabled wordlists', () => {
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.clickViewInfo(page.getLearnerCards().first());
 
@@ -110,8 +120,8 @@ describe('Learner list view',()=>{
   });
 
   it('Should list assigned words', () => {
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     cy.reload();
     //page should start with assigned words
     page.clickViewInfo(page.getLearnerCards().first());
@@ -126,31 +136,35 @@ describe('Learner list view',()=>{
   });
 
   it('Should correctly assign a wordlist', () => {
-    pageLogin.googleAdminLogin();
-    window.localStorage.setItem('admin', 'true');
-
+    pageLogin.googleLogin();
+    window.localStorage.setItem('loggedIn', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
     //page should start with assigned words
-    page.clickViewInfo(page.getLearnerCards().eq(2)).wait(1000);
-    page.assignWordlist();
-    const assignedWords = page.getAssignedWords();
-    expect(assignedWords).to.not.contain('villain');
-    let disabledWordlists = page.getDisabledWordlists();
-    disabledWordlists.should('contain.text','batman_villains');
-    page.getDisabledWordlists().should('contain.text','k');
-    // checking the box should add the wordlist to enabled list
-    // and remove from disabled
-    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked').wait(1000);
-    cy.get('.toggle-list-assign input').eq(1).click({force:true});
-    cy.get('.toggle-list-assign input').eq(1).should('be.checked');
-    // only the correct wordlist should be reomved from the list
-    disabledWordlists = page.getDisabledWordlists().should('not.contain.text','batman_villains');
-    page.getDisabledWordlists().should('contain.text','k');
+    page.getLearnerCards().first().then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+      page.assignWordlist();
+      // checking the box should add the wordlist to enabled list
+      // and remove from disabled
+      cy.get('.toggle-list-assign input').eq(1).should('be.checked').wait(1000);
+      cy.get('.toggle-list-assign input').eq(1).click({force:true});
+      cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
+      // only the correct wordlist should be removed from the list
+      page.getDisabledWordlists().should('not.contain.text','farm_animals');
+      page.getDisabledWordlists().should('contain.text','farm_animals');
+    });
   });
 
   it('Should view a learner info page, and use the back button', () => {
-    page.clickViewInfo(page.getLearnerCards().first());
-    cy.get('.back-button').should('be.visible');
-    cy.get('.back-button').click();
+    pageLogin.googleLogin();
+    window.localStorage.setItem('loggedIn', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    cy.reload();
+    page.getLearnerCards().first().then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first());
+      cy.get('.back-button').should('be.visible');
+      cy.get('.back-button').click();
+    });
     cy.get('.learner-list-title').should('contain.text','My Learners');
   });
 
