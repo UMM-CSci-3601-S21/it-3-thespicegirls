@@ -9,14 +9,14 @@ export class MockLearnerService extends LearnerService {
   static testLearners: Learner[] = [
     {
       _id: 'testLearner1',
-      creator: 'KK',
+      userId: 'KK',
       name: 'one',
       assignedContextPacks: ['chris_id'],
       disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
     },
     {
       _id: 'testLearner2',
-      creator: 'KK',
+      userId: 'KK',
       name: 'two',
       assignedContextPacks: ['chris_id','bob_id','mary_id'],
       disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
