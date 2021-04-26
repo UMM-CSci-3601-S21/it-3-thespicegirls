@@ -333,30 +333,57 @@ public class LearnerControllerSpec {
   }
   @Test
   public void disableWordlist(){
+    mockReq.setSession(mockSession);
+    mockReq.setMethod("GET");
+    User user = new User();
+    user._id = "12345";
+    user.name = "Jonny";
+    mockSession.setAttribute("current-user", user);
     String testLearnerID = testID.toHexString();
     Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
-    mockReq.setQueryString("disable=baseball");
+    mockReq.setQueryString("disable=boats");
     learnerController.assignWordlist(ctx);
 
     assertEquals(200, mockRes.getStatus());
     String result = ctx.resultString();
     Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
     assertEquals(resultLearner.disabledWordlists.size(), 4);
-    assertEquals(resultLearner.disabledWordlists.contains("baseball"), true);
-    assertEquals(resultLearner.disabledWordlists.contains("cats"), true);
+    assertEquals(resultLearner.disabledWordlists.contains("boats"), true);
+    assertEquals(resultLearner.disabledWordlists.contains("sharks"), false);
 }
 @Test
 public void disableWordlistDuplicate(){
+  mockReq.setSession(mockSession);
+  mockReq.setMethod("GET");
+  User user = new User();
+  user._id = "12345";
+  user.name = "Jonny";
+  mockSession.setAttribute("current-user", user);
   // if a list is already disabled, it should not be added twice
   String testLearnerID = testID.toHexString();
   Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
-  mockReq.setQueryString("disable=cats");
+  mockReq.setQueryString("disable=crows");
   learnerController.assignWordlist(ctx);
 
   assertEquals(200, mockRes.getStatus());
   String result = ctx.resultString();
   Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
-  assertEquals(resultLearner.disabledWordlists.size(), 3);
-  assertEquals(resultLearner.disabledWordlists.contains("cats"), true);
+  assertEquals(resultLearner.disabledWordlists.size(), 4);
+  assertEquals(resultLearner.disabledWordlists.contains("crows"), true);
+}
+@Test
+public void noAccessIfNotCreator(){
+  mockReq.setSession(mockSession);
+  mockReq.setMethod("GET");
+  User user = new User();
+  user._id = "54321";
+  user.name = "Starla";
+  mockSession.setAttribute("current-user", user);
+  String testLearnerID = testID.toHexString();
+  Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+  mockReq.setQueryString("disable=boats");
+  assertThrows(IllegalAccessError.class, () -> {
+    learnerController.assignWordlist(ctx);
+  });
 }
 }
