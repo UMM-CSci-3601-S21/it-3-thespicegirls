@@ -31,7 +31,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   constructor( public snackBar: MatSnackBar, private route: ActivatedRoute, private contextPackService: ContextPackService,
     private learnerService: LearnerService, private router: Router) { }
 
-
   ngOnInit(): void {
     this.route.paramMap.subscribe((pmap) => {
       this.id = pmap.get('id');
@@ -49,7 +48,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     if (this.getLearnerSub) {
       this.getLearnerSub.unsubscribe();
     }
-
   }
 
   getAssignedContextPacks(){
@@ -166,8 +164,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
   editField(list: string, newData: string, pack: ContextPack){
     const obj =  { enabled: newData };
     this.contextPackService.updateWordList(pack, list, obj).subscribe(existingID => {
@@ -176,7 +172,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.snackBar.open('Failed to update enabled status of Word list: ' + list, 'OK', {
         duration: 5000,
         });
-      });;
+      });
   }
 
   localEdit(pack: ContextPack, listname: string, enabled: boolean){
@@ -186,9 +182,36 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  toggleContextpack(learner: Learner, pack: string, action: string){
+    this.learnerService.assignContextpack(learner, action, pack).subscribe(update => {
+      this.snackBar.open('Reassigned ' + pack + 'to Learner: ' + learner.name, null, {
+        duration: 2000,
+      });
+      this.localContextpackToggle(learner, action, pack);
+    }, err => {
+      this.snackBar.open('Failed to reassign Context Pack ' + pack, 'OK', {
+        duration: 5000,
+        });
+    });
+  }
+
+  localContextpackToggle(learner: Learner, pack: string, action: string){
+    const length = learner.assignedContextPacks.length;
+    if(action === 'assign'){
+      learner.assignedContextPacks.push(pack);
+    }
+    if(action === 'unassign'){
+      for(let index = 0; index < length ; index++){
+        if(learner.assignedContextPacks[index] === pack){
+          learner.assignedContextPacks[index] = learner.assignedContextPacks[length - 1];
+          learner.assignedContextPacks = learner.assignedContextPacks.slice(0, (length - 2));
+        }
+      }
+    }
+  }
+
 }
-
-
 
 export interface AssignedPack {
   contextpack: ContextPack;

@@ -61,7 +61,7 @@ export class LearnerService {
     return filteredLearners;
   }
 
-  assignWordlist(listname: string ,learner: Learner){
+  assignWordlist(listname: string ,learner: Learner, action: string){
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set(action,listname);
 
@@ -70,15 +70,9 @@ export class LearnerService {
    });
   }
 
-  assignContextpack(learner: Learner, assign?: string, unassign?: string){
+  assignContextpack(learner: Learner, action: string, pack: string){
     let httpParams: HttpParams = new HttpParams();
-
-    if(assign){
-      httpParams = httpParams.set('assign', assign);
-    }
-    if(unassign){
-      httpParams = httpParams.set('unassign',unassign);
-    }
+    httpParams = httpParams.set(action, pack);
 
     return this.httpClient.post<Learner>(this.learnerUrl + '/' + learner._id + '/assignPack', null, {
       params: httpParams,

@@ -86,7 +86,7 @@ describe('LearnerService', () => {
 
     it('assignContextpack calls api/learners/:id/assignContextpack correctly', () => {
       const targetLearner: Learner = testLearners[0];
-      service.assignContextpack(targetLearner, 'testContextpackId').subscribe(
+      service.assignContextpack(targetLearner, 'assign', 'testContextpackId').subscribe(
         learner => expect(learner).toBe(targetLearner)
       );
       const req = httpTestingController.expectOne('/api/learners/testLearner1/assignPack?assign=testContextpackId');
@@ -156,7 +156,7 @@ describe('LearnerService', () => {
       expect(service.addLearner(spaceDavid)).toBeTruthy();
     });
 
-    it('addLeaner() posts to api/learners', () => {
+    it('addLearner() posts to api/learners', () => {
 
       service.addLearner(testLearners[1]).subscribe(
         id => expect(id).toBe('testid')

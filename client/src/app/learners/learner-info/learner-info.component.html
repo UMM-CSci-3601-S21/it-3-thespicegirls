@@ -3,25 +3,34 @@
   <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
 </button>
 
-<h1 class="learner-name">{{this.learner.name}}</h1>
-<mat-card>
-    <mat-card-title>
-      Assigned Packs
-    </mat-card-title>
-    <mat-list>
-    <h1 *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
-      {{pack.contextpack.name + ':'}}
-    <mat-list-item class="assigned-wordlists">
+<mat-card fxLayout="column" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="7">
+  <mat-card-title class="learner-name">{{this.learner.name}}</mat-card-title>
+
+<div fxLayout="row" class="listPackSection">
+
+  <mat-card fxFlex>
+    <mat-card-title><h2>Assigned Packs</h2></mat-card-title>
+
+    <mat-card *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
+      <mat-card-title><h3>{{pack.contextpack.name}}</h3></mat-card-title>
+      <div fxLayout="row">
+      <mat-card-subtitle>Enabled Word Lists:</mat-card-subtitle>
+      <mat-list-item class="assigned-wordlists">
       {{this.getListNames(pack).join(', ')}}
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    </h1>
-    <mat-card-subtitle *ngIf="this.learner.disabledWordlists">
-      <mat-label>Disabed Lists:</mat-label>
+      </mat-list-item>
+      </div>
+    </mat-card>
+
+  </mat-card>
+
+  <mat-card fxFlex>
+    <div *ngIf="this.learner.disabledWordlists">
+      <mat-card-title>Disabed Lists:</mat-card-title>
       <span class="disabled-wordlists">{{this.learner.disabledWordlists.join(', ')}}</span>
+
       <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" class="wordlist-select">
         <mat-label>Assign Wordlists</mat-label>
-        <mat-select >
+        <mat-select>
           <mat-option *ngFor="let list of this.possibleWordlists"
           class="wordlist-check-box" >
             <mat-checkbox
@@ -29,23 +38,26 @@
             (change)="toggleWordlist(list,list.pack, list.enabled)"
             class="toggle-list-assign"> {{list.name}}
             </mat-checkbox>
-          </mat-option >
+          </mat-option>
         </mat-select>
       </mat-form-field>
-    </mat-card-subtitle>
-    </mat-list>
 
-</mat-card>
+    </div>
+  </mat-card>
 
-<mat-card class="word-chip-container">
-  <mat-card-title>Assigned Words</mat-card-title>
-  <mat-chip-list>
-    <mat-chip *ngFor="let word of this.assignedWords"
+</div>
+
+  <mat-card class="word-chip-container">
+    <mat-card-title>Assigned Words</mat-card-title>
+    <mat-chip-list>
+      <mat-chip *ngFor="let word of this.assignedWords"
         matTooltip="{{word.wordlist.replace('_', ' ')}}"
         matTooltipClass="forms-tooltip"
         class="{{word.pos}}"
         >
       {{word.word}}
-    </mat-chip>
-  </mat-chip-list>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card>
+
 </mat-card>

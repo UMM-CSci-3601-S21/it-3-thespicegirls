@@ -1,4 +1,4 @@
-mat-list, h1{
+mat-list-item, h1, h3{
   text-transform:capitalize;
 }
 .back-button {
@@ -19,8 +19,14 @@ mat-list, h1{
 }
 .word-chip-container{
   border-radius: 5px;
-
 }
 ::ng-deep .mat-tooltip{
   text-transform: capitalize;
+}
+.listPackSection {
+  display: flex;
+  justify-content: space-between;
+}
+mat-card {
+  margin: 10px;
 }
