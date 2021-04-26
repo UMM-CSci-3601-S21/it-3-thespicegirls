@@ -256,6 +256,7 @@ public class LearnerControllerSpec {
     assertEquals(resultLearner.disabledWordlists.size(), 4);
     assertEquals(resultLearner.disabledWordlists.contains("baseball"), true);
     assertEquals(resultLearner.disabledWordlists.contains("cats"), true);
+  }
 
   @Test
   public void AssignContextPack() throws IOException {
@@ -292,7 +293,7 @@ public class LearnerControllerSpec {
       assertNotEquals("testContextpackId2",resultLearner.assignedContextPacks.get(index));
     }
   }
-}
+
 @Test
 public void disableWordlistDuplicate(){
   // if a list is already disabled, it should not be added twice
