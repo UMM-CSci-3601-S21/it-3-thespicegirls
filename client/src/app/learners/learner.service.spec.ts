@@ -76,7 +76,7 @@ describe('LearnerService', () => {
 
     it('should make a correctly composed post request to the api', () => {
       const targetLearner: Learner = testLearners[0];
-      service.assignWordlist('dogs', targetLearner).subscribe(
+      service.assignWordlist('dogs', targetLearner, 'assign').subscribe(
         learner => expect(learner).toBe(targetLearner)
       );
       const req = httpTestingController.expectOne('/api/learners/testLearner1/assignWordlist?assign=dogs');
@@ -110,7 +110,53 @@ describe('LearnerService', () => {
       expect(service.checkIfLoggedIn('false')).toEqual(false);
     });
 
-    it('addLearner() posts to api/learners', () => {
+    it('addLearner() should not accept an empty name', () => {
+      const noName: Learner =  {
+        _id: 'noNameId',
+        creator: 'KK',
+        name: '',
+        assignedContextPacks: ['oneId','twoId','threeId'],
+        disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
+      };
+      expect(service.addLearner(noName)).toBeFalsy();
+    });
+
+    it('addLearner() should not accept a name of just spaces', () => {
+      const spaceName: Learner =  {
+        _id: 'spaceNameId',
+        creator: 'KK',
+        name: '               ',
+        assignedContextPacks: ['oneId','twoId','threeId'],
+        disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
+      };
+      expect(service.addLearner(spaceName)).toBeFalsy();
+    });
+
+    it('addLearner() should accept the name David', () => {
+      const david: Learner =  {
+        _id: 'test',
+        creator: 'KK',
+        name: 'David',
+        assignedContextPacks: ['oneId','twoId','threeId'],
+        disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
+      };
+
+      expect(service.addLearner(david)).toBeTruthy();
+    });
+
+    it('addLearner() should accept a name surrounded by spaces', () => {
+      const spaceDavid: Learner =  {
+        _id: 'spaceDavidId',
+        creator: 'KK',
+        name: '     David        ',
+        assignedContextPacks: ['oneId','twoId','threeId'],
+        disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
+      };
+
+      expect(service.addLearner(spaceDavid)).toBeTruthy();
+    });
+
+    it('addLeaner() posts to api/learners', () => {
 
       service.addLearner(testLearners[1]).subscribe(
         id => expect(id).toBe('testid')

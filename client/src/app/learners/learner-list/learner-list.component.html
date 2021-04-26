@@ -20,10 +20,11 @@
       </mat-card-content>
 
     </mat-card>
+    <h2 class="sign-in-view-learners">Please sign in to view learners</h2>
 
-  <div class="learnerContainer" fxLayout="column">
+  <!-- <div class="learnerContainer" fxLayout="column">
     <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
-  </div>
+  </div> -->
 
   </div>
 </div>
@@ -52,7 +53,8 @@
           <form [formGroup]="learnerForm" class="newLearnerForm">
             <mat-form-field class="learnerName-field">
               <mat-label>Enter New Learner's Name</mat-label>
-              <input formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <input autocomplete="off" formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <mat-error class="error-message" data-test="nameError">Please enter a valid name</mat-error>
            </mat-form-field>
           </form>
           <button mat-icon-button data-test="addLearnerButton" class="addLearnerButton" matTooltip="Submit New Learner" matTooltipPosition="above" (click)="submitForm()"><mat-icon>add</mat-icon></button>

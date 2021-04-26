@@ -243,6 +243,19 @@ public class LearnerControllerSpec {
       learnerController.addLearner(ctx);
     });
   }
+  @Test
+  public void disableWordlist(){
+    String testLearnerID = testID.toHexString();
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+    mockReq.setQueryString("disable=baseball");
+    learnerController.assignWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
+    assertEquals(resultLearner.disabledWordlists.size(), 4);
+    assertEquals(resultLearner.disabledWordlists.contains("baseball"), true);
+    assertEquals(resultLearner.disabledWordlists.contains("cats"), true);
 
   @Test
   public void AssignContextPack() throws IOException {
@@ -279,4 +292,19 @@ public class LearnerControllerSpec {
       assertNotEquals("testContextpackId2",resultLearner.assignedContextPacks.get(index));
     }
   }
+}
+@Test
+public void disableWordlistDuplicate(){
+  // if a list is already disabled, it should not be added twice
+  String testLearnerID = testID.toHexString();
+  Context ctx = ContextUtil.init(mockReq, mockRes, "api/learners/:id/assign" , ImmutableMap.of("id", testLearnerID));
+  mockReq.setQueryString("disable=cats");
+  learnerController.assignWordlist(ctx);
+
+  assertEquals(200, mockRes.getStatus());
+  String result = ctx.resultString();
+  Learner resultLearner = JavalinJson.fromJson(result, Learner.class);
+  assertEquals(resultLearner.disabledWordlists.size(), 3);
+  assertEquals(resultLearner.disabledWordlists.contains("cats"), true);
+}
 }

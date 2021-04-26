@@ -63,7 +63,7 @@ export class LearnerService {
 
   assignWordlist(listname: string ,learner: Learner){
     let httpParams: HttpParams = new HttpParams();
-    httpParams = httpParams.set('assign',listname);
+    httpParams = httpParams.set(action,listname);
 
     return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assignWordlist', {
       params: httpParams,
@@ -86,7 +86,11 @@ export class LearnerService {
   }
 
   addLearner(newLearner: Learner): Observable<string>{
-    return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));
+    const learnerName = newLearner.name.trim();
+    if (learnerName.length > 0)
+    {return this.httpClient.post<{id: string}>(this.learnerUrl, newLearner).pipe(map(res => res.id));}
+    else
+    {alert('Unable to add learner without a valid name'); };
   }
 
 }

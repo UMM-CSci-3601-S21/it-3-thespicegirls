@@ -56,7 +56,13 @@ public class LearnerController {
       String listname = ctx.queryParam("assign");
       learner.disabledWordlists.removeIf(list -> list.equals(listname));
     }
-
+    if(ctx.queryParamMap().containsKey("disable")){
+      String listname = ctx.queryParam("disable");
+      if(learner.disabledWordlists.contains(listname)){}
+      else{
+        learner.disabledWordlists.add(listname);
+      }
+    }
     learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
     learner = learnerCollection.find(filter).first();
     ctx.json(learner);
