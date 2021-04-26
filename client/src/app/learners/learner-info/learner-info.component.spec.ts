@@ -67,7 +67,7 @@ describe('LearnerInfoComponent', () => {
     component.getAssignedContextPacks();
     component.learner = {
       _id: 'learner',
-      creator: 'string',
+      userName: 'string',
       name: 'string',
       assignedContextPacks: ['chris_id','bob_id', 'mary_id'],
       disabledWordlists: []
@@ -112,7 +112,7 @@ describe('LearnerInfoComponent', () => {
       component = fixture.componentInstance;
       component.learner = {
         _id: 'learner',
-        creator: 'string',
+        userName: 'string',
         name: 'string',
         assignedContextPacks: [MockContextPackService.testContextPacks[1]._id],
         disabledWordlists: ['moooo','sun']
