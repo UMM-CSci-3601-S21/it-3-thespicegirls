@@ -66,12 +66,15 @@
 
 </div>
 
-<mat-card>
-  <h2 class="disabled-wordlists">Disabled Word Lists: {{this.learner.disabledWordlists.join(', ')}}</h2>
+<mat-card fxLayout="row">
+  <h2 fxLayout="row" class="disabled-wordlists">Disabled Word Lists:
+    <div>{{this.learner.disabledWordlists.join(', ')}}</div>
+  </h2>
 </mat-card>
 
   <mat-card class="word-chip-container">
     <mat-card-title>Assigned Words</mat-card-title>
+    <br>
     <mat-chip-list>
       <mat-chip *ngFor="let word of this.assignedWords"
         matTooltip="{{word.wordlist.replace('_', ' ')}}"
