@@ -118,11 +118,12 @@ describe('Learner list view',()=>{
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     //page should start with assigned words
-    page.clickViewInfo(page.getLearnerCards().first());
-    window.localStorage.setItem('admin', 'false');
-    cy.reload();
-    cy.get('.home').should('contain.text', 'Return to context packs');
-
+    page.getLearnerCards().first().wait(1000).then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+      window.localStorage.setItem('admin', 'false');
+      cy.get('#googleSignOutBtn').click();
+      cy.get('.home').should('contain.text', 'Return to context packs');
+    });
   });
 
    it('Should login and add a new learner', () => {
