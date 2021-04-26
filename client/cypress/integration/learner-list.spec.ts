@@ -150,7 +150,6 @@ describe('Learner list view',()=>{
     it('should have an error message for an empty name', () => {
       expect(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
     });
-    // cy.get(page.addLearner('')).should('contain.text','Unable to add a Learner without a valid name');
   });
 
   it('Should list assigned words', () => {
@@ -204,6 +203,9 @@ describe('Learner list view',()=>{
       cy.get('.back-button').click();
     });
     cy.get('.learner-list-title').should('contain.text','My Learners');
+  });
+  it('Should have the correct title', () => {
+    cy.get('.learner-list-title').should('have.text','My Learners');
   });
 
 });
