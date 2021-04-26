@@ -75,7 +75,7 @@ describe('LearnerService', () => {
     });
     it('should make a correctly composed post request to the api', () => {
       const targetLearner: Learner = testLearners[0];
-      service.assignWordlist('dogs', targetLearner).subscribe(
+      service.assignWordlist('dogs', targetLearner, 'assign').subscribe(
         learner => expect(learner).toBe(targetLearner)
       );
       const req = httpTestingController.expectOne('/api/learners/testLearner1/assign?assign=dogs');
