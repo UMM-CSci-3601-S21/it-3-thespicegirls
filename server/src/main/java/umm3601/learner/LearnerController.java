@@ -62,23 +62,28 @@ public class LearnerController {
   }
 
   public void assignWordlist(Context ctx){
+    User user = ctx.sessionAttribute("current-user");
     Bson filter = (eq("_id", ctx.pathParam("id")));
     Learner  learner = learnerCollection.find(filter).first();
-
-    if(ctx.queryParamMap().containsKey("assign")){
-      String listname = ctx.queryParam("assign");
-      learner.disabledWordlists.removeIf(list -> list.equals(listname));
-    }
-    if(ctx.queryParamMap().containsKey("disable")){
-      String listname = ctx.queryParam("disable");
-      if(learner.disabledWordlists.contains(listname)){}
-      else{
-        learner.disabledWordlists.add(listname);
+    if(learner.userId.equals(user._id.toString())){
+      if(ctx.queryParamMap().containsKey("assign")){
+        String listname = ctx.queryParam("assign");
+        learner.disabledWordlists.removeIf(list -> list.equals(listname));
       }
+      if(ctx.queryParamMap().containsKey("disable")){
+        String listname = ctx.queryParam("disable");
+        if(learner.disabledWordlists.contains(listname)){}
+        else{
+          learner.disabledWordlists.add(listname);
+        }
+      }
+      learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
+      learner = learnerCollection.find(filter).first();
+      ctx.json(learner);
     }
-    learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
-    learner = learnerCollection.find(filter).first();
-    ctx.json(learner);
+    else{
+      throw new IllegalAccessError();
+    }
   }
 
   public void addLearner(Context ctx){
