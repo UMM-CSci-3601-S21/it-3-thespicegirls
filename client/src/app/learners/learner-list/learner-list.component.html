@@ -1,5 +1,5 @@
 <div *ngIf="!(isAdmin === true); else templateLearners">
-Must be an admin to access learners
+  <h1 class="admin">Must be an admin to have learners.</h1>
 </div>
 <ng-template #templateLearners>
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
