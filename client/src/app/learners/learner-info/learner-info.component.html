@@ -24,12 +24,13 @@
   </mat-card>
 
   <mat-card fxFlex>
-    <div *ngIf="this.learner.disabledWordlists">
-      <mat-card-title>Disabed Lists:</mat-card-title>
-      <span class="disabled-wordlists">{{this.learner.disabledWordlists.join(', ')}}</span>
+      <mat-card-title><h2>Toggle Options</h2></mat-card-title>
 
-      <mat-form-field appearance="fill" style="float: right; margin-right: 8px;" class="wordlist-select">
-        <mat-label>Assign Wordlists</mat-label>
+      <mat-card>
+        <mat-card-title><h3>Toggle Learner's Word Lists</h3></mat-card-title>
+
+      <mat-form-field appearance="fill" class="wordlist-select">
+        <mat-label>Enable/Disable Word Lists</mat-label>
         <mat-select>
           <mat-option *ngFor="let list of this.possibleWordlists"
           class="wordlist-check-box" >
@@ -41,11 +42,33 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      </mat-card>
 
-    </div>
+      <mat-card>
+        <mat-card-title><h3>Toggle Learner's Context Packs</h3></mat-card-title>
+
+       <mat-form-field appearance="fill" class="wordlist-select">
+         <mat-label>Assign/Unassign Context Packs</mat-label>
+         <mat-select>
+           <mat-option *ngFor="let pack of this.possibleContextpacks"
+           class="wordlist-check-box" >
+             <mat-checkbox
+             (click)="$event.stopPropagation()" [checked]="pack.enabled"
+             (change)="toggleContextpack(pack.name,pack.enabled)"
+             class="toggle-list-assign"> {{pack.name}}
+             </mat-checkbox>
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+       </mat-card>
+
   </mat-card>
 
 </div>
+
+<mat-card>
+  <h2 class="disabled-wordlists">Disabled Word Lists: {{this.learner.disabledWordlists.join(', ')}}</h2>
+</mat-card>
 
   <mat-card class="word-chip-container">
     <mat-card-title>Assigned Words</mat-card-title>

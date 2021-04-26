@@ -22,10 +22,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   learner: Learner;
   id: string;
   getLearnerSub: Subscription;
-  assignedPacks: ContextPack[] =[];
+  assignedPacks: ContextPack[]=[];
   assignedWords: Word[]=[];
   assignedPacksObj: AssignedPack[]=[];
   possibleWordlists: Wordlist[]=[];
+  possibleContextpacks: ContextPack[]=[];
 
 
   constructor( public snackBar: MatSnackBar, private route: ActivatedRoute, private contextPackService: ContextPackService,
@@ -59,6 +60,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.getAllWords(contextpack);
       this.getAssignedWordlists(contextpack);
       this.setWordlists(contextpack);
+      this.setContextpacks();
       }
       );
     }
@@ -114,6 +116,11 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       }
     }
     this.possibleWordlists = this.possibleWordlists.concat(pack.wordlists);
+  }
+
+  setContextpacks(){
+    const allPacks = this.contextPackService.getContextPacks().subscribe(packs =>
+      this.possibleContextpacks = packs as ContextPack[]);
   }
 
   toggleWordlist(list: Wordlist,  pack: ContextPack, enabled: boolean){
@@ -183,12 +190,20 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleContextpack(learner: Learner, pack: string, action: string){
-    this.learnerService.assignContextpack(learner, action, pack).subscribe(update => {
-      this.snackBar.open('Reassigned ' + pack + 'to Learner: ' + learner.name, null, {
+  toggleContextpack(pack: string, status: string){
+    let action: string;
+    if(status === 'true'){
+      action = 'assign';
+    }
+    if(status === 'false'){
+      action = 'unassign';
+    }
+
+    this.learnerService.assignContextpack(this.learner, action, pack).subscribe(update => {
+      this.snackBar.open('Reassigned ' + pack + 'to Learner: ' + this.learner.name, null, {
         duration: 2000,
       });
-      this.localContextpackToggle(learner, action, pack);
+      this.localContextpackToggle(pack,action);
     }, err => {
       this.snackBar.open('Failed to reassign Context Pack ' + pack, 'OK', {
         duration: 5000,
@@ -196,16 +211,16 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  localContextpackToggle(learner: Learner, pack: string, action: string){
-    const length = learner.assignedContextPacks.length;
+  localContextpackToggle(pack: string, action: string){
+    const length = this.learner.assignedContextPacks.length;
     if(action === 'assign'){
-      learner.assignedContextPacks.push(pack);
+      this.learner.assignedContextPacks.push(pack);
     }
     if(action === 'unassign'){
       for(let index = 0; index < length ; index++){
-        if(learner.assignedContextPacks[index] === pack){
-          learner.assignedContextPacks[index] = learner.assignedContextPacks[length - 1];
-          learner.assignedContextPacks = learner.assignedContextPacks.slice(0, (length - 2));
+        if(this.learner.assignedContextPacks[index] === pack){
+          this.learner.assignedContextPacks[index] = this.learner.assignedContextPacks[length - 1];
+          this.learner.assignedContextPacks = this.learner.assignedContextPacks.slice(0, (length - 2));
         }
       }
     }
