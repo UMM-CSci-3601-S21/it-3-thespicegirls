@@ -2,13 +2,12 @@
   "_id": {
     "$oid": "6079d0ef60c5adfd3bb16b21"
   },
-  "userName": "Sebby",
-  "userId": "606a5a9fd2b1da77da015c95",
+  "userName": "Thomas",
+  "userId": "606a5a9fd2b1da77da015c94",
   "name": "Jimmy",
   "assignedContextPacks": [ "588935f57546a2daea44de7c", "588935f55b432bb2ff322169"],
   "disabledWordlists": []
 },
-
 {
   "_id": {
     "$oid": "588935f51c55b55c75a84848"
