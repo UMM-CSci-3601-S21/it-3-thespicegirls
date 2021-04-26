@@ -204,8 +204,5 @@ describe('Learner list view',()=>{
     });
     cy.get('.learner-list-title').should('contain.text','My Learners');
   });
-  it('Should have the correct title', () => {
-    cy.get('.learner-list-title').should('have.text','My Learners');
-  });
 
 });
