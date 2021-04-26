@@ -18,10 +18,10 @@ export class LearnerListComponent implements OnInit, OnDestroy {
   public contextpackName: string;
   public learnerName: string;
   public learnerForm: FormGroup;
+  isAdmin: boolean;
 
   getLearnersSub: Subscription;
 
-  isSignedIn: boolean;
 
   constructor(private learnerService: LearnerService, private fb: FormBuilder,
     private snackBar: MatSnackBar, private router: Router) { }
@@ -33,7 +33,7 @@ export class LearnerListComponent implements OnInit, OnDestroy {
       ]))
     });
     this.getLearnersFromServer();
-    this.isSignedIn = this.learnerService.checkIfLoggedIn(localStorage.getItem('loggedIn'));
+    this.isAdmin = this.learnerService.checkIfAdmin(localStorage.getItem('admin'));
   }
 
   submitForm() {
