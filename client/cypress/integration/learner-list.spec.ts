@@ -14,20 +14,23 @@ describe('Learner list view',()=>{
     page.navigateTo();
   });
 
-  it('Should type something in the name filter and get nothing', () => {
-    (cy.get('[data-test=learnerNameInput]').clear()).should('not.contain.text');
-    (cy.get('[data-test=learnerNameInput]').type('jimmy')).should('not.contain.text', 'Jimmy');
+  it('Should say you need to be an admin if not admin', () => {
+    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
   });
 
-  it('Should have a message asking users to log in to view learners', () => {
-    cy.get('.sign-in-view-learners').should('have.text','Please sign in to view learners');
+  it('Should say you need to be an admin if logged in and not an admin', () => {
+    pageLogin.googleLogin();
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
   });
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
-
     cy.get('[data-test=learnerNameInput]').clear();
     cy.get('[data-test=learnerNameInput]').type('jimmy');
 
@@ -40,6 +43,8 @@ describe('Learner list view',()=>{
 
   it('Should type something partial in the name filter and check that it returned correct elements', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     cy.get('[data-test=learnerNameInput]').type('j').wait(1000);
@@ -57,6 +62,8 @@ describe('Learner list view',()=>{
 
   it('Should click view info on a contextpack and go to the right URL', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.getLearnerCards().first().then((card) => {
@@ -76,6 +83,8 @@ describe('Learner list view',()=>{
 
   it('Should correctly list enabled wordlists', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     page.clickViewInfo(page.getLearnerCards().first());
@@ -94,18 +103,35 @@ describe('Learner list view',()=>{
   it('Should check that a user cannot add a new learner unless they are logged in', () => {
     cy.get('.add').should('not.exist');
 
-    window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
-    pageLogin.googleLogin();
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
 
     cy.get('.add').should('exist');
   });
+  it('Should see return to context packs button if log out on info page', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    //page should start with assigned words
+    page.getLearnerCards().first().wait(1000).then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+      window.localStorage.setItem('admin', 'false');
+      cy.get('#googleSignOutBtn').click();
+      cy.get('.home').should('contain.text', 'Return to context packs');
+    });
+  });
 
    it('Should login and add a new learner', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
-    window.localStorage.setItem('User','TestUser');
     cy.reload();
-    pageLogin.googleLogin();
 
     page.addLearner('Chris');
 
@@ -113,9 +139,11 @@ describe('Learner list view',()=>{
   });
 
   it('Should login and fail to add a new learner', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
-    pageLogin.googleLogin();
 
     cy.get<HTMLButtonElement>('[data-test=addLearnerButton]').click();
 
@@ -126,6 +154,8 @@ describe('Learner list view',()=>{
 
   it('Should list assigned words', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
     //page should start with assigned words
@@ -142,37 +172,37 @@ describe('Learner list view',()=>{
 
   it('Should correctly assign a wordlist', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
-
     //page should start with assigned words
-    page.clickViewInfo(page.getLearnerCards().eq(2)).wait(1000);
-    page.assignWordlist();
-    const assignedWords = page.getAssignedWords();
-    expect(assignedWords).to.not.contain('villain');
-    let disabledWordlists = page.getDisabledWordlists();
-    disabledWordlists.should('contain.text','batman_villains');
-    page.getDisabledWordlists().should('contain.text','k');
-    // checking the box should add the wordlist to enabled list
-    // and remove from disabled
-    cy.get('.toggle-list-assign input').eq(1).should('not.be.checked').wait(1000);
-    cy.get('.toggle-list-assign input').eq(1).click({force:true});
-    cy.get('.toggle-list-assign input').eq(1).should('be.checked');
-    // only the correct wordlist should be reomved from the list
-    disabledWordlists = page.getDisabledWordlists().should('not.contain.text','batman_villains');
-    page.getDisabledWordlists().should('contain.text','k');
+    page.getLearnerCards().first().then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+      page.assignWordlist();
+      // checking the box should add the wordlist to enabled list
+      // and remove from disabled
+      cy.get('.toggle-list-assign input').eq(1).should('be.checked').wait(1000);
+      cy.get('.toggle-list-assign input').eq(2).should('be.checked').wait(1000);
+      cy.get('.toggle-list-assign input').eq(0).should('not.be.checked');
+      cy.get('.toggle-list-assign input').eq(1).click({force:true});
+      cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
+
+    });
   });
 
   it('Should view a learner info page, and use the back button', () => {
     pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
-    page.clickViewInfo(page.getLearnerCards().first());
-    cy.get('.back-button').should('be.visible');
-    cy.get('.back-button').click();
-  });
-  it('Should have the correct title', () => {
-    cy.get('.learner-list-title').should('have.text','My Learners');
+    page.getLearnerCards().first().then((card) => {
+      page.clickViewInfo(page.getLearnerCards().first());
+      cy.get('.back-button').should('be.visible');
+      cy.get('.back-button').click();
+    });
+    cy.get('.learner-list-title').should('contain.text','My Learners');
   });
 
 });

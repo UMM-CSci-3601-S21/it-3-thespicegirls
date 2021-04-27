@@ -2,7 +2,6 @@ package umm3601.user;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -309,9 +308,6 @@ public class UserControllerSpec {
     assertEquals("Admin", name);
     assertEquals("true", admin);
 
-
-  }
-  public void GoodAdminWithLogin() throws GeneralSecurityException, IOException {
 
   }
 }

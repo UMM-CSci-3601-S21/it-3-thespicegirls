@@ -47,7 +47,7 @@ describe('LearnerCardComponent', () => {
     component = fixture.componentInstance;
     component.learner = {
       _id: 'learner',
-      creator: 'string',
+      userName: 'string',
       name: 'string',
       assignedContextPacks: ['chris_id','chris_id'],
       disabledWordlists: []

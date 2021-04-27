@@ -42,7 +42,7 @@
 
         <div *ngIf="isSignedin === true" class="mt-4">
            Hello, {{user.firstName}}
-          <button mat-raised-button id="googleSignOutBtn" type="button" (click)="logout()" class="btn btn-primary">Log Out</button>
+          <button mat-raised-button class="logout" id="googleSignOutBtn" type="button" (click)="logout()" class="btn btn-primary">Log Out</button>
         </div>
 
       </div>

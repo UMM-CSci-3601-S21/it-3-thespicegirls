@@ -15,14 +15,14 @@ describe('LearnerService', () => {
     const testLearners: Learner[] = [
       {
         _id: 'testLearner1',
-        creator: 'KK',
+        userName: 'KK',
         name: 'one',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
       },
       {
         _id: 'testLearner2',
-        creator: 'KK',
+        userName: 'KK',
         name: 'two',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
@@ -99,7 +99,7 @@ describe('LearnerService', () => {
     it('addLearner() should not accept an empty name', () => {
       const noName: Learner =  {
         _id: 'noNameId',
-        creator: 'KK',
+        userName: 'KK',
         name: '',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
@@ -110,7 +110,7 @@ describe('LearnerService', () => {
     it('addLearner() should not accept a name of just spaces', () => {
       const spaceName: Learner =  {
         _id: 'spaceNameId',
-        creator: 'KK',
+        userName: 'KK',
         name: '               ',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
@@ -121,7 +121,7 @@ describe('LearnerService', () => {
     it('addLearner() should accept the name David', () => {
       const david: Learner =  {
         _id: 'test',
-        creator: 'KK',
+        userName: 'KK',
         name: 'David',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
@@ -133,7 +133,7 @@ describe('LearnerService', () => {
     it('addLearner() should accept a name surrounded by spaces', () => {
       const spaceDavid: Learner =  {
         _id: 'spaceDavidId',
-        creator: 'KK',
+        userName: 'KK',
         name: '     David        ',
         assignedContextPacks: ['oneId','twoId','threeId'],
         disabledWordlists: ['wordlistName1','wordlistName2','wordlistName3'],
