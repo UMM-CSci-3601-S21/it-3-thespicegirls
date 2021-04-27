@@ -3,18 +3,27 @@
     <mat-card-title class="simpleView">
       <span class="learner-name">{{this.learner.name}}</span>
       <mat-card-actions>
-          <button class="viewInfoButton" mat-icon-button matTooltip="View Details" color="primary" data-test="viewInfoButton" [routerLink]="['/learner/' + this.learner._id]">
-            <mat-icon>info</mat-icon>
-          </button>
-    <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button class="contextpack-download-button" type="button" data-test="downloadJSON" color='primary'
-        (click)='this.downloadAll(this.assignedPacks)'><mat-icon>save_alt</mat-icon></button>
+        <button class="viewInfoButton" mat-icon-button matTooltip="View Details" color="primary"
+          data-test="viewInfoButton" [routerLink]="['/learner/' + this.learner._id]">
+          <mat-icon>info</mat-icon>
+        </button>
+        <button matTooltip="Download JSON" matTooltipPosition="above" mat-icon-button
+          class="contextpack-download-button" type="button" data-test="downloadJSON" color='primary'
+          (click)='this.downloadAll(this.assignedPacks)'>
+          <mat-icon>save_alt</mat-icon>
+        </button>
+        <button matTooltip="Download as ZIP" matTooltipPosition="above" mat-icon-button
+          class="contextpack-download-button" type="button" data-test="downloadJSON" color='primary'
+          (click)='this.downloadLearner()'>
+          <mat-icon>save_alt</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card-title>
-  <mat-card-content *ngIf="!this.simple">
-    <mat-list *ngFor="let assignedPacks of this.assignedPacks">
-      {{assignedPacks.name}}
-    </mat-list>
-  </mat-card-content>
+    <mat-card-content *ngIf="!this.simple">
+      <mat-list *ngFor="let assignedPacks of this.assignedPacks">
+        {{assignedPacks.name}}
+      </mat-list>
+    </mat-card-content>
 
   </mat-card>
 
