@@ -46,7 +46,7 @@ public class LearnerController {
       ctx.json(learner);
     }
     else{
-      throw new IllegalAccessError("This is not your student");
+      throw new IllegalAccessError("This is not your Learner");
     }
   }
 
@@ -59,8 +59,9 @@ public class LearnerController {
   public void assignWordlist(Context ctx){
     User user = ctx.sessionAttribute("current-user");
     Bson filter = (eq("_id", ctx.pathParam("id")));
-    Learner  learner = learnerCollection.find(filter).first();
+    Learner learner = learnerCollection.find(filter).first();
     if(learner.userId.equals(user._id.toString())){
+
       if(ctx.queryParamMap().containsKey("assign")){
         String listname = ctx.queryParam("assign");
         learner.disabledWordlists.removeIf(list -> list.equals(listname));
@@ -82,23 +83,28 @@ public class LearnerController {
   }
 
   public void assignContextPack(Context ctx){
+    User user = ctx.sessionAttribute("current-user");
     Bson filter = eq("_id", ctx.pathParam("id"));
     Learner learner = learnerCollection.find(filter).first();
+    if(learner.userId.equals(user._id.toString())){
+      if(ctx.queryParamMap().containsKey("assign")){
+        String packIdAdd = ctx.queryParam("assign");
+        learner.assignedContextPacks.add(packIdAdd);
+      }
 
-    if(ctx.queryParamMap().containsKey("assign")){
-      String packIdAdd = ctx.queryParam("assign");
-      learner.assignedContextPacks.add(packIdAdd);
+      if(ctx.queryParamMap().containsKey("unassign")){
+        String packIdRemove = ctx.queryParam("unassign");
+        learner.assignedContextPacks.removeIf(packs -> packs.equals(packIdRemove));
+      }
+
+      learnerCollection.replaceOne(filter, learner);
+      learner = learnerCollection.find(filter).first();
+      ctx.status(201);
+      ctx.json(learner);
+  }
+    else {
+    throw new IllegalAccessError();
     }
-
-    if(ctx.queryParamMap().containsKey("unassign")){
-      String packIdRemove = ctx.queryParam("unassign");
-      learner.assignedContextPacks.removeIf(packs -> packs.equals(packIdRemove));
-    }
-
-    learnerCollection.replaceOne(filter, learner);
-    learner = learnerCollection.find(filter).first();
-    ctx.status(201);
-    ctx.json(learner);
   }
 
   public void addLearner(Context ctx){

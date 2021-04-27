@@ -18,6 +18,7 @@
   <mat-card fxFlex>
     <mat-card-title><h2>Assigned Packs</h2></mat-card-title>
 
+    <mat-card-subtitle *ngIf="this.assignedPacksObj.length === 0">No Assigned Context Packs</mat-card-subtitle>
     <mat-card *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
       <mat-card-title><h3>{{pack.contextpack.name}}</h3></mat-card-title>
       <div fxLayout="row">
@@ -82,6 +83,7 @@
   <mat-card class="word-chip-container">
     <mat-card-title>Assigned Words</mat-card-title>
     <br>
+    <mat-card-subtitle *ngIf="this.assignedWords.length === 0">No Assigned Context Packs</mat-card-subtitle>
     <mat-chip-list>
       <mat-chip *ngFor="let word of this.assignedWords"
         matTooltip="{{word.wordlist.replace('_', ' ')}}"

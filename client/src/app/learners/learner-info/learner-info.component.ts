@@ -54,17 +54,16 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   getAssignedContextPacks(){
     let i=0;
     for(i; i<this.learner.assignedContextPacks.length; i++){
-      console.log(this.learner.assignedContextPacks);
       this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
       .subscribe(contextpack => {
       this.assignedPacks.push(contextpack);
       this.getAllWords(contextpack);
       this.getAssignedWordlists(contextpack);
       this.setWordlists(contextpack);
-      this.setContextpacks();
       }
       );
     }
+    this.setContextpacks();
   }
 
   setPos(list: Wordlist){
@@ -122,14 +121,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   setContextpacks(){
     const allPacks = this.contextPackService.getContextPacks().subscribe(packs =>
       this.possibleContextpacks = packs as ContextPack[]);
-      // for(const pack of this.possibleContextpacks){
-      //   if(this.learner.assignedContextPacks.includes(pack.name)){
-      //     pack.enabled = true;
-      //   }
-      //   else{
-      //     pack.enabled = false;
-      //   }
-      // }
   }
 
   toggleWordlist(list: Wordlist,  pack: ContextPack, enabled: boolean){
