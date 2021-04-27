@@ -13,6 +13,8 @@ import org.mongojack.JacksonMongoCollection;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import umm3601.contextpack.ContextPack;
+import umm3601.user.User;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -30,6 +32,7 @@ public class LearnerController {
   public void getLearner(Context ctx) {
     String id = ctx.pathParam("id");
     Learner learner;
+    User user = ctx.sessionAttribute("current-user");
 
     try {
       learner = learnerCollection.find(eq("_id", new ObjectId(id))).first();
@@ -38,34 +41,44 @@ public class LearnerController {
     }
     if (learner == null) {
       throw new NotFoundResponse("The requested learner was not found");
-    } else {
+    }
+    else if(learner.userId.equals(user._id.toString())) {
       ctx.json(learner);
+    }
+    else{
+      throw new IllegalAccessError("This is not your student");
     }
   }
 
   public void getLearners(Context ctx){
-    ctx.json(learnerCollection.find()
+    User user = ctx.sessionAttribute("current-user");
+    ctx.json(learnerCollection.find(eq("userId", user._id.toString()))
     .into(new ArrayList<>()));
   }
 
   public void assignWordlist(Context ctx){
+    User user = ctx.sessionAttribute("current-user");
     Bson filter = (eq("_id", ctx.pathParam("id")));
-    Learner learner = learnerCollection.find(filter).first();
-
-    if(ctx.queryParamMap().containsKey("assign")){
-      String listname = ctx.queryParam("assign");
-      learner.disabledWordlists.removeIf(list -> list.equals(listname));
-    }
-    if(ctx.queryParamMap().containsKey("disable")){
-      String listname = ctx.queryParam("disable");
-      if(learner.disabledWordlists.contains(listname)){}
-      else{
-        learner.disabledWordlists.add(listname);
+    Learner  learner = learnerCollection.find(filter).first();
+    if(learner.userId.equals(user._id.toString())){
+      if(ctx.queryParamMap().containsKey("assign")){
+        String listname = ctx.queryParam("assign");
+        learner.disabledWordlists.removeIf(list -> list.equals(listname));
       }
+      if(ctx.queryParamMap().containsKey("disable")){
+        String listname = ctx.queryParam("disable");
+        if(learner.disabledWordlists.contains(listname)){}
+        else{
+          learner.disabledWordlists.add(listname);
+        }
+      }
+      learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
+      learner = learnerCollection.find(filter).first();
+      ctx.json(learner);
     }
-    learnerCollection.replaceOne(eq("_id", ctx.pathParam("id")), learner);
-    learner = learnerCollection.find(filter).first();
-    ctx.json(learner);
+    else{
+      throw new IllegalAccessError();
+    }
   }
 
   public void assignContextPack(Context ctx){
@@ -90,9 +103,11 @@ public class LearnerController {
 
   public void addLearner(Context ctx){
     Learner newLearner = ctx.bodyValidator(Learner.class)
-      .check(learner -> learner.name != null && learner.name != " ")
-      .check(learner -> learner.creator != null)
+      .check(learner -> learner.name != null )
       .get();
+      User user = ctx.sessionAttribute("current-user");
+      newLearner.userId = user._id;
+      newLearner.userName = user.name;
 
       learnerCollection.insertOne(newLearner);
       ctx.status(201);

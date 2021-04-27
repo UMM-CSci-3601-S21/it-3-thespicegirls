@@ -45,6 +45,8 @@ export class AppComponent implements OnInit {
     }, err =>{
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('admin');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('User');
     });
     }
   askServerIfLoggedIn(): Observable<User>{
@@ -76,9 +78,10 @@ export class AppComponent implements OnInit {
           duration: 5000,
         });
         this.isSignedin = false;
-        localStorage.setItem('loggedIn', 'false');
-        localStorage.setItem('admin', 'false');
-        localStorage.setItem('userId', 'false');
+        localStorage.removeItem('loggedIn');
+        localStorage.removeItem('admin');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('User');
         this.logout();
       });
     });
@@ -101,6 +104,7 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('admin');
       localStorage.removeItem('userId');
+      localStorage.removeItem('User');
       this.reload();
   });
   }

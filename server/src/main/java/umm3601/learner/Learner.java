@@ -12,7 +12,8 @@ public class Learner {
   public String _id;
 
   //to be used in future updates - indicates which user created the learner
-  public String creator;
+  public String userId;
+  public String userName;
 
   public String name;
   public ArrayList<String> assignedContextPacks;

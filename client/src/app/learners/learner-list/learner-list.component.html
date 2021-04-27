@@ -1,38 +1,11 @@
-<div *ngIf="isSignedIn === false || isSignedIn === undefined; else templateLearners">
-  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-
-    <mat-card class="headerContent">
-      <mat-card-title class="learner-list-title">My Learners</mat-card-title>
-
-      <mat-card-content>
-
-      <mat-card fxFlex class="filter">
-        <mat-card-title><h2>Filter Learners:</h2></mat-card-title>
-      <mat-card-content>
-        <mat-form-field class="input-field">
-         <mat-label>Filter By Name</mat-label>
-         <input matInput data-test="learnerNameInput" placeholder="Filter by name"
-         [(ngModel)]="learnerName" (input)="updateLearnerFilter()">
-        </mat-form-field>
-      </mat-card-content>
-      </mat-card>
-
-      </mat-card-content>
-
-    </mat-card>
-    <h2 class="sign-in-view-learners">Please sign in to view learners</h2>
-
-  <!-- <div class="learnerContainer" fxLayout="column">
-    <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
-  </div> -->
-
-  </div>
+<div *ngIf="!(isAdmin === true); else templateLearners">
+  <h1 class="admin">Must be an admin to have learners.</h1>
 </div>
 <ng-template #templateLearners>
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
 
     <mat-card class="headerContent">
-      <mat-card-title>My Learners</mat-card-title>
+      <mat-card-title class="learner-list-title">My Learners</mat-card-title>
 
       <mat-card-content>
 

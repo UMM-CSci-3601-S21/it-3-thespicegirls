@@ -84,20 +84,6 @@
   },
   {
     "_id": {
-      "$oid": "606a5a9fd2b1da77da015c17"
-    },
-    "email": "quist127@morris.umn.edu",
-    "emailVerified": true,
-    "name": "Josh Q",
-    "pictureUrl": "null",
-    "locale": "en",
-    "familyName": "Q",
-    "givenName": "Josh",
-    "sub": "123456",
-    "admin": true
-  },
-  {
-    "_id": {
       "$oid": "606a5a9fd2b1da77da015c15"
     },
     "email": "mcphee@morris.umn.edu",

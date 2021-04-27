@@ -1,4 +1,11 @@
-<!-- Button that goes back to the learners page -->
+<div *ngIf="(learner === null) || learner === undefined; else templateLearners">
+  <a class="home" mat-list-item routerLink="/contextpacks" routerLinkActive="drawer-list-item-active">
+    <mat-icon matListIcon>home</mat-icon>Return to context packs
+
+  </a>
+</div>
+<ng-template #templateLearners>
+  <!-- Button that goes back to the learners page -->
 <button mat-fab class="back-button" matTooltip="Back to Learners" matTooltipPosition="right" routerLink="/learner" data-test="backButton">
   <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
 </button>
@@ -87,3 +94,4 @@
   </mat-card>
 
 </mat-card>
+</ng-template>
