@@ -106,8 +106,6 @@ public class ContextPackController {
       if (ctx.queryParamMap().containsKey(ICON_KEY)) {
         updateOperations.add(Updates.set("icon", ctx.queryParam(ICON_KEY)));
       }
-      System.out.println(contextPackCollection.find(filter).first().wordlists.get(0).enabled);
-
       contextPackCollection.updateOne(filter, updateOperations);
       pack = contextPackCollection.find(filter).first();
       ctx.json(pack);
@@ -115,8 +113,6 @@ public class ContextPackController {
     else{
       throw new IllegalAccessError();
     }
-
-
   }
 
   //Edits wordlist name and enabled status, adds and removes words in word arrays - makes all the changes and then replaces mongo document
@@ -125,8 +121,9 @@ public class ContextPackController {
     ContextPack pack = contextPackCollection.find(filter).first();
     User user = ctx.sessionAttribute("current-user");
     if(pack.userId.toString().equals(user._id.toString()) || user.admin == true){
-      Wordlist list=pack.wordlists.get(0);
-      if(ctx.queryParamMap().containsKey("listname")){int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
+      Wordlist list = EmptyArrayChecker(pack);;
+      if(ctx.queryParamMap().containsKey("listname")){
+        int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
       if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
         pack.deleteWordlist(ctx.queryParam("listname"));
       }
@@ -180,6 +177,17 @@ public class ContextPackController {
 
   }
 
+
+  private Wordlist EmptyArrayChecker(ContextPack pack) {
+    Wordlist list;
+    if(pack.wordlists.isEmpty()){
+      pack.wordlists = new ArrayList<Wordlist>();
+      pack.wordlists.add(null);
+    }
+    list = pack.wordlists.get(0);
+    return list;
+  }
+
   public int getListIndex(ContextPack pack, String listname){
     int index=0;
     boolean match = false;
@@ -194,4 +202,3 @@ public class ContextPackController {
   }
 
 }
-

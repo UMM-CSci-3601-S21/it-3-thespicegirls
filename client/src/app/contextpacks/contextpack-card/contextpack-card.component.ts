@@ -75,7 +75,7 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   submitForm(wordType: string) {
-    const word = this.contextPackForm.controls.word.value + ', ' + this.contextPackForm.controls.forms.value;
+    const word = this.contextPackForm.controls.word.value + ',' + this.contextPackForm.controls.forms.value;
     const wordlist = this.contextPackForm.controls.wordlist.value;
     this.addWord(wordlist,word,wordType);
     this.contextPackForm.reset();

@@ -1,4 +1,3 @@
-import {Learner} from 'src/app/learners/learner';
 export class LearnerListPage {
   navigateTo() {
     return cy.visit('/learner');
