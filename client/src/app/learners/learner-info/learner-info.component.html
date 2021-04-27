@@ -62,7 +62,7 @@
            class="wordlist-check-box" >
              <mat-checkbox
              (click)="$event.stopPropagation()" [checked]="pack.enabled"
-             (change)="toggleContextpack(pack._id,pack.enabled)"
+             (change)="toggleContextpack(pack,pack.enabled)"
              class="toggle-list-assign"> {{pack.name}}
              </mat-checkbox>
            </mat-option>

@@ -131,5 +131,9 @@ export class MockContextPackService extends ContextPackService {
     return of(MockContextPackService.testContextPacks[0]);
   }
 
+  updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack>{
+    return of(MockContextPackService.testContextPacks[0]);
+  }
+
 
 }
