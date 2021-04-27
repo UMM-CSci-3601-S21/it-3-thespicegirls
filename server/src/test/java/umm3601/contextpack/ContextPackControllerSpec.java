@@ -135,6 +135,7 @@ public class ContextPackControllerSpec {
       .append("userId", "123456")
       .append("icon", "dog.png")
       .append("enabled", true)
+      .append("wordlists", Arrays.asList())
     );
 
     contextPackDocuments.insertMany(testPacks);
