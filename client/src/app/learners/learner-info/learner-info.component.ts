@@ -133,7 +133,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
         this.updateAssignedView(list , pack);
       }
       }, err => {
-        this.snackBar.open('Failed to assign: ' + list.name, 'OK', {
+        this.snackBar.open('Failed to reassign: ' + list.name, 'OK', {
           duration: 5000,
           });
         });;

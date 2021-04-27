@@ -60,9 +60,7 @@ public class Server {
     server.get("/api/learners", learnerController::getLearners, roles(MyRole.ADMIN));
     server.get("/api/learners/:id", learnerController::getLearner, roles(MyRole.ADMIN));
     server.get("/api/learners/:id/assignWordlist", learnerController::assignWordlist, roles(MyRole.ADMIN));
-
-    server.post("/api/learners", learnerController::addLearner, roles(MyRole.USER));
-    server.post("/api/learners/:id/assignPack", learnerController::assignContextPack, roles(MyRole.USER));
+    server.post("/api/learners/:id/assignPack", learnerController::assignContextPack, roles(MyRole.ADMIN));
 
     server.post("/api/users", userController::checkToken, roles(MyRole.ANYONE));
 

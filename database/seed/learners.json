@@ -30,6 +30,36 @@
 },
 {
   "_id": {
+    "$oid": "6079d0ef60c5adfd3bb16b01"
+  },
+  "userName": "Halley Paulson",
+  "userId": "606a5a9fd2b1da77da015c19",
+  "name": "Jimmy",
+  "assignedContextPacks": [ "588935f57546a2daea44de7c", "588935f55b432bb2ff322169"],
+  "disabledWordlists": []
+},
+{
+  "_id": {
+    "$oid": "588935f51c55b55c75a84850"
+  },
+  "userName": "Halley Paulson",
+  "userId": "606a5a9fd2b1da77da015c19",
+  "name": "Daisy",
+  "assignedContextPacks": [ "588935f55b432bb2ff322165", "588935f55b432bb2ff322160","588935f51c55b55c75a84848"],
+  "disabledWordlists": ["k","batman_villains"]
+},
+{
+  "_id": {
+    "$oid": "588935f57546a2daea44de7f"
+  },
+  "userName": "Halley Paulson",
+  "userId": "606a5a9fd2b1da77da015c19",
+  "name": "Mildred",
+  "assignedContextPacks": [ "588935f55b432bb2ff322160", "588935f51c55b55c75a84848","588935f52787254123f71fed"],
+  "disabledWordlists": ["pre-k"]
+},
+{
+  "_id": {
     "$oid": "588935f55b432bb2ff322169"
   },
   "userName": "KK",
