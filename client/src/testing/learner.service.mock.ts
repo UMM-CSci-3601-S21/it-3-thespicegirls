@@ -39,6 +39,9 @@ export class MockLearnerService extends LearnerService {
   assignWordlist(listname: string ,learner: Learner){
     return of(MockLearnerService.testLearners[0]);
   }
+  assignContextpack(learner: Learner, action: string, pack: string){
+    return of(MockLearnerService.testLearners[0]);
+  }
 
 
 }

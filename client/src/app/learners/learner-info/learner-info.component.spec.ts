@@ -1,5 +1,4 @@
-import { compileNgModule } from '@angular/compiler';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -65,30 +64,49 @@ describe('LearnerInfoComponent', () => {
 
   it('should get assigned context packs', () => {
     component.getAssignedContextPacks();
-
+    component.learner = {
+      _id: 'learner',
+      userName: 'string',
+      name: 'string',
+      assignedContextPacks: ['chris_id','bob_id', 'mary_id'],
+      disabledWordlists: []
+    };
     expect(component.assignedPacks.length).toBeGreaterThan(0);
+    expect(component.assignedPacks[0]._id).toEqual('chris_id');
     expect(component.assignedPacks[0]._id).toEqual('chris_id');
   });
   it('should assign wordlists', () => {
     component.getAssignedWordlists(MockContextPackService.testContextPacks[1]);
     component.setWordlists(MockContextPackService.testContextPacks[1]);
-
     expect(component.possibleWordlists.includes(MockContextPackService.testContextPacks[1].wordlists[0]));
   });
+
   it('should not assign words if no valid lists are assigned', () => {
     component.learner.disabledWordlists =['sun'];
+    const assignedPackInfo = {
+      contextpack: MockContextPackService.testContextPacks2[1],
+      assignedWordlists: [{
+        name: 'happy',
+        enabled: true,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      }
+    ]
+    };
     component.getAssignedContextPacks();
     const list =MockContextPackService.testContextPacks2[1].wordlists[0];
     component.toggleWordlist(list ,MockContextPackService.testContextPacks2[1],list.enabled);
-    component.getAssignedContextPacks();
 
+    component.getAssignedContextPacks();
     expect(component.assignedWords.length).toBe(0);
     expect(list.enabled).toBe(false);
+    component.setWordlists(MockContextPackService.testContextPacks2[2]);
   });
-
   describe('',()=>{
-
     beforeEach(() => {
+
       fixture = TestBed.createComponent(LearnerInfoComponent);
       component = fixture.componentInstance;
       component.learner = {
@@ -105,16 +123,16 @@ describe('LearnerInfoComponent', () => {
     it('should correctly update the view after a wordlist is assigned', () => {
       component.getAssignedContextPacks();
       component.learner.disabledWordlists =[];
-      const list = MockContextPackService.testContextPacks[1].wordlists[0];
+      const list =MockContextPackService.testContextPacks[1].wordlists[0];
       const assignedPackInfo = {
         contextpack: MockContextPackService.testContextPacks[1],
         assignedWordlists: [list]
       };
       component.assignedPacksObj.push(assignedPackInfo);
-      component.toggleWordlist(list,MockContextPackService.testContextPacks[1],false);
+      component.toggleWordlist(list ,MockContextPackService.testContextPacks[1],false);
       component.getAllWords( MockContextPackService.testContextPacks[1]);
-
       expect(component.assignedWords.length).toBe(12);
+
     });
     it('should correctly update the view after a wordlist is unassigned', () => {
       component.learner.disabledWordlists =['milk'];
@@ -146,20 +164,13 @@ describe('LearnerInfoComponent', () => {
       // should be no words now, becuase the list has been unassigned
       expect(component.assignedWords.length).toBe(0);
     });
-
-  });
-
-  it('Should get all context packs and correctly update their enabled status according to assignedContextPacks variable', () => {
-    component.learner.assignedContextPacks = []; //no assigned so all enabled status should be false
-
-    component.setContextpacks();
-    expect(component.possibleContextpacks.length).toBe(3);
-    expect(component.possibleContextpacks[0]._id).toBe('chris_id');
-    component.possibleContextpacks.forEach(element => { expect(element.enabled).toBe(false);
+    it('Should get all context packs and correctly update their enabled status according to assignedContextPacks variable', () => {
+     component.setContextpacks();
+     expect(component.possibleContextpacks.length).toBe(3);
+     expect(component.possibleContextpacks[0]._id).toBe('chris_id');
     });
-  });
-  it('editPackField should update enabled status on context pack', () => {
-    const testPack = {
+    it('editPackField should update enabled status on context pack', () => {
+     const testPack = {
       _id: 'string',
       name: 'string',
       userId: 'string',
@@ -167,17 +178,21 @@ describe('LearnerInfoComponent', () => {
       icon: 'string',
       enabled: true,
       wordlists: [],
-    };
+     };
 
-    expect(testPack.enabled).toBe(true);
-    component.editPackField('false', testPack); //returns the mock so globally does nothing but should update locally as well
-    expect(testPack.enabled).toBe(false);
-    component.editPackField('true',testPack);
-    expect(testPack.enabled).toBe(true);
-  });
-  it('Should assign/unassign context pack to learner', () => {});
+     expect(testPack.enabled).toBe(true);
+     component.editPackField('false', testPack); //returns the mock so globally does nothing but should update locally as well
+     expect(testPack.enabled).toBe(false);
+     component.editPackField('true',testPack);
+     expect(testPack.enabled).toBe(true);
+    });
+    // it('Should assign/unassign context pack to learner', () => {
+    //   MockContextPackService.testContextPacks[2].enabled = false;
+    //   component.toggleContextpack(MockContextPackService.testContextPacks[2],false);
 
-
-
-
+    //   expect(MockContextPackService.testContextPacks[2].enabled).toBe(true);
+    //   expect(component.learner.assignedContextPacks).toContain(MockContextPackService.testContextPacks[2]._id);
+    // });
 });
+});
+
