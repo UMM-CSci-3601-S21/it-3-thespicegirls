@@ -27,15 +27,11 @@ export class LearnerCardComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for(let i=0; i<this.learner.assignedContextPacks.length; i++){
      this.contextPackService.getContextPackById(this.learner.assignedContextPacks[i])
-      .subscribe(contextpack => this.assignedPacks.push(contextpack));
+      .subscribe(contextpack => {this.assignedPacks.push(contextpack);});
     }
   }
 
-  downloadAll(packs: ContextPack[]){
-    let i=0;
-    for(i; i<packs.length; i++){
-      this.contextPackService.downloadJson(packs[i], packs[i].name).click();
-    }
+  downloadLearner(){
+    this.contextPackService.downloadLearnerJson(this.assignedPacks, this.learner.name).click();
   }
-
 }

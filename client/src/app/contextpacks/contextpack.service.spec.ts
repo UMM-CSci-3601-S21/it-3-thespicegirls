@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { Learner } from '../learners/learner';
 import { ContextPack, Word, Wordlist } from './contextpack';
 import { ContextPackService } from './contextpack.service';
 
@@ -36,7 +37,7 @@ describe('Context Pack service: ', () => {
       adjectives: testAdjectives,
       misc: testMisc
     }
-    ];
+  ];
 
   const testContextPacks: ContextPack[] =
     [
@@ -58,6 +59,13 @@ describe('Context Pack service: ', () => {
         enabled: true,
         wordlists: testWordlist
       }
+  ];
+  const jeff: Learner [] =
+  [
+    {
+      _id: 'learner_id',
+      name: 'Jeff',
+    }
   ];
   let contextpackService: ContextPackService;
   // These are used to mock the HTTP requests so that we (a) don't have to
@@ -134,6 +142,12 @@ describe('Context Pack service: ', () => {
     expect(contextpackService.convertToBetterJson(targetContextPack).$schema).
     toEqual('https://raw.githubusercontent.com/kidstech/story-builder/master/Assets/packs/schema/pack.schema.json');
     expect(contextpackService.convertToBetterJson(targetContextPack).id).toBeUndefined();
+  });
+
+  it( 'should convert a learner json into a correctly format json', () => {
+    const targetContextPacks: ContextPack[] = testContextPacks;
+    const targetLearner: Learner = jeff[0];
+    expect(contextpackService.downloadLearnerJson(targetContextPacks, targetLearner.name).toString()).toContain('fun');
   });
 
   it('filterContextPack() filters by name', () => {

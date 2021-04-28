@@ -205,4 +205,13 @@ describe('Learner list view',()=>{
     cy.get('.learner-list-title').should('contain.text','My Learners');
   });
 
+  it('Should locate a download Json button', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    cy.get('.contextpack-download-button').should('be.visible');
+  });
+
 });

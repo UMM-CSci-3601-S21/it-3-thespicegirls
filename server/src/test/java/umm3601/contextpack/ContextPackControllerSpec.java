@@ -4,13 +4,14 @@ import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -51,6 +52,7 @@ public class ContextPackControllerSpec {
   private ContextPackController contextPackController;
 
   private ObjectId testID;
+  private ObjectId testID2;
 
   static MongoClient mongoClient;
   static MongoDatabase db;
@@ -78,9 +80,12 @@ public class ContextPackControllerSpec {
     // Setup database
     MongoCollection<Document> contextPackDocuments = db.getCollection("contextpacks");
     contextPackDocuments.drop();
+    List<Document> testPacks = new ArrayList<>();
     testID = new ObjectId();
-    Document testPackID = new Document()
-    .append("_id", testID)
+    testID2 = new ObjectId();
+    testPacks.add(
+      new Document()
+      .append("_id", testID)
     .append("name", "baskets")
     .append("userId", "12345")
     .append("icon", "dog.png")
@@ -122,9 +127,18 @@ public class ContextPackControllerSpec {
                 ))
 
                 )
-
+    ));
+    testPacks.add(
+      new Document()
+      .append("_id", testID2)
+      .append("name", "dogs")
+      .append("userId", "123456")
+      .append("icon", "dog.png")
+      .append("enabled", true)
+      .append("wordlists", Arrays.asList())
     );
-    contextPackDocuments.insertOne(testPackID);
+
+    contextPackDocuments.insertMany(testPacks);
     contextPackController = new ContextPackController(db);
   }
 
@@ -586,6 +600,30 @@ public class ContextPackControllerSpec {
     assertEquals(resultPack.wordlists.get(2).name, "pumpkin");
     assertEquals(resultPack.wordlists.size(), 3);
     assertEquals(resultPack.wordlists.get(2).nouns.size(), 0);
+
+  }
+  @Test
+  public void addWordlistToEmptyWordlistArray(){
+    String id = testID2.toHexString();
+    mockReq.setSession(mockSession);
+    mockReq.setMethod("POST");
+    User user = new User();
+    user._id = "12345";
+    user.name = "me";
+    user.admin = true;
+    mockSession.setAttribute("current-user", user);
+
+    Context ctx = ContextUtil.init(mockReq, mockRes, "api/contextpacks/:id/editlist", ImmutableMap.of("id", id));
+    mockReq.setQueryString("addwordlist=pumpkin");
+    contextPackController.editWordlist(ctx);
+
+    assertEquals(200, mockRes.getStatus());
+    String result = ctx.resultString();
+    ContextPack resultPack = JavalinJson.fromJson(result, ContextPack.class);
+
+    assertEquals(resultPack._id, testID2.toHexString());
+    assertEquals(resultPack.wordlists.get(0).name, "pumpkin");
+    assertEquals(1, resultPack.wordlists.size());
 
   }
   @Test

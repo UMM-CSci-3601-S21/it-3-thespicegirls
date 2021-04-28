@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { ObjectUnsubscribedError, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
 
