@@ -18,6 +18,12 @@ describe('Add a Context pack', () => {
     page.getTitle().should('have.text', 'Create A New Context Pack');
   });
 
+  it('Should use the cancel button to go back', () => {
+    cy.get('.cancel-button').should('be.visible');
+    cy.get('.cancel-button').click();
+    cy.get('.contextpack-list-title').should('contain.text','Context Packs');
+  });
+
   it('Should add parts of speech when buttons are pushed and show a json file preview with button push', () => {
     window.localStorage.setItem('loggedIn', 'true');
     cy.reload();
