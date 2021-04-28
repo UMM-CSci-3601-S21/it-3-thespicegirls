@@ -19,6 +19,8 @@ describe('Add a Context pack', () => {
   });
 
   it('Should use the cancel button to go back', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
     cy.get('.cancel-button').should('be.visible');
     cy.get('.cancel-button').click();
     cy.get('.contextpack-list-title').should('contain.text','Context Packs');
