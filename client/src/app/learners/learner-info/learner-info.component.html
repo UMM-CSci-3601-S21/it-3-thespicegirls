@@ -55,15 +55,15 @@
       <mat-card>
         <mat-card-title><h3>Toggle Learner's Context Packs</h3></mat-card-title>
 
-       <mat-form-field appearance="fill" class="wordlist-select">
+       <mat-form-field appearance="fill" class="contextpack-select">
          <mat-label>Assign/Unassign Context Packs</mat-label>
          <mat-select>
            <mat-option *ngFor="let pack of this.possibleContextpacks"
-           class="wordlist-check-box" >
+           class="contextpack-check-box" >
              <mat-checkbox
              (click)="$event.stopPropagation()" [checked]="pack.enabled"
              (change)="toggleContextpack(pack,pack.enabled)"
-             class="toggle-list-assign"> {{pack.name}}
+             class="toggle-pack-assign"> {{pack.name}}
              </mat-checkbox>
            </mat-option>
          </mat-select>

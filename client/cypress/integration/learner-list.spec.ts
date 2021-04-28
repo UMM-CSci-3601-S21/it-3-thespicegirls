@@ -15,14 +15,14 @@ describe('Learner list view',()=>{
   });
 
   it('Should say you need to be an admin if not admin', () => {
-    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
+    cy.get('.admin').should('contain.text', 'Permission Denied');
   });
 
   it('Should say you need to be an admin if logged in and not an admin', () => {
     pageLogin.googleLogin();
     window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
-    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
+    cy.get('.admin').should('contain.text', 'Permission Denied');
   });
 
   it('Should type something in the name filter and check that it returned correct elements', () => {

@@ -9,7 +9,7 @@ describe('Add a Context pack', () => {
   });
 
   it('should see need to login page if local storage isnt set up', () =>{
-    cy.get('.sign').eq(0).should('contain.text','Sign in to add context pack');
+    cy.get('.sign').eq(0).should('contain.text','Permission Denied');
 
   });
   it('Should have the correct title', () => {
