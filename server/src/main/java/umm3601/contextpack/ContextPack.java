@@ -31,11 +31,14 @@ public class ContextPack {
     list.misc =  new ArrayList<Word>();
     list.verbs =  new ArrayList<Word>();
     list.adjectives =  new ArrayList<Word>();
-    this.wordlists.add(list);
+    if(this.wordlists.get(0) == null){
+      this.wordlists.set(0, list);
+    }
+    else{
+      this.wordlists.add(list);
+    }
+
   }
-
-
-
 }
 
 
