@@ -85,6 +85,7 @@ public class LearnerController {
     User user = ctx.sessionAttribute("current-user");
     Bson filter = eq("_id", ctx.pathParam("id"));
     Learner learner = learnerCollection.find(filter).first();
+
     if(learner.userId.equals(user._id.toString())){
       if(ctx.queryParamMap().containsKey("assign")){
         String packIdAdd = ctx.queryParam("assign");
@@ -93,6 +94,7 @@ public class LearnerController {
       if(ctx.queryParamMap().containsKey("unassign")){
         String packIdRemove = ctx.queryParam("unassign");
         learner.assignedContextPacks.removeIf(packs -> packs.equals(packIdRemove));
+        System.out.println(learner.disabledWordlists);
       }
       learnerCollection.replaceOne(filter, learner);
       learner = learnerCollection.find(filter).first();
