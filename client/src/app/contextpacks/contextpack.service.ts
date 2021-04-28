@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
-import { map } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class ContextPackService {
@@ -159,6 +159,21 @@ export class ContextPackService {
       wordlists: jsonBetter.wordlists
       };
       return obj;
+  }
+
+  downloadLearnerJson(packs: ContextPack[], learner: string){
+    const learnersJson = {
+      contextpacks: packs.map(this.convertToBetterJson),
+    };
+      const sJson = JSON.stringify(learnersJson, null, 2);
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/json;charset=UTF-8,' + encodeURIComponent(sJson));
+      element.setAttribute('download', learner + '.json');
+      element.style.display = 'none';
+      document.body.appendChild(element);
+      document.body.removeChild(element);
+    return element;
+
   }
 
 }

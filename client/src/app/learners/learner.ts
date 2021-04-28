@@ -4,6 +4,6 @@ export interface Learner {
   userName?: string;
   userId?: string;
   name: string;
-  assignedContextPacks: string[];
-  disabledWordlists: string[];
+  assignedContextPacks?: string[];
+  disabledWordlists?: string[];
 }
