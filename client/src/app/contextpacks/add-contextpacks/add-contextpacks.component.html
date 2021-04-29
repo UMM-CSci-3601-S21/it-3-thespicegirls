@@ -1,6 +1,9 @@
 <div *ngIf="isSignedIn === false || isSignedIn === undefined; else templateWords">
     <h1 class="sign">Sign in to add context pack.</h1>
 </div>
+<button mat-fab class="cancel-button" matTooltip="Cancel" matTooltipPosition="below" routerLink="/contextpacks" data-test="backButton">
+  <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
+</button>
 <ng-template #templateWords>
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
