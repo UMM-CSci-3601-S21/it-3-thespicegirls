@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { componentFactoryName } from '@angular/compiler';
 import { TestBed } from '@angular/core/testing';
 import { Learner } from './learner';
 
@@ -98,16 +97,6 @@ describe('LearnerService', () => {
       expect(testLearners.length).toBe(2);
       const learnerName = 'one';
       expect(service.filterLearners(testLearners, { name: learnerName }).length).toBe(1);
-    });
-
-    it('should check some strings with admin checker', () => {
-      expect(service.checkIfAdmin('true')).toEqual(true);
-      expect(service.checkIfAdmin('false')).toEqual(false);
-    });
-
-    it('should check some strings with login checker', () => {
-      expect(service.checkIfLoggedIn('true')).toEqual(true);
-      expect(service.checkIfLoggedIn('false')).toEqual(false);
     });
 
     it('addLearner() should not accept an empty name', () => {

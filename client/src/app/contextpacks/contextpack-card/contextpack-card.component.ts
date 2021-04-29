@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from 'src/app/user.service';
 import { ContextPack, Word, Wordlist} from '../contextpack';
 import { ContextPackService } from '../contextpack.service';
 
@@ -34,7 +35,8 @@ export class ContextPackCardComponent implements OnInit {
     wordlist: {type: 'required', message: 'Choose a Word List'}
   };
 
-  constructor(private fb: FormBuilder, public snackBar: MatSnackBar, public contextpackservice: ContextPackService)
+  constructor(private userService: UserService, private fb: FormBuilder,
+    public snackBar: MatSnackBar, public contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class ContextPackCardComponent implements OnInit {
         Validators.required,
       ]))
     });
-    this.isAdmin = this.contextpackservice.checkIfAdmin(localStorage.getItem('admin'));
+    this.isAdmin = this.userService.checkIfAdmin(localStorage.getItem('admin'));
     this.userId = localStorage.getItem('userId');
   }
 

@@ -14,28 +14,6 @@ export class LearnerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  checkIfLoggedIn(log: string){
-    let isSignedIn: boolean;
-    if (log === 'true'){
-      isSignedIn = true;
-    }
-    else{
-      isSignedIn = false;
-    }
-    return isSignedIn;
-  }
-
-  checkIfAdmin(log: string){
-    let isAdmin: boolean;
-    if (log === 'true'){
-      isAdmin = true;
-    }
-    else{
-      isAdmin = false;
-    }
-    return isAdmin;
-  }
-
   getLearners(): Observable<Learner[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<Learner[]>(this.learnerUrl, {

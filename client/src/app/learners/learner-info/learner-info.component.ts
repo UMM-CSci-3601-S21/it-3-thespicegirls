@@ -193,7 +193,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 
   //for toggle dropdown, grabs all possible contextpacks
   setContextpacks(){
-    const allPacks = this.contextPackService.getContextPacks().subscribe(packs => {
+   this.contextPackService.getContextPacks().subscribe(packs => {
       this.possibleContextpacks = packs as ContextPack[];
 
       for(const pack of this.possibleContextpacks){

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Learner } from '../learners/learner';
 import { ContextPack, Word, Wordlist } from './contextpack';
 import { ContextPackService } from './contextpack.service';
@@ -73,6 +74,7 @@ describe('Context Pack service: ', () => {
   // requests were made to ensure that we're making the correct requests.
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+  let snackBar: MatSnackBar;
 
   beforeEach(() => {
     // Set up the mock handling of the HTTP requests
@@ -83,7 +85,7 @@ describe('Context Pack service: ', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     // Construct an instance of the service with the mock
     // HTTP client.
-    contextpackService = new ContextPackService(httpClient);
+    contextpackService = new ContextPackService(httpClient, snackBar);
   });
 
   afterEach(() => {
@@ -123,13 +125,6 @@ describe('Context Pack service: ', () => {
     const req = httpTestingController.expectOne(expectedUrl);
     expect(req.request.method).toEqual('GET');
     req.flush(targetContextPack);
-  });
-
-  it('should check some strings with admin checker', () => {
-    expect(contextpackService.checkIfAdmin('true')).toEqual(true);
-  });
-  it('should check some strings with login checker', () => {
-    expect(contextpackService.checkIfLoggedIn('true')).toEqual(true);
   });
 
   it('should create a download element when given a json', () => {

@@ -9,7 +9,7 @@ import {  NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable, of, throwError } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { User } from './contextpacks/user';
+import { User } from './user';
 
 describe('Context Pack service: ', () => {
 
