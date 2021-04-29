@@ -226,7 +226,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
 
     this.learnerService.assignContextpack(this.learner, action, pack._id).subscribe(update => {
-      this.snackBar.open('Reassigned ' + pack + 'to Learner: ' + this.learner.name, null, {
+      this.snackBar.open('Reassigned ' + pack._id + 'to Learner: ' + this.learner.name, null, {
         duration: 2000,
       });
       this.localContextpackToggle(pack, action);
@@ -254,7 +254,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
     if(action === 'unassign'){
       this.possibleWordlists = [];
-      this.learner.disabledWordlists = [];
       for(const obj of this.assignedPacksObj){
         if(obj.contextpack._id === pack._id){
           this.assignedPacksObj.splice(this.assignedPacksObj.indexOf(obj),1);
@@ -267,11 +266,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       }
       for(const packs of this.assignedPacks){
         this.setWordlists(packs);
-        for(const lists of packs.wordlists){
-          if(!lists.enabled){
-            this.learner.disabledWordlists = this.learner.disabledWordlists.concat(lists.name);
-          }
-        }
       }
     }
   }
