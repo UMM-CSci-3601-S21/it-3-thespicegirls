@@ -5,6 +5,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ContextPack, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { ActivatedRouteStub } from 'src/testing/activated-route-stub';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';
@@ -17,6 +18,8 @@ describe('LearnerInfoComponent', () => {
   let component: LearnerInfoComponent;
   let fixture: ComponentFixture<LearnerInfoComponent>;
   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
+  let testWordlists: Wordlist[];
+  let testContextPacks: ContextPack[];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,6 +54,27 @@ describe('LearnerInfoComponent', () => {
       disabledWordlists: ['happy','moooo','sun']
     };
     activatedRoute.setParamMap({ id: 'testLearner1' });
+
+    testWordlists =
+    [
+      {
+        name: 'happy',
+        enabled: true,
+        nouns: MockContextPackService.testNouns,
+        adjectives: MockContextPackService.testAdjectives,
+        verbs: MockContextPackService.testVerbs,
+        misc: MockContextPackService.testMisc
+      },
+  ];
+
+   testContextPacks = [
+    {
+      _id: 'chris_id',
+      enabled: true,
+      name: 'fun',
+      wordlists: testWordlists
+    }];
+
     fixture.detectChanges();
   });
 
@@ -131,7 +155,7 @@ describe('LearnerInfoComponent', () => {
       component.assignedPacksObj.push(assignedPackInfo);
       component.toggleWordlist(list ,MockContextPackService.testContextPacks[1],false);
       component.getAllWords( MockContextPackService.testContextPacks[1]);
-      expect(component.assignedWords.length).toBe(12);
+      expect(component.assignedWords.length).toBeGreaterThan(1);
 
     });
     it('should correctly update the view after a wordlist is unassigned', () => {
@@ -186,13 +210,17 @@ describe('LearnerInfoComponent', () => {
      component.editPackField('true',testPack);
      expect(testPack.enabled).toBe(true);
     });
-    // it('Should assign/unassign context pack to learner', () => {
-    //   MockContextPackService.testContextPacks[2].enabled = false;
-    //   component.toggleContextpack(MockContextPackService.testContextPacks[2],false);
+    it('Should assign/unassign context pack to learner', () => {
+      // component.learner.assignedContextPacks.push(testContextPacks[0]._id);
+      component.toggleContextpack(testContextPacks[0],testContextPacks[0].enabled);
+      expect(testContextPacks[0].enabled).toBe(false);
+      expect(component.learner.assignedContextPacks).not.toContain(testContextPacks[0]._id);
 
-    //   expect(MockContextPackService.testContextPacks[2].enabled).toBe(true);
-    //   expect(component.learner.assignedContextPacks).toContain(MockContextPackService.testContextPacks[2]._id);
-    // });
+      component.toggleContextpack(testContextPacks[0],testContextPacks[0].enabled);
+      expect(testContextPacks[0].enabled).toBe(true);
+      expect(component.learner.assignedContextPacks).toContain(testContextPacks[0]._id);
+
+    });
 });
 });
 

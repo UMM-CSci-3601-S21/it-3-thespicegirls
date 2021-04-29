@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
+import { MockContextPackService } from 'src/testing/contextpack.service.mock';
 import { Learner } from '../learners/learner';
 import { ContextPack, Word, Wordlist } from './contextpack';
 import { ContextPackService } from './contextpack.service';
@@ -79,10 +81,11 @@ describe('Context Pack service: ', () => {
   beforeEach(() => {
     // Set up the mock handling of the HTTP requests
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule]
     });
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
+    snackBar = TestBed.inject(MatSnackBar);
     // Construct an instance of the service with the mock
     // HTTP client.
     contextpackService = new ContextPackService(httpClient, snackBar);
@@ -178,13 +181,39 @@ describe('Context Pack service: ', () => {
 
   });
   describe('Editing Contextpack information', ()=>{
-    it('Edits the naem of a contextpack', () => {
+    it('Edits the name of a contextpack', () => {
       contextpackService.updateContextPack(testContextPacks[0], { name: 'cows', enabled:'true', icon:'icon.png'}).subscribe(
         contextPack => expect(contextPack.wordlists[0].nouns[0].forms));
 
       const req = httpTestingController.expectOne('/api/contextpacks/chris_id/editpack?name=cows&enabled=true&icon=icon.png');
       expect(req.request.method).toEqual('POST');
     });
+    it('calls contextpackservice.updateContextPack with correct parameters', () => {
+      contextpackService.updateField(testContextPacks[0], ['name','name']);
+      let req = httpTestingController.expectOne('/api/contextpacks/chris_id/editpack?name=name');
+      expect(req.request.method).toEqual('POST');
+
+
+      contextpackService.updateField(testContextPacks[0], ['false','enabled']);
+      req = httpTestingController.expectOne('/api/contextpacks/chris_id/editpack?enabled=false');
+      expect(req.request.method).toEqual('POST');
+
+      contextpackService.updateField(testContextPacks[0], ['icon','icon']);
+      req = httpTestingController.expectOne('/api/contextpacks/chris_id/editpack?icon=icon');
+      expect(req.request.method).toEqual('POST');
+    });
+    // it('updateLocalFields updates the field correctly',() => {
+    //   expect(testContextPacks[0].name).toEqual('fun');
+    //   expect(testContextPacks[0].enabled).toEqual(true);
+    //   expect(testContextPacks[0].icon).toEqual(undefined);
+    //   contextpackService.updateLocalFields(testContextPacks[0],{name:'name'});
+    //   contextpackService.updateLocalFields(testContextPacks[0],{enabled: false});
+    //   contextpackService.updateLocalFields(testContextPacks[0],{icon: 'icon.png'});
+    //   expect(testContextPacks[0].name).toBe('name');
+    //   expect(testContextPacks[0].enabled).toBe(false);
+    //   expect(testContextPacks[0].icon).toBe('icon.png');
+
+    // });
   });
   describe('Editing wordlist information', ()=>{
     it('Updates the name and status of the wordlist', () => {

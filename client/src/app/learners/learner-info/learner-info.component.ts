@@ -39,7 +39,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       this.getLearnerSub = this.learnerService.getLearnerById(this.id)
       .subscribe(learner => {
         this.learner = learner;
-        console.log(this.learner.disabledWordlists);
         this.getAssignedContextPacks();
       });
     });
@@ -190,7 +189,6 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-
   //for toggle dropdown, grabs all possible contextpacks
   setContextpacks(){
    this.contextPackService.getContextPacks().subscribe(packs => {
@@ -243,31 +241,42 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
       contextpack: pack,
       assignedWordlists: pack.wordlists,
     };
+    for(const list of newPacksObj.assignedWordlists){
+      if(!list.enabled){
+        this.toggleWordlist(list, newPacksObj.contextpack, list.enabled);
+      }//Should make sure the wordlist is reset since it is default enabled = true
+    }
     if(action === 'assign'){
-      this.learner.assignedContextPacks = this.learner.assignedContextPacks.concat(pack._id);
+      this.localAssign(newPacksObj,pack);
+    }
+    if(action === 'unassign'){
+      this.localUnassign(newPacksObj,pack);
+    }
+  }
+
+  localAssign(newPacksObj: AssignedPack, pack: ContextPack){
+    this.learner.assignedContextPacks = this.learner.assignedContextPacks.concat(pack._id);
       this.assignedPacksObj = this.assignedPacksObj.concat(newPacksObj);
       this.assignedPacks = this.assignedPacks.concat(pack);
       this.setWordlists(pack);
       for(const list of newPacksObj.assignedWordlists){
-        this.updateAssignedView(list, pack);
-      }
-    }
-    if(action === 'unassign'){
-      this.possibleWordlists = [];
+        this.updateAssignedView(list, pack); }
+  }
+
+  localUnassign(newPacksObj: AssignedPack, pack: ContextPack){
+    this.possibleWordlists = [];
       for(const obj of this.assignedPacksObj){
         if(obj.contextpack._id === pack._id){
           this.assignedPacksObj.splice(this.assignedPacksObj.indexOf(obj),1);
           this.learner.assignedContextPacks.splice(this.learner.assignedContextPacks.indexOf(pack._id),1);
           this.assignedPacks.splice(this.assignedPacks.indexOf(obj.contextpack),1);
+          for(const list of newPacksObj.assignedWordlists){
+            if(this.learner.disabledWordlists.indexOf(list.name) !== -1){
+              this.learner.disabledWordlists.splice(this.learner.disabledWordlists.indexOf(list.name),1); }}
           for(const list of obj.assignedWordlists){
-            this.updateAssignedView(list,obj.contextpack);
-          }
-        }
-      }
+            this.updateAssignedView(list,obj.contextpack); }}}
       for(const packs of this.assignedPacks){
-        this.setWordlists(packs);
-      }
-    }
+        this.setWordlists(packs); }
   }
 
 }

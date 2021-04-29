@@ -108,7 +108,7 @@ export class MockContextPackService extends ContextPackService {
   ];
 
   constructor() {
-    super(null);
+    super(null,null);
   }
 
   getContextPacks(): Observable<ContextPack[]> {

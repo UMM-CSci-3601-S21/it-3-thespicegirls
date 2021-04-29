@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
   readonly idTokenUrl: string = environment.apiUrl + 'users';
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private httpClient: HttpClient, public snackBar: MatSnackBar) {
   }
 
   getContextPacks(): Observable<ContextPack[]> {

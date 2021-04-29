@@ -134,7 +134,7 @@ describe('ContextPackListComponent', () => {
   let spy: jasmine.SpyObj<ContextPackService>;
 
   beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('ContextPackService', ['updateContextPack','getContextPacks','filterContextPacks']);
+    spy = jasmine.createSpyObj('ContextPackService', ['updateField','updateContextPack','getContextPacks','filterContextPacks']);
     spy.getContextPacks.and.returnValue(of (MockContextPackService.testContextPacks));
     TestBed.configureTestingModule({
       imports: [
@@ -159,13 +159,13 @@ describe('ContextPackListComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should update fields by correctly calling the context pack service', () => {
-    spy.updateContextPack.and.returnValue(of(MockContextPackService.testContextPacks[0]));
+    spy.updateField.and.callThrough();
     component.updateField(MockContextPackService.testContextPacks[1],['fun','name']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(1);
+    expect(spy.updateField).toHaveBeenCalledTimes(1);
     component.updateField(MockContextPackService.testContextPacks[0],['false','enabled']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(2);
+    expect(spy.updateField).toHaveBeenCalledTimes(2);
     component.updateField(MockContextPackService.testContextPacks[0],['test','icon']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(3);
+    expect(spy.updateField).toHaveBeenCalledTimes(3);
   });
 
 });
