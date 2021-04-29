@@ -10,20 +10,21 @@
 - [Development](#development)
   - [Common commands](#common-commands)
 - [Deployment](#deployment)
-- [Resources](#resources)
 - [Contributors](#contributors)
-- [Changing the name](#changing-the-name)
 
-This is your starter code for Iteration 1.
+Word River is an extension to Story Builder where a teacher or admin can organize and manage both their contextpacks and learners. Contextpacks are made up of multiple wordlists that often have similar themes or purpose.
+>Story Builder is an app for children who are just learning to read to support their engagement with words. This application is built in Unity using RTVoice for enabling Text-To-Speech and featuring a robust drag and drop system.
+>
+>-Taken from the [Story Builder repository.](https://github.com/kidstech/story-builder)
 
-There are a number of pieces in this production template to help you get started. As you work on your project, you should replace some of these pieces with elements of your project and remove whatever you don't need (e.g., markdown files, JSON data files, or any remnants of the labs). We include, for example, the users parts of the
-previous labs. These are almost certainly not relevant to your project
-and should be removed once you've started.
+Word River is a place that teachers or researchers can create and manage the contextpacks used in Story Builder.
 
-:exclamation: You should remove this sentence and the text above, and
-replace them with least an elevator pitch description of your project so that
-if someone comes to this repo they'll know what the project is about.
-
+ - user login: users are able to login and have either admin status or regular status
+ - add contextpacks: users are able to create their own contextpacks
+ - edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
+ - add learner: admin can create new learners
+ - assign contextpacks to learners: admin are able to assign contextpacks to their learners
+ - export the learners contextpacks
 ## [Development](DEVELOPMENT.md)
 
 Instructions on setting up the development environment and working with the code are in [the development guide](DEVELOPMENT.md).
@@ -44,29 +45,8 @@ From the `database` directory:
 
 ## [Deployment](DEPLOYMENT.md)
 
-Instructions on how to create a DigitalOcean Droplet and setup your project are in [the deployment guide](DEPLOYMENT.md).
-
-## [Resources](RESOURCES.md)
-
-Additional resources on tooling and techniques are in [the resources list](RESOURCES.md).
+Instructions on how to setup this project are in [the deployment guide](DEPLOYMENT.md).
 
 ## Contributors
 
 This contributors to this project can be seen [here](../../graphs/contributors).
-
-## Changing the name
-
-The project by default has the name "CSCI 3601 Iteration Template". There are a few places you need to change to make this the name you want:
-
-- The title of this README.md
-- [`server/src/main/java/umm3601/Server.java`](server/src/main/java/umm3601/Server.java)
-  - The `appName` variable
-- [`client/src/app/app.component.ts`](client/src/app/app.component.ts)
-  - The `title` variable
-  - Also the associated unit and E2E tests will need to be changed.
-- [`client/src/app/app.component.html`](client/src/app/app.component.html)
-  - The `mat-toolbar` element for the navigation drawer is just "Client" by default.
-- [`client/src/index.html`](client/src/index.html)
-  - The `title` element
-
-You can go ahead and remove this section of the README once you have changed the name.
