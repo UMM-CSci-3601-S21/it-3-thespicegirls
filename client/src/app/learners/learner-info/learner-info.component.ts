@@ -189,6 +189,16 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDisabledListsFromPack(pack: ContextPack){
+    const disabledLists = [];
+    for(const list of pack.wordlists){
+      if(this.learner.disabledWordlists.indexOf(list.name) !== -1){
+        disabledLists.push(list.name);
+      }
+    }
+    return disabledLists;
+  }
+
   //for toggle dropdown, grabs all possible contextpacks
   setContextpacks(){
    this.contextPackService.getContextPacks().subscribe(packs => {

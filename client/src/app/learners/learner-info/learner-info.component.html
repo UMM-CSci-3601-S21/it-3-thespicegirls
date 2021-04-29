@@ -15,79 +15,72 @@
 
 <div class="listPackSection">
 
-  <mat-card fxFlex>
-    <mat-card-title><h2>Assigned Packs</h2></mat-card-title>
+  <mat-card>
 
+    <div>
+    <mat-card-title fxFlex><h2>Assigned Packs</h2></mat-card-title>
+
+    <div fxLayout="row" class="toggles">
+      <div>
+        <mat-form-field appearance="fill" class="wordlist-select">
+          <mat-label>Toggle Word Lists</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let list of this.possibleWordlists"
+            class="wordlist-check-box" >
+              <mat-checkbox
+              (click)="$event.stopPropagation()" [checked]="list.enabled"
+              (change)="toggleWordlist(list,list.pack, list.enabled)"
+              class="toggle-list-assign"> {{list.name}}
+              </mat-checkbox>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+
+        <div>
+         <mat-form-field appearance="fill" class="contextpack-select">
+           <mat-label>Toggle Context Packs</mat-label>
+           <mat-select>
+             <mat-option *ngFor="let pack of this.possibleContextpacks"
+             class="contextpack-check-box" >
+               <mat-checkbox
+               (click)="$event.stopPropagation()" [checked]="pack.enabled"
+               (change)="toggleContextpack(pack,pack.enabled)"
+               class="toggle-pack-assign"> {{pack.name}}
+               </mat-checkbox>
+             </mat-option>
+           </mat-select>
+          </mat-form-field>
+        </div>
+    </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div>
     <mat-card-subtitle *ngIf="this.assignedPacksObj.length === 0">No Assigned Context Packs</mat-card-subtitle>
     <mat-list>
     <mat-list-item *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
 
-      <mat-list-item class="assigned-wordlists">
         <span><b>{{pack.contextpack.name}}</b></span>
         <mat-icon>arrow_right_alt</mat-icon>
-      <span class="enabled-list">{{this.getListNames(pack).join(', ')}}</span>
-      </mat-list-item>
-      <mat-divider></mat-divider>
+        <span fxLayout="row" class="enabled-list">
+          <div *ngFor="let list of pack.assignedWordlists">
+            {{list.name.concat(' ')}}
+          </div>
+          <div class="disabled-list">
+            {{this.getDisabledListsFromPack(pack.contextpack).join(" ")}}
+          </div>
+        </span>
+        <mat-divider></mat-divider>
+
     </mat-list-item>
   </mat-list>
+  </div>
   </mat-card>
-
-
-
 </div>
 
-<mat-card fxLayout="row">
-  <h2 fxLayout="row" class="disabled-wordlists">Disabled Word Lists:
-    <div class="disabled-list">{{this.learner.disabledWordlists.join(', ')}}</div>
-  </h2>
-
-
-
-
-</mat-card>
-
-  <mat-card class="word-chip-container">
+  <mat-card>
     <mat-card-title>Assigned Words</mat-card-title>
-
-    <div fxLayout="col wrap" fxLayoutGap="5px" >
-      <mat-card>
-        <mat-card-title><h3>Toggle Learner's Word Lists</h3></mat-card-title>
-
-      <mat-form-field appearance="fill" class="wordlist-select">
-        <mat-label>Enable/Disable Word Lists</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let list of this.possibleWordlists"
-          class="wordlist-check-box" >
-            <mat-checkbox
-            (click)="$event.stopPropagation()" [checked]="list.enabled"
-            (change)="toggleWordlist(list,list.pack, list.enabled)"
-            class="toggle-list-assign"> {{list.name}}
-            </mat-checkbox>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      </mat-card>
-
-      <mat-card >
-        <mat-card-title><h3>Toggle Learner's Context Packs</h3></mat-card-title>
-
-       <mat-form-field appearance="fill" class="contextpack-select">
-         <mat-label>Assign/Unassign Context Packs</mat-label>
-         <mat-select>
-           <mat-option *ngFor="let pack of this.possibleContextpacks"
-           class="contextpack-check-box" >
-             <mat-checkbox
-             (click)="$event.stopPropagation()" [checked]="pack.enabled"
-             (change)="toggleContextpack(pack,pack.enabled)"
-             class="toggle-pack-assign"> {{pack.name}}
-             </mat-checkbox>
-           </mat-option>
-         </mat-select>
-       </mat-form-field>
-  </mat-card>
-
-    </div>
-
     <br>
     <mat-card-subtitle *ngIf="this.assignedWords.length === 0">No Assigned Context Packs</mat-card-subtitle>
     <mat-chip-list>

@@ -24,16 +24,13 @@ mat-list-item, h1, h3, h2, mat-option{
 ::ng-deep .mat-tooltip{
   text-transform: capitalize;
 }
-.listPackSection {
-  display: flex;
-  justify-content: space-between;
-}
+
 mat-card {
   margin: 3px;
-
 }
 mat-card-title{
   text-transform: capitalize;
+  width: 70%;
 }
 .home{
   text-align: center;
@@ -41,12 +38,15 @@ mat-card-title{
 mat-card-subtitle{
   text-align: center;
 }
-.disabled-wordlists{
-  font-size: small;
-}
 .disabled-list{
-  color:grey;
-  margin-left:5px;
+  color: lightgrey;
+  white-space: pre;
 }
-
+.enabled-list {
+  white-space: pre;
+}
+.toggles, mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
