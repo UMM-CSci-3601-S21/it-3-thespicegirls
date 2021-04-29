@@ -204,18 +204,14 @@ describe('Context Pack service: ', () => {
     });
     it('updateLocalFields updates the field correctly',() => {
       expect(testContextPacks[0].name).toEqual('fun');
-      expect(testContextPacks[0].enabled).toEqual(true);
       expect(testContextPacks[0].icon).toEqual(undefined);
       contextpackService.updateLocalFields(testContextPacks[0],{name:'name'});
-      contextpackService.updateLocalFields(testContextPacks[0],{enabled: false});
       contextpackService.updateLocalFields(testContextPacks[0],{icon: 'icon.png'});
       expect(testContextPacks[0].name).toBe('name');
-      expect(testContextPacks[0].enabled).toBe(false);
       expect(testContextPacks[0].icon).toBe('icon.png');
 
       //change everything back for other tests
       contextpackService.updateLocalFields(testContextPacks[0],{name:'fun'});
-      contextpackService.updateLocalFields(testContextPacks[0],{enabled: true});
     });
   });
   describe('Editing wordlist information', ()=>{

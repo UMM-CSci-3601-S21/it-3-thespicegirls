@@ -182,9 +182,6 @@ export class ContextPackService {
     if(obj.name){
       contextpack.name = obj.name;
     }
-    if(obj.enabled !== undefined){
-      contextpack.enabled = obj.enabled;
-    }
     if(obj.icon){
       contextpack.icon = obj.icon;
     }

@@ -56,13 +56,14 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   displayEnabled(status: boolean){
-    if(status === false){
+    if(!status){
       return 'Disabled';
     }
-    if(status === true){
+    if(status){
       return 'Enabled';
     }
   }
+
   toggleDeleted(index: number){
     this.deleteClicked = !this.deleteClicked;
     this.deleteIndex = index;
@@ -70,6 +71,12 @@ export class ContextPackCardComponent implements OnInit {
 
   save(field: string, newData: string) {
 		this.valueChangeEvents.emit( [newData, field] );
+    if(newData === 'true'){
+    this.contextpack.enabled = true;
+  }
+  if(newData === 'false'){
+    this.contextpack.enabled = false;
+  }
 	}
 
   saveWordlist(list: Wordlist, field: string, newData: string){
@@ -82,7 +89,6 @@ export class ContextPackCardComponent implements OnInit {
     this.addWord(wordlist,word,wordType);
     this.contextPackForm.reset();
   }
-
 
   deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
@@ -98,6 +104,7 @@ export class ContextPackCardComponent implements OnInit {
           });
         });
   }
+
   deleteWordlist(list: Wordlist) {
           this.contextpackservice.deleteWordlist(this.contextpack, list.name).subscribe(existingID => {
             this.snackBar.open('Deleted ' + list.name + ' from Context Pack: ' + this.contextpack.name, null, {
