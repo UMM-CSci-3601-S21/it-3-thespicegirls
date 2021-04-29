@@ -187,9 +187,67 @@ describe('Learner list view',()=>{
       cy.get('.toggle-list-assign input').eq(0).should('not.be.checked');
       cy.get('.toggle-list-assign input').eq(1).click({force:true});
       cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
-
     });
   });
+
+  it('Should correctly unassign a context pack', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).should('be.checked');
+    cy.get('.toggle-pack-assign input').eq(0).click({force:true});
+    cy.get('.toggle-pack-assign input').eq(0).should('not.be.checked');
+    cy.get('.assigned-pack-name mat-card-title').should('not.have.text','farm');
+  });
+  it('Should update wordlist toggle options after assigning/unassigning a pack', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).click({force: true});
+    const wordlistOptions = ['birthday','farm_animals','farm_equipment'];
+    cy.get('body').click();
+    cy.get('.wordlist-select').click();
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[0]);
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[1]);
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[2]);
+    cy.get('body').click();
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).click({force: true});
+    cy.get('body').click();
+    cy.get('.wordlist-select').click();
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[0]);
+
+  });
+  it('Should display correct words after assigning', () => {});
+  it('Should correctly update disabledWordlists after unassigning', () => {});
+  it('Should correctly assign a context pack', () =>{
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(2).should('not.be.checked');
+    cy.get('.toggle-pack-assign input').eq(2).click({force:true});
+    cy.get('.toggle-pack-assign input').eq(2).should('be.checked');
+    cy.get('.assigned-pack-name mat-card-title').eq(1).should('contain.text','Extra Cool Pack That Makes The Text Tiny');
+  });
+  it('Should display correct words after unassigning', () => {});
 
   it('Should view a learner info page, and use the back button', () => {
     pageLogin.googleAdminLogin();
