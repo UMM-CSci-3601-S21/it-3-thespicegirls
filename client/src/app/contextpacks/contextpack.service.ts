@@ -180,10 +180,10 @@ export class ContextPackService {
 
   updateLocalFields(contextpack: ContextPack, obj: any){
     if(obj.name){
-      contextpack.name =obj.name;
+      contextpack.name = obj.name;
     }
-    if(obj.enabled){
-      contextpack.name =obj.name;
+    if(obj.enabled !== undefined){
+      contextpack.enabled = obj.enabled;
     }
     if(obj.icon){
       contextpack.icon = obj.icon;

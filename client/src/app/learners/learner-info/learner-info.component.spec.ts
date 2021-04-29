@@ -211,7 +211,6 @@ describe('LearnerInfoComponent', () => {
      expect(testPack.enabled).toBe(true);
     });
     it('Should assign/unassign context pack to learner', () => {
-      // component.learner.assignedContextPacks.push(testContextPacks[0]._id);
       component.toggleContextpack(testContextPacks[0],testContextPacks[0].enabled);
       expect(testContextPacks[0].enabled).toBe(false);
       expect(component.learner.assignedContextPacks).not.toContain(testContextPacks[0]._id);
@@ -219,7 +218,6 @@ describe('LearnerInfoComponent', () => {
       component.toggleContextpack(testContextPacks[0],testContextPacks[0].enabled);
       expect(testContextPacks[0].enabled).toBe(true);
       expect(component.learner.assignedContextPacks).toContain(testContextPacks[0]._id);
-
     });
 });
 });

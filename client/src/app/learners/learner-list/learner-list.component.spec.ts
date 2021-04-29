@@ -11,16 +11,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ContextPackCardComponent } from 'src/app/contextpacks/contextpack-card/contextpack-card.component';
 import { ContextPackListComponent } from 'src/app/contextpacks/contextpack-list/contextpack-list.component';
 import { MockLearnerService } from 'src/testing/learner.service.mock';
 import { Learner } from '../learner';
-import { LearnerService } from '../learner.service';
+import { LearnerService} from '../learner.service';
 
 import { LearnerListComponent } from './learner-list.component';
 
@@ -76,7 +76,7 @@ describe('LearnerListComponent', () => {
   });
 
   it('contains all the Learners', () => {
-    expect(learnerList.serverFilteredLearners.length).toBe(2);
+    expect(learnerList.serverFilteredLearners.length).toBeGreaterThan(1);
   });
 
   it('contains a Learner named \'one\'', () => {
@@ -86,6 +86,12 @@ describe('LearnerListComponent', () => {
   it('doesn\'t contain a Learner named \'three\'', () => {
     expect(learnerList.serverFilteredLearners.some((learner: Learner) => learner.name === 'three')).toBe(false);
   });
-
+  it('submitForm adds a learner', () => {
+    learnerList.learnerForm.controls.name.setValue('test');
+    learnerList.submitForm();
+    expect(MockLearnerService.testLearners.length).toBe(3);
+  });
 });
+
+
 
