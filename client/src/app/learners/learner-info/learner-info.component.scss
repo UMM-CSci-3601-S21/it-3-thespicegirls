@@ -4,6 +4,7 @@ mat-list-item, h1, h3, h2, mat-option{
 .back-button {
   float: left;
   background-color: skyblue;
+  margin-right: 3px;
 }
 .nouns{
   background-color: rgb(238, 105, 105);
@@ -28,13 +29,24 @@ mat-list-item, h1, h3, h2, mat-option{
   justify-content: space-between;
 }
 mat-card {
-  margin: 10px;
+  margin: 3px;
+
+}
+mat-card-title{
+  text-transform: capitalize;
 }
 .home{
   text-align: center;
 }
 mat-card-subtitle{
   text-align: center;
+}
+.disabled-wordlists{
+  font-size: small;
+}
+.disabled-list{
+  color:grey;
+  margin-left:5px;
 }
 
 
