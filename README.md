@@ -25,12 +25,13 @@ Word River is a place that teachers or researchers can create and manage the con
  - edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
  - add learner: admin can create new learners
  - assign contextpacks to learners: admin are able to assign contextpacks to their learners
- - export the learners contextpacks
+ - export the learner's contextpacks: export a JSON file with all of the learners contextpacks
+ - delete and add wordlists: users are able to add and delete wordlists within contextpacks
 
 ## Tools 
 - This project uses mainly Java on the backend, which is supplemented by [Javlin](https://javalin.io/) for server and API creation 
 - The front end of this project uses Angular, and features a number of different [Angular Materials](https://material.angular.io/) for improved user experience
-- Typescript, JavaScript, HTML,and CSS were all used to create teh front end of the application
+- Typescript, JavaScript, HTML,and CSS were all used to create the front end of the application
 - Unit testing was done using [Karma](https://karma-runner.github.io/latest/index.html), and [Jasmine](https://jasmine.github.io/)
 - End-To-End testing was done using [Cypress](https://www.cypress.io/)
 - For automated wordflows, [GitHub actions](https://github.com/features/actions) was used along with [LGTM continuous security analysis](https://lgtm.com/) and [BetterCodeHub](https://bettercodehub.com/)
