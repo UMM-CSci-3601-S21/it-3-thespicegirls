@@ -7,6 +7,7 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/UMM-CSci-3601-S21/it-3-thespicegirls?branch=main)](https://bettercodehub.com/)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/UMM-CSci-3601-S21/it-3-thespicegirls.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/UMM-CSci-3601-S21/it-3-thespicegirls/alerts/)
 
+- [Tools](#tools)
 - [Development](#development)
   - [Common commands](#common-commands)
 - [Deployment](#deployment)
@@ -25,6 +26,14 @@ Word River is a place that teachers or researchers can create and manage the con
  - add learner: admin can create new learners
  - assign contextpacks to learners: admin are able to assign contextpacks to their learners
  - export the learners contextpacks
+
+## Tools 
+- This project uses mainly Java on the backend, which is supplemented by [Javlin](https://javalin.io/) for server and API creation 
+- The front end of this project uses Angular, and features a number of different [Angular Materials](https://material.angular.io/) for improved user experience
+- Typescript, JavaScript, HTML,and CSS were all used to create teh front end of the application
+- Unit testing was done using [Karma](https://karma-runner.github.io/latest/index.html), and [Jasmine](https://jasmine.github.io/)
+- End-To-End testing was done using [Cypress](https://www.cypress.io/)
+- For automated wordflows, [GitHub actions](https://github.com/features/actions) was used along with [LGTM continuous security analysis](https://lgtm.com/) and [BetterCodeHub](https://bettercodehub.com/)
 ## [Development](DEVELOPMENT.md)
 
 Instructions on setting up the development environment and working with the code are in [the development guide](DEVELOPMENT.md).
