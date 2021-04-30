@@ -24,6 +24,7 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   assignedPacksObj: AssignedPack[]=[];
   possibleWordlists: Wordlist[]=[];
   possibleContextpacks: ContextPack[]=[];
+  disabledWordlists: string[];
 
 
   constructor( public snackBar: MatSnackBar, private route: ActivatedRoute, private contextPackService: ContextPackService,
@@ -189,10 +190,10 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDisabledListsFromPack(pack: ContextPack){
+  getDisabledListsFromPack(pack: ContextPack, packObj: AssignedPack){
     let disabledLists = [];
     for(const list of pack.wordlists){
-      if(this.learner.disabledWordlists.indexOf(list.name) !== -1){
+      if(packObj.assignedWordlists.indexOf(list) === -1){
         disabledLists = disabledLists.concat(list.name.replace('_',' '));
       }
     }
@@ -249,7 +250,9 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
     pack.enabled = !pack.enabled;
     const newPacksObj = {
       contextpack: pack,
-      assignedWordlists: pack.wordlists,
+      assignedWordlists: pack.wordlists.filter((list)=>
+        list.enabled !== false
+      )
     };
     for(const list of newPacksObj.assignedWordlists){
       if(!list.enabled){
@@ -294,4 +297,5 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
 export interface AssignedPack {
   contextpack: ContextPack;
   assignedWordlists: Wordlist[];
+  unassignedWordlists?: Wordlist[];
 }
