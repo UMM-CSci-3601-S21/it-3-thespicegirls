@@ -14,28 +14,6 @@ export class LearnerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  checkIfLoggedIn(log: string){
-    let isSignedIn: boolean;
-    if (log === 'true'){
-      isSignedIn = true;
-    }
-    else{
-      isSignedIn = false;
-    }
-    return isSignedIn;
-  }
-
-  checkIfAdmin(log: string){
-    let isAdmin: boolean;
-    if (log === 'true'){
-      isAdmin = true;
-    }
-    else{
-      isAdmin = false;
-    }
-    return isAdmin;
-  }
-
   getLearners(): Observable<Learner[]> {
     const httpParams: HttpParams = new HttpParams();
     return this.httpClient.get<Learner[]>(this.learnerUrl, {
@@ -60,13 +38,23 @@ export class LearnerService {
 
     return filteredLearners;
   }
+
   assignWordlist(listname: string ,learner: Learner, action: string){
     let httpParams: HttpParams = new HttpParams();
     httpParams = httpParams.set(action,listname);
 
-    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assign', {
+    return this.httpClient.get<Learner>(this.learnerUrl + '/' + learner._id +'/assignWordlist', {
       params: httpParams,
    });
+  }
+
+  assignContextpack(learner: Learner, action: string, pack: string){
+    let httpParams: HttpParams = new HttpParams();
+    httpParams = httpParams.set(action, pack);
+
+    return this.httpClient.post<Learner>(this.learnerUrl + '/' + learner._id + '/assignPack', null, {
+      params: httpParams,
+    });
   }
 
   addLearner(newLearner: Learner): Observable<string>{

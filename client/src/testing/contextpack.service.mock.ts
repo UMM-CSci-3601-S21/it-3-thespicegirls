@@ -108,7 +108,7 @@ export class MockContextPackService extends ContextPackService {
   ];
 
   constructor() {
-    super(null);
+    super(null,null);
   }
 
   getContextPacks(): Observable<ContextPack[]> {
@@ -128,6 +128,10 @@ export class MockContextPackService extends ContextPackService {
   }
 
   updateWordList(contextpack: ContextPack, listname: string, editValues: {name?: string; enabled?: string}): Observable<ContextPack>{
+    return of(MockContextPackService.testContextPacks[0]);
+  }
+
+  updateContextPack(contextpack: ContextPack, newValues?: {name?: string; enabled?: string; icon?: string}): Observable<ContextPack>{
     return of(MockContextPackService.testContextPacks[0]);
   }
 

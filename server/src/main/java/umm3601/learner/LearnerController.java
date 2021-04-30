@@ -21,17 +21,12 @@ import static com.mongodb.client.model.Filters.eq;
 public class LearnerController {
 
   private final JacksonMongoCollection<Learner> learnerCollection;
-  private final JacksonMongoCollection<ContextPack> contextPackCollection;
-
-
 
   static MongoClient mongoClient;
   static MongoDatabase db;
 
-
   public LearnerController(MongoDatabase database){
     learnerCollection = JacksonMongoCollection.builder().build(database, "learners", Learner.class);
-    contextPackCollection = JacksonMongoCollection.builder().build(database, "contextpacks", ContextPack.class);
   }
 
   public void getLearner(Context ctx) {
@@ -51,7 +46,7 @@ public class LearnerController {
       ctx.json(learner);
     }
     else{
-      throw new IllegalAccessError("This is not your student");
+      throw new IllegalAccessError("This is not your Learner");
     }
   }
 
@@ -64,7 +59,7 @@ public class LearnerController {
   public void assignWordlist(Context ctx){
     User user = ctx.sessionAttribute("current-user");
     Bson filter = (eq("_id", ctx.pathParam("id")));
-    Learner  learner = learnerCollection.find(filter).first();
+    Learner learner = learnerCollection.find(filter).first();
     if(learner.userId.equals(user._id.toString())){
       if(ctx.queryParamMap().containsKey("assign")){
         String listname = ctx.queryParam("assign");
@@ -86,6 +81,31 @@ public class LearnerController {
     }
   }
 
+  public void assignContextPack(Context ctx){
+    User user = ctx.sessionAttribute("current-user");
+    Bson filter = eq("_id", ctx.pathParam("id"));
+    Learner learner = learnerCollection.find(filter).first();
+
+    if(learner.userId.equals(user._id.toString())){
+      if(ctx.queryParamMap().containsKey("assign")){
+        String packIdAdd = ctx.queryParam("assign");
+        learner.assignedContextPacks.add(packIdAdd);
+      }
+      if(ctx.queryParamMap().containsKey("unassign")){
+        String packIdRemove = ctx.queryParam("unassign");
+        learner.assignedContextPacks.removeIf(packs -> packs.equals(packIdRemove));
+        System.out.println(learner.disabledWordlists);
+      }
+      learnerCollection.replaceOne(filter, learner);
+      learner = learnerCollection.find(filter).first();
+      ctx.status(201);
+      ctx.json(learner);
+  }
+    else {
+    throw new IllegalAccessError();
+    }
+  }
+
   public void addLearner(Context ctx){
     Learner newLearner = ctx.bodyValidator(Learner.class)
       .check(learner -> learner.name != null )
@@ -97,5 +117,5 @@ public class LearnerController {
       learnerCollection.insertOne(newLearner);
       ctx.status(201);
       ctx.json(ImmutableMap.of("id", newLearner._id));
-}
+  }
 }

@@ -1,5 +1,6 @@
-<div *ngIf="!(isAdmin === true); else templateLearners">
-  <h1 class="admin">Must be an admin to have learners.</h1>
+<div class="permissionDenied" *ngIf="!(isAdmin === true); else templateLearners">
+  <h1 class="admin">Permission Denied</h1>
+  <h2>Login as an admin to continue.</h2>
 </div>
 <ng-template #templateLearners>
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
@@ -39,6 +40,7 @@
     </mat-card>
 
   <div class="learnerContainer" fxLayout="column">
+    <h2 class="noLearners" *ngIf="this.filteredLearners.length === 0">You don't have any Learners</h2>
     <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
   </div>
 

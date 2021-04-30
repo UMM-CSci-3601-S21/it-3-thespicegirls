@@ -36,7 +36,15 @@ export class MockLearnerService extends LearnerService {
       return of(MockLearnerService.testLearners[0]);
     }
   }
+  addLearner(newLearner: Learner): Observable<string> {
+    newLearner._id = 'testAdd';
+    MockLearnerService.testLearners.push(newLearner);
+    return of(MockLearnerService.testLearners[2]._id);
+  }
   assignWordlist(listname: string ,learner: Learner){
+    return of(MockLearnerService.testLearners[0]);
+  }
+  assignContextpack(learner: Learner, action: string, pack: string){
     return of(MockLearnerService.testLearners[0]);
   }
 

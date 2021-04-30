@@ -1,9 +1,10 @@
-mat-list, h1{
+mat-list-item, h1, h3, h2, mat-option{
   text-transform:capitalize;
 }
 .back-button {
   float: left;
   background-color: skyblue;
+  margin-right: 3px;
 }
 .nouns{
   background-color: rgb(238, 105, 105);
@@ -19,11 +20,33 @@ mat-list, h1{
 }
 .word-chip-container{
   border-radius: 5px;
-
 }
 ::ng-deep .mat-tooltip{
   text-transform: capitalize;
 }
+
+mat-card {
+  margin: 3px;
+}
+mat-card-title{
+  text-transform: capitalize;
+  width: 70%;
+}
 .home{
   text-align: center;
 }
+mat-card-subtitle{
+  text-align: center;
+}
+.disabled-wordlists{
+  color: lightgrey;
+  white-space: pre;
+}
+.assigned-wordlists {
+  white-space: pre;
+}
+.toggles, mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+

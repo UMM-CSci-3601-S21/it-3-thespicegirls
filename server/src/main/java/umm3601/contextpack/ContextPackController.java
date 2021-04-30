@@ -125,56 +125,40 @@ public class ContextPackController {
       if(ctx.queryParamMap().containsKey("listname")){
         int index = getListIndex(pack,ctx.queryParam("listname"));list = pack.wordlists.get(index);}
       if(ctx.queryParamMap().containsKey(WORDLIST_DEL_KEY)) {
-        pack.deleteWordlist(ctx.queryParam("listname"));
-      }
+        pack.deleteWordlist(ctx.queryParam("listname"));}
       if(ctx.queryParamMap().containsKey(ADD_WORDLIST_KEY)) {
-        pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));
-      }
+        pack.addWordlist(ctx.queryParam(ADD_WORDLIST_KEY));}
       if (ctx.queryParamMap().containsKey(ENABLED_KEY)) {
         boolean enabled = ctx.queryParam(ENABLED_KEY).equals("false") ? false : true;
-        list.setEnabled(enabled);
-      }
+        list.setEnabled(enabled);}
       if(ctx.queryParamMap().containsKey(NAME_KEY)){
-        list.setName(ctx.queryParam(NAME_KEY));
-      }
+        list.setName(ctx.queryParam(NAME_KEY));}
       if(ctx.queryParamMap().containsKey(NOUN_DEL_KEY)){
-        list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));
-      }
+        list.deleteNoun(ctx.queryParam(NOUN_DEL_KEY));}
       if(ctx.queryParamMap().containsKey(VERB_DEL_KEY)){
-        list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));
-      }
+        list.deleteVerb(ctx.queryParam(VERB_DEL_KEY));}
       if(ctx.queryParamMap().containsKey(ADJ_DEL_KEY)){
-        list.deleteAdj(ctx.queryParam(ADJ_DEL_KEY));
-      }
+        list.deleteAdj(ctx.queryParam(ADJ_DEL_KEY));}
       if(ctx.queryParamMap().containsKey(MISC_DEL_KEY)){
-        list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));
-      }
+        list.deleteMisc(ctx.queryParam(MISC_DEL_KEY));}
       if(ctx.queryParamMap().containsKey(ADD_ADJ_KEY)){
         ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_ADJ_KEY).split(","))));
-        list.addWord(posArray, "adj");
-      }
+        list.addWord(posArray, "adj");}
       if(ctx.queryParamMap().containsKey(ADD_NOUN_KEY)){
         ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_NOUN_KEY).split(","))));
-        list.addWord(posArray, "noun");
-      }
+        list.addWord(posArray, "noun");}
       if(ctx.queryParamMap().containsKey(ADD_VERB_KEY)){
         ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_VERB_KEY).split(","))));
-        list.addWord(posArray, "verb");
-      }
+        list.addWord(posArray, "verb");}
       if(ctx.queryParamMap().containsKey(ADD_MISC_KEY)){
         ArrayList<String> posArray = new ArrayList<>(Arrays.asList((ctx.queryParam(ADD_MISC_KEY).split(","))));
-        list.addWord(posArray, "misc");
-      }
+        list.addWord(posArray, "misc");}
       contextPackCollection.replaceOne(eq("_id", ctx.pathParam("id")), pack);
 
       pack = contextPackCollection.find(filter).first();
       ctx.json(pack);
       }
-      else{
-        throw new IllegalAccessError();
-      }
-
-
+      else{throw new IllegalAccessError();}
   }
 
 

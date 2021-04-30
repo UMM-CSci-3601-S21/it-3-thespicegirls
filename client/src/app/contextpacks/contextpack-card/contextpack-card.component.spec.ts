@@ -195,8 +195,6 @@ describe('ContextPackCardComponent', () => {
       expect(component.contextpack.wordlists[0].nouns[0].word).not.toContain('goat');
     });
 
-    it('deleteWord calls correct snackbar message when word is added', () => {});
-
   });
   describe('delete Wordlist', () => {
     it('calls contextpackservice.deleteWordlist with correct parameters', () => {
@@ -211,8 +209,6 @@ describe('ContextPackCardComponent', () => {
       expect(component.contextpack.wordlists[0].nouns[0].word).not.toContain('goat');
     });
 
-    it('deleteWord calls correct snackbar message when word is added', () => {});
-
   });
   describe('adding a Wordlist', () => {
     it('calls contextpackservice.addWordlist() with correct parameters', () => {
@@ -221,9 +217,6 @@ describe('ContextPackCardComponent', () => {
       component.addWordlist('pumpkins');
       expect(spy.addWordlist).toHaveBeenCalledTimes(1);
     });
-
-
-    it('deleteWord calls correct snackbar message when word is added', () => {});
 
   });
 
