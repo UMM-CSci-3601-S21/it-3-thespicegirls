@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/user.service';
 import { Learner } from '../learner';
 import { LearnerService } from '../learner.service';
 
@@ -23,7 +24,7 @@ export class LearnerListComponent implements OnInit, OnDestroy {
   getLearnersSub: Subscription;
 
 
-  constructor(private learnerService: LearnerService, private fb: FormBuilder,
+  constructor(private userService: UserService, private learnerService: LearnerService, private fb: FormBuilder,
     private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class LearnerListComponent implements OnInit, OnDestroy {
       ]))
     });
     this.getLearnersFromServer();
-    this.isAdmin = this.learnerService.checkIfAdmin(localStorage.getItem('admin'));
+    this.isAdmin = this.userService.checkIfAdmin(localStorage.getItem('admin'));
   }
 
   submitForm() {

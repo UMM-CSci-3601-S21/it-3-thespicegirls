@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContextPackService } from '../contextpack.service';
 import { Router } from '@angular/router';
 import { ContextPackCardComponent } from '../contextpack-card/contextpack-card.component';
+import { UserService } from 'src/app/user.service';
 
 @Component({
   selector: 'app-add-contextpacks',
@@ -14,7 +15,7 @@ import { ContextPackCardComponent } from '../contextpack-card/contextpack-card.c
 export class AddContextpacksComponent implements OnInit {
   contextPackForm: FormGroup;
   isShown = false;
-  contextpackcard = new ContextPackCardComponent(this.fb,this.snackBar,this.contextPackService);
+  contextpackcard = new ContextPackCardComponent(this.userService,this.fb,this.snackBar,this.contextPackService);
   tabs = [];
   activeTab = this.tabs[0];
   selected = new FormControl(0);
@@ -61,7 +62,7 @@ export class AddContextpacksComponent implements OnInit {
     }
   };
 
-  constructor(private fb: FormBuilder, public contextPackService: ContextPackService,
+  constructor(private userService: UserService, private fb: FormBuilder, public contextPackService: ContextPackService,
     private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit() {
@@ -74,7 +75,7 @@ export class AddContextpacksComponent implements OnInit {
       wordlists: this.fb.array([])
     });
     this.contextPackForm.valueChanges.subscribe(data => this.validateForm());
-    this.isSignedIn = this.contextPackService.checkIfLoggedIn(localStorage.getItem('loggedIn'));
+    this.isSignedIn = this.userService.checkIfLoggedIn(localStorage.getItem('loggedIn'));
 
   }
 

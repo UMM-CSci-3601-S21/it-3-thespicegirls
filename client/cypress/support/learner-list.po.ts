@@ -15,14 +15,18 @@ export class LearnerListPage {
   getAssignedWords(){
     const assignedWords=[];
     for(const pos of ['nouns','verbs','adjectives']){
+      if(cy.get(`.${pos}`)){
       assignedWords.push(cy.get(`.${pos}`));
+    }
     }
     return assignedWords;
   }
   assignWordlist(){
     return cy.get('.wordlist-select').click();
   }
-
+  getEnabledPacks(){
+    return cy.get('.assigned-pack-name');
+  }
 
   /**
    * Clicks the "view info" button for the given contextpack card.

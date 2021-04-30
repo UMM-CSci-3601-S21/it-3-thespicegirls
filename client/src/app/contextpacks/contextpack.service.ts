@@ -3,37 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ContextPack } from './contextpack';
-import { concatMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class ContextPackService {
   readonly contextpackUrl: string = environment.apiUrl + 'contextpacks';
   readonly idTokenUrl: string = environment.apiUrl + 'users';
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, public snackBar: MatSnackBar) {
   }
-
-  checkIfLoggedIn(log: string){
-    let isSignedIn: boolean;
-    if (log === 'true'){
-      isSignedIn = true;
-    }
-    else{
-      isSignedIn = false;
-    }
-    return isSignedIn;
-  }
-
-  checkIfAdmin(log: string){
-    let isAdmin: boolean;
-    if (log === 'true'){
-      isAdmin = true;
-    }
-    else{
-      isAdmin = false;
-    }
-    return isAdmin;
-  }
-
 
   getContextPacks(): Observable<ContextPack[]> {
     const httpParams: HttpParams = new HttpParams();
@@ -174,6 +152,39 @@ export class ContextPackService {
       document.body.removeChild(element);
     return element;
 
+  }
+
+  //for use in contextpack info and list - moved here to satisfy BetterCodeHub
+  updateField(contextPack: ContextPack, event: string[]): void {
+    //to figure out what field is being changed so the correct http param can be sent
+    let obj: any;
+    switch(event[1]){
+      case 'name':obj =  {name: event[0]};
+        break;
+      case 'enabled':obj =   {enabled: event[0]};
+        break;
+      case 'icon':obj =  {icon: event[0]};
+        break;
+    }
+    this.updateContextPack(contextPack, obj).subscribe(existingID => {
+      this.snackBar.open('Updated field ' + event[1] + ' of pack ' + contextPack.name, null, {
+      duration: 2000,
+    });
+    this.updateLocalFields(contextPack, obj);
+    }, err => {
+      this.snackBar.open('Failed to update the ' + event[1] + ' field with value ' + event[0], 'OK', {
+        duration: 5000,
+      });
+    });
+  }
+
+  updateLocalFields(contextpack: ContextPack, obj: any){
+    if(obj.name){
+      contextpack.name = obj.name;
+    }
+    if(obj.icon){
+      contextpack.icon = obj.icon;
+    }
   }
 
 }

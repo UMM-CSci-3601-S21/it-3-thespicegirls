@@ -4,9 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ContextPack, Word, Wordlist } from 'src/app/contextpacks/contextpack';
 import { ContextPackService } from 'src/app/contextpacks/contextpack.service';
 import { ActivatedRouteStub } from 'src/testing/activated-route-stub';
 import { MockContextPackService } from 'src/testing/contextpack.service.mock';

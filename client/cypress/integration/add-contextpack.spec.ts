@@ -9,7 +9,7 @@ describe('Add a Context pack', () => {
   });
 
   it('should see need to login page if local storage isnt set up', () =>{
-    cy.get('.sign').eq(0).should('contain.text','Sign in to add context pack');
+    cy.get('.sign').eq(0).should('contain.text','Permission Denied');
 
   });
   it('Should have the correct title', () => {
@@ -206,6 +206,13 @@ describe('Add a Context pack', () => {
 
     cy.get('.mat-simple-snackbar').should('contain', `Failed`);
 
+  });
+  it('Should use the cancel button to go back', () => {
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    cy.get('.cancel-button').should('be.visible');
+    cy.get('.cancel-button').click();
+    cy.get('.contextpack-list-title').should('contain.text','Context Packs');
   });
 
   });

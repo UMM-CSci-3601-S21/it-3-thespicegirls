@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from 'src/app/user.service';
 import { ContextPack, Word, Wordlist} from '../contextpack';
 import { ContextPackService } from '../contextpack.service';
 
@@ -34,7 +35,8 @@ export class ContextPackCardComponent implements OnInit {
     wordlist: {type: 'required', message: 'Choose a Word List'}
   };
 
-  constructor(private fb: FormBuilder, public snackBar: MatSnackBar, public contextpackservice: ContextPackService)
+  constructor(private userService: UserService, private fb: FormBuilder,
+    public snackBar: MatSnackBar, public contextpackservice: ContextPackService)
   {this.valueChangeEvents = new EventEmitter();}
 
   ngOnInit(): void {
@@ -49,18 +51,18 @@ export class ContextPackCardComponent implements OnInit {
         Validators.required,
       ]))
     });
-    this.isAdmin = this.contextpackservice.checkIfAdmin(localStorage.getItem('admin'));
+    this.isAdmin = this.userService.checkIfAdmin(localStorage.getItem('admin'));
     this.userId = localStorage.getItem('userId');
   }
 
   displayEnabled(status: boolean){
-    if(status === false){
+    if(status){
+      return 'Enabled';
+    } else {
       return 'Disabled';
     }
-    if(status === true){
-      return 'Enabled';
-    }
   }
+
   toggleDeleted(index: number){
     this.deleteClicked = !this.deleteClicked;
     this.deleteIndex = index;
@@ -68,6 +70,12 @@ export class ContextPackCardComponent implements OnInit {
 
   save(field: string, newData: string) {
 		this.valueChangeEvents.emit( [newData, field] );
+    if(newData === 'true'){
+    this.contextpack.enabled = true;
+  }
+  if(newData === 'false'){
+    this.contextpack.enabled = false;
+  }
 	}
 
   saveWordlist(list: Wordlist, field: string, newData: string){
@@ -80,7 +88,6 @@ export class ContextPackCardComponent implements OnInit {
     this.addWord(wordlist,word,wordType);
     this.contextPackForm.reset();
   }
-
 
   deleteWord(list: Wordlist, word: string, wordType: string) {
     const obj: any = this.createParamObj(wordType, word);
@@ -96,6 +103,7 @@ export class ContextPackCardComponent implements OnInit {
           });
         });
   }
+
   deleteWordlist(list: Wordlist) {
           this.contextpackservice.deleteWordlist(this.contextpack, list.name).subscribe(existingID => {
             this.snackBar.open('Deleted ' + list.name + ' from Context Pack: ' + this.contextpack.name, null, {

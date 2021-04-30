@@ -15,14 +15,14 @@ describe('Learner list view',()=>{
   });
 
   it('Should say you need to be an admin if not admin', () => {
-    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
+    cy.get('.admin').should('contain.text', 'Permission Denied');
   });
 
   it('Should say you need to be an admin if logged in and not an admin', () => {
     pageLogin.googleLogin();
     window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
     window.localStorage.setItem('loggedIn', 'true');
-    cy.get('.admin').should('contain.text', 'Must be an admin to have learners.');
+    cy.get('.admin').should('contain.text', 'Permission Denied');
   });
 
   it('Should type something in the name filter and check that it returned correct elements', () => {
@@ -187,9 +187,66 @@ describe('Learner list view',()=>{
       cy.get('.toggle-list-assign input').eq(0).should('not.be.checked');
       cy.get('.toggle-list-assign input').eq(1).click({force:true});
       cy.get('.toggle-list-assign input').eq(1).should('not.be.checked');
-
     });
   });
+
+  it('Should correctly unassign a context pack', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).should('be.checked');
+    cy.get('.toggle-pack-assign input').eq(0).click({force:true});
+    cy.get('.toggle-pack-assign input').eq(0).should('not.be.checked');
+    cy.get('.assigned-pack-name').should('not.have.text','farm');
+  });
+  it('Should update wordlist toggle options after assigning/unassigning a pack', () => {
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).click({force: true});
+    const wordlistOptions = ['birthday','farm_animals','farm_equipment'];
+    cy.get('body').click();
+    cy.get('.wordlist-select').click();
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[0]);
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[1]);
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[2]);
+    cy.get('body').click();
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(0).click({force: true});
+    cy.get('body').click();
+    cy.get('.wordlist-select').click();
+    cy.get('.toggle-list-assign').should('contain.text', wordlistOptions[0]);
+
+  });
+  it('Should display correct words after assigning', () => {});
+  it('Should correctly assign a context pack', () =>{
+    pageLogin.googleAdminLogin();
+    window.localStorage.setItem('admin', 'true');
+    window.localStorage.setItem('userId', '606a5a9fd2b1da77da015c95');
+    window.localStorage.setItem('loggedIn', 'true');
+    cy.reload();
+
+    page.clickViewInfo(page.getLearnerCards().first()).wait(1000);
+
+    cy.get('.contextpack-select').click();
+    cy.get('.toggle-pack-assign input').eq(2).should('not.be.checked');
+    cy.get('.toggle-pack-assign input').eq(2).click({force:true});
+    cy.get('.toggle-pack-assign input').eq(2).should('be.checked');
+    cy.get('.assigned-pack-name').eq(1).should('contain.text','Extra Cool Pack That Makes The Text Tiny');
+  });
+  it('Should display correct words after unassigning', () => {});
 
   it('Should view a learner info page, and use the back button', () => {
     pageLogin.googleAdminLogin();

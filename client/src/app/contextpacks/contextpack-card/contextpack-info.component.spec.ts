@@ -204,21 +204,7 @@ describe('editField()', () => {
         wordlists: testWordListBig
       }
   ];
-
-
-
     fixture.detectChanges();
-  });
-
-  it('calls contextpackservice.updateContextPack with correct parameters', () => {
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(0);
-    spy.updateContextPack.and.returnValue(of(MockContextPackService.testContextPacks[0]));
-    component.updateField(component.contextpack, ['name', 'name']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(1);
-    component.updateField(component.contextpack, ['name', 'enabled']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(2);
-    component.updateField(component.contextpack, ['name', 'icon']);
-    expect(spy.updateContextPack).toHaveBeenCalledTimes(3);
   });
 
   describe('editField()', () => {
@@ -230,9 +216,7 @@ describe('editField()', () => {
       component.editField(component.contextpack.wordlists[0].name,'test','enabled');
       expect(spy.updateWordList).toHaveBeenCalledTimes(2);
     });
-    it('calls correct snackbar message when word is added', () => {});
 
-    it('calls correct snackbar message when word is not added', () => {});
   });
 
 });
