@@ -10,7 +10,7 @@
   <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
 </button>
 
-<mat-card fxLayout="column" style="margin: left 5px;">
+<mat-card fxFlex.gt-sm="85" fxFlexOffset.gt-sm="5" fxLayout="column" style="margin: left 5px;">
   <mat-card-title class="learner-name">{{this.learner.name}}</mat-card-title>
 
 <div class="listPackSection">
@@ -59,16 +59,16 @@
     <div>
     <mat-card-subtitle *ngIf="this.assignedPacksObj.length === 0">No Assigned Context Packs</mat-card-subtitle>
     <mat-list>
-    <mat-list-item *ngFor="let pack of this.assignedPacksObj" class="assigned-pack-name">
+    <mat-list-item *ngFor="let pack of this.assignedPacksObj">
 
-        <span><b>{{pack.contextpack.name}}</b></span>
+        <span><b class="assigned-pack-name">{{pack.contextpack.name}}</b></span>
         <mat-icon>arrow_right_alt</mat-icon>
-        <span fxLayout="row" class="enabled-list">
+        <span fxLayout="row" class="assigned-wordlists">
           <div *ngFor="let list of pack.assignedWordlists">
-            {{list.name.concat(' ')}}
+            {{list.name.replace('_',' ')}}
           </div>
-          <div class="disabled-list">
-            {{this.getDisabledListsFromPack(pack.contextpack).join(" ")}}
+          <div class="disabled-wordlists">
+            {{this.getDisabledListsFromPack(pack.contextpack)}}
           </div>
         </span>
         <mat-divider></mat-divider>

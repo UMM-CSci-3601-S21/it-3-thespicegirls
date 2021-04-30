@@ -190,10 +190,10 @@ export class LearnerInfoComponent implements OnInit, OnDestroy {
   }
 
   getDisabledListsFromPack(pack: ContextPack){
-    const disabledLists = [];
+    let disabledLists = [];
     for(const list of pack.wordlists){
       if(this.learner.disabledWordlists.indexOf(list.name) !== -1){
-        disabledLists.push(list.name);
+        disabledLists = disabledLists.concat(list.name.replace('_',' '));
       }
     }
     return disabledLists;

@@ -203,7 +203,7 @@ describe('Learner list view',()=>{
     cy.get('.toggle-pack-assign input').eq(0).should('be.checked');
     cy.get('.toggle-pack-assign input').eq(0).click({force:true});
     cy.get('.toggle-pack-assign input').eq(0).should('not.be.checked');
-    cy.get('.assigned-pack-name mat-card-title').should('not.have.text','farm');
+    cy.get('.assigned-pack-name').should('not.have.text','farm');
   });
   it('Should update wordlist toggle options after assigning/unassigning a pack', () => {
     pageLogin.googleAdminLogin();
@@ -231,7 +231,6 @@ describe('Learner list view',()=>{
 
   });
   it('Should display correct words after assigning', () => {});
-  it('Should correctly update disabledWordlists after unassigning', () => {});
   it('Should correctly assign a context pack', () =>{
     pageLogin.googleAdminLogin();
     window.localStorage.setItem('admin', 'true');
@@ -245,7 +244,7 @@ describe('Learner list view',()=>{
     cy.get('.toggle-pack-assign input').eq(2).should('not.be.checked');
     cy.get('.toggle-pack-assign input').eq(2).click({force:true});
     cy.get('.toggle-pack-assign input').eq(2).should('be.checked');
-    cy.get('.assigned-pack-name mat-card-title').eq(1).should('contain.text','Extra Cool Pack That Makes The Text Tiny');
+    cy.get('.assigned-pack-name').eq(1).should('contain.text','Extra Cool Pack That Makes The Text Tiny');
   });
   it('Should display correct words after unassigning', () => {});
 
