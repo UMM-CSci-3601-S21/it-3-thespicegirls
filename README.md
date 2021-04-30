@@ -20,20 +20,22 @@ Word River is an extension to Story Builder where a teacher or admin can organiz
 
 Word River is a place that teachers or researchers can create and manage the contextpacks used in Story Builder.
 
- - user login: users are able to login and have either admin status or regular status
- - add contextpacks: users are able to create their own contextpacks
- - edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
- - add learner: admin can create new learners
- - assign contextpacks to learners: admin are able to assign contextpacks to their learners
- - export the learners contextpacks
+- user login: users are able to login and have either admin status or regular status
+- add contextpacks: users are able to create their own contextpacks
+- edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
+- add learner: admin can create new learners
+- assign contextpacks to learners: admin are able to assign contextpacks to their learners
+- export the learners contextpacks
 
-## Tools 
+## Tools
+
 - This project uses mainly Java on the backend, which is supplemented by [Javlin](https://javalin.io/) for server and API creation 
 - The front end of this project uses Angular, and features a number of different [Angular Materials](https://material.angular.io/) for improved user experience
 - Typescript, JavaScript, HTML,and CSS were all used to create teh front end of the application
 - Unit testing was done using [Karma](https://karma-runner.github.io/latest/index.html), and [Jasmine](https://jasmine.github.io/)
 - End-To-End testing was done using [Cypress](https://www.cypress.io/)
 - For automated wordflows, [GitHub actions](https://github.com/features/actions) was used along with [LGTM continuous security analysis](https://lgtm.com/) and [BetterCodeHub](https://bettercodehub.com/)
+
 ## [Development](DEVELOPMENT.md)
 
 Instructions on setting up the development environment and working with the code are in [the development guide](DEVELOPMENT.md).
@@ -41,15 +43,18 @@ Instructions on setting up the development environment and working with the code
 ### Common commands
 
 From the `server` directory:
+
 - `./gradlew run` to start the server
 - `./gradlew test` to test the server
 
 From the `client` directory:
+
 - `ng serve` to run the client
 - `ng test` to test the client
 - `ng e2e` and `ng e2e --watch` to run end-to-end tests
 
 From the `database` directory:
+
 - `./mongoseed.sh` (or `.\mongoseed.bat` on Windows) to seed the database
 
 ## [Deployment](DEPLOYMENT.md)
