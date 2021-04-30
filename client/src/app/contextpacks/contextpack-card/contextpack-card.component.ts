@@ -56,11 +56,10 @@ export class ContextPackCardComponent implements OnInit {
   }
 
   displayEnabled(status: boolean){
-    if(!status){
-      return 'Disabled';
-    }
     if(status){
       return 'Enabled';
+    } else {
+      return 'Disabled';
     }
   }
 
