@@ -11,7 +11,6 @@
 - [Development](#development)
   - [Common commands](#common-commands)
 - [API keys](#api-keys)
-- [Deployment](#deployment)
 - [Contributors](#contributors)
 
 Word River is an extension to Story Builder where a teacher or admin can organize and manage both their contextpacks and learners. Contextpacks are made up of multiple wordlists that often have similar themes or purpose.
@@ -21,17 +20,17 @@ Word River is an extension to Story Builder where a teacher or admin can organiz
 
 Word River is a place that teachers or researchers can create and manage the contextpacks used in Story Builder.
 
- - user login: users are able to login and have either admin status or regular status
- - add contextpacks: users are able to create their own contextpacks
- - edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
- - add learner: admin can create new learners
- - assign contextpacks to learners: admin are able to assign contextpacks to their learners
- - export the learner's contextpacks: export a JSON file with all of the learners contextpacks
- - delete and add wordlists: users are able to add and delete wordlists within contextpacks
+- user login: users are able to login and have either admin status or regular status
+- add contextpacks: users are able to create their own contextpacks
+- edit contextpacks: admin and the creator of that pack can edit what is in the contextpack
+- add learner: admin can create new learners
+- assign contextpacks to learners: admin are able to assign contextpacks to their learners
+- export the learner's contextpacks: export a JSON file with all of the learners contextpacks
+- delete and add wordlists: users are able to add and delete wordlists within contextpacks
 
 ## Tools
 
-- This project uses mainly Java on the backend, which is supplemented by [Javlin](https://javalin.io/) for server and API creation 
+- This project uses mainly Java on the backend, which is supplemented by [Javlin](https://javalin.io/) for server and API creation
 - The front end of this project uses Angular, and features a number of different [Angular Materials](https://material.angular.io/) for improved user experience
 - Typescript, JavaScript, HTML,and CSS were all used to create the front end of the application
 - Unit testing was done using [Karma](https://karma-runner.github.io/latest/index.html), and [Jasmine](https://jasmine.github.io/)
@@ -62,10 +61,6 @@ From the `database` directory:
 ## [API keys](API.md)
 
 Instructions to create API keys are in in [the api guide](API.md).
-
-## [Deployment](DEPLOYMENT.md)
-
-Instructions on how to setup this project are in [the deployment guide](DEPLOYMENT.md).
 
 ## Contributors
 
