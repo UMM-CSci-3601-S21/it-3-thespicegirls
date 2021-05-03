@@ -9,6 +9,7 @@
 
 - [Development](#development)
   - [Common commands](#common-commands)
+- [API keys](#api-keys)
 - [Deployment](#deployment)
 - [Resources](#resources)
 - [Contributors](#contributors)
@@ -41,6 +42,10 @@ From the `client` directory:
 
 From the `database` directory:
 - `./mongoseed.sh` (or `.\mongoseed.bat` on Windows) to seed the database
+
+## [API keys](API.md)
+
+Instructions to create API keys are in in [the api guide](API.md).
 
 ## [Deployment](DEPLOYMENT.md)
 
