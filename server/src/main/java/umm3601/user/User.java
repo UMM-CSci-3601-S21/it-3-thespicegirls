@@ -8,10 +8,13 @@ public class User {
   @ObjectId @Id
   public String _id;
 
-  public String name;
-  public int age;
-  public String company;
-  public String email;
-  public String avatar;
-  public String role;
+ public String email;
+ public boolean emailVerified;
+ public String name;
+ public String pictureUrl;
+ public String locale;
+ public String familyName;
+ public String givenName;
+ public String sub;
+ public Boolean admin;
 }

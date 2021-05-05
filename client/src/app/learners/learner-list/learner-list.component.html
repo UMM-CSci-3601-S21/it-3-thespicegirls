@@ -1,0 +1,48 @@
+<div class="permissionDenied" *ngIf="!(isAdmin === true); else templateLearners">
+  <h1 class="admin">Permission Denied</h1>
+  <h2>Login as an admin to continue.</h2>
+</div>
+<ng-template #templateLearners>
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+
+    <mat-card class="headerContent">
+      <mat-card-title class="learner-list-title">My Learners</mat-card-title>
+
+      <mat-card-content>
+
+      <mat-card fxFlex class="filter">
+        <mat-card-title><h2>Filter Learners:</h2></mat-card-title>
+      <mat-card-content>
+        <mat-form-field class="input-field">
+         <mat-label>Filter By Name</mat-label>
+         <input matInput data-test="learnerNameInput" placeholder="Filter by name"
+         [(ngModel)]="learnerName" (input)="updateLearnerFilter()">
+        </mat-form-field>
+      </mat-card-content>
+      </mat-card>
+
+      <mat-card fxFlex class="add">
+        <mat-card-title><h2>Add A New Learner:</h2></mat-card-title>
+        <mat-card-content class="newLearner">
+          <form [formGroup]="learnerForm" class="newLearnerForm">
+            <mat-form-field class="learnerName-field">
+              <mat-label>Enter New Learner's Name</mat-label>
+              <input autocomplete="off" formControlName="name" required matInput data-test="newLearnerNameInput" placeholder="New Learner's Name">
+              <mat-error class="error-message" data-test="nameError">Please enter a valid name</mat-error>
+           </mat-form-field>
+          </form>
+          <button mat-icon-button data-test="addLearnerButton" class="addLearnerButton" matTooltip="Submit New Learner" matTooltipPosition="above" (click)="submitForm()"><mat-icon>add</mat-icon></button>
+        </mat-card-content>
+      </mat-card>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  <div class="learnerContainer" fxLayout="column">
+    <h2 class="noLearners" *ngIf="this.filteredLearners.length === 0">You don't have any Learners</h2>
+    <app-learner-card [simple]=true *ngFor="let learner of filteredLearners" class="learner-card" [learner]="learner"  fxFlex="1 1"></app-learner-card>
+  </div>
+
+  </div>
+</ng-template>

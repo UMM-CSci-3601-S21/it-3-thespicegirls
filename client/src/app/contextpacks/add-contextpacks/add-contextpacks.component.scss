@@ -1,0 +1,160 @@
+/* ProfileEditorComponent's private CSS styles */
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  background-color: #f8f8f6;
+}
+
+div {
+  width: inherit;
+}
+.contextpackSection, .wordlist {
+  display: inline-block;
+  width: inherit;
+}
+
+.enabled-checkbox, .wordlist-enabled-checkbox{
+  padding: 10px;
+  display: inline-block;
+}
+.nameField, .iconField, .wordlist-nameField {
+  width: 40%;
+  padding:10px;
+}
+
+input {
+  font-size: 1em;
+  padding-left: .4em;
+  color:#01596e;
+}
+
+h2 {
+  color:#01596e;
+}
+
+.delete-button{
+  padding: 10px;
+  float: right;
+  color: #F43911;
+  border: none;
+  margin: 10px;
+}
+
+.add-button {
+  border:none;
+}
+
+.cancelWord{
+  color: #F43911;
+  float: right;
+}
+
+.nounButtons {
+  float: left;
+
+}
+
+button:hover {
+  background-color: #757474;
+}
+
+button:disabled {
+  background-color: rgba(255, 255, 255, 0);
+  color:rgba(128, 128, 128, 0.734);
+  cursor: auto;
+}
+
+.nouns, .nounsform, .nounWord .adjectives, .verbs, .misc {
+  margin: 5px;
+  padding: 5px;
+  align-items: left;
+}
+
+.posContainer {
+  display: inline-block;
+}
+
+.noun-delete-button, .cancelWord {
+  display: inline-block;
+  border: none;
+}
+
+.mat-card-title{
+  color:#01596e;
+}
+
+h3{
+  font-style:oblique;
+  color:#01596e;
+}
+
+.sidenav-list a{
+  background-color:red;
+}
+
+.red-icon{
+  color: #F43911
+}
+
+.add-noun-button{
+  background-color: #356398;
+  border:none;
+  float:right;
+}
+
+.add-noun-button:focus{
+  background-color:  #356398;
+  text-decoration: none;
+  bottom:0;
+  margin-bottom:0;
+  float:right;
+}
+
+.add-adj-button{
+  background-color: #7FA791;
+  border:none;
+  float:right;
+}
+
+.add-verb-button{
+  background-color: #F6F2C3;
+  border:none;
+  float:right;
+  color: black;
+}
+
+.add-misc-button{
+  background-color: #EDB76A;
+  border:none;
+  float:right;
+  color: black;
+}
+
+.contextpack-download-button{
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  float: right;
+  background-color: #3baada;
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+}
+
+.sign {
+  text-align: center;
+}
+.cancel-button {
+  float: left;
+  background-color: skyblue;
+  bottom: 283px;
+}
+
+
+.cancel-button {
+  float: left;
+  background-color: skyblue;
+  bottom: 283px;
+}
+

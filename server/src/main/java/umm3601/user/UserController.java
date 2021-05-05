@@ -1,39 +1,30 @@
 package umm3601.user;
 
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Collections;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Sorts;
 
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 import org.mongojack.JacksonMongoCollection;
 
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
-import io.javalin.http.NotFoundResponse;
+
+
 
 /**
  * Controller that manages requests for info about users.
  */
 public class UserController {
-
-  private static final String AGE_KEY = "age";
-  private static final String COMPANY_KEY = "company";
-  private static final String ROLE_KEY = "role";
-
-  static String emailRegex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
   private final JacksonMongoCollection<User> userCollection;
 
@@ -49,104 +40,123 @@ public class UserController {
   /**
    * Get the single user specified by the `id` parameter in the request.
    *
-   * @param ctx a Javalin HTTP context
+   * @param sub a string with users google ID
+   * @return true or false based on if user exists in database
    */
-  public void getUser(Context ctx) {
-    String id = ctx.pathParam("id");
+  public User getUser(String sub) {
+    String id = sub;
     User user;
-
-    try {
-      user = userCollection.find(eq("_id", new ObjectId(id))).first();
-    } catch(IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested user id wasn't a legal Mongo Object ID.");
-    }
-    if (user == null) {
-      throw new NotFoundResponse("The requested user was not found");
-    } else {
-      ctx.json(user);
-    }
+    user = userCollection.find(eq("email", id)).first();
+    return user;
   }
 
-  /**
-   * Delete the user specified by the `id` parameter in the request.
-   *
-   * @param ctx a Javalin HTTP context
-   */
-  public void deleteUser(Context ctx) {
-    String id = ctx.pathParam("id");
-    userCollection.deleteOne(eq("_id", new ObjectId(id)));
-  }
 
   /**
    * Get a JSON response with a list of all the users.
    *
-   * @param ctx a Javalin HTTP context
+   * @param user a user to be added to the database
+   * @return
    */
-  public void getUsers(Context ctx) {
-
-    List<Bson> filters = new ArrayList<>(); // start with a blank document
-
-    if (ctx.queryParamMap().containsKey(AGE_KEY)) {
-        int targetAge = ctx.queryParam(AGE_KEY, Integer.class).get();
-        filters.add(eq(AGE_KEY, targetAge));
-    }
-
-    if (ctx.queryParamMap().containsKey(COMPANY_KEY)) {
-      filters.add(regex(COMPANY_KEY,  Pattern.quote(ctx.queryParam(COMPANY_KEY)), "i"));
-    }
-
-    if (ctx.queryParamMap().containsKey(ROLE_KEY)) {
-      filters.add(eq(ROLE_KEY, ctx.queryParam(ROLE_KEY)));
-    }
-
-    String sortBy = ctx.queryParam("sortby", "name"); //Sort by sort query param, default is name
-    String sortOrder = ctx.queryParam("sortorder", "asc");
-
-    ctx.json(userCollection.find(filters.isEmpty() ? new Document() : and(filters))
-      .sort(sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy))
-      .into(new ArrayList<>()));
+  public User addNewUser(User user) {
+    userCollection.insertOne(user);
+    return userCollection.find(eq("email", user.sub)).first();
   }
 
-  /**
-   * Get a JSON response with a list of all the users.
-   *
-   * @param ctx a Javalin HTTP context
-   */
-  public void addNewUser(Context ctx) {
-    User newUser = ctx.bodyValidator(User.class)
-      .check(usr -> usr.name != null && usr.name.length() > 0) //Verify that the user has a name that is not blank
-      .check(usr -> usr.email.matches(emailRegex)) // Verify that the provided email is a valid email
-      .check(usr -> usr.age > 0) // Verify that the provided age is > 0
-      .check(usr -> usr.role.matches("^(admin|editor|viewer)$")) // Verify that the role is one of the valid roles
-      .check(usr -> usr.company != null && usr.company.length() > 0) // Verify that the user has a company that is not blank
-      .get();
+  GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+    // Specify the CLIENT_ID of the app that accesses the backend:
+    .setAudience(Collections.singletonList("239479898228-jsa8kqtcnqg96v8r74j2mp9jbbp01scu.apps.googleusercontent.com"))
+    // Or, if multiple clients access the backend:
+    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+    .build();
 
-    // Generate user avatar (you won't need this part for todos)
-    try {
-      newUser.avatar = "https://gravatar.com/avatar/" + md5(newUser.email) + "?d=identicon";  // generate unique md5 code for identicon
-    } catch (NoSuchAlgorithmException ignored) {
-      newUser.avatar = "https://gravatar.com/avatar/?d=mp";                           // set to mystery person
+// (Receive idTokenString by HTTPS POST)
+
+public void checkToken(Context ctx) throws GeneralSecurityException, IOException {
+  String idTokenString = ctx.body();
+  GoogleIdToken idToken = verifier.verify(idTokenString);
+  if (idToken != null) {
+    ctx = userTokenChecker(idToken, ctx);
+  }
+  else {
+    throw new BadRequestResponse("The requested user token was not legal.");
+  }
+}
+
+public Context userTokenChecker(GoogleIdToken idToken, Context ctx){
+
+  Payload payload = idToken.getPayload();
+  User loggedUser = getUser(payload.get("email").toString());
+
+  if (!(loggedUser == null)){
+    if (loggedUser.admin == true){
+      ctx.sessionAttribute("current-user", loggedUser);
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      User userReturn = new User();
+      userReturn.name = loggedUser.givenName;
+      userReturn._id = loggedUser._id;
+      userReturn.admin  = loggedUser.admin;
+
+      ctx.json(userReturn);
+    }
+    else{
+      ctx.sessionAttribute("current-user", loggedUser);
+      ctx.sessionAttribute("user-name", loggedUser.givenName);
+      ctx.status(201);
+      User userReturn = new User();
+      userReturn.name = loggedUser.givenName;
+      userReturn._id = loggedUser._id;
+      userReturn.admin  = loggedUser.admin;
+
+      ctx.json(userReturn);
     }
 
-    userCollection.insertOne(newUser);
+  }
+  else{
+    User user = new User();
+    user.email = payload.getEmail();
+    user.emailVerified = Boolean.valueOf(payload.getEmailVerified());
+    user.name = (String) payload.get("name");
+    user.pictureUrl = (String) payload.get("picture");
+    user.locale = (String) payload.get("locale");
+    user.familyName = (String) payload.get("family_name");
+    user.givenName = (String) payload.get("given_name");
+    user.sub = (String) payload.get("sub");
+    user.admin = false;
+
+    addNewUser(user);
+    User addedUser = getUser(payload.getEmail());
+    ctx.sessionAttribute("current-user", addedUser);
+    ctx.sessionAttribute("user-name", (String) payload.get("given_name"));
     ctx.status(201);
-    ctx.json(ImmutableMap.of("id", newUser._id));
+    User userReturn = new User();
+      userReturn.name = addedUser.givenName;
+      userReturn._id = addedUser._id;
+      userReturn.admin  = addedUser.admin;
+      ctx.json(userReturn);
   }
-
-  /**
-   * Utility function to generate the md5 hash for a given string
-   *
-   * @param str the string to generate a md5 for
-   */
-  @SuppressWarnings("lgtm[java/weak-cryptographic-algorithm]")
-  public String md5(String str) throws NoSuchAlgorithmException {
-    MessageDigest md = MessageDigest.getInstance("MD5");
-    byte[] hashInBytes = md.digest(str.toLowerCase().getBytes(StandardCharsets.UTF_8));
-
-    StringBuilder result = new StringBuilder();
-    for (byte b : hashInBytes) {
-      result.append(String.format("%02x", b));
+  return ctx;
+}
+public void loggedIn(Context ctx)  {
+  if(!(ctx.sessionAttribute("current-user")==null)){
+    User user = ctx.sessionAttribute("current-user");
+    boolean admin;
+    if(user.admin == false){
+      admin = false;
     }
-    return result.toString();
+    else{
+      admin = true;
+    }
+    User userReturn = new User();
+    userReturn.name = user.givenName;
+    userReturn._id = user._id;
+    userReturn.admin  = admin;
+
+    ctx.json(userReturn);
   }
+  else{
+    throw new BadRequestResponse("No user logged in");
+  }
+
+}
 }

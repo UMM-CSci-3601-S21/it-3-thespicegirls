@@ -1,0 +1,98 @@
+<div *ngIf="(learner === null) || learner === undefined; else templateLearners">
+  <a class="home" mat-list-item routerLink="/contextpacks" routerLinkActive="drawer-list-item-active">
+    <mat-icon matListIcon>home</mat-icon>Return to context packs
+
+  </a>
+</div>
+<ng-template #templateLearners>
+  <!-- Button that goes back to the learners page -->
+<button mat-fab class="back-button" matTooltip="Back to Learners" matTooltipPosition="right" routerLink="/learner" data-test="backButton">
+  <mat-icon class="md-24" aria-label="Back Button">keyboard_backspace</mat-icon>
+</button>
+
+<mat-card fxFlex.gt-sm="85" fxFlexOffset.gt-sm="5" fxLayout="column" style="margin: left 5px;">
+  <mat-card-title class="learner-name">{{this.learner.name}}</mat-card-title>
+
+<div class="listPackSection">
+
+  <mat-card>
+
+    <div>
+    <mat-card-title fxFlex><h2>Assigned Packs</h2></mat-card-title>
+
+    <div fxLayout="row" class="toggles">
+      <div>
+        <mat-form-field appearance="fill" class="wordlist-select">
+          <mat-label>Toggle Word Lists</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let list of this.possibleWordlists"
+            class="wordlist-check-box" >
+              <mat-checkbox
+              (click)="$event.stopPropagation()" [checked]="list.enabled"
+              (change)="toggleWordlist(list,list.pack, list.enabled)"
+              class="toggle-list-assign"> {{list.name}}
+              </mat-checkbox>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+
+        <div>
+         <mat-form-field appearance="fill" class="contextpack-select">
+           <mat-label>Toggle Context Packs</mat-label>
+           <mat-select>
+             <mat-option *ngFor="let pack of this.possibleContextpacks"
+             class="contextpack-check-box" >
+               <mat-checkbox
+               (click)="$event.stopPropagation()" [checked]="pack.enabled"
+               (change)="toggleContextpack(pack,pack.enabled)"
+               class="toggle-pack-assign"> {{pack.name}}
+               </mat-checkbox>
+             </mat-option>
+           </mat-select>
+          </mat-form-field>
+        </div>
+    </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div>
+    <mat-card-subtitle *ngIf="this.assignedPacksObj.length === 0">No Assigned Context Packs</mat-card-subtitle>
+    <mat-list>
+    <mat-list-item *ngFor="let pack of this.assignedPacksObj">
+
+        <span><b class="assigned-pack-name">{{pack.contextpack.name}}</b></span>
+        <mat-icon>arrow_right_alt</mat-icon>
+        <span fxLayout="row" class="assigned-wordlists">
+          <div *ngFor="let list of pack.assignedWordlists">
+            {{list.name.replace('_',' ')}}
+          </div>
+          <div class="disabled-wordlists">
+            {{this.getDisabledListsFromPack(pack.contextpack, pack)}}
+          </div>
+        </span>
+        <mat-divider></mat-divider>
+
+    </mat-list-item>
+  </mat-list>
+  </div>
+  </mat-card>
+</div>
+
+  <mat-card>
+    <mat-card-title>Assigned Words</mat-card-title>
+    <br>
+    <mat-card-subtitle *ngIf="this.assignedWords.length === 0">No Assigned Context Packs</mat-card-subtitle>
+    <mat-chip-list>
+      <mat-chip *ngFor="let word of this.assignedWords"
+        matTooltip="{{word.wordlist.replace('_', ' ')}}"
+        matTooltipClass="forms-tooltip"
+        class="{{word.pos}}"
+        >
+      {{word.word}}
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card>
+
+</mat-card>
+</ng-template>

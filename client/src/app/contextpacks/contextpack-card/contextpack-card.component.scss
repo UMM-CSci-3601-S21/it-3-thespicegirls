@@ -1,0 +1,69 @@
+
+.mat-card{
+  background-color:white;
+}
+
+.contextpack-card-name{
+  color:#01596e;
+
+}
+
+h2, mat-card-title, mat-card-subtitle{
+  text-transform: capitalize;
+  color:#01596e;
+  margin: 10px;
+}
+
+.contextpack-card-nouns, .contextpack-card-adjectives, .contextpack-card-verbs, .contextpack-card-misc {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+  width: inherit;
+  word-wrap: break-word;
+  display: flex;
+}
+
+.contextpack-download-button, .editView, mat-form-field{
+  display: inline-block;
+  padding: 10px;
+
+}
+
+.wordlist-enable-button, .wordlist-disable-button, .contextpack-enable-button, .contextpack-disable-button, h4{
+  display: inline-block;
+  padding: 10px;
+  text-transform: capitalize;
+  color:#01596e;
+  text-align: center;
+
+}
+
+.nounChip, .wordlist-nounChip {
+  background-color: rgb(238, 105, 105);
+
+}
+
+.verbChip, .wordlist-verbChip {
+  background-color:rgba(82, 130, 181, 0.734);
+}
+
+.adjectiveChip, .wordlist-adjectiveChip {
+  background-color: rgb(91, 172, 91);
+
+}
+
+.miscChip, .wordlist-miscChip {
+  background-color:rgb(247, 247, 179);
+}
+mat-card-header {
+  text-align: left;
+}
+.delete-wordlist-button{
+  color: #F43911;
+  border: none;
+  margin: 10px;
+}
+
+.confirmation{
+  text-align:center;
+}

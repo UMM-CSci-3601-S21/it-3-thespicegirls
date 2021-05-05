@@ -18,6 +18,8 @@
   $accent: map-get($theme, accent);
   $warn: map-get($theme, warn);
 
+
+
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
@@ -90,11 +92,11 @@ body {
 // This media query detects if the user has dark-mode turned on on their OS or browser
 // If you don't want to apply dark theme automatically,
 // you can also make this a normal class and add it to body or html dynamically.
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   // Sets up the theming for built in material components with the light theme
-  @include angular-material-theme($dark-theme);
+  @include angular-material-theme($light-theme);
   // Sets up theming for our custom components with the light theme
-  @include app-theming($dark-theme);
+  @include app-theming($light-theme);
 }
 
 // Use uppercase text on buttons

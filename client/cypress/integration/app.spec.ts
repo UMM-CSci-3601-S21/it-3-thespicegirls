@@ -6,28 +6,38 @@ describe('App', () => {
   beforeEach(() => page.navigateTo());
 
   it('Should have the correct title', () => {
-    page.getAppTitle().should('contain', 'CSCI 3601 Iteration Template');
+    page.getAppTitle().should('contain', 'Word River');
   });
 
-  it('The sidenav should open, navigate to "Users" and back to "Home"', () => {
-    // Before clicking on the button, the sidenav should be hidden
-    page.getSidenav()
-      .should('be.hidden');
+  describe('Sidenav', () => {
+    it('Should be invisible by default', () => {
+      // Before clicking on the button, the sidenav should be hidden
+      page.getSidenav()
+        .should('be.hidden')
+        .and('not.be.visible');
+    });
 
+    it('Should be openable by clicking the sidenav button', () => {
+      page.getSidenavButton().click();
 
-    page.getSidenavButton().click()
-      .should('be.visible');
+      page.getSidenav()
+        .should('not.be.hidden')
+        .and('be.visible');
+    });
 
-    page.getNavLink('Users').click();
-    cy.url().should('match', /\/users$/);
-    page.getSidenav()
-      .should('be.hidden');
+    it('Should have a working navigation to "Contextpacks"', () => {
+      page.getSidenavButton().click();
+      page.getSidenav();
+      page.getNavLink('Context Packs').click();
+      cy.url().should('match', /.*\/contextpacks$/);
+    });
 
-    page.getSidenavButton().click();
-    page.getNavLink('Home').click();
-    cy.url().should('match', /^https?:\/\/[^\/]+\/?$/);
-    page.getSidenav()
-      .should('be.hidden');
+    it('Should have a working navigation to "Learners"', () => {
+      page.getSidenavButton().click();
+      page.getSidenav();
+      page.getNavLink('Learners').click();
+      cy.url().should('match', /.*\/learner$/);
+    });
   });
 
 });
