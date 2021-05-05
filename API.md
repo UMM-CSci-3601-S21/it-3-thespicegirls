@@ -6,6 +6,8 @@
 - [Step 3: Set up OAuth Consent Screen](#step-3-set-up-oauth-consent-screen)
 - [Step 4: Getting the credentials](#step-4-getting-the-credentials)
 - [Step 4: Placing the credentials into the project](#step-4-placing-the-credentials-into-the-project)
+- [Step 5: Setting up the admins](#step-5-setting-up-the-admins)
+- [Testing the project](#testing-the-project)
 
 ## Summary
 
@@ -49,8 +51,29 @@ it will show you where to put them.
 - Navigate to `client\src\app\app.module.ts`
 - Place the client ID in `provider: new GoogleLoginProvider` where a sample client ID is
 - Now navigate to `server\src\main\java\umm3601\user`
-- In the `GoogleIdTokenVerifier` put your client Id here the sample client Id is.
+- In the `GoogleIdTokenVerifier` method put your client Id where the sample client Id is.
 - You are now ready to deploy the project!
 
+## Step 5: Setting up the admins
 
+- In the project we have set admins, you can become an admin by navigating to `database\seed\users.json`
+- Once there you can change any of the admins who are already in it to be you, adminship is based off of your email so no other fields matter, but having a name you remember will help with organizing the context packs.
+- The input that looks like
+  `"_id": {"$oid": "606a5a9fd2b1da77da015c94"},`
+  Needs to have an actual ObjectId for mongoDB so you can make one or use the ones already in the file.
+- You can now seed the project in terminal by doing `cd database` then `.\mongoseed.bat` or `./mongoseed.sh` if you're on a mac
+
+## Testing the project
+
+- A separate set of credential keys should be made to to run the cypress tests, you don't want the client secret needed to run the tests to ever be public for your actual API.
+- Make sure you make `https://developers.google.com/oauthplayground` an authorized redirect address in the setup
+- Once you have you new API keys put them where you are supposed to in the code
+- Now navigate to [Google OAuth playground](https://developers.google.com/oauthplayground/)
+- Click the gear to the right  and then click `Use your own OAuth credentials` and fill in the API client and secret key information
+- Under step 1 on the left find `Google OAuth2 API v2` and click it. Select all 3 options
+- Authorize the APIs
+- Click `Exchange authorization code for tokens`
+- Get the refresh token and navigate to `client\cypress\support\add-contextpack.po.ts`
+- Set the secret at the top to be the client secret.
+- Go and input the refresh token and client ID wherever they are needed depending on whether or not the account you used to create the refresh token is an admin or not, you have to make two different refresh tokens one for an admin and one for a regular user.
 
