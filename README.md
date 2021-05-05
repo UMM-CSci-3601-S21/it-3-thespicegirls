@@ -13,6 +13,8 @@
 - [API keys](#api-keys)
 - [Contributors](#contributors)
 
+Brochure for this app [here.](./WordRiverBrochure.pdf)
+
 Word River is an extension to Story Builder where a teacher or admin can organize and manage both their contextpacks and learners. Contextpacks are made up of multiple wordlists that often have similar themes or purpose.
 >Story Builder is an app for children who are just learning to read to support their engagement with words. This application is built in Unity using RTVoice for enabling Text-To-Speech and featuring a robust drag and drop system.
 >
